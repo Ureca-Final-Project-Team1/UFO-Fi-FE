@@ -1,0 +1,24 @@
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+COMMIT_MSG_FILE="$1"
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+TICKET_ID=$(echo "$BRANCH_NAME" | grep -oE '[A-Z]+-[0-9]+')
+
+# 커밋 메시지 첫 줄 추출
+FIRST_LINE=$(head -n1 "$COMMIT_MSG_FILE")
+
+# 이미 [UF-xxx] 포함된 경우는 스킵
+if echo "$FIRST_LINE" | grep -q "\[$TICKET_ID\]"; then
+  exit 0
+fi
+
+# 형식: type: message
+if echo "$FIRST_LINE" | grep -q ":"; then
+  TYPE=$(echo "$FIRST_LINE" | cut -d ':' -f 1)
+  REST=$(echo "$FIRST_LINE" | cut -d ':' -f 2- | sed 's/^[[:space:]]*//')
+  echo "$TYPE: [$TICKET_ID] $REST" > "$COMMIT_MSG_FILE"
+else
+  # fallback: 접두사만 붙여서 덮어쓰기
+  echo "[$TICKET_ID] $FIRST_LINE" > "$COMMIT_MSG_FILE"
+fi
