@@ -20,9 +20,14 @@ jobs:
       contents: read
     name: Run PR Agent (GPT-4o-mini)
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: PR Agent action
         id: pragent
         uses: Codium-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_AGENT.CONFIG.LANGUAGE: 'ko'
+          PR_AGENT.PR_REVIEWER.EXTRA_INSTRUCTIONS: '모든 리뷰 코멘트는 반드시 한국어로 작성해주세요.'

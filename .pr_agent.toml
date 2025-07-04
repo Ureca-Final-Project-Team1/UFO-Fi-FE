@@ -1,7 +1,7 @@
 [config]
 model = "gpt-4o-mini"
 model_turbo = "gpt-4o-mini"
-language = "korean"
+language = "ko"
 verbosity_level = 0
 publish_output_progress = false
 
@@ -20,11 +20,15 @@ persistent_comment = true
 
 # 검토 지침
 extra_instructions = """
+답변은 반드시 한국어로 작성해주세요.
+
 Next.js + TypeScript 프로젝트입니다. 다음을 간단히 검토해주세요:
 - TypeScript 타입 오류
-- React 컴포넌트 기본 구조
+- React 컴포넌트 기본 구조  
 - 명백한 버그나 로직 오류
 - 간단한 성능 개선 사항
+
+모든 리뷰 코멘트는 한국어로 작성해주세요.
 """
 
 # 필수 파일만 검토
@@ -41,9 +45,13 @@ include_generated_by_tag = false
 
 # 간단한 PR 설명
 extra_instructions = """
-간단하게 한국어로 작성:
+반드시 한국어로 작성해주세요.
+
+간단하게 다음 내용을 포함:
 - 주요 변경사항
 - 테스트 방법 (해당시)
+
+모든 내용은 한국어로 작성해주세요.
 """
 
 [pr_code_suggestions]
