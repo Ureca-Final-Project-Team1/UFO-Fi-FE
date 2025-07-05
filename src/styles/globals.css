@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -110,6 +110,41 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+@theme {
+  /* design system */
+  --color-primary-100: #f8efff;
+  --color-primary-200: #ded1f1;
+  --color-primary-300: #b284f7;
+  --color-primary-400: #907ad6;
+  --color-primary-500: #7f6fc3;
+  --color-primary-600: #594589;
+  --color-primary-700: #1c145b;
+
+  --color-secondary-pink: #b4fff1;
+  --color-secondary-cyan: #00e6ce;
+  --color-secondary-blue: #00b8a7;
+  --color-secondary-fuchsia: #009181;
+  --color-secondary-indigo: #006a5e;
+  --color-secondary-yellow: #ffd230;
+
+  --color-black-100: #f4f4f5;
+  --color-black-200: #e4e4e7;
+  --color-black-300: #d4d4d8;
+  --color-black-400: #a1a1aa;
+  --color-black-500: #71717a;
+  --color-black-600: #27272a;
+  --color-black-700: #18181b;
+  --color-black-800: #09090b;
+
+  --color-status-positive: #00bf40;
+  --color-status-cautionary: #ff9200;
+  --color-status-negative: #ff4242;
+
+  --color-accent-red: #f5506c;
+
+  --font-family-sans: Pretendard, sans-serif;
 }
 
 @layer base {

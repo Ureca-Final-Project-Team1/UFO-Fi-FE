@@ -1,48 +1,42 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-import { Button } from "./Button";
-import { buttonVariants } from "./buttonVariants";
-import type { VariantProps } from "class-variance-authority";
+import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { VariantProps } from 'class-variance-authority';
 
-type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
-type ButtonSize = VariantProps<typeof buttonVariants>["size"];
+import { Button } from './Button';
+import { buttonVariants } from './buttonVariants';
+
+type ButtonVariant = VariantProps<typeof buttonVariants>['variant'];
+type ButtonSize = VariantProps<typeof buttonVariants>['size'];
 
 const meta: Meta<typeof Button> = {
-  title: "UI/Button",
+  title: 'UI/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
-        component: "shadcn/ui 스타일의 기본 Button 컴포넌트입니다.",
+        component: 'shadcn/ui 스타일의 기본 Button 컴포넌트입니다.',
       },
     },
   },
   argTypes: {
     variant: {
-      control: "select",
-      options: [
-        "default",
-        "destructive",
-        "outline",
-        "secondary",
-        "ghost",
-        "link",
-      ],
-      description: "버튼의 스타일 variant",
+      control: 'select',
+      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      description: '버튼의 스타일 variant',
     },
     size: {
-      control: "select",
-      options: ["default", "sm", "lg", "icon"],
-      description: "버튼의 크기",
+      control: 'select',
+      options: ['default', 'sm', 'lg', 'icon'],
+      description: '버튼의 크기',
     },
     disabled: {
-      control: "boolean",
-      description: "버튼 비활성화 상태",
+      control: 'boolean',
+      description: '버튼 비활성화 상태',
     },
     children: {
-      control: "text",
-      description: "버튼 내용",
+      control: 'text',
+      description: '버튼 내용',
     },
   },
 };
@@ -53,37 +47,30 @@ type Story = StoryObj<typeof Button>;
 // Playground
 export const Playground: Story = {
   args: {
-    children: "Button",
-    variant: "default",
-    size: "default",
+    children: 'Button',
+    variant: 'default',
+    size: 'default',
   },
 };
 
 // 모든 Variants
 export const AllVariants: Story = {
-  name: "All Variants",
+  name: 'All Variants',
   render: () => (
     <div className="flex flex-wrap gap-4">
-      {(
-        [
-          "default",
-          "destructive",
-          "outline",
-          "secondary",
-          "ghost",
-          "link",
-        ] as ButtonVariant[]
-      ).map((variant) => (
-        <Button key={variant} variant={variant}>
-          {variant}
-        </Button>
-      ))}
+      {(['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as ButtonVariant[]).map(
+        (variant) => (
+          <Button key={variant} variant={variant}>
+            {variant}
+          </Button>
+        ),
+      )}
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: "모든 기본 버튼 variant들을 보여줍니다.",
+        story: '모든 기본 버튼 variant들을 보여줍니다.',
       },
     },
   },
@@ -91,12 +78,12 @@ export const AllVariants: Story = {
 
 // 모든 Sizes
 export const AllSizes: Story = {
-  name: "All Sizes",
+  name: 'All Sizes',
   render: () => (
     <div className="flex gap-4 items-center">
-      {(["sm", "default", "lg", "icon"] as ButtonSize[]).map((size) => (
+      {(['sm', 'default', 'lg', 'icon'] as ButtonSize[]).map((size) => (
         <Button key={size} size={size}>
-          {size === "icon" ? "⭐️" : size}
+          {size === 'icon' ? '⭐️' : size}
         </Button>
       ))}
     </div>
@@ -104,7 +91,7 @@ export const AllSizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: "모든 버튼 크기를 보여줍니다.",
+        story: '모든 버튼 크기를 보여줍니다.',
       },
     },
   },
@@ -112,7 +99,7 @@ export const AllSizes: Story = {
 
 // 아이콘과 함께 사용
 export const WithIcons: Story = {
-  name: "With Icons",
+  name: 'With Icons',
   render: () => (
     <div className="flex gap-4 flex-wrap items-center">
       <Button>
@@ -123,11 +110,7 @@ export const WithIcons: Story = {
           strokeWidth={1.5}
           stroke="currentColor"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
         Add Item
       </Button>
@@ -167,7 +150,7 @@ export const WithIcons: Story = {
   parameters: {
     docs: {
       description: {
-        story: "아이콘과 함께 사용하는 버튼들입니다.",
+        story: '아이콘과 함께 사용하는 버튼들입니다.',
       },
     },
   },
