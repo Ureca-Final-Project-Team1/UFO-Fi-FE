@@ -42,6 +42,8 @@ next-env.d.ts
 
 # ESLint
 .eslintcache
+*storybook.log
+storybook-static
 
 # Deploy
 .env*
