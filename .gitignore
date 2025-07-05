@@ -40,6 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# ESLint
 .eslintcache
 *storybook.log
 storybook-static
+
+# Deploy
+.env*
+*.key
