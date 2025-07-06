@@ -112,6 +112,14 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* design system */
   --color-primary-100: #f8efff;
@@ -144,7 +152,7 @@
 
   --color-accent-red: #f5506c;
 
-  --font-family-sans: Pretendard, sans-serif;
+  --font-family-sans: var(--font-pretendard), Pretendard, sans-serif;
 }
 
 @layer base {
