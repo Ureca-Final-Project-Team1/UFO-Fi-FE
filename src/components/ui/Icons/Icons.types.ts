@@ -10,6 +10,7 @@ export interface ImageIconProps extends Omit<IconProps, 'color'> {
   src: string;
   alt: string;
   priority?: boolean;
+  fallbackIcon?: LucideIconType;
 }
 
 export interface IconWrapperProps extends IconProps {
@@ -35,7 +36,10 @@ export type LucideIconType =
   | 'Edit'
   | 'Trash2'
   | 'Eye'
-  | 'EyeOff';
+  | 'EyeOff'
+  | 'AlertCircle' // 에러용
+  | 'ImageOff' // 이미지 에러용
+  | 'Loader2'; // 로딩용
 
 // 커스텀 아이콘 타입
 export type CustomIconType = 'ufo' | 'purchase' | 'planet' | 'trending' | 'astronaut';
