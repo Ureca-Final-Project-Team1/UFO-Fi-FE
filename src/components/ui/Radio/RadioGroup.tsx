@@ -5,10 +5,9 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-export function RadioGroup({
-  className,
-  ...props
-}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
+import type { RadioGroupProps } from './Radio.types';
+
+export function RadioGroup({ className, ...props }: RadioGroupProps) {
   return (
     <RadioGroupPrimitive.Root
       data-slot="radio-group"

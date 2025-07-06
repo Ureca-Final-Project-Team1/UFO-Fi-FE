@@ -6,17 +6,22 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+import { RadioGroupItemProps } from './Radio.types';
 import { radioItem } from './radioVariants';
 
 export function RadioGroupItem({
   className,
-  ...props
-}: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
+  value,
+  'aria-label': ariaLabel,
+  ...rest
+}: RadioGroupItemProps) {
   return (
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(radioItem(), className)}
-      {...props}
+      value={value}
+      aria-label={ariaLabel || 'Radio option'}
+      {...rest}
     >
       <RadioGroupPrimitive.Indicator
         data-slot="radio-group-indicator"
