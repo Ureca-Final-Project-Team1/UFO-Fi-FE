@@ -3,16 +3,34 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import * as React from 'react';
 
+import { Label } from '@/components/ui/Label';
 import { cn } from '@/lib/utils';
 
-import type { RadioGroupProps } from './Radio.types';
+import { RadioGroupItem } from './RadioGroupItem';
 
-export function RadioGroup({ className, ...props }: RadioGroupProps) {
+type RadioGroupProps = {
+  options: string[];
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  className?: string;
+};
+
+export function RadioGroup({ options, defaultValue, onValueChange, className }: RadioGroupProps) {
   return (
     <RadioGroupPrimitive.Root
-      data-slot="radio-group"
-      className={cn('grid gap-3', className)}
-      {...props}
-    />
+      className={cn('grid gap-2', className)}
+      defaultValue={defaultValue}
+      onValueChange={onValueChange}
+    >
+      {options.map((label) => {
+        const value = label.toLowerCase();
+        return (
+          <div key={value} className="flex items-center space-x-2">
+            <RadioGroupItem id={value} value={value} />
+            <Label htmlFor={value}>{label}</Label>
+          </div>
+        );
+      })}
+    </RadioGroupPrimitive.Root>
   );
 }

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import { RadioGroup } from './RadioGroup';
-import { RadioGroupItem } from './RadioGroupItem';
 
 const meta: Meta<typeof RadioGroup> = {
   title: 'UI/Radio',
@@ -11,7 +10,8 @@ const meta: Meta<typeof RadioGroup> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Radix 기반의 기본 RadioGroup 컴포넌트입니다.',
+        component:
+          'Radix 기반의 기본 RadioGroup 컴포넌트입니다. 문자열 배열만 넘기면 자동으로 렌더링됩니다.',
       },
     },
   },
@@ -22,27 +22,12 @@ type Story = StoryObj<typeof RadioGroup>;
 
 export const Playground: Story = {
   render: () => (
-    <RadioGroup defaultValue="option-1">
-      <RadioGroupItem value="option-1" id="r1" />
-      <label htmlFor="r1" className="ml-2 text-sm">
-        Option 1
-      </label>
-
-      <RadioGroupItem value="option-2" id="r2" />
-      <label htmlFor="r2" className="ml-2 text-sm">
-        Option 2
-      </label>
-
-      <RadioGroupItem value="option-3" id="r3" />
-      <label htmlFor="r3" className="ml-2 text-sm">
-        Option 3
-      </label>
-    </RadioGroup>
+    <RadioGroup options={['Option 1', 'Option 2', 'Option 3']} defaultValue="option 1" />
   ),
   parameters: {
     docs: {
       description: {
-        story: 'RadioGroup과 RadioGroupItem의 기본 사용 예입니다.',
+        story: '5개의 옵션을 가진 RadioGroup 기본 예시입니다.',
       },
     },
   },
