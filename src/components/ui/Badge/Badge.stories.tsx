@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Badge } from './Badge';
 
 type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline';
+type BadgeState = 'selling' | 'sold' | 'timeout' | 'reported';
 
 const meta: Meta<typeof Badge> = {
   title: 'UI/Badge',
@@ -20,11 +21,20 @@ const meta: Meta<typeof Badge> = {
     variant: {
       control: 'select',
       options: ['default', 'secondary', 'destructive', 'outline'],
-      description: '배지 스타일 variant',
+      description: 'Badge 스타일 variant',
+    },
+    state: {
+      control: 'select',
+      options: ['selling', 'sold', 'timeout', 'reported'],
+      description: 'Badge 상태값 (선택 시 색상 변화)',
     },
     children: {
       control: 'text',
-      description: '배지 안의 텍스트',
+      description: 'Badge 내부 텍스트',
+    },
+    className: {
+      control: 'text',
+      description: '추가적인 Tailwind className',
     },
   },
 };
@@ -53,7 +63,27 @@ export const AllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Badge의 모든 variant 예시를 보여줍니다.',
+        story: '모든 variant 조합을 렌더링한 예시입니다.',
+      },
+    },
+  },
+};
+
+export const AllStates: Story = {
+  name: 'All States',
+  render: () => (
+    <div className="flex gap-4 flex-wrap">
+      {(['selling', 'sold', 'timeout', 'reported'] as BadgeState[]).map((state) => (
+        <Badge key={state} state={state}>
+          {state}
+        </Badge>
+      ))}
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '`state` prop을 사용한 Badge 스타일 변화 예시입니다.',
       },
     },
   },
@@ -68,7 +98,7 @@ export const CustomClassName: Story = {
   parameters: {
     docs: {
       description: {
-        story: '추가 className을 사용한 Badge 커스터마이징 예시입니다.',
+        story: '`className`으로 커스터마이징한 Badge 예시입니다.',
       },
     },
   },
