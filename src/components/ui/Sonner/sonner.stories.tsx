@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { toast } from 'sonner';
+import { toast } from 'Sonner';
 
 import { Toaster } from './Sonner';
 import { Button } from '../Button/Button';
