@@ -38,7 +38,7 @@ export const IconWrapper: React.FC<IconWrapperProps> = ({
         isSVGElement(child)
           ? React.cloneElement(child, {
               style: {
-                ...(child.props.style || {}),
+                ...child.props.style,
                 color: colorValue,
                 width: '100%',
                 height: '100%',
