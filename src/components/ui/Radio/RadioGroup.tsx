@@ -25,7 +25,7 @@ export function RadioGroup({ options, defaultValue, onValueChange, className }: 
       {options.map((label) => {
         const value = label.toLowerCase();
         return (
-          <div key={value} className="flex items-center space-x-2">
+          <div key={value} className="flex items-center text-white space-x-2">
             <RadioGroupItem id={value} value={value} />
             <Label htmlFor={value}>{label}</Label>
           </div>

@@ -27,7 +27,7 @@ export const Playground: Story = {
   parameters: {
     docs: {
       description: {
-        story: '5개의 옵션을 가진 RadioGroup 기본 예시입니다.',
+        story: '3개의 옵션을 가진 RadioGroup 기본 예시입니다.',
       },
     },
   },
