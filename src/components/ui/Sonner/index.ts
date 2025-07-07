@@ -1,1 +1,1 @@
-export * from './Sonner';
+export { Toaster } from './Sonner';
