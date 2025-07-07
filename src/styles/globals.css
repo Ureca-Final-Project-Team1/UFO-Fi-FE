@@ -46,8 +46,6 @@
 :root {
   /* Tailwind/shadcn 기본 변수 */
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -77,6 +75,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 .dark {
@@ -152,6 +152,15 @@
   --color-status-negative: #ff4242;
 
   --color-accent-red: #f5506c;
+
+  --color-badge-selling: #00232b;
+  --color-text-selling: #00e6ce;
+  --color-badge-sold: #d4c7ff;
+  --color-text-sold: #413568;
+  --color-badge-timeout: #e6e6e6;
+  --color-text-timeout: #505252;
+  --color-badge-reported: #ffffff;
+  --color-text-reported: #505252;
 
   --font-family-sans: var(--font-pretendard), Pretendard, sans-serif;
 
@@ -326,6 +335,14 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  .caption-12-bold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
     letter-spacing: 0.1px;
   }
 
