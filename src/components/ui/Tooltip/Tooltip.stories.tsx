@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import * as React from 'react';
 
-import { Tooltip } from './tooltip';
+import { Tooltip } from './Tooltip';
 import { Button } from '../Button/Button';
 
 const meta: Meta<typeof Tooltip> = {
@@ -17,27 +17,6 @@ const meta: Meta<typeof Tooltip> = {
       },
     },
   },
-};
-
-const FollowUnfollowExample = () => {
-  const [isFollow, setIsFollow] = React.useState(false);
-  return (
-    <Button
-      style={{
-        background: isFollow ? '#fff' : '#3B4CCA',
-        color: isFollow ? '#222' : '#fff',
-        borderRadius: 20,
-        width: 140,
-        height: 60,
-        fontSize: 16,
-        fontWeight: 700,
-        border: isFollow ? '2px solid #222' : 'none',
-      }}
-      onClick={() => setIsFollow(!isFollow)}
-    >
-      {isFollow ? '언팔로우' : '팔로우'}
-    </Button>
-  );
 };
 
 export default meta;
@@ -63,16 +42,16 @@ export const Default: Story = {
 export const Placement: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 24 }}>
-      <Tooltip content="상단" side="top">
+      <Tooltip content="상단 툴팁" side="top">
         <Button>Top</Button>
       </Tooltip>
-      <Tooltip content="하단" side="bottom">
+      <Tooltip content="하단 툴팁" side="bottom">
         <Button>Bottom</Button>
       </Tooltip>
-      <Tooltip content="왼쪽" side="left">
+      <Tooltip content="왼쪽 툴팁" side="left">
         <Button>Left</Button>
       </Tooltip>
-      <Tooltip content="오른쪽" side="right">
+      <Tooltip content="오른쪽 툴팁" side="right">
         <Button>Right</Button>
       </Tooltip>
     </div>
@@ -87,10 +66,10 @@ export const Placement: Story = {
 };
 
 // 커스텀 오프셋
-export const Custom: Story = {
+export const CustomOffset: Story = {
   render: () => (
-    <Tooltip content="오프셋 적용" sideOffset={16}>
-      <Button>Custom Tooltip</Button>
+    <Tooltip content="16px 오프셋 적용" sideOffset={16}>
+      <Button>Custom Offset</Button>
     </Tooltip>
   ),
   parameters: {
@@ -102,12 +81,75 @@ export const Custom: Story = {
   },
 };
 
-export const FollowUnfollow: Story = {
-  render: () => <FollowUnfollowExample />,
+// 긴 텍스트 툴팁
+export const LongText: Story = {
+  render: () => (
+    <Tooltip content="이것은 매우 긴 툴팁 텍스트입니다. 여러 줄에 걸쳐 표시될 수 있습니다.">
+      <Button>Long Text Tooltip</Button>
+    </Tooltip>
+  ),
   parameters: {
     docs: {
       description: {
-        story: '팔로우/언팔로우 토글 버튼 예시입니다.',
+        story: '긴 텍스트가 포함된 Tooltip 예시입니다.',
+      },
+    },
+  },
+};
+
+// 아이콘과 함께
+export const WithIcon: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Tooltip content="홈으로 이동">
+        <button
+          style={{ padding: 8, border: 'none', background: 'transparent', cursor: 'pointer' }}
+        >
+          🏠
+        </button>
+      </Tooltip>
+      <Tooltip content="설정 페이지">
+        <button
+          style={{ padding: 8, border: 'none', background: 'transparent', cursor: 'pointer' }}
+        >
+          ⚙️
+        </button>
+      </Tooltip>
+      <Tooltip content="도움말">
+        <button
+          style={{ padding: 8, border: 'none', background: 'transparent', cursor: 'pointer' }}
+        >
+          ❓
+        </button>
+      </Tooltip>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '아이콘 버튼과 함께 사용하는 Tooltip 예시입니다.',
+      },
+    },
+  },
+};
+
+// 비활성화된 버튼
+export const DisabledButton: Story = {
+  render: () => (
+    <Tooltip content="모든 필드를 입력해주세요">
+      <span>
+        {' '}
+        {/* disabled 요소는 이벤트를 받지 못하므로 span으로 감싸기 */}
+        <Button disabled style={{ pointerEvents: 'none' }}>
+          저장
+        </Button>
+      </span>
+    </Tooltip>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '비활성화된 버튼에 대한 설명을 제공하는 Tooltip 예시입니다.',
       },
     },
   },
