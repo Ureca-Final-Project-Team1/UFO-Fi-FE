@@ -32,6 +32,8 @@ export type LucideIconType =
   | 'Heart'
   | 'Star'
   | 'Download'
+  | 'CirclePlus' // 판매 등록
+  | 'RadioTower' // 전파 거래소
   | 'Upload'
   | 'Edit'
   | 'Trash2'
@@ -42,7 +44,7 @@ export type LucideIconType =
   | 'Loader2'; // 로딩용
 
 // 커스텀 아이콘 타입
-export type CustomIconType = 'ufo' | 'purchase' | 'planet' | 'trending' | 'astronaut';
+export type CustomIconType = 'ufo' | 'planet' | 'trending' | 'astronaut';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;
