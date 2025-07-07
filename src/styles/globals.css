@@ -44,6 +44,7 @@
 }
 
 :root {
+  /* Tailwind/shadcn 기본 변수 */
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -121,7 +122,7 @@
 }
 
 @theme {
-  /* design system */
+  /* UFO-Fi 디자인 시스템 */
   --color-primary-100: #f8efff;
   --color-primary-200: #ded1f1;
   --color-primary-300: #b284f7;
@@ -153,18 +154,91 @@
   --color-accent-red: #f5506c;
 
   --font-family-sans: var(--font-pretendard), Pretendard, sans-serif;
+
+  --width-mobile-min: 375px;
+  --width-mobile-max: 620px;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
+
+  html {
+    height: -webkit-fill-available;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-family-sans);
+    line-height: 1.6;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* 모바일 터치 최적화 */
+  button, input, select, textarea {
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 16px;
+  }
+
+  /* iOS Safari input zoom 방지 */
+  @media screen and (max-width: 767px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="url"],
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* 스크롤바 숨기기 (크로스브라우징) */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe area 추가 패딩 */
+  .safe-area-top {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-left {
+    padding-left: max(0px, env(safe-area-inset-left));
+  }
+
+  .safe-area-right {
+    padding-right: max(0px, env(safe-area-inset-right));
   }
 }
 
 @layer utilities {
+  /* Heading Styles */
   .heading-24-bold {
     font-family: Pretendard, sans-serif;
     font-weight: 700;
@@ -278,4 +352,8 @@
     line-height: 14px;
     letter-spacing: 0.1px;
   }
+
+
+
+  
 }
