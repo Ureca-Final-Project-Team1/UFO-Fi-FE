@@ -22,18 +22,6 @@ export const UFOIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const PurchaseIcon: React.FC<IconProps> = (props) => (
-  <IconWrapper {...props}>
-    <svg width="24" height="24" viewBox="0 0 48 48" version="1" xmlns="http://www.w3.org/2000/svg">
-      <circle fill="none" cx="24" cy="24" r="21" />
-      <g fill="currentColor">
-        <rect x="21" y="14" width="6" height="20" />
-        <rect x="14" y="21" width="20" height="6" />
-      </g>
-    </svg>
-  </IconWrapper>
-);
-
 export const PlanetIcon: React.FC<IconProps> = (props) => (
   <IconWrapper {...props}>
     <svg
