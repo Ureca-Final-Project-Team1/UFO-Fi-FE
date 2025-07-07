@@ -1,0 +1,40 @@
+name: 'Storybook Deployment with Chromatic'
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# List of jobs
+jobs:
+  chromatic:
+    name: 'Run Chromatic'
+    runs-on: ubuntu-latest
+    # 워크플로우 자체를 조직에서만 실행
+    if: github.repository_owner == 'Ureca-Final-Project-Team1'
+
+    # Job steps
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          onlyChanged: true # 변경된 스토리만 테스트
+          exitZeroOnChanges: true # UI 변경사항이 있어도 성공으로 처리
+          exitOnceUploaded: true # 업로드 완료 시 즉시 종료
+          autoAcceptChanges: true # 자동으로 모든 변경사항 승인
