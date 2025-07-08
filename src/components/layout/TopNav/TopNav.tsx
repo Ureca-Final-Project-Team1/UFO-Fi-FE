@@ -28,7 +28,7 @@ const TopNav: React.FC<TopNavProps> = ({
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 h-14 bg-primary-700 h-[56px] z-30 shadow-sm">
+    <header className="absolute top-0 left-0 right-0 h-14 bg-primary-700 z-30 shadow-sm">
       <div className="flex items-center justify-between h-full px-4 w-full">
         <div className="flex items-center gap-3">
           {ICON_PATHS?.UFO_LOGO ? (
