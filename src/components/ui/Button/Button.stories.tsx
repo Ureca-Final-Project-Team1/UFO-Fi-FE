@@ -69,19 +69,6 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-// 아이콘 정의
-const CloudIcon = (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
-  </svg>
-);
-
-const AntennaIcon = (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.5 3.37 1.41 4.84l.03.06L12 22l5.56-8.1.03-.06A7.945 7.945 0 0 0 19 9c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-  </svg>
-);
-
 // 기본 스토리들
 export const PrimaryButton: Story = {
   args: {
@@ -126,7 +113,6 @@ export const ProjectButton: Story = {
 export const ExplorationButton: Story = {
   args: {
     variant: 'exploration-button',
-    icon: CloudIcon,
     size: 'default',
     children: '일괄구매',
   },
@@ -135,7 +121,6 @@ export const ExplorationButton: Story = {
 export const ExplorationCondition: Story = {
   args: {
     variant: 'exploration-button',
-    icon: CloudIcon,
     size: 'default',
     children: '탐색 조건',
   },
@@ -144,7 +129,6 @@ export const ExplorationCondition: Story = {
 export const ExplorationStart: Story = {
   args: {
     variant: 'exploration-button',
-    icon: AntennaIcon,
     iconPosition: 'right',
     size: 'default',
     children: '탐색 시작',
@@ -157,7 +141,6 @@ export const Playground: Story = {
   args: {
     variant: 'exploration-button',
     size: 'default',
-    icon: CloudIcon,
     iconPosition: 'left',
     children: '탐색 조건',
   },
@@ -197,16 +180,12 @@ export const WithIcons: Story = {
   name: '🎨 With Icons',
   render: () => (
     <div className="flex gap-4 flex-wrap items-center">
-      <Button variant="exploration-button" icon={CloudIcon}>
-        탐색 조건
-      </Button>
-      <Button variant="exploration-button" icon={AntennaIcon} iconPosition="right">
+      <Button variant="exploration-button">탐색 조건</Button>
+      <Button variant="exploration-button" iconPosition="right">
         탐색 시작
       </Button>
       <Button variant="exploration-button">일반 버튼</Button>
-      <Button variant="primary" icon={CloudIcon}>
-        Primary with Icon
-      </Button>
+      <Button variant="primary">Primary with Icon</Button>
     </div>
   ),
 };

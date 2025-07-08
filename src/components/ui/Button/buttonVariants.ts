@@ -6,21 +6,25 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-[#B284F7] text-[#3B2A64] font-bold text-[15px] hover:bg-[#A16CF0]',
-        secondary: 'bg-gray-100 text-gray-900 border-gray-300 hover:bg-gray-200',
-        destructive: 'bg-red-600 text-white border-red-600 hover:bg-red-700',
-        outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
-        ghost: 'text-gray-700 hover:bg-gray-100',
-        link: 'text-blue-600 underline-offset-4 hover:underline',
+        // 기본 shadcn/ui variants
+        primary:
+          'bg-primary-300 text-primary-text-dark font-bold text-[15px] hover:bg-primary-hover',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        outline: 'border border-border bg-background hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        link: 'text-primary underline-offset-4 hover:underline',
+
+        // 커스텀 variants
         'exploration-button':
-          'bg-gradient-to-r from-[#266DFD] to-[#F71CD7] border-2 border-[#67E9FF] text-white font-semibold text-[16px] leading-[24px] hover:opacity-90',
+          'bg-gradient-to-r from-exploration-gradient-from to-exploration-gradient-to border-2 border-exploration-border text-white font-semibold text-[16px] leading-[24px] hover:opacity-90',
         'cancel-button':
-          'rounded-[12px] border border-[#EAEAF2] bg-white text-[#35363F] text-center font-semibold text-[16px] leading-[24px] hover:bg-gray-50',
+          'rounded-[12px] border border-cancel-border bg-white text-cancel-text text-center font-semibold text-[16px] leading-[24px] hover:bg-black-100',
         'number-badge':
-          'flex py-3 px-0 items-center flex-shrink-0 rounded-lg border-2 border-[#4261D0] bg-[#001579] text-[#31D7F3] text-center font-semibold text-[18px] leading-[26px] hover:bg-[#002080]',
-        'action-button': 'bg-pink-500 text-white hover:bg-pink-600',
-        'next-button': 'bg-[#B284F7] text-white hover:bg-[#7A6BC0]',
-        'project-button': 'rounded-[5px] bg-[#DED1F1] text-black',
+          'flex py-3 px-0 items-center flex-shrink-0 rounded-lg border-2 border-badge-border-blue bg-badge-bg-dark text-badge-text-cyan text-center font-semibold text-[18px] leading-[26px] hover:bg-badge-hover-dark',
+        'action-button': 'bg-accent-red text-white hover:bg-accent-red/90',
+        'next-button': 'bg-primary-300 text-white hover:bg-next-hover',
+        'project-button': 'rounded-[5px] bg-primary-200 text-black-700 hover:bg-primary-300/30',
       },
       size: {
         sm: 'h-9 rounded-md px-3 text-sm',

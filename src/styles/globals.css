@@ -130,6 +130,11 @@
   --color-primary-600: #594589;
   --color-primary-700: #1c145b;
 
+  /* 버튼 전용 primary 색상 추가 */
+  --color-primary-text-dark: #3b2a64;
+  --color-primary-hover: #a16cf0;
+  --color-next-hover: #7a6bc0;
+
   --color-secondary-pink: #b4fff1;
   --color-secondary-cyan: #00e6ce;
   --color-secondary-blue: #00b8a7;
@@ -151,6 +156,21 @@
   --color-status-negative: #ff4242;
 
   --color-accent-red: #f5506c;
+
+  /* 탐색 버튼 색상 */
+  --color-exploration-gradient-from: #266dfd;
+  --color-exploration-gradient-to: #f71cd7;
+  --color-exploration-border: #67e9ff;
+
+  /* 취소 버튼 색상 */
+  --color-cancel-border: #eaeaf2;
+  --color-cancel-text: #35363f;
+
+  /* 배지 버튼 색상 */
+  --color-badge-border-blue: #4261d0;
+  --color-badge-bg-dark: #001579;
+  --color-badge-text-cyan: #31d7f3;
+  --color-badge-hover-dark: #002080;
 
   --color-badge-selling: #00232b;
   --color-text-selling: #00e6ce;
