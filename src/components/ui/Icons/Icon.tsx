@@ -6,9 +6,9 @@ import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
 interface IconComponentProps extends IconProps {
-  name: IconType;
-  src?: string; // 이미지 아이콘인 경우 사용
-  alt?: string; // 이미지 아이콘인 경우 사용
+  name?: IconType;
+  src?: string;
+  alt?: string;
 }
 
 /**
@@ -16,27 +16,36 @@ interface IconComponentProps extends IconProps {
  * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
  */
 export const Icon: React.FC<IconComponentProps> = ({ name, src, alt, ...props }) => {
-  // 이미지 아이콘인 경우
   if (src) {
-    return <ImageIcon src={src} alt={alt || name} {...props} />;
+    return <ImageIcon src={src} alt={alt || name || 'icon'} {...props} />;
+  }
+
+  if (!name) {
+    console.warn('Icon error');
+    return null;
   }
 
   // 커스텀 아이콘인 경우
   const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
     ufo: CustomIcons.UFOIcon,
-    purchase: CustomIcons.PurchaseIcon,
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,
     astronaut: CustomIcons.AstronautIcon,
   };
 
+  // 커스텀 아이콘인지 확인
   if (name in customIconComponents) {
     const CustomIconComponent = customIconComponents[name as CustomIconType];
     return <CustomIconComponent {...props} />;
   }
 
   // Lucide 아이콘인 경우
-  return <LucideIcon name={name as LucideIconType} {...props} />;
+  try {
+    return <LucideIcon name={name as LucideIconType} {...props} />;
+  } catch (error) {
+    console.warn(`${name}`, error);
+    return <LucideIcon name="AlertCircle" {...props} />;
+  }
 };
 
 export { LucideIcon, ImageIcon };
