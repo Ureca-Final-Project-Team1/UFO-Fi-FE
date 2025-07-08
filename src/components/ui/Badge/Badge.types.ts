@@ -11,4 +11,30 @@ export interface BadgeProps
   showIcon?: boolean;
   icon?: IconType;
   children?: React.ReactNode;
+  state?: BadgeState;
 }
+
+export type BadgeState = 'selling' | 'sold' | 'timeout' | 'reported';
+
+export const stateInfo = {
+  selling: {
+    label: '판매중',
+    icon: null,
+    showDot: true,
+  },
+  sold: {
+    label: '판매완료',
+    icon: 'CircleCheck',
+    showDot: false,
+  },
+  timeout: {
+    label: '기간만료',
+    icon: 'Hourglass',
+    showDot: false,
+  },
+  reported: {
+    label: '블라인드',
+    icon: 'EyeOff',
+    showDot: false,
+  },
+} as const;
