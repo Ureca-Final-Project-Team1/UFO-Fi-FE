@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import { Button } from './Button';
+import type { ButtonVariant, ButtonSize } from './Button.types';
 
-const variantOptions = [
+const variantOptions: ButtonVariant[] = [
   'primary',
   'secondary',
   'destructive',
@@ -15,9 +16,9 @@ const variantOptions = [
   'action-button',
   'next-button',
   'project-button',
-] as const;
+];
 
-const sizeOptions = ['sm', 'default', 'lg', 'icon', 'full-width', 'compact'] as const;
+const sizeOptions: ButtonSize[] = ['sm', 'default', 'lg', 'icon', 'full-width', 'compact'];
 
 const meta: Meta<typeof Button> = {
   title: 'UI/Button',
