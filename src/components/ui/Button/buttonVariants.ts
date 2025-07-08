@@ -6,7 +6,6 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // 기본 shadcn/ui variants
         primary:
           'bg-primary-300 text-primary-text-dark font-bold text-[15px] hover:bg-primary-hover',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
@@ -15,15 +14,18 @@ export const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
 
-        // 커스텀 variants
-        'exploration-button':
-          'bg-gradient-to-r from-exploration-gradient-from to-exploration-gradient-to border-2 border-exploration-border text-white font-semibold text-[16px] leading-[24px] hover:opacity-90',
+        'exploration-button': 'exploration-button font-semibold text-[16px] leading-[24px]',
+
         'cancel-button':
           'rounded-[12px] border border-cancel-border bg-white text-cancel-text text-center font-semibold text-[16px] leading-[24px] hover:bg-black-100',
+
         'number-badge':
           'flex py-3 px-0 items-center flex-shrink-0 rounded-lg border-2 border-badge-border-blue bg-badge-bg-dark text-badge-text-cyan text-center font-semibold text-[18px] leading-[26px] hover:bg-badge-hover-dark',
+
         'action-button': 'bg-accent-red text-white hover:bg-accent-red/90',
+
         'next-button': 'bg-primary-300 text-white hover:bg-next-hover',
+
         'project-button': 'rounded-[5px] bg-primary-200 text-black-700 hover:bg-primary-300/30',
       },
       size: {

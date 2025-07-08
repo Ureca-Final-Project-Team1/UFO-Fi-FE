@@ -4,11 +4,12 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 import { buttonVariants } from './buttonVariants';
+import { Icon, IconType } from '../Icons';
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  icon?: React.ReactNode;
+  icon?: IconType;
   iconPosition?: 'left' | 'right';
 }
 
@@ -16,12 +17,30 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, icon, iconPosition = 'left', children, ...props }, ref) => {
     const classes = cn(buttonVariants({ variant, size }), className);
 
+    const mapButtonSizeToIconSize = (btnSize: ButtonProps['size']) => {
+      switch (btnSize) {
+        case 'sm':
+        case 'default':
+        case 'compact':
+          return 'sm';
+        case 'lg':
+        case 'full-width':
+          return 'md';
+        case 'icon':
+          return 'lg';
+        default:
+          return 'md';
+      }
+    };
+
+    const iconSize = mapButtonSizeToIconSize(size);
+
     return (
-      <button ref={ref} className={classes} {...props}>
+      <button ref={ref} className={`${classes} text-center`} {...props}>
         <span className={cn('flex items-center', icon && children ? 'gap-2' : '')}>
-          {icon && iconPosition === 'left' && icon}
+          {icon && iconPosition === 'left' && <Icon name={icon} size={iconSize} />}
           {children}
-          {icon && iconPosition === 'right' && icon}
+          {icon && iconPosition === 'right' && <Icon name={icon} size={iconSize} />}
         </span>
       </button>
     );

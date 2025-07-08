@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -69,6 +71,7 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
           'object-contain transition-opacity duration-200',
           isLoading || hasError ? 'opacity-0' : 'opacity-100',
         )}
+        sizes={`${sizeValue}px`}
         onLoad={() => {
           setIsLoading(false);
           setHasError(false);
