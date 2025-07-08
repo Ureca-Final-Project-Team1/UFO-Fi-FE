@@ -14,7 +14,7 @@ export interface BadgeProps
   state?: BadgeState;
 }
 
-export type BadgeState = 'selling' | 'sold' | 'timeout' | 'reported';
+export type BadgeState = keyof typeof stateInfo;
 
 export const stateInfo = {
   selling: {
