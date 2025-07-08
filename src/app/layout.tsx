@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import '../styles/globals.css';
 import BottomNav from '@/components/layout/BottomNav/BottomNav';
 import TopNav from '@/components/layout/TopNav/TopNav';
+import { ModalProvider } from '@/provider';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -57,6 +58,7 @@ export default function RootLayout({
       </head>
       <body className={`${pretendard.variable} antialiased`}>
         <InternalLayout>{children}</InternalLayout>
+        <ModalProvider />
       </body>
     </html>
   );
