@@ -1,7 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
+// Dynamic import로 SSR 방지
 const GlobalModal = dynamic(
   () => import('@/components/ui/Modal').then((mod) => ({ default: mod.GlobalModal })),
   {
@@ -11,5 +13,13 @@ const GlobalModal = dynamic(
 );
 
 export function ModalProvider() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null;
+
   return <GlobalModal />;
 }
