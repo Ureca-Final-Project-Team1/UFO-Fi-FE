@@ -36,7 +36,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const iconSize = mapButtonSizeToIconSize(size);
 
     return (
-      <button ref={ref} className={`${classes} text-center`} {...props}>
+      <button
+        ref={ref}
+        style={{ fontFamily: 'Pretendard, sans-serif' }}
+        className={classes}
+        {...props}
+      >
         <span className={cn('flex items-center', icon && children ? 'gap-2' : '')}>
           {icon && iconPosition === 'left' && <Icon name={icon} size={iconSize} />}
           {children}
