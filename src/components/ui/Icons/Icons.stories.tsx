@@ -2,15 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import { ICON_SIZES, ICON_COLORS } from '@/constants/icons';
 
-import {
-  Icon,
-  LucideIcon,
-  UFOIcon,
-  PurchaseIcon,
-  PlanetIcon,
-  TrendingIcon,
-  AstronautIcon,
-} from './index';
+import { Icon, LucideIcon, UFOIcon, PlanetIcon, TrendingIcon, AstronautIcon } from './index';
 
 const meta: Meta<typeof Icon> = {
   title: 'UI/Icons',
@@ -159,10 +151,7 @@ export const CustomIcons: Story = {
           <UFOIcon size="lg" color="primaryLight" />
           <span className="text-xs text-gray-600">UFO</span>
         </div>
-        <div className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded">
-          <PurchaseIcon size="lg" color="primary" />
-          <span className="text-xs text-gray-600">Purchase</span>
-        </div>
+
         <div className="flex flex-col items-center gap-1 p-3 bg-gray-50 rounded">
           <PlanetIcon size="lg" color="secondaryCyan" />
           <span className="text-xs text-gray-600">Planet</span>
