@@ -15,6 +15,10 @@ import {
   modalButtonVariants,
 } from './modalVariants';
 
+// 기본값 상수 선언
+const DEFAULT_IMAGE_POSITION = { x: -25, y: -10 };
+const DEFAULT_IMAGE_SIZE = { width: 100, height: 100 };
+
 export function Modal({
   isOpen,
   onClose,
@@ -28,31 +32,43 @@ export function Modal({
   headerAlign = 'center',
   imageSrc,
   imageAlt = '',
-  imagePosition = { x: -25, y: -10 },
-  imageSize = { width: 100, height: 100 },
+  imagePosition = DEFAULT_IMAGE_POSITION,
+  imageSize = DEFAULT_IMAGE_SIZE,
   type = 'single',
   primaryButtonText = '확인',
   secondaryButtonText = '취소',
   onPrimaryClick,
   onSecondaryClick,
+  closeOnPrimary = true,
+  closeOnSecondary = true,
   className,
-}: ModalProps) {
+}: ModalProps & {
+  closeOnPrimary?: boolean;
+  closeOnSecondary?: boolean;
+}) {
   const handlePrimaryClick = () => {
     onPrimaryClick?.();
-    onClose();
+    if (closeOnPrimary) onClose();
   };
 
   const handleSecondaryClick = () => {
     onSecondaryClick?.();
-    onClose();
+    if (closeOnSecondary) onClose();
   };
 
   return (
-    <DialogPrimitive.Root open={isOpen} onOpenChange={onClose}>
+    <DialogPrimitive.Root
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+      modal={true}
+    >
       <DialogPrimitive.Overlay className={modalOverlayVariants()} />
 
       <DialogPrimitive.Content
         className={cn('relative', modalVariants({ size, rounded, hasCloseButton }), className)}
+        onInteractOutside={(e) => e.preventDefault()} // 오버레이 클릭 시 닫힘 방지
       >
         {/* 닫기 버튼 */}
         {hasCloseButton && (
@@ -85,7 +101,8 @@ export function Modal({
               <Image
                 src={imageSrc}
                 alt={imageAlt}
-                fill
+                width={imageSize.width}
+                height={imageSize.height}
                 className="object-contain drop-shadow-lg"
                 unoptimized
               />

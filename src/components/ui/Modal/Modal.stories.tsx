@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React, { useEffect, useState } from 'react';
 
 import { Modal } from './Modal';
 
@@ -87,6 +88,16 @@ const meta: Meta<typeof Modal> = {
 export default meta;
 type Story = StoryObj<typeof Modal>;
 
+const ModalWrapper = (args: React.ComponentProps<typeof Modal>) => {
+  const [open, setOpen] = useState(args.isOpen);
+
+  useEffect(() => {
+    setOpen(args.isOpen);
+  }, [args.isOpen]);
+
+  return <Modal {...args} isOpen={open} onClose={() => setOpen(false)} />;
+};
+
 export const Basic: Story = {
-  name: 'Controls 사용 예시',
+  render: (args) => <ModalWrapper {...args} />,
 };
