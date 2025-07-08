@@ -36,7 +36,7 @@ const meta: Meta<typeof DotBadge> = {
 export default meta;
 type Story = StoryObj<typeof DotBadge>;
 
-export const defalut: Story = {
+export const Default: Story = {
   args: {
     color: 'green',
     size: 'default',
