@@ -42,6 +42,8 @@ export type LucideIconType =
   | 'Hourglass'
   | 'CircleCheck'
   | 'Dot'
+  | 'ChartNoAxesColumn'
+  | 'BellRing'
   | 'AlertCircle' // 에러용
   | 'ImageOff' // 이미지 에러용
   | 'Loader2'; // 로딩용
