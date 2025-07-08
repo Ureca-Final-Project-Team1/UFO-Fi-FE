@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import { Button } from './Button';
 
-// 방법 1: 수동 정의
 const variantOptions = [
   'primary',
   'secondary',
