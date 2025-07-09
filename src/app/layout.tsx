@@ -2,10 +2,9 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import '../styles/globals.css';
-import BottomNav from '@/components/layout/BottomNav/BottomNav';
-import TopNav from '@/components/layout/TopNav/TopNav';
 import { ModalProvider, QueryProvider } from '@/provider';
 import BackgroundProvider from '@/provider/BackgroundProvider';
+import NavigationProvider from '@/provider/NavigationProvider';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -19,28 +18,6 @@ export const metadata: Metadata = {
   description: 'UFO-Fi 앱',
 };
 
-function InternalLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen w-full bg-gray-100 flex justify-center">
-      <div className="relative w-full min-w-[375px] max-w-[620px] bg-white overflow-hidden h-screen">
-        <TopNav title="UFO-Fi" />
-        <main
-          className="overflow-y-auto hide-scrollbar bg-white"
-          style={{
-            height: 'calc(100dvh - 112px)',
-            marginTop: '56px',
-            WebkitOverflowScrolling: 'touch',
-            overscrollBehavior: 'contain',
-          }}
-        >
-          {children}
-        </main>
-        <BottomNav />
-      </div>
-    </div>
-  );
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -53,9 +30,9 @@ export default function RootLayout({
       </head>
       <body className={`${pretendard.variable} antialiased`}>
         <QueryProvider>
-          <InternalLayout>
+          <NavigationProvider>
             <BackgroundProvider>{children}</BackgroundProvider>
-          </InternalLayout>
+          </NavigationProvider>
           <ModalProvider />
         </QueryProvider>
       </body>
