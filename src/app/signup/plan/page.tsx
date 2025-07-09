@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button,
-  RadioGroup,
   Select,
   SelectContent,
   SelectItem,
@@ -19,12 +18,21 @@ const Page = () => {
   const [telecom, setTelecom] = useState('');
   const [plan, setPlan] = useState('');
 
+  const [maxData, setMaxData] = useState(0);
+  const [networtType, setNetworkType] = useState('');
+
+  // 더미 데이터
+  useEffect(() => {
+    setMaxData(10);
+    setNetworkType('5G');
+  }, []);
+
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">
-      <div className="flex flex-[0.9] flex-col justify-start items-start text-center gap-5 w-full h-full">
+      <div className="flex flex-[0.9] flex-col justify-start items-start text-center gap-5 w-full h-fit">
         <p className="text-white body-20-bold">회원가입</p>
 
-        <div className="flex flex-col items-start gap-3">
+        <div className="flex flex-col items-start gap-3 w-full h-fit">
           <div className="text-white body-16-bold">통신사 정보</div>
           <Select value={telecom} onValueChange={setTelecom}>
             <SelectTrigger
@@ -54,31 +62,30 @@ const Page = () => {
           </Select>
         </div>
 
-        <hr className="border-t border-white w-[90%] my-4 mx-auto" />
+        {telecom !== '' && plan !== '' && (
+          <div className="w-full flex flex-col gap-5">
+            <hr className="border-t border-white w-[90%] my-4 mx-auto gray-" />
+            <div className="flex flex-col ml-5 mr-5 gap-5">
+              <p className="text-start w-full text-white body-20-bold">
+                다음 정보가 맞는지 확인해주세요.
+              </p>
 
-        <p className="text-white body-20-bold">다음 정보가 맞는지 확인해주세요.</p>
-
-        <div className="flex flex-col items-start gap-3">
-          <p className="text-white body-16-bold">판매할 수 있는 최대 데이터</p>
-          <input
-            type="number"
-            className="bg-white text-black w-[300px] h-[50px] rounded-sm p-2 caption-14-regular"
-            placeholder="GB 단위로 입력해주세요."
-          />
-        </div>
-
-        <div className="flex flex-col items-start gap-3">
-          <p className="text-white body-16-bold">네트워크 타입</p>
-          <RadioGroup options={['5G', 'LTE']} className="text-white" />
-        </div>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-start gap-3 justify-between">
+                  <p className="text-white body-16-bold">판매할 수 있는 최대 데이터</p>
+                  <p>{maxData}GB</p>
+                </div>
+                <div className="flex items-start gap-3 justify-between">
+                  <p className="text-white body-16-bold">네트워크 타입</p>
+                  <p>{networtType}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      <Button
-        onClick={handleNext}
-        size="lg"
-        className="body-16-medium w-full"
-        style={{ backgroundColor: 'var(--color-primary-400)' }}
-      >
+      <Button onClick={handleNext} size="lg" className="body-16-medium w-full text-white">
         회원가입 완료
       </Button>
     </div>

@@ -1,0 +1,33 @@
+'use client';
+
+import Image from 'next/image';
+
+import { Button } from '@/components';
+import { IMAGE_PATHS } from '@/constants/images';
+
+const Page = () => {
+  const handleKakaoLogin = async () => {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center w-full h-full pb-[20px]">
+      <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-5 w-full h-full">
+        <Image src={IMAGE_PATHS['UFO_LOGIN']} width={134.5} height={136} alt="ufo" />
+        <div className="flex flex-col gap-2">
+          <p className="text-[58px]">UFO-Fi</p>
+          <p className="caption-14-bold text-(--color-login-description)">
+            데이터는 부족해도, 은하는 연결되어 있다.
+          </p>
+        </div>
+      </div>
+      <Button
+        className="bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-cover h-10 sm:h-16"
+        size="full-width"
+        onClick={handleKakaoLogin}
+      />
+    </div>
+  );
+};
+
+export default Page;

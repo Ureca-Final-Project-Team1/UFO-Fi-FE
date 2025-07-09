@@ -13,7 +13,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-full w-full">
+    <div className="flex flex-col justify-center items-center h-full w-full pb-[56px]">
       <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-5 w-full h-full">
         <div className="flex flex-col gap-5 pb-5">
           <div className="body-20-bold">시작하기 전에</div>
@@ -36,12 +36,7 @@ const Page = () => {
         </div>
       </div>
 
-      <Button
-        onClick={handleNext}
-        size="lg"
-        className="body-16-medium w-full"
-        style={{ backgroundColor: 'var(--color-primary-400)' }}
-      >
+      <Button onClick={handleNext} size="lg" className="body-16-medium w-full text-white">
         다음
       </Button>
     </div>
