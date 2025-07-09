@@ -11,7 +11,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   icon?: IconType;
   iconPosition?: 'left' | 'right';
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
