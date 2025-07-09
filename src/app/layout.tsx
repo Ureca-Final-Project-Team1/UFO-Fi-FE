@@ -4,7 +4,7 @@ import localFont from 'next/font/local';
 import '../styles/globals.css';
 import BottomNav from '@/components/layout/BottomNav/BottomNav';
 import TopNav from '@/components/layout/TopNav/TopNav';
-import { ModalProvider } from '@/provider';
+import { ModalProvider, QueryProvider } from '@/provider';
 import BackgroundProvider from '@/provider/BackgroundProvider';
 
 const pretendard = localFont({
@@ -52,10 +52,12 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className={`${pretendard.variable} antialiased`}>
-        <InternalLayout>
-          <BackgroundProvider>{children} </BackgroundProvider>
-        </InternalLayout>
-        <ModalProvider />
+        <QueryProvider>
+          <InternalLayout>
+            <BackgroundProvider>{children}</BackgroundProvider>
+          </InternalLayout>
+          <ModalProvider />
+        </QueryProvider>
       </body>
     </html>
   );
