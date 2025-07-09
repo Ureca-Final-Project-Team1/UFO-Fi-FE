@@ -47,6 +47,9 @@ export const Icon: React.FC<IconComponentProps> = ({
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,
     astronaut: CustomIcons.AstronautIcon,
+    satellite: CustomIcons.SatelliteIcon,
+    box: CustomIcons.BoxIcon,
+    rotate: CustomIcons.RotateIcon,
   };
 
   if (name in customIconComponents) {

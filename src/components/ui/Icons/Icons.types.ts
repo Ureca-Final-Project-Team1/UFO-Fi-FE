@@ -48,7 +48,14 @@ export type LucideIconType =
   | 'Loader2'; // 로딩용
 
 // 커스텀 아이콘 타입
-export type CustomIconType = 'ufo' | 'planet' | 'trending' | 'astronaut';
+export type CustomIconType =
+  | 'ufo'
+  | 'planet'
+  | 'trending'
+  | 'astronaut'
+  | 'satellite'
+  | 'box'
+  | 'rotate';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;
