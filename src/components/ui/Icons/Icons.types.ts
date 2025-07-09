@@ -4,6 +4,7 @@ export interface IconProps {
   size?: keyof typeof ICON_SIZES | number;
   color?: keyof typeof ICON_COLORS | string;
   className?: string;
+  onClick?: React.MouseEventHandler<SVGElement>;
 }
 
 export interface ImageIconProps extends Omit<IconProps, 'color'> {
@@ -39,6 +40,9 @@ export type LucideIconType =
   | 'Trash2'
   | 'Eye'
   | 'EyeOff'
+  | 'Hourglass'
+  | 'CircleCheck'
+  | 'Dot'
   | 'AlertCircle' // 에러용
   | 'ImageOff' // 이미지 에러용
   | 'Loader2'; // 로딩용
