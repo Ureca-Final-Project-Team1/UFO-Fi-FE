@@ -5,15 +5,11 @@ import { X } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 import { ModalProps } from './Modal.types';
-import {
-  modalVariants,
-  modalOverlayVariants,
-  modalHeaderVariants,
-  modalButtonVariants,
-} from './modalVariants';
+import { modalVariants, modalOverlayVariants, modalHeaderVariants } from './modalVariants';
 
 // 기본값 상수 선언
 const DEFAULT_IMAGE_POSITION = { x: -25, y: -10 };
@@ -133,27 +129,23 @@ export function Modal({
         {type !== 'none' && (
           <div className="flex gap-3 relative z-20">
             {type === 'double' && (
-              <button
+              <Button
+                variant="secondary"
+                size="default"
                 onClick={handleSecondaryClick}
-                className={modalButtonVariants({
-                  variant: 'secondary',
-                  size: 'md',
-                  width: 'flex',
-                })}
+                className="flex-1"
               >
                 {secondaryButtonText}
-              </button>
+              </Button>
             )}
-            <button
+            <Button
+              variant="primary"
+              size="default"
               onClick={handlePrimaryClick}
-              className={modalButtonVariants({
-                variant: 'primary',
-                size: 'md',
-                width: type === 'single' ? 'full' : 'flex',
-              })}
+              className={type === 'single' ? 'w-full' : 'flex-1'}
             >
               {primaryButtonText}
-            </button>
+            </Button>
           </div>
         )}
       </DialogPrimitive.Content>
