@@ -19,7 +19,7 @@ export function DataRangeSlider({ value, onValueChange }: DataSliderProps) {
       <div className="text-center font-bold text-lg mb-2 text-cyan-300">{getRangeLabel(value)}</div>
 
       <SliderPrimitive.Root
-        className="relative flex w-[290px] touch-none select-none items-center"
+        className="relative flex w-full max-w-[320px] touch-none select-none items-center"
         min={0}
         max={20}
         step={1}

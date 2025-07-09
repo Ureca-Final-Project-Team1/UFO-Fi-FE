@@ -21,7 +21,7 @@ function SliderStoryWrapper({
   children: React.ReactNode;
   padding?: string;
 }) {
-  return <div className={`bg-black ${padding}`}>{children}</div>;
+  return <div className={`bg-black ${padding} w-[320px] max-w-full mx-auto`}>{children}</div>;
 }
 
 const DefaultSliderStory = () => {

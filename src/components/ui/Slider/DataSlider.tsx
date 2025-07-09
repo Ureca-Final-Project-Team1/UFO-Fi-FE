@@ -17,7 +17,7 @@ export function DataSlider({
     <div className="relative w-full max-w-md px-4">
       <div className="text-center text-cyan-300 font-bold text-lg mb-2">{value[0]}GB</div>
 
-      <div className="relative w-[320px] mx-auto">
+      <div className="relative w-full max-w-[320px] mx-auto">
         {/* 눈금선 + 숫자 */}
         {showTicks && (
           <div className="absolute left-0 right-0 flex justify-between px-[2px] z-10">
