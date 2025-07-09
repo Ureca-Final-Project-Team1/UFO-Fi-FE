@@ -14,7 +14,10 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, icon, iconPosition = 'left', children, ...props }, ref) => {
+  (
+    { className, variant, size = 'default', icon, iconPosition = 'left', children, ...props },
+    ref,
+  ) => {
     const classes = cn(buttonVariants({ variant, size }), className);
 
     const mapButtonSizeToIconSize = (btnSize: ButtonProps['size']) => {
@@ -44,7 +47,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         <span className={cn('flex items-center', icon && children ? 'gap-2' : '')}>
           {icon && iconPosition === 'left' && <Icon name={icon} size={iconSize} />}
-          {children}
+          {size !== 'icon' && children}
           {icon && iconPosition === 'right' && <Icon name={icon} size={iconSize} />}
         </span>
       </button>

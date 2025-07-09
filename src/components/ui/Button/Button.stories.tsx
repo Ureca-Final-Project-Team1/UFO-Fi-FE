@@ -108,14 +108,17 @@ export const AllSizes: Story = {
   render: (args) => (
     <div className="flex flex-col gap-2">
       {['sm', 'default', 'lg', 'icon', 'full-width', 'compact'].map((size) => (
-        <Button key={size} size={size as ButtonProps['size']} {...args}>
-          {size === 'icon' ? <span className="sr-only">Icon</span> : size}
+        <Button
+          key={size}
+          size={size as ButtonProps['size']}
+          variant="primary"
+          icon="ufo"
+          aria-label="알림 열기"
+          {...args}
+        >
+          {size === 'icon' ? <span className="sr-only">Icon</span> : `${size} button`}
         </Button>
       ))}
     </div>
   ),
-  args: {
-    variant: 'primary',
-    icon: 'ufo',
-  },
 };
