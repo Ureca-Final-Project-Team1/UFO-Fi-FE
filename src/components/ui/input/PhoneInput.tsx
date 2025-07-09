@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { getOnlyNumbers } from '@/lib/getOnlyNumbers';
+import { formatPhoneNumber } from '@/lib/formatPhoneNumber';
 import { cn } from '@/lib/utils';
 
 import { Input } from './Input';
@@ -8,13 +8,6 @@ import { CustomInputProps } from './Input.types';
 
 export function PhoneInput(props: CustomInputProps) {
   const [innerValue, setInnerValue] = useState('');
-
-  const formatPhoneNumber = (input: string) => {
-    const onlyNums = getOnlyNumbers(input);
-    if (onlyNums.length <= 3) return onlyNums;
-    if (onlyNums.length <= 7) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
-    return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);
