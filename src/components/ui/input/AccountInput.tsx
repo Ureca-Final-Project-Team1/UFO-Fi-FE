@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { getOnlyNumbers } from '@/lib/getOnlyNumbers';
 import { cn } from '@/lib/utils';
 
 import { Input } from './Input';
@@ -9,7 +10,7 @@ export function AccountInput(props: CustomInputProps) {
   const [innerValue, setInnerValue] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const onlyNums = e.target.value.replace(/\D/g, ''); // 숫자만 남기기
+    const onlyNums = getOnlyNumbers(e.target.value); // 숫자만 남기기
     setInnerValue(onlyNums);
     props.onChange?.(e);
   };
