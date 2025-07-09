@@ -77,6 +77,7 @@
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+  --font-pretendard: 'Pretendard';
 }
 
 .dark {
@@ -197,7 +198,10 @@
   }
 
   /* 모바일 터치 최적화 */
-  button, input, select, textarea {
+  button,
+  input,
+  select,
+  textarea {
     -webkit-appearance: none;
     appearance: none;
     -webkit-tap-highlight-color: transparent;
@@ -206,12 +210,12 @@
 
   /* iOS Safari input zoom 방지 */
   @media screen and (max-width: 767px) {
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="search"],
-    input[type="tel"],
-    input[type="url"],
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='search'],
+    input[type='tel'],
+    input[type='url'],
     select,
     textarea {
       font-size: 16px !important;
@@ -369,8 +373,4 @@
     line-height: 14px;
     letter-spacing: 0.1px;
   }
-
-
-
-  
 }

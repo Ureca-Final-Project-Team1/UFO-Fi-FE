@@ -52,11 +52,10 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className={`${pretendard.variable} antialiased`}>
-        <InternalLayout>{children}</InternalLayout>
-        <ModalProvider />
         <InternalLayout>
           <BackgroundProvider>{children} </BackgroundProvider>
         </InternalLayout>
+        <ModalProvider />
       </body>
     </html>
   );
