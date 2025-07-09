@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import { Input } from './input';
+import { Input } from './Input';
 
 export function BasicInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (

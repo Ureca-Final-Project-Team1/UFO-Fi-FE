@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import { Input } from './input';
+import { Input } from './Input';
 import { CustomInputProps } from './Input.types';
 
 interface LabeledInputProps extends CustomInputProps {
