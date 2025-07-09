@@ -11,11 +11,21 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   icon?: IconType;
   iconPosition?: 'left' | 'right';
+  onClick: () => void;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size = 'default', icon, iconPosition = 'left', children, ...props },
+    {
+      className,
+      variant,
+      size = 'default',
+      icon,
+      onClick,
+      iconPosition = 'left',
+      children,
+      ...props
+    },
     ref,
   ) => {
     const classes = cn(buttonVariants({ variant, size }), className);
@@ -43,6 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         style={{ fontFamily: 'Pretendard, sans-serif' }}
         className={classes}
+        onClick={onClick}
         {...props}
       >
         <span className={cn('flex items-center', icon && children ? 'gap-2' : '')}>

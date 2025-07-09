@@ -63,6 +63,7 @@ export const Playground: Story = {
     children: 'Click me',
     icon: undefined,
     iconPosition: 'left',
+    onClick: () => alert('Playground 버튼 클릭됨'),
   },
 };
 
@@ -73,11 +74,12 @@ export const WithIcon: Story = {
     children: 'Explore',
     icon: 'satellite',
     iconPosition: 'left',
+    onClick: () => alert('WithIcon 버튼 클릭됨'),
   },
 };
 
 export const AllVariants: Story = {
-  render: (args) => (
+  render: () => (
     <div className="flex flex-col gap-2">
       {[
         'primary',
@@ -93,7 +95,11 @@ export const AllVariants: Story = {
         'next-button',
         'project-button',
       ].map((variant) => (
-        <Button key={variant} variant={variant as ButtonProps['variant']} {...args}>
+        <Button
+          key={variant}
+          variant={variant as ButtonProps['variant']}
+          onClick={() => alert(`${variant} 버튼 클릭됨`)}
+        >
           {variant}
         </Button>
       ))}
@@ -105,20 +111,22 @@ export const AllVariants: Story = {
 };
 
 export const AllSizes: Story = {
-  render: (args) => (
+  render: () => (
     <div className="flex flex-col gap-2">
-      {['sm', 'default', 'lg', 'icon', 'full-width', 'compact'].map((size) => (
-        <Button
-          key={size}
-          size={size as ButtonProps['size']}
-          variant="primary"
-          icon="ufo"
-          aria-label="알림 열기"
-          {...args}
-        >
-          {size === 'icon' ? <span className="sr-only">Icon</span> : `${size} button`}
-        </Button>
-      ))}
+      {(['sm', 'default', 'lg', 'icon', 'full-width', 'compact'] as ButtonProps['size'][]).map(
+        (size) => (
+          <Button
+            key={size}
+            size={size}
+            variant="primary"
+            icon={size === 'icon' ? 'ufo' : undefined}
+            aria-label={size === 'icon' ? '알림 열기' : undefined}
+            onClick={() => alert(`${size} 버튼 클릭됨`)}
+          >
+            {size === 'icon' ? <span className="sr-only">알림 열기</span> : `${size} button`}
+          </Button>
+        ),
+      )}
     </div>
   ),
 };
