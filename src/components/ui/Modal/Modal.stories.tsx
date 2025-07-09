@@ -89,9 +89,11 @@ export default meta;
 type Story = StoryObj<typeof Modal>;
 
 const ModalWrapper = (args: React.ComponentProps<typeof Modal>) => {
+  // Storybook Controls에서 isOpen 값을 받아 내부 상태로 관리
   const [open, setOpen] = useState(args.isOpen);
 
   useEffect(() => {
+    // 외부에서 isOpen prop이 변경될 때 내부 상태도 동기화
     setOpen(args.isOpen);
   }, [args.isOpen]);
 
