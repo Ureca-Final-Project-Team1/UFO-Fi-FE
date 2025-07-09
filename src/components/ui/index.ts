@@ -8,3 +8,4 @@ export * from './Select';
 export * from './Title';
 export * from './Modal';
 export * from './DotBadge';
+export * from './Indicator';
