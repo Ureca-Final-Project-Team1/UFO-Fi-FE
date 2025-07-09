@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { cn } from '@/lib/utils';
+
 import * as CustomIcons from './CustomIcons';
 import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
 import { ImageIcon } from './ImageIcon';
@@ -15,9 +17,24 @@ interface IconComponentProps extends IconProps {
  * 통합 아이콘 컴포넌트
  * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
  */
-export const Icon: React.FC<IconComponentProps> = ({ name, src, alt, ...props }) => {
+export const Icon: React.FC<IconComponentProps> = ({
+  name,
+  src,
+  alt,
+  onClick,
+  className,
+  ...props
+}) => {
   if (src) {
-    return <ImageIcon src={src} alt={alt || name || 'icon'} {...props} />;
+    return (
+      <ImageIcon
+        src={src}
+        alt={alt || name || 'icon'}
+        onClick={onClick}
+        className={cn(className, onClick && 'cursor-pointer')}
+        {...props}
+      />
+    );
   }
 
   if (!name) {
@@ -25,7 +42,6 @@ export const Icon: React.FC<IconComponentProps> = ({ name, src, alt, ...props })
     return null;
   }
 
-  // 커스텀 아이콘인 경우
   const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
@@ -36,18 +52,36 @@ export const Icon: React.FC<IconComponentProps> = ({ name, src, alt, ...props })
     rotate: CustomIcons.RotateIcon,
   };
 
-  // 커스텀 아이콘인지 확인
   if (name in customIconComponents) {
     const CustomIconComponent = customIconComponents[name as CustomIconType];
-    return <CustomIconComponent {...props} />;
+    return (
+      <CustomIconComponent
+        onClick={onClick}
+        className={cn(className, onClick && 'cursor-pointer')}
+        {...props}
+      />
+    );
   }
 
-  // Lucide 아이콘인 경우
   try {
-    return <LucideIcon name={name as LucideIconType} {...props} />;
+    return (
+      <LucideIcon
+        name={name as LucideIconType}
+        onClick={onClick}
+        className={cn(className, onClick && 'cursor-pointer')}
+        {...props}
+      />
+    );
   } catch (error) {
     console.warn(`${name}`, error);
-    return <LucideIcon name="AlertCircle" {...props} />;
+    return (
+      <LucideIcon
+        name="AlertCircle"
+        onClick={onClick}
+        className={cn(className, onClick && 'cursor-pointer')}
+        {...props}
+      />
+    );
   }
 };
 
