@@ -4,6 +4,7 @@ export interface IconProps {
   size?: keyof typeof ICON_SIZES | number;
   color?: keyof typeof ICON_COLORS | string;
   className?: string;
+  onClick?: React.MouseEventHandler<SVGElement>;
 }
 
 export interface ImageIconProps extends Omit<IconProps, 'color'> {
@@ -49,7 +50,14 @@ export type LucideIconType =
   | 'Loader2'; // 로딩용
 
 // 커스텀 아이콘 타입
-export type CustomIconType = 'ufo' | 'planet' | 'trending' | 'astronaut';
+export type CustomIconType =
+  | 'ufo'
+  | 'planet'
+  | 'trending'
+  | 'astronaut'
+  | 'satellite'
+  | 'box'
+  | 'rotate';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

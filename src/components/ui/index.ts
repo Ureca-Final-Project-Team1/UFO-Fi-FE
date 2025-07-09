@@ -5,5 +5,6 @@ export * from './Radio';
 export * from './Label';
 export * from './Badge';
 export * from './Select';
+export * from './Title';
 export * from './Modal';
 export * from './DotBadge';
