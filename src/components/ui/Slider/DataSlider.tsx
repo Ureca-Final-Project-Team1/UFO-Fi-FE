@@ -45,6 +45,7 @@ export function DataSlider({
           value={value}
           onValueChange={onValueChange}
           className="relative z-20 flex w-full touch-none select-none items-center"
+          getThumbValueText={(v) => `${v}GB`}
         />
 
         {/* showTicks가 false일 때만 minLabel, maxLabel 표시 */}

@@ -32,6 +32,7 @@ export function DataRangeSlider({
         value={value}
         onValueChange={handleChange}
         className="relative flex w-full max-w-[320px] touch-none select-none items-center"
+        getThumbValueText={(v) => `${v}원`}
       />
       {(minLabel || maxLabel) && (
         <div className="flex justify-between text-white text-sm mt-1">
