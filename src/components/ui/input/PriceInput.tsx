@@ -1,29 +1,28 @@
 import { useState } from 'react';
 
+import { formatPrice } from '@/lib/formatPrice';
+import { getOnlyNumbers } from '@/lib/getOnlyNumbers';
 import { cn } from '@/lib/utils';
 
 import { Input } from './Input';
 import { CustomInputProps } from './Input.types';
 
 export function PriceInput(props: CustomInputProps) {
-  const [value, setValue] = useState('');
-
-  const formatPrice = (input: string) => {
-    const onlyNums = input.replace(/[^0-9]/g, '');
-    if (!onlyNums) return '';
-    return Number(onlyNums).toLocaleString('ko-KR');
-  };
+  // rawValue: 숫자만 (실제 값)
+  const [rawValue, setRawValue] = useState('');
+  // 표시용 포맷팅 값 (1,000 단위)
+  const formattedValue = formatPrice(rawValue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPrice(e.target.value);
-    setValue(formatted);
+    const onlyNums = getOnlyNumbers(e.target.value);
+    setRawValue(onlyNums);
     props.onChange?.(e); // 외부 핸들러 유지
   };
 
   return (
     <Input
       {...props}
-      value={value}
+      value={formattedValue}
       onChange={handleChange}
       inputMode="numeric"
       pattern="[0-9,]*"
