@@ -1,21 +1,37 @@
 'use client';
 
 import * as SliderPrimitive from '@radix-ui/react-slider';
-import * as React from 'react';
+import React, { useMemo } from 'react';
 
 import { cn } from '@/lib/utils';
 
-function Slider({
+// range가 true면 value/defaultValue가 배열이어야 하며, 아니면 단일 값이어야 함
+// 여러 Thumb 지원을 위해 _values 배열 생성
+const Slider = ({
   className,
   defaultValue,
   value,
   min = 0,
   max = 100,
+  range = false, // 단일/범위 슬라이더 구분용 prop
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
-  const _values = React.useMemo(
-    () => (Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]),
-    [value, defaultValue, min, max],
+}: React.ComponentProps<typeof SliderPrimitive.Root> & { range?: boolean }) => {
+  const _values = useMemo(
+    () =>
+      range
+        ? Array.isArray(value)
+          ? value
+          : Array.isArray(defaultValue)
+            ? defaultValue
+            : [min, max]
+        : [
+            typeof value === 'number'
+              ? value
+              : typeof defaultValue === 'number'
+                ? defaultValue
+                : min,
+          ],
+    [value, defaultValue, min, max, range],
   );
 
   return (
@@ -44,7 +60,7 @@ function Slider({
           )}
         />
       </SliderPrimitive.Track>
-      {Array.from({ length: _values.length }, (_, index) => (
+      {Array.from({ length: range ? _values.length : 1 }, (_, index) => (
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
@@ -53,5 +69,6 @@ function Slider({
       ))}
     </SliderPrimitive.Root>
   );
-}
-export { Slider };
+};
+
+export default Slider;
