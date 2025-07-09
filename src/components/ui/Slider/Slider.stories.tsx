@@ -28,7 +28,13 @@ const DefaultSliderStory = () => {
   const [value, setValue] = useState([5]);
   return (
     <SliderStoryWrapper>
-      <DataSlider value={value} onValueChange={setValue} />
+      <DataSlider
+        value={value}
+        onValueChange={setValue}
+        minLabel="0GB"
+        maxLabel="10GB"
+        max={10} // maxLabel과 실제 max 값을 맞춰줌
+      />
     </SliderStoryWrapper>
   );
 };
@@ -37,7 +43,15 @@ const TicksAndLabelsSliderStory = () => {
   const [value, setValue] = useState([5]);
   return (
     <SliderStoryWrapper padding="p-10">
-      <DataSlider value={value} onValueChange={setValue} showTicks showLabels />
+      <DataSlider
+        value={value}
+        onValueChange={setValue}
+        showTicks
+        showLabels
+        minLabel="0GB"
+        maxLabel="10GB"
+        max={10}
+      />
     </SliderStoryWrapper>
   );
 };
@@ -46,7 +60,14 @@ const RangeSliderStory = () => {
   const [range, setRange] = useState([0, 20]);
   return (
     <SliderStoryWrapper>
-      <DataRangeSlider value={range} onValueChange={setRange} />
+      <DataRangeSlider
+        value={range}
+        onValueChange={setRange}
+        min={0}
+        max={20}
+        minLabel="0원"
+        maxLabel="10,000원"
+      />
     </SliderStoryWrapper>
   );
 };
