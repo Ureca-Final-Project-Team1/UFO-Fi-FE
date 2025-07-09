@@ -29,7 +29,7 @@ export function PriceInput(props: CustomInputProps) {
       pattern="[0-9,]*"
       placeholder="금액 입력"
       className={cn(
-        'bg-[#001f9c] text-[#23d8ff] text-center font-semibold placeholder-[#23d8ff]',
+        'bg-[var(--color-badge-bg-dark)] text-[var(--color-text-selling)] text-center font-semibold placeholder-[var(--color-text-selling)]',
         props.className,
       )}
     />
