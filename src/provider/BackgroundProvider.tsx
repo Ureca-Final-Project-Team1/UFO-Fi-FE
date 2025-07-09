@@ -5,7 +5,10 @@ import React from 'react';
 
 export default function BackgroundProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isBackgroundPage = pathname.startsWith('/login') || pathname.startsWith('/signup');
+  const isBackgroundPage =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/signup') ||
+    pathname.startsWith('/blackhole');
 
   const backgroundClass = isBackgroundPage
     ? "bg-[url('/images/background-login.png')]"
