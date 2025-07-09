@@ -4,6 +4,7 @@ export interface IconProps {
   size?: keyof typeof ICON_SIZES | number;
   color?: keyof typeof ICON_COLORS | string;
   className?: string;
+  onClick?: React.MouseEventHandler<SVGElement>;
 }
 
 export interface ImageIconProps extends Omit<IconProps, 'color'> {
