@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import '@/styles/globals.css';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import {
   Button,
@@ -22,11 +22,15 @@ const Page = () => {
   const router = useRouter();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupPlanSchema>({
     resolver: zodResolver(signupPlanSchema),
+    defaultValues: {
+      telecom: '',
+      plan: '',
+    },
   });
 
   const onSubmit = (data: SignupPlanSchema) => {
@@ -45,10 +49,7 @@ const Page = () => {
   }, []);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center items-center w-full h-full"
-    >
+    <div className="flex flex-col justify-center items-center w-full h-full">
       <div className="flex flex-[0.9] flex-col justify-start items-start text-center gap-5 sm:gap-8 w-full h-fit">
         <p className="text-white body-20-bold">회원가입</p>
 
@@ -59,34 +60,58 @@ const Page = () => {
               <p className="text-red-600 caption-10-medium">{errors.telecom.message}</p>
             )}
           </label>
-          <Select {...register('telecom')}>
-            <SelectTrigger
-              size="default"
-              className="w-[180px] bg-white text-black caption-14-regular"
-            >
-              <SelectValue placeholder="통신사 선택" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="skt">SKT</SelectItem>
-              <SelectItem value="lg-uplus">LG U+</SelectItem>
-              <SelectItem value="kt">KT</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="telecom"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  setForm({ telecom: value });
+                }}
+              >
+                <SelectTrigger
+                  size="default"
+                  className="w-[180px] bg-white text-black caption-14-regular"
+                >
+                  <SelectValue placeholder="통신사 선택" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="skt">SKT</SelectItem>
+                  <SelectItem value="lg-uplus">LG U+</SelectItem>
+                  <SelectItem value="kt">KT</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
           <label className="flex items-center gap-5 body-16-bold">
             요금제 정보
             {errors.plan && <p className="text-red-600 caption-10-medium">{errors.plan.message}</p>}
           </label>
-          <Select {...register('plan')}>
-            <SelectTrigger
-              size="default"
-              className="w-[180px] bg-white text-black cation-14-regular"
-            >
-              <SelectValue placeholder="요금제 선택" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="요금제">요금제</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            name="plan"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  setForm({ plan: value });
+                }}
+              >
+                <SelectTrigger
+                  size="default"
+                  className="w-[180px] bg-white text-black cation-14-regular"
+                >
+                  <SelectValue placeholder="요금제 선택" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="요금제">요금제</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
 
         {telecom !== '' && plan !== '' && (
@@ -112,10 +137,15 @@ const Page = () => {
         )}
       </div>
 
-      <Button type="submit" size="full-width" className="body-16-medium h-10 sm:h-14 text-white">
+      <Button
+        onClick={handleSubmit(onSubmit)}
+        type="submit"
+        size="full-width"
+        className="body-16-medium h-10 sm:h-14 text-white"
+      >
         회원가입
       </Button>
-    </form>
+    </div>
   );
 };
 
