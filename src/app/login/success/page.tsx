@@ -7,8 +7,8 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/');
-  }, []);
+    router.push('/signup/privacy');
+  }, [router]);
 
   return null;
 };

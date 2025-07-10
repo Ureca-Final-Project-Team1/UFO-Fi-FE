@@ -359,6 +359,14 @@
   }
 
   /* Caption Styles */
+  .caption-14-bold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
   .caption-14-regular {
     font-family: Pretendard, sans-serif;
     font-weight: 400;

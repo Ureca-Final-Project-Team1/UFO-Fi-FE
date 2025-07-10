@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import '@/styles/globals.css';
 
 import { Button, Icon } from '@/components';
 
@@ -14,17 +15,17 @@ const Page = () => {
 
   return (
     <div className="flex flex-col justify-center items-center h-full w-full pb-[56px]">
-      <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-5 w-full h-full">
-        <div className="flex flex-col gap-5 pb-5">
-          <div className="body-20-bold">시작하기 전에</div>
-          <div className="body-16-semibold">
+      <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-7 sm:gap-10 w-full h-full">
+        <div className="flex flex-col gap-5 sm:gap-8 pb-5">
+          <p className="body-20-bold">시작하기 전에</p>
+          <p className="body-16-semibold">
             다음을 누르시면 UFO-Fi의
             <br />
             개인정보 처리방침에 동의한 것으로 간주합니다.
-          </div>
+          </p>
         </div>
 
-        <div className="caption-14-regular flex flex-col gap-10">
+        <div className="flex flex-col gap-10 body-16-medium">
           <div className="flex flex-col items-center gap-3">
             <Icon name="ChartNoAxesColumn" alt="ChartNoAxesColumn" size="lg" color="yellow" />
             데이터 거래에 필요한 요금제 정보를 제공해요.
@@ -36,7 +37,11 @@ const Page = () => {
         </div>
       </div>
 
-      <Button onClick={handleNext} size="lg" className="body-16-medium w-full text-white">
+      <Button
+        onClick={handleNext}
+        size="full-width"
+        className="body-16-medium h-10 sm:h-14 text-white"
+      >
         다음
       </Button>
     </div>
