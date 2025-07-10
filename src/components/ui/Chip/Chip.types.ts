@@ -1,6 +1,6 @@
 export interface ChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
-  Disabled?: boolean;
+  disabled?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   children: React.ReactNode;
