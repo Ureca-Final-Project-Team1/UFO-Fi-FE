@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
 
 import { Icon } from '../Icons';
+import type { ChipProps } from './Chip.types';
 
-export interface ChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  selected?: boolean;
-  disabled?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  children: React.ReactNode;
-  dropdown?: React.ReactNode;
-}
-
-/**
- * 재사용 가능한 Chip 컴포넌트
- * - 태그, 상태 표시, 선택/해제, 드롭다운 등 다양한 UI에 사용
- */
 export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
   (
     {
@@ -29,12 +17,13 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
     },
     ref,
   ) => {
+    const { onClick, ...rest } = props;
     const [open, setOpen] = useState(false);
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (dropdown) setOpen((prev) => !prev);
-      if (props.onClick) props.onClick(e);
+      onClick?.(e);
     };
-    // 드롭다운이 있을 때 rightIcon이 명시적으로 안 들어오면 자동으로 ChevronDown/Up 처리
+
     const autoRightIcon = dropdown ? (
       open ? (
         <Icon name="ChevronUp" />
@@ -51,12 +40,12 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
           className={`
             px-3 py-1 rounded-full text-sm font-medium
             border transition-colors flex items-center gap-1
-            ${selected ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-800 text-gray-200 border-gray-700'}
-            ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-blue-400 hover:text-blue-400'}
+            ${selected ? 'bg-primary-600 text-white border-primary-600' : 'bg-gray-800 text-gray-200 border-gray-700'}
+            ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary-400 hover:text-primary-400'}
             ${className}
           `}
           onClick={handleClick}
-          {...props}
+          {...rest}
         >
           {leftIcon && <span className="mr-1 flex items-center">{leftIcon}</span>}
           {children}
@@ -65,7 +54,7 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
           )}
         </button>
         {dropdown && open && (
-          <div className="absolute z-10 mt-2 min-w-[120px] bg-white rounded shadow-lg text-black">
+          <div className="absolute z-10 mt-2 min-w-[120px] bg-white rounded-sm shadow-lg text-black">
             {dropdown}
           </div>
         )}
