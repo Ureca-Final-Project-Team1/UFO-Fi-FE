@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { StorageProgress } from './StorageProgress';
+import { Progress } from './Progress';
 
-const meta: Meta<typeof StorageProgress> = {
+const meta: Meta<typeof Progress> = {
   title: 'UI/Progress',
-  component: StorageProgress,
+  component: Progress,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -38,8 +38,25 @@ const meta: Meta<typeof StorageProgress> = {
       description: '프로그레스 바 크기',
     },
     className: {
-      control: 'text',
-      description: '추가 CSS 클래스',
+      control: false,
+      table: { disable: true },
+    },
+    // Radix UI ProgressPrimitive.Root props 숨기기
+    value: {
+      control: false,
+      table: { disable: true },
+    },
+    max: {
+      control: false,
+      table: { disable: true },
+    },
+    getValueLabel: {
+      control: false,
+      table: { disable: true },
+    },
+    asChild: {
+      control: false,
+      table: { disable: true },
     },
   },
   decorators: [
@@ -52,7 +69,7 @@ const meta: Meta<typeof StorageProgress> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof StorageProgress>;
+type Story = StoryObj<typeof Progress>;
 
 export const Default: Story = {
   args: {
@@ -99,31 +116,31 @@ export const AllSizes: Story = {
     <div className="space-y-4 w-80 max-w-sm">
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-700">XS</h3>
-        <StorageProgress usedStorage={5} totalStorage={10} size="xs" />
+        <Progress usedStorage={5} totalStorage={10} size="xs" />
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-700">SM</h3>
-        <StorageProgress usedStorage={5} totalStorage={10} size="sm" />
+        <Progress usedStorage={5} totalStorage={10} size="sm" />
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-700">MD</h3>
-        <StorageProgress usedStorage={5} totalStorage={10} size="md" />
+        <Progress usedStorage={5} totalStorage={10} size="md" />
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-700">LG</h3>
-        <StorageProgress usedStorage={5} totalStorage={10} size="lg" />
+        <Progress usedStorage={5} totalStorage={10} size="lg" />
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-700">XL</h3>
-        <StorageProgress usedStorage={5} totalStorage={10} size="xl" />
+        <Progress usedStorage={5} totalStorage={10} size="xl" />
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-700">2XL</h3>
-        <StorageProgress usedStorage={5} totalStorage={10} size="2xl" />
+        <Progress usedStorage={5} totalStorage={10} size="2xl" />
       </div>
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-700">3XL</h3>
-        <StorageProgress usedStorage={5} totalStorage={10} size="3xl" />
+        <Progress usedStorage={5} totalStorage={10} size="3xl" />
       </div>
     </div>
   ),
