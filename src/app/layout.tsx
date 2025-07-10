@@ -5,6 +5,7 @@ import '../styles/globals.css';
 import { ModalProvider, QueryProvider } from '@/provider';
 import BackgroundProvider from '@/provider/BackgroundProvider';
 import NavigationProvider from '@/provider/NavigationProvider';
+import OnboardingGuardProvider from '@/provider/OnboardingGuardProvider';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -31,7 +32,9 @@ export default function RootLayout({
       <body className={`${pretendard.variable} antialiased`}>
         <QueryProvider>
           <NavigationProvider>
-            <BackgroundProvider>{children}</BackgroundProvider>
+            <BackgroundProvider>
+              <OnboardingGuardProvider>{children}</OnboardingGuardProvider>
+            </BackgroundProvider>
           </NavigationProvider>
           <ModalProvider />
         </QueryProvider>
