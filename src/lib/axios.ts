@@ -52,6 +52,9 @@ const createAxiosInstance = (): AxiosInstance => {
   const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080',
     timeout: 30000, // 30초
+
+    // TODO: 추후 인증 기능 붙이면 true로 변경할 것
+    // withCredentials: true,
     withCredentials: false,
     headers: {
       'Content-Type': 'application/json',
