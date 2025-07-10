@@ -17,11 +17,11 @@ const meta: Meta<typeof StorageProgress> = {
   },
   argTypes: {
     usedStorage: {
-      control: { type: 'number', min: 0, max: 10, step: 0.5 },
+      control: { type: 'number', min: 0, max: 10, step: 1 },
       description: '사용된 용량 (GB)',
     },
     totalStorage: {
-      control: { type: 'number', min: 1, max: 100, step: 1 },
+      control: { type: 'number', min: 1, max: 10, step: 1 },
       description: '전체 용량 (GB)',
     },
     showCurrentUsage: {
