@@ -1,4 +1,5 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react';
 
@@ -6,7 +7,8 @@ import { AlienWithSpeech } from '@/components/onboarding/AlienWithSpeech';
 import { NextButton } from '@/components/onboarding/NextButton';
 import { OnboardingImageFrame } from '@/components/onboarding/OnboardingImageFrame';
 import { StepIndicator } from '@/components/onboarding/StepIndicator';
-import { ONBOARDING_STEPS } from '@/lib/onboarding';
+import { ROUTE_CONFIG } from '@/constants/routes';
+import { ONBOARDING_STEPS, onboardingUtils } from '@/lib/onboarding';
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -15,23 +17,35 @@ export default function OnboardingPage() {
 
   const step = ONBOARDING_STEPS[currentStep];
 
+  // 이미 온보딩이 완료된 경우 홈으로 리다이렉트
+  useEffect(() => {
+    if (onboardingUtils.isCompleted()) {
+      router.push(ROUTE_CONFIG.DEFAULT_REDIRECT);
+    }
+  }, [router]);
+
   useEffect(() => {
     setIsVisible(false);
     const timer = setTimeout(() => setIsVisible(true), 150);
     return () => clearTimeout(timer);
   }, [currentStep]);
 
+  // 다음 버튼 클릭 핸들러
   const handleNext = useCallback(() => {
     if (currentStep < ONBOARDING_STEPS.length - 1) {
       setCurrentStep((prev) => prev + 1);
     } else {
-      localStorage.setItem('ufo_fi_onboarding_completed', 'true');
-      router.push('/main');
+      // 온보딩 완료 처리
+      onboardingUtils.complete();
+      router.push(ROUTE_CONFIG.DEFAULT_REDIRECT);
     }
   }, [currentStep, router]);
 
+  // 스텝 인디케이터 클릭 핸들러
   const handleStepClick = (step: number) => {
-    if (step <= currentStep) setCurrentStep(step);
+    if (step <= currentStep) {
+      setCurrentStep(step);
+    }
   };
 
   return (

@@ -5,7 +5,11 @@ import React from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
 
-export default function BackgroundProvider({ children }: { children: React.ReactNode }) {
+interface BackgroundProviderProps {
+  children: React.ReactNode;
+}
+
+export default function BackgroundProvider({ children }: BackgroundProviderProps) {
   const pathname = usePathname();
 
   const backgroundImageUrl = (() => {
