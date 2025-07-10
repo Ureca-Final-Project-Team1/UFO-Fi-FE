@@ -1,9 +1,11 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
 import '@/styles/globals.css';
+import { useForm } from 'react-hook-form';
+
 import {
   Button,
   Select,
@@ -12,17 +14,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components';
+import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {
   const { name, phone, telecom, plan, setForm } = useSignupStore();
   const router = useRouter();
 
-  const handleSubmit = () => {
-    if (!telecom || !plan) {
-      alert('통신사와 요금제를 입력해주세요.');
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupPlanSchema>({
+    resolver: zodResolver(signupPlanSchema),
+  });
+
+  const onSubmit = (data: SignupPlanSchema) => {
+    setForm(data);
     console.log({ name, phone, telecom, plan });
     router.push('/');
   };
@@ -37,13 +45,21 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col justify-center items-center w-full h-full"
+    >
       <div className="flex flex-[0.9] flex-col justify-start items-start text-center gap-5 sm:gap-8 w-full h-fit">
         <p className="text-white body-20-bold">회원가입</p>
 
         <div className="flex flex-col items-start gap-3 sm:gap-6 w-full h-fit">
-          <div className="text-white body-16-bold">통신사 정보</div>
-          <Select value={telecom} onValueChange={(value) => setForm({ telecom: value })}>
+          <label className="flex items-center gap-5 body-16-bold">
+            통신사 정보
+            {errors.telecom && (
+              <p className="text-red-600 caption-10-medium">{errors.telecom.message}</p>
+            )}
+          </label>
+          <Select {...register('telecom')}>
             <SelectTrigger
               size="default"
               className="w-[180px] bg-white text-black caption-14-regular"
@@ -56,9 +72,11 @@ const Page = () => {
               <SelectItem value="kt">KT</SelectItem>
             </SelectContent>
           </Select>
-
-          <div className="text-white body-16-bold">요금제 정보</div>
-          <Select value={plan} onValueChange={(value) => setForm({ plan: value })}>
+          <label className="flex items-center gap-5 body-16-bold">
+            요금제 정보
+            {errors.plan && <p className="text-red-600 caption-10-medium">{errors.plan.message}</p>}
+          </label>
+          <Select {...register('plan')}>
             <SelectTrigger
               size="default"
               className="w-[180px] bg-white text-black cation-14-regular"
@@ -94,15 +112,10 @@ const Page = () => {
         )}
       </div>
 
-      <Button
-        onClick={handleSubmit}
-        size="full-width"
-        className="body-16-medium h-10 sm:h-14 text-white"
-        disabled={telecom == '' || plan == ''}
-      >
-        회원가입 완료
+      <Button type="submit" size="full-width" className="body-16-medium h-10 sm:h-14 text-white">
+        회원가입
       </Button>
-    </div>
+    </form>
   );
 };
 

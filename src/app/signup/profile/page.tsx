@@ -4,15 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import z from 'zod';
 import '@/styles/globals.css';
 
 import { Button } from '@/components';
 import { Input } from '@/components/ui/input/Input';
-import { signupSchema } from '@/schemas/signupSchema';
+import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
 import { useSignupStore } from '@/stores/useSignupStore';
-
-type FormValues = z.infer<typeof signupSchema>;
 
 const Page = () => {
   const router = useRouter();
@@ -22,11 +19,11 @@ const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<SignupProfileSchema>({
+    resolver: zodResolver(signupProfileSchema),
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: SignupProfileSchema) => {
     setForm(data);
     router.push('/signup/plan');
   };
