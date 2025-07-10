@@ -10,7 +10,7 @@ export const AlienWithSpeech = ({ message }: { message: string }) => (
       <SpeechBubble>{message}</SpeechBubble>
     </div>
     <div className="w-[100px]">
-      <AlienCharacter isPointing />
+      <AlienCharacter />
     </div>
   </div>
 );
