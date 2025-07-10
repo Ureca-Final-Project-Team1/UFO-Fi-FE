@@ -10,7 +10,7 @@ const Page = () => {
   const router = useRouter();
 
   const handleNext = () => {
-    router.push('/signup/verify');
+    router.push('/signup/profile');
   };
 
   return (
