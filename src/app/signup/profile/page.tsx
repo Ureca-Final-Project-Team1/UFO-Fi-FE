@@ -9,13 +9,10 @@ import '@/styles/globals.css';
 
 import { Button } from '@/components';
 import { Input } from '@/components/ui/input/Input';
+import { signupSchema } from '@/schemas/signupSchema';
 import { useSignupStore } from '@/stores/useSignupStore';
 
-const schema = z.object({
-  name: z.string().min(1, '이름을 입력해주세요.'),
-  phone: z.string().regex(/^010-\d{4}-\d{4}$/, '전화번호 형식이 올바르지 않습니다'),
-});
-type FormValues = z.infer<typeof schema>;
+type FormValues = z.infer<typeof signupSchema>;
 
 const Page = () => {
   const router = useRouter();
@@ -26,7 +23,7 @@ const Page = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = (data: FormValues) => {
@@ -43,22 +40,28 @@ const Page = () => {
         <p className="body-20-bold">회원가입</p>
 
         <div className="flex flex-col gap-3 w-full text-left">
-          <label className="body-16-bold">이름</label>
+          <label className="flex items-center gap-5 body-16-bold">
+            이름
+            {errors.name && <p className="text-red-600 caption-10-medium">{errors.name.message}</p>}
+          </label>
           <Input
             {...register('name')}
-            className="Label2_14_M bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
+            className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
             placeholder="실명을 입력해주세요."
           />
-          {errors.name && <p>{errors.name.message}</p>}
         </div>
         <div className="flex flex-col gap-3 w-full text-left">
-          <label className="body-16-bold">전화번호</label>
+          <label className="flex items-center gap-5 body-16-bold">
+            전화번호
+            {errors.phone && (
+              <p className="text-red-600 caption-10-medium">{errors.phone.message}</p>
+            )}
+          </label>
           <Input
             {...register('phone')}
-            className="Label2_14_M bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
+            className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
             placeholder="010-XXXX-XXXX 형식으로 입력해주세요."
           />
-          {errors.phone && <p>{errors.phone.message}</p>}
         </div>
       </div>
 
