@@ -30,6 +30,8 @@ export type LucideIconType =
   | 'X'
   | 'ChevronLeft'
   | 'ChevronRight'
+  | 'ChevronDown'
+  | 'ChevronUp'
   | 'Heart'
   | 'Star'
   | 'Download'
