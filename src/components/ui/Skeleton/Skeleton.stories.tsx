@@ -25,13 +25,17 @@ export const Default: StoryObj<typeof Skeleton> = {
   render: (args) => <Skeleton {...args} />,
 };
 
-export const Playground: StoryObj = {
-  render: () => (
+export const Playground: StoryObj<typeof Skeleton> = {
+  args: {
+    variant: 'pulse',
+    style: { width: 120, height: 20, borderRadius: 8 },
+  },
+  render: (args) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <Skeleton style={{ width: 120, height: 20 }} />
-      <Skeleton style={{ width: 80, height: 80, borderRadius: 40 }} />
-      <Skeleton style={{ width: 200, height: 12, borderRadius: 6 }} />
-      <Skeleton style={{ width: 100, height: 40, borderRadius: 8 }} />
+      <Skeleton {...args} />
+      <Skeleton {...args} style={{ ...args.style, width: 80, height: 80, borderRadius: 40 }} />
+      <Skeleton {...args} style={{ ...args.style, width: 200, height: 12, borderRadius: 6 }} />
+      <Skeleton {...args} style={{ ...args.style, width: 100, height: 40, borderRadius: 8 }} />
     </div>
   ),
 };
