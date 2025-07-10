@@ -1,4 +1,3 @@
-// 이미지 경로 상수
 export const IMAGE_PATHS = {
   AL_SAD: '/images/alien-sad.png',
   AL_HAPPY: '/images/alien-happy.png',
@@ -8,4 +7,5 @@ export const IMAGE_PATHS = {
   BG_ONBOARDING: '/images/background-onboarding.png',
   BG_LOGIN: '/images/background-login.png',
   BG_BASIC: '/images/background-basic.png',
+  BLACKHOLE_REAL: '/images/blackhole-real.png',
 } as const;

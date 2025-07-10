@@ -9,7 +9,11 @@ export default function BackgroundProvider({ children }: { children: React.React
   const pathname = usePathname();
 
   const backgroundImageUrl = (() => {
-    if (pathname.startsWith('/login') || pathname.startsWith('/signup')) {
+    if (
+      pathname.startsWith('/login') ||
+      pathname.startsWith('/signup') ||
+      pathname.startsWith('/blackhole')
+    ) {
       return IMAGE_PATHS.BG_LOGIN;
     }
     if (pathname.startsWith('/onboarding')) {
