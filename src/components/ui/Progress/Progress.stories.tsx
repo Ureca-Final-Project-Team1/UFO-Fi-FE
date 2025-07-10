@@ -32,6 +32,11 @@ const meta: Meta<typeof StorageProgress> = {
       control: 'boolean',
       description: '최소/최대 용량 표시 여부',
     },
+    size: {
+      control: 'select',
+      options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
+      description: '프로그레스 바 크기',
+    },
     className: {
       control: 'text',
       description: '추가 CSS 클래스',
@@ -53,8 +58,9 @@ export const Default: Story = {
   args: {
     usedStorage: 5,
     totalStorage: 10,
-    showCurrentUsage: false,
+    showCurrentUsage: true,
     showMinMaxLabels: true,
+    size: 'lg',
   },
 };
 
@@ -64,6 +70,7 @@ export const WithoutCurrentUsage: Story = {
     totalStorage: 10,
     showCurrentUsage: false,
     showMinMaxLabels: true,
+    size: 'lg',
   },
 };
 
@@ -73,6 +80,7 @@ export const WithoutMinMaxLabels: Story = {
     totalStorage: 10,
     showCurrentUsage: true,
     showMinMaxLabels: false,
+    size: 'lg',
   },
 };
 
@@ -82,54 +90,47 @@ export const OnlyProgressBar: Story = {
     totalStorage: 10,
     showCurrentUsage: false,
     showMinMaxLabels: false,
+    size: 'lg',
   },
 };
 
-export const AllVariants: Story = {
+export const AllSizes: Story = {
   render: () => (
-    <div className="space-y-6 w-80 max-w-sm">
+    <div className="space-y-4 w-80 max-w-sm">
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-700">All Labels</h3>
-        <StorageProgress
-          usedStorage={5}
-          totalStorage={10}
-          showCurrentUsage={true}
-          showMinMaxLabels={true}
-        />
+        <h3 className="text-sm font-medium mb-2 text-gray-700">XS</h3>
+        <StorageProgress usedStorage={5} totalStorage={10} size="xs" />
       </div>
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-700">Without Current Usage</h3>
-        <StorageProgress
-          usedStorage={5}
-          totalStorage={10}
-          showCurrentUsage={false}
-          showMinMaxLabels={true}
-        />
+        <h3 className="text-sm font-medium mb-2 text-gray-700">SM</h3>
+        <StorageProgress usedStorage={5} totalStorage={10} size="sm" />
       </div>
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-700">Without Min/Max Labels</h3>
-        <StorageProgress
-          usedStorage={5}
-          totalStorage={10}
-          showCurrentUsage={true}
-          showMinMaxLabels={false}
-        />
+        <h3 className="text-sm font-medium mb-2 text-gray-700">MD</h3>
+        <StorageProgress usedStorage={5} totalStorage={10} size="md" />
       </div>
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-700">Only Progress Bar</h3>
-        <StorageProgress
-          usedStorage={5}
-          totalStorage={10}
-          showCurrentUsage={false}
-          showMinMaxLabels={false}
-        />
+        <h3 className="text-sm font-medium mb-2 text-gray-700">LG</h3>
+        <StorageProgress usedStorage={5} totalStorage={10} size="lg" />
+      </div>
+      <div>
+        <h3 className="text-sm font-medium mb-2 text-gray-700">XL</h3>
+        <StorageProgress usedStorage={5} totalStorage={10} size="xl" />
+      </div>
+      <div>
+        <h3 className="text-sm font-medium mb-2 text-gray-700">2XL</h3>
+        <StorageProgress usedStorage={5} totalStorage={10} size="2xl" />
+      </div>
+      <div>
+        <h3 className="text-sm font-medium mb-2 text-gray-700">3XL</h3>
+        <StorageProgress usedStorage={5} totalStorage={10} size="3xl" />
       </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: '다양한 라벨 표시 옵션을 보여주는 예시입니다.',
+        story: '다양한 크기의 프로그레스 바를 보여주는 예시입니다.',
       },
     },
   },

@@ -11,7 +11,7 @@ export interface ProgressProps
   extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   className?: string;
   value?: number;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 }
 
 export function Progress({ className, value, size = 'md', ...props }: ProgressProps) {

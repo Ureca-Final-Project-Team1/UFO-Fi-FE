@@ -15,8 +15,8 @@ interface StorageProgressProps {
   showCurrentUsage?: boolean;
   /** 최소/최대 용량 표시 여부 */
   showMinMaxLabels?: boolean;
-  /** 프로그레스 바 크기 (그래프 세로폭) */
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** 프로그레스 바 크기 */
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 }
 
 export function StorageProgress({
