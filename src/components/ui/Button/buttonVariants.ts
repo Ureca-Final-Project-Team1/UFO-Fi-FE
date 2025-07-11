@@ -29,12 +29,12 @@ export const buttonVariants = cva(
         'project-button': 'rounded-[5px] bg-primary-200 text-black-700 hover:bg-primary-300/30',
       },
       size: {
-        sm: 'h-9 rounded-md px-3 text-sm',
-        default: 'h-10 px-4 py-2',
-        lg: 'h-11 rounded-md px-8',
-        icon: 'h-10 w-10',
-        'full-width': 'h-[54px] w-full rounded-[10px] px-8 font-bold text-[20px] leading-[28px]',
-        compact: 'h-8 px-2 text-xs',
+        sm: 'h-9 w-[100px] rounded-md px-3 text-sm',
+        default: 'h-10 w-[200px] px-4 py-2 text-md',
+        lg: 'h-11 w-[300px] rounded-md px-8 text-lg',
+        icon: 'h-10 w-10 rounded-md',
+        'full-width': 'h-[54px] w-full rounded-[10px] px-8 text-[20px] leading-[28px]',
+        compact: 'h-fit w-fit px-2 text-xs',
       },
     },
     defaultVariants: {
