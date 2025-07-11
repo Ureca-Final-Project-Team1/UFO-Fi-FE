@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 // Dynamic import로 SSR 방지
 const GlobalModal = dynamic(
-  () => import('@/components/ui/Modal').then((mod) => ({ default: mod.GlobalModal })),
+  () => import('@/shared/ui/Modal').then((mod) => ({ default: mod.GlobalModal })),
   {
     ssr: false,
     loading: () => null,
