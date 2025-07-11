@@ -1,6 +1,6 @@
 import { ChevronDown } from 'lucide-react';
 
-import { cn } from '@/lib/utils'; // class 병합 함수
+import { cn } from '@/utils/utils'; // class 병합 함수
 
 interface BankSelectInputProps {
   selectedBank?: string;

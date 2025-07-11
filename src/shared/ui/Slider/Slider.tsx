@@ -3,7 +3,7 @@
 import * as SliderPrimitive from '@radix-ui/react-slider';
 import React, { useMemo } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/utils';
 
 // range가 true면 value/defaultValue가 배열이어야 하며, 아니면 단일 값이어야 함
 // 여러 Thumb 지원을 위해 _values 배열 생성
