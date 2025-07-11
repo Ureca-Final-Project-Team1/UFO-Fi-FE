@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 import { ICON_SIZES } from '@/constants/icons';
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 import { ImageIconProps } from './Icons.types';
 import { LucideIcon } from './LucideIcon';

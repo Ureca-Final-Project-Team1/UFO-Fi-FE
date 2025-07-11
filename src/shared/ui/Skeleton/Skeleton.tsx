@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 type SkeletonElement = 'div' | 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 

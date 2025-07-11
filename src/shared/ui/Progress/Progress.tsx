@@ -3,7 +3,7 @@
 import * as ProgressPrimitive from '@radix-ui/react-progress';
 import * as React from 'react';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 import { ProgressProps } from './Progress.types';
 import { progressVariants, progressIndicatorVariants } from './progressVariants';

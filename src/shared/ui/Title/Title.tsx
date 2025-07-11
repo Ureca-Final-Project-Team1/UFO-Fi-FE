@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 import { Icon } from '../Icons';
 import type { TitleProps, TitleIconVariant } from './Title.types';

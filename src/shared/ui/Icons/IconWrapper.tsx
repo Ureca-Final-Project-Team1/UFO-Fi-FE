@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ICON_SIZES, ICON_COLORS } from '@/constants/icons';
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 import { IconWrapperProps } from './Icons.types';
 

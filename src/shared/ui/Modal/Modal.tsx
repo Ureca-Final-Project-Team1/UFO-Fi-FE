@@ -5,8 +5,8 @@ import { X } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/Button';
-import { cn } from '@/utils/utils';
 
 import { ModalProps } from './Modal.types';
 import { modalVariants, modalOverlayVariants, modalHeaderVariants } from './modalVariants';

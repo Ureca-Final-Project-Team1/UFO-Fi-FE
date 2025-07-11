@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 import * as CustomIcons from './CustomIcons';
 import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';

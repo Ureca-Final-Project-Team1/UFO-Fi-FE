@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
+import { cn } from '@/lib/utils';
 import { formatPhoneNumber } from '@/utils/formatPhoneNumber';
-import { cn } from '@/utils/utils';
 
 import { Input } from './Input';
 import { CustomInputProps } from './Input.types';

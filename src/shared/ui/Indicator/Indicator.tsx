@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@/utils/utils';
+import { cn } from '@/lib/utils';
 
 import type { BasicDotIndicatorProps } from './Indicator.types';
 import { indicatorVariants, basicDotVariants } from './indicatorVariants';
