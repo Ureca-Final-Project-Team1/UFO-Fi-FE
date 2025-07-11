@@ -10,7 +10,9 @@ export const tabsTriggerVariants = cva(
         highlight:
           'text-white data-[state=active]:after:content-[""] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-0 data-[state=active]:after:w-full data-[state=active]:after:h-[3px]',
         underline:
-          'text-yellow-300 data-[state=active]:after:content-[""] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-1/2 data-[state=active]:after:-translate-x-1/2 data-[state=active]:after:h-[2px]',
+          'text-gray-400 data-[state=active]:text-white data-[state=active]:after:content-[""] data-[state=active]:after:absolute data-[state=active]:after:bottom-0 data-[state=active]:after:left-1/2 data-[state=active]:after:-translate-x-1/2 data-[state=active]:after:h-[2px] data-[state=active]:after:w-8',
+        darkTab:
+          'text-gray-400 data-[state=active]:text-white data-[state=active]:border-b-[3px] data-[state=active]:border-[var(--color-button-border)]',
       },
       size: {
         sm: 'h-8 text-sm w-[72px]',
