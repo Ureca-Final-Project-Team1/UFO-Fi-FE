@@ -10,3 +10,4 @@ export * from './Modal';
 export * from './DotBadge';
 export * from './Indicator';
 export * from './Slider';
+export * from './Progress';
