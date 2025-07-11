@@ -4,7 +4,7 @@ import Image from 'next/image';
 import '@/styles/globals.css';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Button } from '@/shared';
+import { Button } from '@/shared/ui';
 
 const Page = () => {
   const handleKakaoLogin = async () => {

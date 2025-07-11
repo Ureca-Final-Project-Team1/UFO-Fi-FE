@@ -6,7 +6,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/shared/ui';
 
 import { ModalProps } from './Modal.types';
 import { modalVariants, modalOverlayVariants, modalHeaderVariants } from './modalVariants';

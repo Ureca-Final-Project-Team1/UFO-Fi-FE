@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import '@/styles/globals.css';
 
 import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
-import { Button } from '@/shared';
-import { Input } from '@/shared';
+import { Button } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {

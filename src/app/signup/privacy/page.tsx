@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import '@/styles/globals.css';
 
-import { Button, Icon } from '@/shared';
+import { Button, Icon } from '@/shared/ui';
 
 const Page = () => {
   const router = useRouter();

@@ -8,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import axiosInstance from '@/api/axios';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
-import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared';
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {

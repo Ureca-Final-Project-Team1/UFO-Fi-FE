@@ -1,4 +1,4 @@
-import { IconType } from '@/shared/ui/Icons';
+import { IconType } from '@/shared/ui';
 
 export interface NavItem {
   id: string;

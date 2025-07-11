@@ -4,7 +4,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import { useNavigation } from '@/shared/hooks/useNavigation';
-import { Icon } from '@/shared/ui/Icons';
+import { Icon } from '@/shared/ui';
 import type { IconType } from '@/shared/ui/Icons/Icons.types';
 
 interface NavItem {

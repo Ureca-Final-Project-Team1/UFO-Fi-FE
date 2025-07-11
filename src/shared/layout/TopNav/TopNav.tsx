@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
-import { Icon, LucideIcon } from '@/shared/ui/Icons';
+import { Icon, LucideIcon } from '@/shared/ui';
 
 interface TopNavProps {
   title?: string;
