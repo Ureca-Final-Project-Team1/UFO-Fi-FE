@@ -24,14 +24,24 @@ type Story = StoryObj<typeof Tabs>;
 export const Default: Story = {
   name: '기본 사용',
   render: () => (
-    <Tabs defaultValue="tab1">
-      <TabsList>
-        <TabsTrigger value="tab1">탭 1</TabsTrigger>
-        <TabsTrigger value="tab2">탭 2</TabsTrigger>
-      </TabsList>
-      <TabsContent value="tab1">탭 1의 내용입니다.</TabsContent>
-      <TabsContent value="tab2">탭 2의 내용입니다.</TabsContent>
-    </Tabs>
+    <div className="bg-black p-6 rounded-lg max-w-xl w-full mx-auto">
+      <Tabs defaultValue="tab1">
+        <TabsList className="bg-transparent w-full">
+          <TabsTrigger value="tab1" variant="darkTab" size="full">
+            탭 1
+          </TabsTrigger>
+          <TabsTrigger value="tab2" variant="darkTab" size="full">
+            탭 2
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1" className="text-white">
+          탭 1의 내용입니다.
+        </TabsContent>
+        <TabsContent value="tab2" className="text-white">
+          탭 2의 내용입니다.
+        </TabsContent>
+      </Tabs>
+    </div>
   ),
   parameters: {
     docs: {
@@ -46,23 +56,29 @@ export const Default: Story = {
 export const WithCustomTriggerSize: Story = {
   name: 'Trigger 커스텀 스타일',
   render: () => (
-    <Tabs defaultValue="tab1">
-      <TabsList>
-        <TabsTrigger value="tab1" className="bg-blue-100 text-blue-800 px-6 py-2 rounded-md">
-          큰 탭 1
-        </TabsTrigger>
-        <TabsTrigger value="tab2" className="bg-gray-100 text-gray-800 px-6 py-2 rounded-md">
-          큰 탭 2
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="tab1">스타일 적용된 탭 1 내용</TabsContent>
-      <TabsContent value="tab2">스타일 적용된 탭 2 내용</TabsContent>
-    </Tabs>
+    <div className="bg-black p-6 rounded-lg max-w-xl w-full mx-auto">
+      <Tabs defaultValue="tab1">
+        <TabsList className="bg-transparent">
+          <TabsTrigger value="tab1" variant="darkTab">
+            큰 탭 1
+          </TabsTrigger>
+          <TabsTrigger value="tab2" variant="darkTab">
+            큰 탭 2
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1" className="text-white">
+          스타일 적용된 탭 1 내용
+        </TabsContent>
+        <TabsContent value="tab2" className="text-white">
+          스타일 적용된 탭 2 내용
+        </TabsContent>
+      </Tabs>
+    </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: 'Trigger에 className을 주어 다양한 스타일을 적용한 예시입니다.',
+        story: 'darkTab variant를 사용한 탭 스타일 예시입니다.',
       },
     },
   },
@@ -72,24 +88,30 @@ export const WithCustomTriggerSize: Story = {
 export const AllSizes: Story = {
   name: 'Trigger 사이즈 비교',
   render: () => (
-    <div className="flex flex-col gap-6">
-      {(['sm', 'md', 'lg', 'full'] as const).map((size) => (
-        <div key={size} className="w-full">
-          <p className="mb-2 text-sm font-medium">size={size}</p>
-          <Tabs defaultValue="tab1">
-            <TabsList className={size === 'full' ? 'w-full' : undefined}>
-              <TabsTrigger value="tab1" size={size}>
-                탭 1
-              </TabsTrigger>
-              <TabsTrigger value="tab2" size={size}>
-                탭 2
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="tab1">사이즈: {size}</TabsContent>
-            <TabsContent value="tab2">사이즈: {size}</TabsContent>
-          </Tabs>
-        </div>
-      ))}
+    <div className="bg-black p-6 rounded-lg max-w-xl w-full mx-auto">
+      <div className="flex flex-col gap-6">
+        {(['sm', 'md', 'lg', 'full'] as const).map((size) => (
+          <div key={size} className="w-full">
+            <p className="mb-2 text-sm font-medium text-white">size={size}</p>
+            <Tabs defaultValue="tab1">
+              <TabsList className={`bg-transparent ${size === 'full' ? 'w-full' : ''}`}>
+                <TabsTrigger value="tab1" size={size} variant="darkTab">
+                  탭 1
+                </TabsTrigger>
+                <TabsTrigger value="tab2" size={size} variant="darkTab">
+                  탭 2
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="tab1" className="text-white">
+                사이즈: {size}
+              </TabsContent>
+              <TabsContent value="tab2" className="text-white">
+                사이즈: {size}
+              </TabsContent>
+            </Tabs>
+          </div>
+        ))}
+      </div>
     </div>
   ),
   parameters: {
