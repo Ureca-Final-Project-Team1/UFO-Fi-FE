@@ -8,7 +8,7 @@ import { PhoneInput } from './PhoneInput';
 import { PriceInput } from './PriceInput';
 
 const meta: Meta = {
-  title: 'UI/Inputs/Playground',
+  title: 'UI/Input',
   tags: ['autodocs'],
   args: {
     inputType: 'basic', // 기본 선택값
