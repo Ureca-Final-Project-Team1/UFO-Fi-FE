@@ -8,4 +8,10 @@ export const IMAGE_PATHS = {
   BG_LOGIN: '/images/background-login.png',
   BG_BASIC: '/images/background-basic.png',
   BLACKHOLE_REAL: '/images/blackhole-real.png',
+
+  BACKGROUND_BASIC: '/images/background-basic.png',
+  BACKGROUND_LOGIN: '/images/background-login.png',
+
+  KAKAO_LOGIN_BUTTON: '/images/kakao-login-button.png',
+  UFO_LOGIN: '/images/ufo-login.png',
 } as const;
