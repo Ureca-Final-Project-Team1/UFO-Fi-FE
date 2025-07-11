@@ -7,7 +7,7 @@ export const signupProfileSchema = z.object({
 export type SignupProfileSchema = z.infer<typeof signupProfileSchema>;
 
 export const signupPlanSchema = z.object({
-  telecom: z.string().min(1, '통신사를 선택해주세요.'),
-  plan: z.string().min(1, '요금제를 선택해주세요.'),
+  carrier: z.string().min(1, '통신사를 선택해주세요.'),
+  planName: z.string().min(1, '요금제를 선택해주세요.'),
 });
 export type SignupPlanSchema = z.infer<typeof signupPlanSchema>;
