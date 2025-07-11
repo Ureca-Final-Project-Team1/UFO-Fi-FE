@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import '@/styles/globals.css';
 
 import { Button } from '@/components';
-import { Input } from '@/components/ui/input/Input';
+import { Input } from '@/components/ui/Input/Input';
 import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
 import { useSignupStore } from '@/stores/useSignupStore';
 
