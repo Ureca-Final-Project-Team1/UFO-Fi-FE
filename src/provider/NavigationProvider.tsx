@@ -3,8 +3,8 @@
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
-import BottomNav from '@/components/layout/BottomNav';
-import TopNav from '@/components/layout/TopNav';
+import BottomNav from '@/shared/layout/BottomNav';
+import TopNav from '@/shared/layout/TopNav';
 
 interface NavigationProviderProps {
   children: React.ReactNode;

@@ -1,5 +1,5 @@
 'use client';
-import { useOnboardingGuard } from '@/hooks/useOnboardingGuard';
+import { useOnboardingGuard } from '@/features/onboarding/hooks/useOnboardingGuard';
 
 interface OnboardingGuardProviderProps {
   children: React.ReactNode;
