@@ -6,7 +6,12 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { ApiResponse, SuccessApiResponse, ErrorApiResponse, HttpStatusCode } from '@/types/api';
+import {
+  ApiResponse,
+  SuccessApiResponse,
+  ErrorApiResponse,
+  HttpStatusCode,
+} from '@/shared/types/api';
 
 const isSuccessResponse = <T>(response: ApiResponse<T>): response is SuccessApiResponse<T> => {
   return response.statusCode >= 200 && response.statusCode < 300;

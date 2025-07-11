@@ -6,9 +6,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import '@/styles/globals.css';
 
-import { Button } from '@/components';
-import { Input } from '@/components/ui/input/Input';
 import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
+import { Button } from '@/shared';
+import { Input } from '@/shared/ui/input/Input';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {

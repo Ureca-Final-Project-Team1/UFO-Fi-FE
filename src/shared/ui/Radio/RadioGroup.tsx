@@ -3,8 +3,8 @@
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import * as React from 'react';
 
-import { Label } from '@/components/ui/Label';
 import { cn } from '@/lib/utils';
+import { Label } from '@/shared/ui/Label';
 
 import { RadioGroupItem } from './RadioGroupItem';
 

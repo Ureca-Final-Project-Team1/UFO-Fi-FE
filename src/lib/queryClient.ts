@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientConfig } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { ApiError } from '@/lib/axios';
+import { ApiError } from '@/api/axios';
 
 // React Query 베이스 설정
 const queryClientConfig: QueryClientConfig = {

@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import '@/styles/globals.css';
 
-import { Button } from '@/components';
 import { IMAGE_PATHS } from '@/constants/images';
+import { Button } from '@/shared';
 
 const Page = () => {
   const handleKakaoLogin = async () => {

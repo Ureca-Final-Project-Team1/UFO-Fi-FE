@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { Title } from '@/components/ui/Title';
 import { IMAGE_PATHS } from '@/constants/images';
+import { Title } from '@/shared/ui/Title';
 
 export default function BlackholePage() {
   const router = useRouter();

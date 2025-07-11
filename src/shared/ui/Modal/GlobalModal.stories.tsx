@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
 
-import { Button } from '@/components/ui/Button';
 import { IMAGE_PATHS } from '@/constants/images';
+import { Button } from '@/shared/ui/Button';
 import { useModalStore } from '@/stores/useModalStore';
 
 import { GlobalModal } from './GlobalModal';

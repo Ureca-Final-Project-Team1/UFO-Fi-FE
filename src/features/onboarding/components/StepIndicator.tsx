@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Indicator } from '@/components/ui/Indicator';
+import { Indicator } from '@/shared/ui/Indicator';
 
 export const StepIndicator = ({
   step,

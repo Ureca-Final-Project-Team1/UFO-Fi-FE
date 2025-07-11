@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import { Icon, LucideIcon } from '@/components/ui/Icons';
 import { ICON_PATHS } from '@/constants/icons';
+import { Icon, LucideIcon } from '@/shared/ui/Icons';
 
 interface TopNavProps {
   title?: string;

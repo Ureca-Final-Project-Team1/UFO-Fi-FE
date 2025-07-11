@@ -3,12 +3,12 @@
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { AlienWithSpeech } from '@/components/onboarding/AlienWithSpeech';
-import { NextButton } from '@/components/onboarding/NextButton';
-import { OnboardingImageFrame } from '@/components/onboarding/OnboardingImageFrame';
-import { StepIndicator } from '@/components/onboarding/StepIndicator';
 import { ROUTE_CONFIG } from '@/constants/routes';
-import { ONBOARDING_STEPS, onboardingUtils } from '@/lib/onboarding';
+import { AlienWithSpeech } from '@/features/onboarding/components';
+import { NextButton } from '@/features/onboarding/components';
+import { OnboardingImageFrame } from '@/features/onboarding/components';
+import { StepIndicator } from '@/features/onboarding/components';
+import { ONBOARDING_STEPS, onboardingUtils } from '@/features/onboarding/utils/onboarding';
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);

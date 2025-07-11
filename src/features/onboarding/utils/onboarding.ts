@@ -1,4 +1,4 @@
-import { ONBOARDING_CONSTANTS, OnboardingStep } from '@/types/onboarding';
+import { ONBOARDING_CONSTANTS, OnboardingStep } from '@/features/onboarding/types/onboarding';
 
 export const ONBOARDING_STEPS: OnboardingStep[] = [
   {

@@ -6,16 +6,9 @@ import React, { useEffect, useState } from 'react';
 import '@/styles/globals.css';
 import { Controller, useForm } from 'react-hook-form';
 
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components';
-import axiosInstance from '@/lib/axios';
+import axiosInstance from '@/api/axios';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {
