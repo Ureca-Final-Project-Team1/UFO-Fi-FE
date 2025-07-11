@@ -11,3 +11,4 @@ export * from '../../shared/ui/DotBadge';
 export * from '../../shared/ui/Indicator';
 export * from '../../shared/ui/Slider';
 export * from '../../shared/ui/Progress';
+export * from '../../shared/ui/Input';
