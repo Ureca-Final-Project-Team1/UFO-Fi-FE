@@ -14,12 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components';
+import axiosInstance from '@/lib/axios';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {
   const { name, phone, telecom, plan, setForm } = useSignupStore();
   const router = useRouter();
+  const [plans, setPlans] = useState<string[]>([]);
 
   const {
     control,
@@ -32,6 +34,30 @@ const Page = () => {
       plan: '',
     },
   });
+
+  const handleClick = () => {
+    fetchPlan();
+  };
+
+  const fetchPlan = async () => {
+    try {
+      const response = await axiosInstance.get('/plans', {
+        params: { rawCarrier: telecom },
+      });
+
+      console.log('📦 실제 응답 데이터:', response.data);
+
+      const backPlans = response.data?.content?.plans;
+      if (Array.isArray(backPlans)) {
+        setPlans(backPlans);
+        console.log(plans);
+      } else {
+        console.error('📛 plans 배열이 없습니다:', response.data);
+      }
+    } catch (error) {
+      console.error('요금제 조회 실패:', error);
+    }
+  };
 
   const onSubmit = (data: SignupPlanSchema) => {
     setForm(data);
@@ -59,6 +85,7 @@ const Page = () => {
             {errors.telecom && (
               <p className="text-red-600 caption-10-medium">{errors.telecom.message}</p>
             )}
+            <button onClick={handleClick}>체크</button>
           </label>
           <Controller
             name="telecom"
@@ -78,9 +105,9 @@ const Page = () => {
                   <SelectValue placeholder="통신사 선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="skt">SKT</SelectItem>
-                  <SelectItem value="lg-uplus">LG U+</SelectItem>
-                  <SelectItem value="kt">KT</SelectItem>
+                  <SelectItem value="SKT">SKT</SelectItem>
+                  <SelectItem value="LGU">LG U+</SelectItem>
+                  <SelectItem value="KT">KT</SelectItem>
                 </SelectContent>
               </Select>
             )}
@@ -107,7 +134,7 @@ const Page = () => {
                   <SelectValue placeholder="요금제 선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="요금제">요금제</SelectItem>
+                  {/* <SelectItem value="요금제">요금제</SelectItem> */}
                 </SelectContent>
               </Select>
             )}
