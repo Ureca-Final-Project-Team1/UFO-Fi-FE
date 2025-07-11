@@ -1,5 +1,5 @@
 import axiosInstance from '../axios';
-import { SignupWithPlanRequest, SignupWithPlanResponse } from '../types/signupWithPlanTypes';
+import { SignupWithPlanRequest, SignupWithPlanResponse } from '../types/SignupWithPlanTypes';
 
 export const signupWithPlan = async ({
   name,
