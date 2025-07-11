@@ -24,7 +24,7 @@ type Story = StoryObj<typeof Tabs>;
 export const Default: Story = {
   name: '기본 사용',
   render: () => (
-    <div className="bg-black p-6 rounded-lg">
+    <div className="bg-black p-6 rounded-lg max-w-xl w-full mx-auto">
       <Tabs defaultValue="tab1">
         <TabsList className="bg-transparent w-full">
           <TabsTrigger value="tab1" variant="darkTab" size="full">
@@ -56,7 +56,7 @@ export const Default: Story = {
 export const WithCustomTriggerSize: Story = {
   name: 'Trigger 커스텀 스타일',
   render: () => (
-    <div className="bg-black p-6 rounded-lg">
+    <div className="bg-black p-6 rounded-lg max-w-xl w-full mx-auto">
       <Tabs defaultValue="tab1">
         <TabsList className="bg-transparent">
           <TabsTrigger value="tab1" variant="darkTab">
@@ -88,7 +88,7 @@ export const WithCustomTriggerSize: Story = {
 export const AllSizes: Story = {
   name: 'Trigger 사이즈 비교',
   render: () => (
-    <div className="bg-black p-6 rounded-lg">
+    <div className="bg-black p-6 rounded-lg max-w-xl w-full mx-auto">
       <div className="flex flex-col gap-6">
         {(['sm', 'md', 'lg', 'full'] as const).map((size) => (
           <div key={size} className="w-full">
