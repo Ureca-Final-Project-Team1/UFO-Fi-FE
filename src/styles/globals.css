@@ -78,6 +78,7 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --font-pretendard: 'Pretendard';
+  --bg-trade-card: linear-gradient(180deg, #7cc2ef 0%, #485bac 56%, #7f6fc3 100%);
 }
 
 .dark {
