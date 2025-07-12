@@ -11,6 +11,7 @@ import { radioItem } from './radioVariants';
 export function RadioGroupItem({
   className,
   value,
+  color,
   'aria-label': ariaLabel,
   ...rest
 }: RadioGroupItemProps) {
@@ -26,7 +27,7 @@ export function RadioGroupItem({
         data-slot="radio-group-indicator"
         className="relative flex items-center justify-center"
       >
-        <div className="rounded-full w-3 h-3 bg-white" />
+        <div className={`rounded-full w-3 h-3 bg-${color}`} />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );
