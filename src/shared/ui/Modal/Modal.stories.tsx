@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useState } from 'react';
 
 import { Modal } from './Modal';
+import { ReportedModal } from './ReportModal';
 
 const meta: Meta<typeof Modal> = {
   title: 'UI/Modal/Definition',
@@ -100,4 +101,31 @@ const ModalWrapper = (args: React.ComponentProps<typeof Modal>) => {
 
 export const Basic: Story = {
   render: (args) => <ModalWrapper {...args} />,
+};
+
+const ReportedModalStory = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <button
+        onClick={() => setIsOpen(true)}
+        style={{
+          marginBottom: '1rem',
+          padding: '8px 16px',
+          backgroundColor: '#eee',
+          border: '1px solid #ccc',
+          cursor: 'pointer',
+        }}
+      >
+        모달 열기
+      </button>
+
+      <ReportedModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </div>
+  );
+};
+
+export const Reported: Story = {
+  render: () => <ReportedModalStory />,
 };
