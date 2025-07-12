@@ -1,6 +1,7 @@
 'use client';
 
 import * as ProgressPrimitive from '@radix-ui/react-progress';
+import { Signal } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -22,8 +23,12 @@ export function Progress({
     <div className={cn('space-y-2', className)}>
       {/* 현재 사용 용량 표시 */}
       {showCurrentUsage && (
-        <div className="flex justify-center">
-          <span className="text-sm font-medium text-gray-700">{usedStorage}GB</span>
+        <div className="flex items-center gap-2">
+          {/* 신호 아이콘 */}
+          <Signal className="w-5 h-5 text-green-500" />
+
+          {/* 사용량 텍스트 (chart-4 색상 적용) */}
+          <span className="text-[28px] font-bold leading-none text-chart-4">{usedStorage}GB</span>
         </div>
       )}
 

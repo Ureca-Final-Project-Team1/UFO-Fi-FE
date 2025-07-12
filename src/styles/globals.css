@@ -159,7 +159,7 @@
 
   --color-accent-red: #f5506c;
 
-  --color-button-border: #31D7F3;
+  --color-button-border: #31d7f3;
 
   /* 탐색 버튼 색상 */
   --color-exploration-gradient-from: #266dfd;
@@ -463,5 +463,9 @@
   .exploration-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  .text-chart-4 {
+    color: var(--chart-4);
   }
 }
