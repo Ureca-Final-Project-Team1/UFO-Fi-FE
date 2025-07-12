@@ -30,4 +30,8 @@ export const routeUtils = {
   shouldRedirectToMain: (pathname: string, isOnboarded: boolean): boolean => {
     return pathname === ROUTE_CONFIG.ONBOARDING_PATH && isOnboarded;
   },
+
+  shouldCheckOnboarding: (pathname: string): boolean => {
+    return routeUtils.isProtectedRoute(pathname) && !routeUtils.isExemptRoute(pathname);
+  },
 };
