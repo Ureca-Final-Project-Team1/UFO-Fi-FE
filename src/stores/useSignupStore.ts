@@ -3,8 +3,8 @@ import { create } from 'zustand';
 type SignupData = {
   name: string;
   phone: string;
-  telecom: string;
-  plan: string;
+  carrier: string;
+  planName: string;
 };
 
 type Store = SignupData & {
@@ -15,8 +15,8 @@ type Store = SignupData & {
 export const useSignupStore = create<Store>((set) => ({
   name: '',
   phone: '',
-  telecom: '',
-  plan: '',
+  carrier: '',
+  planName: '',
   setForm: (data) => set((prev) => ({ ...prev, ...data })),
-  reset: () => set({ name: '', phone: '', telecom: '', plan: '' }),
+  reset: () => set({ name: '', phone: '', carrier: '', planName: '' }),
 }));
