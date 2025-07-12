@@ -1,9 +1,9 @@
 import axiosInstance from '../axios';
-import { SignupWithPlanRequest, SignupWithPlanResponse } from '../types/SignupWithPlanTypes';
+import { SignupWithPlanRequest, SignupWithPlanResponse } from './types/SignupWithPlanTypes';
 
 export const signupWithPlan = async ({
   name,
-  phone,
+  phoneNumber,
   // TODO: DB 리팩토링 후 planId로 변경할 것
   planName,
   // planId,
@@ -21,8 +21,8 @@ export const signupWithPlan = async ({
       '/signup',
       {
         userInfoReq: {
-          name: name,
-          phoneNumber: phone,
+          name,
+          phoneNumber,
         },
         userPlanReq: {
           // TODO: DB 리팩토링 후 planId로 변경할 것
