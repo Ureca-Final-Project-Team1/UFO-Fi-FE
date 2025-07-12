@@ -23,7 +23,7 @@ import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {
   const prevTelecom = useRef('');
-  const { name, phone, carrier, planName, setForm } = useSignupStore();
+  const { name, phoneNumber, carrier, planName, setForm } = useSignupStore();
   const router = useRouter();
   const [plans, setPlans] = useState<Plan[]>([]);
 
@@ -64,16 +64,15 @@ const Page = () => {
     const fetchSignup = async () => {
       const response = await signupWithPlan({
         name,
-        phone,
+        phoneNumber,
         planName,
         carrier: selectedPlan.carrier,
         mobileDataAmount: selectedPlan.mobileDataAmount,
         isUltimatedAmount: selectedPlan.isUltimatedAmount,
         sellMobileDataCapacityGB: selectedPlan.sellMobileDataCapacityGB,
         mobileDataType: selectedPlan.mobileDataType,
-        userId: 2,
+        userId: 1,
       });
-      console.log(response);
 
       if (response?.statusCode === 200) {
         router.push('/');
@@ -145,7 +144,7 @@ const Page = () => {
               >
                 <SelectTrigger
                   size="default"
-                  className="w-[180px] bg-white text-black cation-14-regular"
+                  className="w-[180px] bg-white text-black caption-14-regular"
                 >
                   <SelectValue placeholder="요금제 선택" />
                 </SelectTrigger>
@@ -183,7 +182,6 @@ const Page = () => {
           </div>
         )}
       </div>
-
       <Button
         onClick={handleSubmit(onSubmit)}
         type="submit"

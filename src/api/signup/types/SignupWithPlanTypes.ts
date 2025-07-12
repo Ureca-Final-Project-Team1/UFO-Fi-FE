@@ -10,7 +10,7 @@ export interface SignupWithPlanResponse {
 
 export interface SignupWithPlanRequest {
   name: string;
-  phone: string;
+  phoneNumber: string;
   // TODO: DB 리팩토링 후 planId로 변경할 것
   planName: string | null;
   // planId: number;

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import '@/styles/globals.css';
 
 import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
-import { Button } from '@/shared/ui';
+import { Button, PhoneInput } from '@/shared/ui';
 import { Input } from '@/shared/ui';
 import { useSignupStore } from '@/stores/useSignupStore';
 
@@ -31,7 +31,7 @@ const Page = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center items-center h-screen w-full"
+      className="flex flex-col justify-center items-center w-full h-screen"
     >
       <div className="flex flex-[0.9] flex-col justify-start items-start text-center gap-5 w-full h-full">
         <p className="body-20-bold">회원가입</p>
@@ -50,12 +50,12 @@ const Page = () => {
         <div className="flex flex-col gap-3 w-full text-left">
           <label className="flex items-center gap-5 body-16-bold">
             전화번호
-            {errors.phone && (
-              <p className="text-red-600 caption-10-medium">{errors.phone.message}</p>
+            {errors.phoneNumber && (
+              <p className="text-red-600 caption-10-medium">{errors.phoneNumber.message}</p>
             )}
           </label>
-          <Input
-            {...register('phone')}
+          <PhoneInput
+            {...register('phoneNumber')}
             className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
             placeholder="010-XXXX-XXXX 형식으로 입력해주세요."
           />

@@ -28,7 +28,7 @@ export default function BackgroundProvider({ children }: BackgroundProviderProps
 
   return (
     <div
-      className="w-full min-h-screen bg-cover bg-no-repeat bg-top flex flex-col items-center justify-between sm:px-10.5 px-4 text-white"
+      className="w-full h-full bg-cover bg-no-repeat bg-top flex flex-col items-center justify-between sm:px-10.5 px-4 text-white"
       style={{ backgroundImage: `url(${backgroundImageUrl})` }}
     >
       {children}
