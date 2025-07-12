@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { IMAGE_PATHS } from '@/constants/images';
 import { Button } from '@/shared/ui/Button';
 
-export default function NotFoundPage() {
+export default function NotFound() {
   const router = useRouter();
   return (
     <div className="flex flex-col h-full w-full text-center">
