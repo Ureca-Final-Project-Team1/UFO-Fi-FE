@@ -465,22 +465,6 @@
     cursor: not-allowed;
   }
 
-  .scroll-blocked {
-    overflow: hidden !important;
-    position: fixed !important;
-    width: 100% !important;
-    height: 100% !important;
-    touch-action: none !important;
-    -webkit-overflow-scrolling: none !important;
-  }
-
-  .scroll-blocked * {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-  }
-
   .text-chart-4 {
     color: var(--chart-4);
   }
