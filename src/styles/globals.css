@@ -468,4 +468,8 @@
   .text-chart-4 {
     color: var(--chart-4);
   }
+
+  .text-status-positive {
+    color: var(--color-status-positive) !important;
+  }
 }

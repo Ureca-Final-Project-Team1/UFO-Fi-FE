@@ -1,10 +1,10 @@
 'use client';
 
 import * as ProgressPrimitive from '@radix-ui/react-progress';
-import { Signal } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { Icon } from '@/shared/ui/Icons';
 
 import { ProgressProps } from './Progress.types';
 import { progressVariants, progressIndicatorVariants } from './progressVariants';
@@ -25,7 +25,7 @@ export function Progress({
       {showCurrentUsage && (
         <div className="flex items-center gap-2">
           {/* 신호 아이콘 */}
-          <Signal className="w-5 h-5 text-green-500" />
+          <Icon name="Signal" size={20} className="text-status-positive" />
 
           {/* 사용량 텍스트 (chart-4 색상 적용) */}
           <span className="text-[28px] font-bold leading-none text-chart-4">{usedStorage}GB</span>
