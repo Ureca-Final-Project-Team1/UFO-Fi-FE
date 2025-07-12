@@ -2,19 +2,33 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 import { Controller, useForm } from 'react-hook-form';
 
-import axiosInstance from '@/api/axios';
+import { getPlanByTelecom } from '@/api/signup/getPlansByTelecom';
+import { signupWithPlan } from '@/api/signup/signupWithPlan';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
-import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui';
+import { Plan } from '@/shared/types/plan';
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Title,
+} from '@/shared/ui';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const Page = () => {
-  const { name, phone, telecom, plan, setForm } = useSignupStore();
+  const prevTelecom = useRef('');
+  const { name, phoneNumber, carrier, planName, setForm } = useSignupStore();
   const router = useRouter();
-  const [plans, setPlans] = useState<string[]>([]);
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  const [maxData, setMaxData] = useState<number | null>();
+  const [networkType, setNetworkType] = useState('');
 
   const {
     control,
@@ -23,72 +37,72 @@ const Page = () => {
   } = useForm<SignupPlanSchema>({
     resolver: zodResolver(signupPlanSchema),
     defaultValues: {
-      telecom: '',
-      plan: '',
+      carrier: '',
+      planName: '',
     },
   });
 
-  const handleClick = () => {
-    fetchPlan();
-  };
+  useEffect(() => {
+    const fetchPlans = async () => {
+      const response = await getPlanByTelecom(carrier);
+      setPlans(response);
+    };
 
-  const fetchPlan = async () => {
-    try {
-      const response = await axiosInstance.get('/plans', {
-        params: { rawCarrier: telecom },
-      });
-
-      console.log('📦 실제 응답 데이터:', response.data);
-
-      const backPlans = response.data?.content?.plans;
-      if (Array.isArray(backPlans)) {
-        setPlans(backPlans);
-        console.log(plans);
-      } else {
-        console.error('📛 plans 배열이 없습니다:', response.data);
-      }
-    } catch (error) {
-      console.error('요금제 조회 실패:', error);
+    if (carrier && carrier !== prevTelecom.current) {
+      fetchPlans();
+      prevTelecom.current = carrier;
     }
-  };
+  }, [carrier]);
 
   const onSubmit = (data: SignupPlanSchema) => {
-    setForm(data);
-    console.log({ name, phone, telecom, plan });
-    router.push('/');
+    setForm({ carrier: data.carrier, planName: data.planName });
+
+    // TODO: DB 리팩토링 후 제거할 것
+    const selectedPlan = plans.find((p) => p.planName === data.planName);
+    if (!selectedPlan) return;
+
+    const fetchSignup = async () => {
+      const response = await signupWithPlan({
+        name,
+        phoneNumber,
+        planName,
+        carrier: selectedPlan.carrier,
+        mobileDataAmount: selectedPlan.mobileDataAmount,
+        isUltimatedAmount: selectedPlan.isUltimatedAmount,
+        sellMobileDataCapacityGB: selectedPlan.sellMobileDataCapacityGB,
+        mobileDataType: selectedPlan.mobileDataType,
+        userId: 1,
+      });
+
+      if (response?.statusCode === 200) {
+        router.push('/');
+      }
+    };
+
+    fetchSignup();
   };
 
-  const [maxData, setMaxData] = useState(0);
-  const [networkType, setNetworkType] = useState('');
-
-  // 더미 데이터
-  useEffect(() => {
-    setMaxData(10);
-    setNetworkType('5G');
-  }, []);
-
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full">
-      <div className="flex flex-[0.9] flex-col justify-start items-start text-center gap-5 sm:gap-8 w-full h-fit">
-        <p className="text-white body-20-bold">회원가입</p>
+    <div className="flex flex-col justify-center items-center w-full min-h-screen">
+      <div className="flex flex-[0.9] flex-col justify-start items-start text-center w-full h-fit">
+        <Title title="회원가입" className="body-20-bold w-fit pl-0" />
 
         <div className="flex flex-col items-start gap-3 sm:gap-6 w-full h-fit">
           <label className="flex items-center gap-5 body-16-bold">
             통신사 정보
-            {errors.telecom && (
-              <p className="text-red-600 caption-10-medium">{errors.telecom.message}</p>
+            {errors.carrier && (
+              <p className="text-red-600 caption-10-medium">{errors.carrier.message}</p>
             )}
-            <button onClick={handleClick}>체크</button>
           </label>
           <Controller
-            name="telecom"
+            name="carrier"
             control={control}
             render={({ field }) => (
               <Select
                 value={field.value}
                 onValueChange={(value) => {
                   field.onChange(value);
-                  setForm({ telecom: value });
+                  setForm({ carrier: value });
                 }}
               >
                 <SelectTrigger
@@ -107,34 +121,46 @@ const Page = () => {
           />
           <label className="flex items-center gap-5 body-16-bold">
             요금제 정보
-            {errors.plan && <p className="text-red-600 caption-10-medium">{errors.plan.message}</p>}
+            {errors.planName && (
+              <p className="text-red-600 caption-10-medium">{errors.planName.message}</p>
+            )}
           </label>
           <Controller
-            name="plan"
+            name="planName"
             control={control}
             render={({ field }) => (
               <Select
                 value={field.value}
                 onValueChange={(value) => {
                   field.onChange(value);
-                  setForm({ plan: value });
+                  setForm({ planName: value });
+
+                  const selected = plans.find((plan) => plan.planName === value);
+                  if (selected) {
+                    setMaxData(selected.sellMobileDataCapacityGB);
+                    setNetworkType(selected.mobileDataType);
+                  }
                 }}
               >
                 <SelectTrigger
                   size="default"
-                  className="w-[180px] bg-white text-black cation-14-regular"
+                  className="w-[180px] bg-white text-black caption-14-regular"
                 >
                   <SelectValue placeholder="요금제 선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  {/* <SelectItem value="요금제">요금제</SelectItem> */}
+                  {plans.map((plan, index) => (
+                    <SelectItem key={index} value={plan.planName || ''}>
+                      {plan.planName}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             )}
           />
         </div>
 
-        {telecom !== '' && plan !== '' && (
+        {carrier !== '' && planName !== '' && (
           <div className="w-full flex flex-col gap-5 sm:gap-8">
             <hr className="border-t border-white w-full my-4 mx-auto" />
             <div className="flex flex-col gap-5 sm:gap-8">
@@ -156,7 +182,6 @@ const Page = () => {
           </div>
         )}
       </div>
-
       <Button
         onClick={handleSubmit(onSubmit)}
         type="submit"
