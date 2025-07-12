@@ -14,7 +14,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-full w-full pb-[56px]">
+    <div className="flex flex-col justify-center items-center w-full h-screen pb-[56px]">
       <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-7 sm:gap-10 w-full h-full">
         <div className="flex flex-col gap-5 sm:gap-8 pb-5">
           <p className="body-20-bold">시작하기 전에</p>

@@ -49,7 +49,8 @@ export type LucideIconType =
   | 'BellRing'
   | 'AlertCircle' // 에러용
   | 'ImageOff' // 이미지 에러용
-  | 'Loader2'; // 로딩용
+  | 'Loader2' // 로딩용
+  | 'Signal'; // 신호 아이콘 추가
 
 // 커스텀 아이콘 타입
 export type CustomIconType =

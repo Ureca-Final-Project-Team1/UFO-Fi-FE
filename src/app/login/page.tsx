@@ -12,7 +12,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full pb-[20px]">
+    <div className="flex flex-col justify-center items-center w-full h-screen pb-[20px]">
       <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-5 w-full h-full pb-16">
         <Image src={IMAGE_PATHS['UFO_LOGIN']} width={134.5} height={136} alt="ufo" />
         <div className="flex flex-col gap-2">
