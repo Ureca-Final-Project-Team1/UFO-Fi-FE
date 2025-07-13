@@ -4,9 +4,7 @@ import React from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { useSellData } from '@/features/hooks/useSellData';
-import { Icon, Input, Title } from '@/shared';
-import { DataSlider } from '@/shared';
-import { Button } from '@/shared';
+import { Icon, Input, Title, Button, PriceInput, DataSlider } from '@/shared';
 
 export default function SellPage() {
   const {
@@ -47,21 +45,17 @@ export default function SellPage() {
         <div className="rounded-lg p-3 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 w-full">
-              <Icon src={ICON_PATHS['LGUPLUS_LOGO']} />
+              {/* TODO: 실제 통신사 정보 받아오는 방식으로 수정 필요 */}
+              <Icon src={ICON_PATHS['LGU']} />
               <div className="flex-1">
-                <input
-                  type="text"
-                  placeholder="글 제목을 입력해주세요."
+                <Input
                   value={titleInput}
                   onChange={(e) => setTitleInput(e.target.value)}
-                  className={`bg-transparent text-white placeholder-white/70 outline-none w-full ${
-                    !isValidTitle && titleInput ? 'border-b border-red-400' : ''
-                  }`}
-                  maxLength={15} // 15자 제한
+                  placeholder="글 제목을 입력해주세요."
+                  variant="whiteBorder"
+                  maxLength={15}
+                  error={!isValidTitle && titleInput ? '제목은 1~15자 이내여야 합니다.' : undefined}
                 />
-                {!isValidTitle && titleInput && (
-                  <p className="text-red-400 text-xs mt-1">제목은 1~15자 이내여야 합니다.</p>
-                )}
               </div>
             </div>
           </div>
@@ -105,17 +99,15 @@ export default function SellPage() {
             <div className="flex items-center justify-between">
               <span className="text-white">1GB 당</span>
               <div className="flex items-center space-x-2">
-                <Input
-                  type="number"
+                <PriceInput
                   value={pricePerGB}
                   onChange={(e) => handlePriceChange(e)}
                   placeholder="금액을 입력하세요"
                   variant="blueFill"
-                  className="w-full text-center"
-                  min={1}
-                  step={1}
+                  className="w-24 text-center"
                   error={!isValidPrice ? '총 판매 가격은 1ZET 이상이어야 합니다.' : undefined}
                 />
+
                 <span className="text-white">ZET</span>
               </div>
             </div>
@@ -128,15 +120,13 @@ export default function SellPage() {
             <h3 className="text-white font-bold text-lg">총 판매 금액</h3>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-            <div className="text-center space-y-2">
-              <div className="text-white text-2xl font-bold">{sellCapacity}GB</div>
-              <div
-                className={`text-3xl font-bold ${isValidPrice ? 'text-yellow-400' : 'text-red-400'}`}
-              >
-                {totalPrice.toLocaleString()}ZET
-              </div>
-            </div>
+          <div className="bg-white/10 rounded-xl px-6 py-4 flex items-center justify-center gap-3">
+            <span className="text-white text-xl font-bold">{sellCapacity}GB</span>
+            <span
+              className={`text-2xl font-bold ${isValidPrice ? 'text-yellow-400' : 'text-red-400'}`}
+            >
+              {totalPrice.toLocaleString()} ZET
+            </span>
           </div>
         </div>
 
@@ -145,7 +135,7 @@ export default function SellPage() {
           <Button
             size="full-width"
             onClick={handleSubmit}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="exploration-button"
             disabled={!isFormValid || isSubmitting}
           >
             {isSubmitting ? '등록 중...' : '등록하기'}
