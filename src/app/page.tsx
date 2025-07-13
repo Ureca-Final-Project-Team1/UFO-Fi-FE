@@ -31,7 +31,6 @@ export default function HomePage() {
           className="mx-auto mb-1"
           priority
         />
-        {/* 탐색 조건 박스 */}
         <div className="mt-2 w-full max-w-[320px] flex flex-row gap-4 justify-center">
           <div
             className="rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full"
@@ -51,7 +50,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 오늘의 평균값 박스 */}
         <div className="mt-2 w-full max-w-[320px] flex justify-center">
           <div
             className="rounded-xl shadow-md px-6 py-3 flex flex-row items-end justify-between w-full"
