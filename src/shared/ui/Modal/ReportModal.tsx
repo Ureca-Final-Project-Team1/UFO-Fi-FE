@@ -2,6 +2,8 @@
 
 import React, { useCallback, useState } from 'react';
 
+import { IMAGE_PATHS } from '@/constants/images';
+
 import { Modal } from './Modal';
 import { RadioGroup } from '../Radio';
 import { CompleteModal } from './CompleteModal';
@@ -28,7 +30,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({ isOpen, onClose })
         headerAlign="left"
         title="게시글을 신고하시겠습니까?"
         description="신고 사유를 선택해주세요."
-        imageSrc="/images/alien-sad-reported.png"
+        imageSrc={IMAGE_PATHS['AL_REPORTED']}
         imageAlt="신고"
         imagePosition={{ x: 90, y: 50 }}
         imageSize={{ width: 150, height: 150 }}
