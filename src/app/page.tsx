@@ -33,17 +33,30 @@ export default function HomePage() {
         />
         {/* 탐색 조건 박스 */}
         <div className="mt-2 w-full max-w-[320px] flex flex-row gap-4 justify-center">
-          <div className="bg-white rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full">
-            <span className="text-xs text-gray-500 mb-1">탐색 시작</span>
+          <div
+            className="rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full"
+            style={{ backgroundColor: 'var(--color-primary-200)' }}
+          >
+            <span className="text-xs mb-1" style={{ color: 'var(--color-primary-600)' }}>
+              탐색 시작
+            </span>
           </div>
-          <div className="bg-white rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full">
-            <span className="text-xs text-gray-500 mb-1">탐색 조건</span>
+          <div
+            className="rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full"
+            style={{ backgroundColor: 'var(--color-primary-300)' }}
+          >
+            <span className="text-xs mb-1" style={{ color: 'var(--color-primary-text-dark)' }}>
+              탐색 조건
+            </span>
           </div>
         </div>
 
         {/* 오늘의 평균값 박스 */}
         <div className="mt-2 w-full max-w-[320px] flex justify-center">
-          <div className="bg-white rounded-xl shadow-md px-6 py-3 flex flex-row items-end justify-between w-full">
+          <div
+            className="rounded-xl shadow-md px-6 py-3 flex flex-row items-end justify-between w-full"
+            style={{ backgroundColor: 'var(--color-primary-100)' }}
+          >
             <div className="flex flex-col items-center flex-1">
               <span className="text-xs text-gray-500 mb-1">오늘 LTE 평균값</span>
               <span className="text-2xl font-extrabold text-black leading-tight">1,200원</span>
