@@ -185,9 +185,9 @@ export const BoxIcon: React.FC<IconProps> = (props) => (
       <path
         d="M12.4474 12.8995H17.5M14.9737 10.3493V15.4498M16.6579 7.79892V6.09875C16.6576 5.80061 16.5796 5.50779 16.4318 5.24966C16.284 4.99153 16.0716 4.77718 15.8158 4.62811L9.92105 1.22778C9.66502 1.07856 9.37459 1 9.07895 1C8.78331 1 8.49287 1.07856 8.23684 1.22778L2.34211 4.62811C2.08633 4.77718 1.87388 4.99153 1.72607 5.24966C1.57827 5.50779 1.5003 5.80061 1.5 6.09875V12.8994C1.5003 13.1976 1.57827 13.4904 1.72607 13.7485C1.87388 14.0066 2.08633 14.221 2.34211 14.3701L8.23684 17.7704C8.49287 17.9196 8.78331 17.9982 9.07895 17.9982C9.37459 17.9982 9.66502 17.9196 9.92105 17.7704L11.6053 16.8013M5.28947 2.92804L12.8684 7.30597M1.74424 5.24875L9.07898 9.49917M9.07898 9.49917L16.4137 5.24875M9.07898 9.49917L9.07895 18"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   </IconWrapper>
@@ -199,16 +199,16 @@ export const RotateIcon: React.FC<IconProps> = (props) => (
       <path
         d="M17.5 1.66699V6.66699H12.5"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M17.5 10.8335C17.3231 12.5051 16.5897 14.0688 15.4176 15.2737C14.2454 16.4785 12.7025 17.2547 11.0364 17.4777C9.37034 17.7006 7.67764 17.3574 6.22997 16.5031C4.78229 15.6488 3.66358 14.333 3.05334 12.7667C2.44311 11.2004 2.37673 9.47454 2.86486 7.86602C3.35299 6.2575 4.36734 4.8596 5.74512 3.89663C7.1229 2.93365 8.78424 2.46144 10.4625 2.55577C12.1408 2.6501 13.7388 3.30549 15 4.41679L17.5 6.66679"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   </IconWrapper>

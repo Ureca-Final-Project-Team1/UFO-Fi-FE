@@ -12,3 +12,5 @@ export * from './Indicator';
 export * from './Slider';
 export * from './Progress';
 export * from './Input';
+export * from './Chip';
+export * from './Avatar';
