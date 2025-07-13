@@ -26,7 +26,7 @@ const Page = () => {
   };
 
   return (
-    <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 gap-4 text-white">
+    <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 px-4 gap-4 text-white">
       <Title title="알림 설정하기" className="body-20-bold" />
 
       <div className="w-full max-w-md flex flex-col gap-6">
