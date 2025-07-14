@@ -1,6 +1,10 @@
 // 아이콘 경로 상수
 export const ICON_PATHS = {
   UFO_LOGO: '/icons/ufo-logo.svg',
+  COIN: '/icons/zet-coin.svg',
+  SKT: '/icons/carriers/skt.svg',
+  KT: '/icons/carriers/kt.svg',
+  LGU: '/icons/carriers/lgu.svg',
 } as const;
 
 // 아이콘 사이즈 상수
