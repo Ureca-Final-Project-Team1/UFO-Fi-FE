@@ -43,8 +43,13 @@ export default function SellingItem({
 }: SellingItemProps) {
   const carrierIcon = getCarrierIcon(carrier);
 
+  // 필수 props 유효성 검사만 진행
+  if (!carrier || !capacity || !price || !timeLeft) {
+    return null;
+  }
+
   return (
-    <div className="relative p-4 rounded-2xl border border-white/10 bg-gradient-to-br from-sky-300/70 via-indigo-400/50 to-purple-400/70">
+    <div className="relative p-4 rounded-2xl border border-white/10 gradient-card-1">
       {/* 오른쪽 상단 버튼 */}
       <div className="absolute top-2 right-2 flex">
         {isOwner ? (

@@ -1,54 +1,67 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useMemo, useEffect } from 'react';
+import { toast } from 'sonner';
 
 import { ICON_PATHS } from '@/constants/icons';
+import SellingItem from '@/features/exchange/components/SellingItem';
 import { Button, Chip, Icon, Title } from '@/shared';
-
-import SellingItem from '../../features/exchange/components/SellingItem';
 
 export default function ExchangePage() {
   const router = useRouter();
 
   // 더미 데이터
-  const sellingItems = [
-    {
-      id: 1,
-      carrier: 'KT',
-      networkType: '5G',
-      capacity: '1GB',
-      price: '2,500원',
-      timeLeft: '30분전',
-      isOwner: false,
-    },
-    {
-      id: 2,
-      carrier: 'SKT',
-      networkType: 'LTE',
-      capacity: '1GB',
-      price: '2,500원',
-      timeLeft: '30분전',
-      isOwner: true,
-    },
-    {
-      id: 3,
-      carrier: 'LG U+',
-      networkType: '5G',
-      capacity: '1GB',
-      price: '2,500원',
-      timeLeft: '30분전',
-      isOwner: false,
-    },
-    {
-      id: 4,
-      carrier: 'KT',
-      networkType: '5G',
-      capacity: '2GB',
-      price: '4,500원',
-      timeLeft: '1시간전',
-      isOwner: false,
-    },
-  ];
+  const sellingItems = useMemo(
+    () => [
+      {
+        id: 1,
+        carrier: 'KT',
+        networkType: '5G',
+        capacity: '1GB',
+        price: '2,500원',
+        timeLeft: '30분전',
+        isOwner: false,
+      },
+      {
+        id: 2,
+        carrier: 'SKT',
+        networkType: 'LTE',
+        capacity: '1GB',
+        price: '2,500원',
+        timeLeft: '30분전',
+        isOwner: true,
+      },
+      {
+        id: 3,
+        carrier: 'LG U+',
+        networkType: '5G',
+        capacity: '1GB',
+        price: '2,500원',
+        timeLeft: '30분전',
+        isOwner: false,
+      },
+      {
+        id: 4,
+        carrier: 'KT',
+        networkType: '5G',
+        capacity: '2GB',
+        price: '4,500원',
+        timeLeft: '1시간전',
+        isOwner: false,
+      },
+    ],
+    [],
+  );
+
+  useEffect(() => {
+    const invalidItem = sellingItems.find(
+      (item) => !item.carrier || !item.capacity || !item.price || !item.timeLeft,
+    );
+    if (invalidItem) {
+      toast.error('모든 정보가 입력되었는지 확인해주세요!');
+    }
+  }, [sellingItems]);
 
   const handleEdit = (id: number) => {
     console.log('Edit item:', id);
@@ -98,7 +111,7 @@ export default function ExchangePage() {
             <Button
               size="sm"
               onClick={handleCharge}
-              className="w-auto rounded-[5px] text-white text-sm"
+              className="w-auto rounded-md text-white text-sm"
             >
               충전
             </Button>
@@ -136,21 +149,23 @@ export default function ExchangePage() {
 
         {/* 판매글 아이템 목록 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {sellingItems.map((item) => (
-            <SellingItem
-              key={item.id}
-              carrier={item.carrier}
-              networkType={item.networkType}
-              capacity={item.capacity}
-              price={item.price}
-              timeLeft={item.timeLeft}
-              isOwner={item.isOwner}
-              onEdit={() => handleEdit(item.id)}
-              onDelete={() => handleDelete(item.id)}
-              onReport={() => handleReport(item.id)}
-              onPurchase={() => handlePurchase(item.id)}
-            />
-          ))}
+          {sellingItems
+            .filter((item) => item.carrier && item.capacity && item.price && item.timeLeft)
+            .map((item) => (
+              <SellingItem
+                key={item.id}
+                carrier={item.carrier}
+                networkType={item.networkType}
+                capacity={item.capacity}
+                price={item.price}
+                timeLeft={item.timeLeft}
+                isOwner={item.isOwner}
+                onEdit={() => handleEdit(item.id)}
+                onDelete={() => handleDelete(item.id)}
+                onReport={() => handleReport(item.id)}
+                onPurchase={() => handlePurchase(item.id)}
+              />
+            ))}
         </div>
       </div>
     </div>
