@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { ICON_PATHS } from '@/constants/icons';
@@ -12,44 +12,47 @@ export default function ExchangePage() {
   const router = useRouter();
 
   // 더미 데이터
-  const sellingItems = [
-    {
-      id: 1,
-      carrier: 'KT',
-      networkType: '5G',
-      capacity: '1GB',
-      price: '2,500원',
-      timeLeft: '30분전',
-      isOwner: false,
-    },
-    {
-      id: 2,
-      carrier: 'SKT',
-      networkType: 'LTE',
-      capacity: '1GB',
-      price: '2,500원',
-      timeLeft: '30분전',
-      isOwner: true,
-    },
-    {
-      id: 3,
-      carrier: 'LG U+',
-      networkType: '5G',
-      capacity: '1GB',
-      price: '2,500원',
-      timeLeft: '30분전',
-      isOwner: false,
-    },
-    {
-      id: 4,
-      carrier: 'KT',
-      networkType: '5G',
-      capacity: '2GB',
-      price: '4,500원',
-      timeLeft: '1시간전',
-      isOwner: false,
-    },
-  ];
+  const sellingItems = useMemo(
+    () => [
+      {
+        id: 1,
+        carrier: 'KT',
+        networkType: '5G',
+        capacity: '1GB',
+        price: '2,500원',
+        timeLeft: '30분전',
+        isOwner: false,
+      },
+      {
+        id: 2,
+        carrier: 'SKT',
+        networkType: 'LTE',
+        capacity: '1GB',
+        price: '2,500원',
+        timeLeft: '30분전',
+        isOwner: true,
+      },
+      {
+        id: 3,
+        carrier: 'LG U+',
+        networkType: '5G',
+        capacity: '1GB',
+        price: '2,500원',
+        timeLeft: '30분전',
+        isOwner: false,
+      },
+      {
+        id: 4,
+        carrier: 'KT',
+        networkType: '5G',
+        capacity: '2GB',
+        price: '4,500원',
+        timeLeft: '1시간전',
+        isOwner: false,
+      },
+    ],
+    [],
+  );
 
   useEffect(() => {
     const invalidItem = sellingItems.find(
