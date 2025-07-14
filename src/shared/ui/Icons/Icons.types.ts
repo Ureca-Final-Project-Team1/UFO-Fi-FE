@@ -29,6 +29,7 @@ export type LucideIconType =
   | 'FilePenLine' // 거래명세서 아이콘
   | 'Menu'
   | 'X'
+  | 'Sticker'
   | 'ChevronLeft'
   | 'ChevronRight'
   | 'ChevronDown'
