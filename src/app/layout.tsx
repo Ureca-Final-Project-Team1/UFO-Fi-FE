@@ -29,7 +29,7 @@ export default function RootLayout({
       <head>
         <meta name="format-detection" content="telephone=no" />
       </head>
-      <body className={`${pretendard.variable} antialiased`}>
+      <body className={`${pretendard.variable} antialiased min-h-screen bg-transparent`}>
         <QueryProvider>
           <NavigationProvider>
             <BackgroundProvider>
