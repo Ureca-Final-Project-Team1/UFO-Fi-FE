@@ -111,7 +111,7 @@ export default function ExchangePage() {
             <Button
               size="sm"
               onClick={handleCharge}
-              className="w-auto rounded-[5px] text-white text-sm"
+              className="w-auto rounded-md text-white text-sm"
             >
               충전
             </Button>
