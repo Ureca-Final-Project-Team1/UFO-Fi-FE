@@ -35,7 +35,7 @@ export default function ZetChargePage() {
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className="selling-item w-[358px] h-[104px] rounded-2xl px-5 py-3 relative"
+              className="gradient-card-1 w-[358px] h-[104px] rounded-2xl px-5 py-3 relative"
             >
               <Image
                 src={IMAGE_PATHS[`PACKAGE_${pkg.id}` as keyof typeof IMAGE_PATHS]}
