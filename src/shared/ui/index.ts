@@ -14,3 +14,5 @@ export * from './Progress';
 export * from './Input';
 export * from './Tabs';
 export * from './TradeCard';
+export * from './Chip';
+export * from './Avatar';

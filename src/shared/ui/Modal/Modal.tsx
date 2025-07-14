@@ -37,6 +37,7 @@ export function Modal({
   onSecondaryClick,
   closeOnPrimary = true,
   closeOnSecondary = true,
+  primaryButtonDisabled = false,
   className,
 }: ModalProps & {
   closeOnPrimary?: boolean;
@@ -115,7 +116,7 @@ export function Modal({
               </DialogPrimitive.Title>
             )}
             {description && (
-              <DialogPrimitive.Description className="text-[14px] text-gray-600 leading-relaxed">
+              <DialogPrimitive.Description className="text-[14px] text-gray-600 leading-relaxed whitespace-pre-line">
                 {description}
               </DialogPrimitive.Description>
             )}
@@ -142,6 +143,7 @@ export function Modal({
               variant="primary"
               size="default"
               onClick={handlePrimaryClick}
+              disabled={primaryButtonDisabled}
               className={type === 'single' ? 'w-full' : 'flex-1'}
             >
               {primaryButtonText}
