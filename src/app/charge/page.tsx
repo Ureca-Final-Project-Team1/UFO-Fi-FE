@@ -69,7 +69,7 @@ export default function ZetChargePage() {
             </span>
           </div>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mb-6">
           {packages.map((pkg) => (
             <div
               key={pkg.id}
