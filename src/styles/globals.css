@@ -485,4 +485,8 @@
   .gradient-card-2 {
     @apply bg-gradient-to-br from-blue-600 to-fuchsia-600 border-2 border-cyan-300;
   }
+
+  .text-badge-cyan {
+    color: var(--color-badge-text-cyan) !important;
+  }
 }

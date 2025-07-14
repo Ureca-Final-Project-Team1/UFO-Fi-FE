@@ -42,14 +42,14 @@ export default function ZetChargePage() {
                 alt={`패키지 ${pkg.id} 이미지`}
                 width={pkg.id === 'A' ? 37 : 56}
                 height={pkg.id === 'A' ? 37 : 60}
-                className="absolute left-5 top-4"
+                className="absolute left-5 top-1/2 -translate-y-1/2"
               />
               <div className="flex flex-col justify-center h-full ml-[64px]">
-                <div className="flex items-center gap-1 mb-1">
+                <div className="flex items-center gap-[2px] mb-[2px]">
                   <Image src={IMAGE_PATHS.PACKAGE_A} alt="패키지 아이콘" width={20} height={20} />
                   <span className="body-16-bold text-white">패키지 {pkg.id}</span>
                 </div>
-                <div className="heading-24-bold text-badge-cyan">{pkg.zet} ZET</div>
+                <div className="heading-24-bold text-badge-cyan mb-[2px]">{pkg.zet} ZET</div>
                 <div className="body-16-semibold text-white">₩{pkg.price.toLocaleString()}</div>
               </div>
               <div className="absolute bottom-3 right-5">
