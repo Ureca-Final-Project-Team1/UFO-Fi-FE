@@ -478,14 +478,11 @@
     color: var(--color-status-positive) !important;
   }
 
-  .selling-item {
-    background: linear-gradient(163deg,
-      rgba(124, 194, 239, 0.70),
-      rgba(128, 148, 232, 0.49),
-      rgba(191, 152, 249, 0.70)
-    );
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    isolation: isolate;
+  .gradient-card-1 {
+    @apply bg-gradient-to-br from-sky-300/70 via-indigo-400/50 to-purple-400/70;
+  }
+
+  .gradient-card-2 {
+    @apply bg-gradient-to-br from-blue-600 to-fuchsia-600 border-2 border-cyan-300;
   }
 }
