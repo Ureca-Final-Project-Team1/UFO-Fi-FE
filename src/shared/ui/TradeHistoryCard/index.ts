@@ -1,2 +1,2 @@
-export { TradeCard } from './TradeHistoryCard';
-export { type TradeCardProps } from './TradeHistoryCard.types';
+export { TradeHistoryCard } from './TradeHistoryCard';
+export { type TradeHistoryCardProps } from './TradeHistoryCard.types';
