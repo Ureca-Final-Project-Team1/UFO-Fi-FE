@@ -37,7 +37,7 @@ export default function SellPage() {
   return (
     <div className="flex flex-col min-h-full w-full justify-center">
       <Title title="데이터 판매 등록" />
-      <div className="relative rounded-[20px] space-y-6 pb-12 xs:pb-6">
+      <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -133,7 +133,7 @@ export default function SellPage() {
           alt="판매 우주인"
           width={200}
           height={200}
-          className="absolute bottom-12 xs:bottom-6 left-0"
+          className="absolute bottom-12 xs:-bottom-28 left-0"
           priority
         />
       </div>
