@@ -20,7 +20,7 @@ export const useSellData = () => {
   };
 
   const validatePrice = (price: number): boolean => {
-    return price >= 1;
+    return typeof price === 'number' && price >= 1 && price <= 10000;
   };
 
   const validateCapacity = (capacity: number): boolean => {
@@ -62,10 +62,9 @@ export const useSellData = () => {
       return;
     }
 
-    // 백엔드 명세에 맞춘 요청 데이터 (필드명 주의!)
     const requestData = {
       title: titleInput.trim(),
-      price: totalPrice,
+      price: Math.max(totalPrice, 1),
       sellMobileDataCapacityGb: sellCapacity,
     };
 
