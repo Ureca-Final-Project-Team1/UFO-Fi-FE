@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Button } from '@/shared/ui/Button';
+import { ZetChargePackageCard } from '@/features/charge/components/ZetChargePackageCard';
+import { Icon } from '@/shared/ui/Icons';
 import { Title } from '@/shared/ui/Title';
 import '@/styles/globals.css';
 
@@ -37,65 +37,18 @@ export default function ZetChargePage() {
               borderRadius: '12px',
             }}
           >
-            <Image
+            <Icon
               src={IMAGE_PATHS.PACKAGE_A}
               alt="패키지 아이콘"
-              width={20}
-              height={20}
-              className="mr-2"
+              className="mr-2 w-[20px] h-[20px]"
             />
-            <span
-              style={{
-                color: 'var(--color-badge-text-cyan)',
-                fontWeight: 700,
-                fontSize: '16px',
-                lineHeight: '24px',
-                fontFamily: 'Pretendard, sans-serif',
-              }}
-            >
-              200
-            </span>
-            <span
-              style={{
-                color: 'var(--color-badge-text-cyan)',
-                fontWeight: 700,
-                fontSize: '16px',
-                lineHeight: '24px',
-                fontFamily: 'Pretendard, sans-serif',
-                marginLeft: '6px',
-              }}
-            >
-              ZET
-            </span>
+            <span className="body-16-bold text-badge-cyan">200</span>
+            <span className="body-16-bold text-badge-cyan ml-1">ZET</span>
           </div>
         </div>
         <div className="flex flex-col gap-3 mb-6">
           {packages.map((pkg) => (
-            <div
-              key={pkg.id}
-              className="gradient-card-1 w-[358px] h-[104px] rounded-2xl px-5 py-3 relative"
-            >
-              <Image
-                src={IMAGE_PATHS[`PACKAGE_${pkg.id}` as keyof typeof IMAGE_PATHS]}
-                alt={`패키지 ${pkg.id} 이미지`}
-                width={pkg.id === 'A' ? 37 : 56}
-                height={pkg.id === 'A' ? 37 : 60}
-                className={`absolute ${pkg.id === 'A' ? 'left-7' : 'left-5'} top-1/2 -translate-y-1/2`}
-              />
-              <div className="flex flex-col justify-center h-full ml-[64px]">
-                <div className="flex items-center gap-[2px] mb-[2px]">
-                  <Image src={IMAGE_PATHS.PACKAGE_A} alt="패키지 아이콘" width={20} height={20} />
-                  <span className="body-16-bold text-white">패키지 {pkg.id}</span>
-                </div>
-                <div className="heading-24-bold text-badge-cyan mb-[2px]">{pkg.zet} ZET</div>
-                <div className="body-16-semibold text-white">₩{pkg.price.toLocaleString()}</div>
-              </div>
-              <div className="absolute bottom-3 right-5">
-                <Button variant="exploration-button" size="sm">
-                  구매하기
-                </Button>
-              </div>
-            </div>
+            <ZetChargePackageCard key={pkg.id} id={pkg.id} zet={pkg.zet} price={pkg.price} />
           ))}
         </div>
       </div>
