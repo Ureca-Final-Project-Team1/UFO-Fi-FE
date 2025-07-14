@@ -54,7 +54,7 @@ export default function SignalCard({
             style={{ borderColor: 'var(--chart-4)' }}
           />
           <button
-            className="w-[4rem] mt-2 rounded-md text-xs text-white py-0.5"
+            className="w-[5rem] mt-2 rounded-md text-xs text-white py-0.5"
             style={{ backgroundColor: 'var(--chart-4)' }}
           >
             🌱 지구 새싹
