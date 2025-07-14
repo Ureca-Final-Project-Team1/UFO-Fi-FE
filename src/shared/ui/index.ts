@@ -13,6 +13,5 @@ export * from './Slider';
 export * from './Progress';
 export * from './Input';
 export * from './Tabs';
-export * from './TradeHistoryCard';
 export * from './Chip';
 export * from './Avatar';

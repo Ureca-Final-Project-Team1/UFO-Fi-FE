@@ -4,10 +4,10 @@ import React from 'react';
 import '@/styles/globals.css';
 
 import { ICON_PATHS } from '@/constants/icons';
+import { Badge } from '@/shared';
+import { Icon } from '@/shared';
 
-import { TradeHistoryCardProps } from './TradeHistoryCard.types';
-import { Badge } from '../Badge';
-import { Icon } from '../Icons';
+import { TradeHistoryCardProps } from '../types/TradeHistoryCard.types';
 
 export const TradeHistoryCard = ({
   carrier,

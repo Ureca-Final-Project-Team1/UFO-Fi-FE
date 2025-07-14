@@ -1,4 +1,4 @@
-import { BadgeState } from '../Badge/Badge.types';
+import { BadgeState } from '@/shared';
 
 export interface TradeHistoryCardProps {
   carrier: string;
