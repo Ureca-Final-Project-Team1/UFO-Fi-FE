@@ -2,10 +2,14 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import '../styles/globals.css';
-import { ModalProvider, QueryProvider, ViewportObserverProvider } from '@/provider';
-import BackgroundProvider from '@/provider/BackgroundProvider';
-import NavigationProvider from '@/provider/NavigationProvider';
-import OnboardingGuardProvider from '@/provider/OnboardingGuardProvider';
+import {
+  ModalProvider,
+  QueryProvider,
+  ViewportObserverProvider,
+  NavigationProvider,
+  OnboardingGuardProvider,
+  BackgroundProvider,
+} from '@/provider';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
