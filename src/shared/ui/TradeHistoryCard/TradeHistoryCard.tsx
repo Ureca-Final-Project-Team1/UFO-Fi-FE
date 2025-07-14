@@ -31,10 +31,12 @@ export const TradeHistoryCard = ({
         }`}
       >
         <div className="flex items-start gap-2 w-full max-w-[70%]">
-          <Icon
-            src={ICON_PATHS[carrier as keyof typeof ICON_PATHS]}
-            className="w-[16px] h-[13px] pt-1 shrink-0"
-          />
+          {carrier && (
+            <Icon
+              src={ICON_PATHS[carrier as keyof typeof ICON_PATHS]}
+              className="w-[16px] h-[13px] pt-1 shrink-0"
+            />
+          )}
           <div className="flex flex-col justify-center min-w-0 max-w-full">
             <span className="caption-12-semibold truncate text-white">
               {message || <span className="invisible">-</span>}
@@ -54,7 +56,9 @@ export const TradeHistoryCard = ({
                 ? 'text-white line-through'
                 : state === 'reported'
                   ? 'text-gray-300'
-                  : 'text-[var(--color-badge-text-cyan)]'
+                  : state
+                    ? 'text-[var(--color-badge-text-cyan)]'
+                    : 'text-gray-500'
             }`}
           >
             {state === 'sold' ? `+${price} ZET` : `${price} ZET`}
