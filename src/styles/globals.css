@@ -472,4 +472,12 @@
   .text-status-positive {
     color: var(--color-status-positive) !important;
   }
+
+  .gradient-card-1 {
+    @apply bg-gradient-to-br from-sky-300/70 via-indigo-400/50 to-purple-400/70;
+  }
+
+  .gradient-card-2 {
+    @apply bg-gradient-to-br from-blue-600 to-fuchsia-600 border-2 border-cyan-300;
+  }
 }
