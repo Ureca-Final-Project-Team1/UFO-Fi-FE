@@ -11,6 +11,10 @@ interface SignalCardProps {
   maxData: number; // GB
 }
 
+const PROFILE_DEFAULT = '/images/avatar.png';
+const QR_IMAGE = '/images/QR.png';
+const IC_IMAGE = '/images/IC.png';
+
 export default function SignalCard({
   userId,
   profileImageUrl,
@@ -46,7 +50,7 @@ export default function SignalCard({
         {/* 왼쪽 캐릭터 */}
         <div className="flex flex-col items-center shrink-0">
           <Image
-            src={profileImageUrl || '/images/avatar.png'}
+            src={profileImageUrl || PROFILE_DEFAULT}
             alt="지구인"
             width={80}
             height={80}
@@ -96,8 +100,8 @@ export default function SignalCard({
           >
             ✏️ 프로필 수정
           </Button>
-          <Image src="/images/QR.png" alt="QR 코드" width={80} height={80} />
-          <Image src="/images/IC.png" alt="칩" width={50} height={50} className="mt-2" />
+          <Image src={QR_IMAGE} alt="QR 코드" width={80} height={80} />
+          <Image src={IC_IMAGE} alt="칩" width={50} height={50} className="mt-2" />
         </div>
       </div>
     </div>
