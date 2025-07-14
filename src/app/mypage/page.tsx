@@ -1,17 +1,38 @@
 'use client';
+import { useRouter } from 'next/navigation';
+
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { Icon } from '@/shared/ui/Icons';
 
 export default function MyPage() {
+  const router = useRouter();
+
+  const navigateToSalesHistory = () => {
+    router.push('/mypage/sales');
+  };
+
+  const navigateToPurchaseHistory = () => {
+    router.push('/mypage/receipt');
+  };
+
+  const navigateToLogout = () => {
+    // 로그아웃 로직 추후 따로 구현
+    router.push('/logout');
+  };
+
+  const navigateToTerms = () => {
+    router.push('/terms');
+  };
+
   const transactionItems = [
-    { label: '판매 내역', onClick: () => console.log('판매 내역') },
-    { label: '구매 내역', onClick: () => console.log('구매 내역') },
+    { label: '판매 내역', onClick: navigateToSalesHistory },
+    { label: '구매 내역', onClick: navigateToPurchaseHistory },
   ];
 
   const supportItems = [
-    { label: '로그아웃', onClick: () => console.log('로그아웃') },
-    { label: '이용 약관', onClick: () => console.log('이용 약관') },
+    { label: '로그아웃', onClick: navigateToLogout },
+    { label: '이용 약관', onClick: navigateToTerms },
   ];
 
   return (
