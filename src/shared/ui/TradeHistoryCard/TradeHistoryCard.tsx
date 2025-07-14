@@ -36,7 +36,9 @@ export const TradeHistoryCard = ({
             className="w-[16px] h-[13px] pt-1 shrink-0"
           />
           <div className="flex flex-col justify-center min-w-0 max-w-full">
-            <span className="caption-12-semibold truncate text-white">{message}</span>
+            <span className="caption-12-semibold truncate text-white">
+              {message || <span className="invisible">-</span>}
+            </span>
             <span className="body-20-bold text-white">{dataAmount} GB</span>
           </div>
         </div>
