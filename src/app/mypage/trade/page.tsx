@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 
 import { TradeHistoryCard, TradeHistoryCardProps } from '@/features/mypage/components';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
+import { Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
 import { groupByDate } from '@/utils/groupByDate';
 
 const Page = () => {
@@ -80,6 +80,54 @@ const Page = () => {
         state: 'selling',
         createdAt: new Date('2025-07-03'),
       },
+      {
+        carrier: 'LGU',
+        message: '6GB 판매자와 거래 중',
+        dataAmount: 6,
+        price: 36,
+        state: 'selling',
+        createdAt: new Date('2025-07-03'),
+      },
+      {
+        carrier: 'LGU',
+        message: '6GB 판매자와 거래 중',
+        dataAmount: 6,
+        price: 36,
+        state: 'selling',
+        createdAt: new Date('2025-07-03'),
+      },
+      {
+        carrier: 'LGU',
+        message: '6GB 판매자와 거래 중',
+        dataAmount: 6,
+        price: 36,
+        state: 'selling',
+        createdAt: new Date('2025-07-03'),
+      },
+      {
+        carrier: 'LGU',
+        message: '6GB 판매자와 거래 중',
+        dataAmount: 6,
+        price: 36,
+        state: 'selling',
+        createdAt: new Date('2025-07-03'),
+      },
+      {
+        carrier: 'LGU',
+        message: '6GB 판매자와 거래 중',
+        dataAmount: 6,
+        price: 36,
+        state: 'selling',
+        createdAt: new Date('2025-07-03'),
+      },
+      {
+        carrier: 'LGU',
+        message: '6GB 판매자와 거래 중',
+        dataAmount: 6,
+        price: 36,
+        state: 'selling',
+        createdAt: new Date('2025-07-03'),
+      },
     ]);
   }, []);
 
@@ -87,14 +135,11 @@ const Page = () => {
   const groupedPurchaseTrade = groupByDate(purchaseTrade);
 
   const EmptyTradeNotice = ({ label = '아직 거래한 내용이 없어요!' }: { label?: string }) => (
-    <div className="flex flex-col items-center justify-center py-20 gap-4">
-      <span className="text-sm text-gray-400">{label}</span>
-      <button
-        onClick={() => router.push('/exchange')}
-        className="px-4 py-2 rounded-md bg-white text-black text-sm font-semibold hover:bg-gray-200 transition"
-      >
+    <div className="flex flex-col items-center justify-center h-full gap-8">
+      <Label className="text-gray-400">{label}</Label>
+      <Button onClick={() => router.push('/exchange')} className="body-16-bold">
         거래하러 가기
-      </button>
+      </Button>
     </div>
   );
 
@@ -105,7 +150,7 @@ const Page = () => {
       .sort(([a], [b]) => (a > b ? -1 : 1))
       .map(([date, items]) => (
         <div key={date} className="mb-6">
-          <p className="text-sm text-gray-300 font-semibold mb-2">{date}</p>
+          <p className="text-white caption-14-bold ml-2 mb-2">{date}</p>
           <div className="flex flex-col gap-3">
             {items.map((item, idx) => (
               <TradeHistoryCard
@@ -122,16 +167,16 @@ const Page = () => {
       ));
 
   return (
-    <div className="flex flex-col justify-start items-center w-full min-h-[calc(100vh-112px)]">
+    <div className="flex flex-col justify-start items-center w-full h-[calc(100vh-112px)]">
       <Tabs
         defaultValue="tab1"
         value={activeTab}
         onValueChange={handleTabChange}
         className="w-full h-full"
       >
-        <TabsList className="bg-transparent w-full h-16">
+        <TabsList className="bg-transparent w-full py-6 sm:py-8">
           <TabsTrigger
-            className="flex body-20-bold items-center h-full"
+            className="flex body-20-bold items-center py-6 sm:py-8"
             value="tab1"
             variant="darkTab"
             size="full"
@@ -139,7 +184,7 @@ const Page = () => {
             판매 내역
           </TabsTrigger>
           <TabsTrigger
-            className="flex body-20-bold items-center h-full"
+            className="flex body-20-bold items-center py-6 sm:py-8"
             value="tab2"
             variant="darkTab"
             size="full"
@@ -147,11 +192,11 @@ const Page = () => {
             구매 내역
           </TabsTrigger>
         </TabsList>
-        <div ref={contentRef} className="px-8 max-h-[500px] overflow-y-auto">
-          <TabsContent value="tab1" className="text-white">
+        <div ref={contentRef} className="px-8 overflow-y-auto h-full pt-4 mb-4 hide-scrollbar">
+          <TabsContent value="tab1" className="text-white h-full">
             {sellTrade.length === 0 ? <EmptyTradeNotice /> : renderGroupedHistory(groupedSellTrade)}
           </TabsContent>
-          <TabsContent value="tab2" className="text-white">
+          <TabsContent value="tab2" className="text-white h-full">
             {purchaseTrade.length === 0 ? (
               <EmptyTradeNotice />
             ) : (
