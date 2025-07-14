@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { TradeCard } from './TradeCard';
+import { TradeHistoryCard } from './TradeHistoryCard';
 
-const meta: Meta<typeof TradeCard> = {
+const meta: Meta<typeof TradeHistoryCard> = {
   title: 'UI/TradeCard',
-  component: TradeCard,
+  component: TradeHistoryCard,
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof TradeCard>;
+type Story = StoryObj<typeof TradeHistoryCard>;
 
 export const Default: Story = {
   args: {
-    carrier: 'kt',
+    carrier: 'KT',
     message: '데이터 급처분합니다.',
     state: 'selling',
     dataAmount: 1,
@@ -23,7 +23,7 @@ export const Default: Story = {
 
 export const SoldOut: Story = {
   args: {
-    carrier: 'skt',
+    carrier: 'SKT',
     message: '지금은 거래 완료!',
     state: 'sold',
     dataAmount: 2,

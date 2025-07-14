@@ -1,6 +1,6 @@
 import { BadgeState } from '../Badge/Badge.types';
 
-export interface TradeCardProps {
+export interface TradeHistoryCardProps {
   carrier: string;
   message: string;
   state?: BadgeState;
