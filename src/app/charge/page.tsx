@@ -27,9 +27,47 @@ export default function ZetChargePage() {
         </div>
         <div className="flex items-center justify-between mb-4">
           <p className="body-16-medium text-white m-0">외계 전파 코인을 구매하세요!</p>
-          <button className="bg-[#5945FF] text-white rounded-full px-3 py-1 text-sm font-bold flex items-center ml-2">
-            200 <span className="ml-1">ZET</span>
-          </button>
+          <div
+            className="flex items-center justify-center ml-2"
+            style={{
+              width: '124px',
+              height: '36.46px',
+              background: 'var(--color-primary-700)',
+              border: '2px solid var(--color-border-zet)',
+              borderRadius: '12px',
+            }}
+          >
+            <Image
+              src={IMAGE_PATHS.PACKAGE_A}
+              alt="패키지 아이콘"
+              width={20}
+              height={20}
+              className="mr-2"
+            />
+            <span
+              style={{
+                color: 'var(--color-badge-text-cyan)',
+                fontWeight: 700,
+                fontSize: '16px',
+                lineHeight: '24px',
+                fontFamily: 'Pretendard, sans-serif',
+              }}
+            >
+              200
+            </span>
+            <span
+              style={{
+                color: 'var(--color-badge-text-cyan)',
+                fontWeight: 700,
+                fontSize: '16px',
+                lineHeight: '24px',
+                fontFamily: 'Pretendard, sans-serif',
+                marginLeft: '6px',
+              }}
+            >
+              ZET
+            </span>
+          </div>
         </div>
         <div className="flex flex-col gap-3">
           {packages.map((pkg) => (
@@ -42,7 +80,7 @@ export default function ZetChargePage() {
                 alt={`패키지 ${pkg.id} 이미지`}
                 width={pkg.id === 'A' ? 37 : 56}
                 height={pkg.id === 'A' ? 37 : 60}
-                className="absolute left-5 top-1/2 -translate-y-1/2"
+                className={`absolute ${pkg.id === 'A' ? 'left-7' : 'left-5'} top-1/2 -translate-y-1/2`}
               />
               <div className="flex flex-col justify-center h-full ml-[64px]">
                 <div className="flex items-center gap-[2px] mb-[2px]">
