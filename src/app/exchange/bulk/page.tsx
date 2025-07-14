@@ -5,8 +5,8 @@ import React from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
-import { BulkCapacitySlider } from '@/features/exchange/components/BulkCapacitySlider';
-import { useBulkPurchase } from '@/features/exchange/hooks/useBulkPurchase';
+import { BulkCapacitySlider } from '@/features/bulk/components/BulkCapacitySlider';
+import { useBulkPurchase } from '@/features/bulk/hooks/useBulkPurchase';
 import { Icon, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
