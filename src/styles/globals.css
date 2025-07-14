@@ -78,6 +78,8 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --font-pretendard: 'Pretendard';
+  --bg-trade-card: linear-gradient(180deg, #7cc2ef 0%, #485bac 56%, #7f6fc3 100%);
+  --bg-trade-reported: #606060;
 }
 
 .dark {
@@ -472,5 +474,13 @@
 
   .text-status-positive {
     color: var(--color-status-positive) !important;
+  }
+
+  .gradient-card-1 {
+    @apply bg-gradient-to-br from-sky-300/70 via-indigo-400/50 to-purple-400/70;
+  }
+
+  .gradient-card-2 {
+    @apply bg-gradient-to-br from-blue-600 to-fuchsia-600 border-2 border-cyan-300;
   }
 }

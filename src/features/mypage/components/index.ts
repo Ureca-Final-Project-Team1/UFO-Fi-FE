@@ -1,2 +1,2 @@
-export * from './SignalCard';
-export * from './MenuSection';
+export { TradeHistoryCard } from './TradeHistoryCard';
+export { type TradeHistoryCardProps } from '../types/TradeHistoryCard.types';

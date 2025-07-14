@@ -13,9 +13,16 @@ type RadioGroupProps = {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   className?: string;
+  color?: string;
 };
 
-export function RadioGroup({ options, defaultValue, onValueChange, className }: RadioGroupProps) {
+export function RadioGroup({
+  options,
+  color,
+  defaultValue,
+  onValueChange,
+  className,
+}: RadioGroupProps) {
   return (
     <RadioGroupPrimitive.Root
       className={cn('grid gap-2', className)}
@@ -25,8 +32,8 @@ export function RadioGroup({ options, defaultValue, onValueChange, className }: 
       {options.map((label) => {
         const value = label.toLowerCase();
         return (
-          <div key={value} className="flex items-center text-white space-x-2">
-            <RadioGroupItem id={value} value={value} />
+          <div key={value} className={`flex items-center text-${color || 'white'} space-x-2`}>
+            <RadioGroupItem id={value} value={value} color={color || 'white'} />
             <Label htmlFor={value}>{label}</Label>
           </div>
         );
