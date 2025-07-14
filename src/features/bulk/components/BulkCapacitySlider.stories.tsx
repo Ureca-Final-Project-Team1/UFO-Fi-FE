@@ -20,7 +20,7 @@ const InteractiveWrapper = ({
 };
 
 const meta: Meta<typeof BulkCapacitySlider> = {
-  title: 'Features/Bulk/BulkCapacitySlider',
+  title: 'Components/Bulk/BulkCapacitySlider',
   component: BulkCapacitySlider,
   parameters: {
     layout: 'centered',
