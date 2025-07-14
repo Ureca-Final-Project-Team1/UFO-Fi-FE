@@ -3,7 +3,8 @@
 import Image from 'next/image';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { SpeechBubble } from '@/features/onboarding/components';
+import { SpeechBubble } from '@/features/main/speechBubble';
+import { Button } from '@/shared/ui/Button';
 
 export default function HomePage() {
   return (
@@ -32,22 +33,20 @@ export default function HomePage() {
           priority
         />
         <div className="mt-2 w-full max-w-[320px] flex flex-row gap-4 justify-center">
-          <div
-            className="rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full"
-            style={{ backgroundColor: 'var(--color-primary-200)' }}
+          <Button
+            variant="next-button"
+            size="default"
+            className="w-full rounded-xl shadow-md px-6 py-3 flex flex-col items-center"
           >
-            <span className="text-xs mb-1" style={{ color: 'var(--color-primary-600)' }}>
-              탐색 시작
-            </span>
-          </div>
-          <div
-            className="rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full"
-            style={{ backgroundColor: 'var(--color-primary-300)' }}
+            <span className="text-xs mb-1">탐색 시작</span>
+          </Button>
+          <Button
+            variant="project-button"
+            size="default"
+            className="w-full rounded-xl shadow-md px-6 py-3 flex flex-col items-center"
           >
-            <span className="text-xs mb-1" style={{ color: 'var(--color-primary-text-dark)' }}>
-              탐색 조건
-            </span>
-          </div>
+            <span className="text-xs mb-1">탐색 조건</span>
+          </Button>
         </div>
 
         <div className="mt-2 w-full max-w-[320px] flex justify-center">
