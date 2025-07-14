@@ -20,7 +20,7 @@ export default function SignalCard({
 }: SignalCardProps) {
   return (
     <div
-      className="mt-[1rem] text-black rounded-xl shadow-lg border-[4px] mx-auto w-[28rem]"
+      className="mt-[1rem] text-black rounded-xl shadow-lg border-[4px] mx-auto"
       style={{
         maxWidth: 'var(--width-mobile-max)',
         borderColor: 'var(--chart-4)',
