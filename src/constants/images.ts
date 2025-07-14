@@ -2,6 +2,7 @@ export const IMAGE_PATHS = {
   AL_SAD: '/images/alien-sad.png',
   AL_HAPPY: '/images/alien-happy.png',
   AL_ONBOARDING: '/images/alien-onboarding.png',
+  AL_SELL: '/images/alien-sell.png',
   AL_REPORTED: '/images/alien-sad-reported.png',
   AL_COMPLETE: '/images/alien-serious-reported.png',
   NEXT_BTN_ONBOARDING: '/images/next-btn.png',
@@ -12,7 +13,6 @@ export const IMAGE_PATHS = {
   BLACKHOLE_REAL: '/images/blackhole-real.png',
   NOT_FOUND: '/images/not-found.png',
   WARNING: '/images/warning.png',
-
   KAKAO_LOGIN_BUTTON: '/images/kakao-login-button.png',
   UFO_LOGIN: '/images/ufo-login.png',
 } as const;
