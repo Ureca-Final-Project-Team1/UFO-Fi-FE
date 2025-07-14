@@ -14,15 +14,17 @@ export default function BackgroundProvider({ children }: BackgroundProviderProps
 
   const backgroundImageUrl = (() => {
     if (
-      (pathname.startsWith('/login'),
-      pathname.startsWith('/signup'),
-      pathname.startsWith('/blackhole'))
+      pathname.startsWith('/login') ||
+      pathname.startsWith('/signup') ||
+      pathname.startsWith('/blackhole')
     ) {
       return IMAGE_PATHS.BG_LOGIN;
     }
+
     if (pathname.startsWith('/onboarding')) {
       return IMAGE_PATHS.BG_ONBOARDING;
     }
+
     return IMAGE_PATHS.BG_BASIC;
   })();
 

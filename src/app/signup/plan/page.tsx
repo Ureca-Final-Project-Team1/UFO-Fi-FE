@@ -83,7 +83,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen">
+    <div className="flex flex-col justify-center items-center w-full h-full">
       <div className="flex flex-[0.9] flex-col justify-start items-start text-center w-full h-fit">
         <Title title="회원가입" className="body-20-bold w-fit pl-0" />
 
