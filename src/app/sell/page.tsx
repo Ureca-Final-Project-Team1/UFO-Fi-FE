@@ -9,6 +9,7 @@ import { useSellData } from '@/features/hooks/useSellData';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
+import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function SellPage() {
   const {
@@ -31,10 +32,12 @@ export default function SellPage() {
 
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
 
+  const isMobile = useViewportStore((state) => state.isMobile);
+
   return (
     <div className="flex flex-col min-h-full w-full justify-center">
       <Title title="데이터 판매 등록" />
-      <div className="relative rounded-[20px] space-y-6 pb-16">
+      <div className="relative rounded-[20px] space-y-6 pb-12 xs:pb-6">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -44,13 +47,16 @@ export default function SellPage() {
         {/* 통신사 + 제목 입력 */}
         <div className="rounded-lg p-3 space-y-2">
           <div className="flex items-center space-x-2 w-full">
-            <Icon src={ICON_PATHS['LGU']} />
+            <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1">
+              <Icon src={ICON_PATHS['LGU']} />
+            </div>
+
             <div className="flex-1">
               <Input
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.target.value)}
                 placeholder="글 제목을 입력해주세요."
-                variant="whiteBorder"
+                variant="blueFill"
                 maxLength={15}
                 error={!isValidTitle && titleInput ? '제목은 1~15자 이내여야 합니다.' : undefined}
               />
@@ -82,21 +88,23 @@ export default function SellPage() {
         </div>
 
         {/* 1GB당 가격 입력 */}
-        <div className="rounded-xl px-4 py-3 bg-white/10">
-          <div className="flex items-center justify-between">
-            <span className="text-white">1GB 당</span>
-            <div className="flex items-center space-x-2">
-              <PriceInput
-                value={pricePerGB}
-                onChange={(e) => handlePriceChange(e)}
-                placeholder="금액을 입력하세요"
-                variant="blueFill"
-                className="w-24 text-center"
-                error={!isValidPrice ? '총 판매 가격은 1ZET 이상이어야 합니다.' : undefined}
-              />
-              <span className="text-white">ZET</span>
-            </div>
+        <div className="flex justify-center items-center gap-3.5">
+          <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">
+            1GB 당
           </div>
+
+          <div className="w-28 h-10 bg-blue-950 rounded-lg outline outline-1 outline-offset-[-0.5px] outline-blue-400 flex justify-center items-center px-2">
+            <PriceInput
+              value={pricePerGB}
+              onChange={(e) => handlePriceChange(e)}
+              placeholder="금액"
+              variant="blueFill"
+              className="w-full text-center text-cyan-400 text-lg font-semibold leading-relaxed bg-transparent border-none focus:outline-none"
+              error={!isValidPrice ? '총 판매 가격은 1ZET 이상이어야 합니다.' : undefined}
+            />
+          </div>
+
+          <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">ZET</div>
         </div>
 
         {/* 총 판매 금액 표시 */}
@@ -109,7 +117,7 @@ export default function SellPage() {
         {/* 등록 버튼 */}
         <div className="w-full mx-auto pt-2 flex justify-end relative">
           <Button
-            size="lg"
+            size={isMobile ? 'default' : 'lg'}
             onClick={handleSubmit}
             variant="exploration-button"
             disabled={!isFormValid || isSubmitting}
@@ -118,13 +126,14 @@ export default function SellPage() {
             {isSubmitting ? '등록 중...' : '등록하기'}
           </Button>
         </div>
+
         {/* 하단 캐릭터 */}
         <Image
           src={IMAGE_PATHS.AL_SELL}
           alt="판매 우주인"
           width={200}
           height={200}
-          className="absolute bottom-12 left-0"
+          className="absolute bottom-12 xs:bottom-6 left-0"
           priority
         />
       </div>

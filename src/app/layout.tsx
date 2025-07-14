@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import '../styles/globals.css';
-import { ModalProvider, QueryProvider } from '@/provider';
+import { ModalProvider, QueryProvider, ViewportObserverProvider } from '@/provider';
 import BackgroundProvider from '@/provider/BackgroundProvider';
 import NavigationProvider from '@/provider/NavigationProvider';
 import OnboardingGuardProvider from '@/provider/OnboardingGuardProvider';
@@ -31,12 +31,14 @@ export default function RootLayout({
       </head>
       <body className={`${pretendard.variable} antialiased min-h-screen bg-transparent`}>
         <QueryProvider>
-          <NavigationProvider>
-            <BackgroundProvider>
-              <OnboardingGuardProvider>{children}</OnboardingGuardProvider>
-            </BackgroundProvider>
-          </NavigationProvider>
-          <ModalProvider />
+          <ViewportObserverProvider>
+            <NavigationProvider>
+              <BackgroundProvider>
+                <OnboardingGuardProvider>{children}</OnboardingGuardProvider>
+              </BackgroundProvider>
+            </NavigationProvider>
+            <ModalProvider />
+          </ViewportObserverProvider>
         </QueryProvider>
       </body>
     </html>
