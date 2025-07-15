@@ -28,6 +28,10 @@ export type LucideIconType =
   | 'Settings'
   | 'FilePenLine' // 거래명세서 아이콘
   | 'Menu'
+  | 'Sparkles'
+  | 'Database'
+  | 'Coins'
+  | 'Calculator'
   | 'X'
   | 'Sticker'
   | 'ChevronLeft'
