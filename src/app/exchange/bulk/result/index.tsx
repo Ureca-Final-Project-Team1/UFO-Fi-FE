@@ -88,10 +88,7 @@ function BulkResultContent() {
 
         {/* 데이터 목록 */}
         <div className="space-y-4">
-          <h3 className="text-white font-bold text-lg flex items-center gap-2">
-            <Icon name="Sparkles" className="w-5 h-5 text-purple-400" />
-            데이터 목록
-          </h3>
+          <h3 className="text-white font-bold text-lg flex items-center gap-2">데이터 목록</h3>
 
           {/* 그리드 레이아웃 반응형 */}
           <div className={`gap-3 ${isMobile ? 'grid grid-cols-2' : 'flex flex-col'}`}>

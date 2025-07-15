@@ -15,6 +15,7 @@ const CARRIER_COLORS = {
   LGU: 'bg-pink-500',
 };
 
+// 일괄구매 구매 예정 데이터 카드 아이템
 export function BulkResultCard({
   carrier,
   message,
@@ -25,35 +26,35 @@ export function BulkResultCard({
 }: BulkResultCardProps) {
   return (
     <div className="gradient-card-1 rounded-2xl p-4 flex flex-col gap-3 h-full min-h-[120px]">
-      {/* 상단: 사용자 정보 & 시간 */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Avatar size="sm" />
-          <span className="text-white body-14-medium">{seller}</span>
+      {/* 상단: 사용자 닉네임 & 타임스탬프 */}
+      <div className="flex items-center gap-2">
+        <Avatar size="sm" />
+        <div className="flex flex-col">
+          <span className="text-white caption-14-bold">{seller}</span>
+          <span className="text-gray-300 caption-12-regular">{timeAgo}</span>
         </div>
-        <span className="text-gray-400 caption-12-regular">{timeAgo}</span>
       </div>
 
-      {/* 중앙: 통신사 & 메시지 */}
+      {/* 통신사 & 타이틀 */}
       <div className="flex items-center gap-2 flex-1">
         <div
           className={`w-6 h-6 rounded ${CARRIER_COLORS[carrier]} flex items-center justify-center flex-shrink-0`}
         >
           <span className="text-white caption-12-bold">{carrier}</span>
         </div>
-        <span className="text-white body-14-medium truncate">{message}</span>
+        <span className="text-white caption-14-regular truncate">{message}</span>
       </div>
 
       {/* 하단: 데이터량 & 가격 */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap justify-between gap-y-2">
         <div className="flex items-center gap-2">
           <Icon name="Database" className="w-4 h-4 text-cyan-400" />
-          <span className="text-cyan-400 heading-18-bold">{dataAmount}GB</span>
+          <span className="text-cyan-400 body-16-semibold">{dataAmount}GB</span>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <Icon name="Coins" className="w-4 h-4 text-yellow-400" />
-          <span className="text-yellow-400 heading-16-bold">{price}ZET</span>
+          <span className="text-yellow-400 body-16-semibold">{price}ZET</span>
         </div>
       </div>
     </div>
