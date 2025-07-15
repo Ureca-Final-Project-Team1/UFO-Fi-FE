@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import { TradeHistoryCard } from './TradeHistoryCard';
 
 const meta: Meta<typeof TradeHistoryCard> = {
-  title: 'components/TradeHistoryCard',
+  title: 'components/mypage/TradeHistoryCard',
   component: TradeHistoryCard,
   tags: ['autodocs'],
 };
