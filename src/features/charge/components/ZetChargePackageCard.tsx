@@ -32,7 +32,7 @@ export function ZetChargePackageCard({ id, zet, price, onBuyClick }: ZetChargePa
           <Image src={IMAGE_PATHS.PACKAGE_A} alt="패키지 아이콘" width={20} height={20} />
           <span className="body-16-bold text-white">패키지 {id}</span>
         </div>
-        <div className="heading-24-bold text-badge-cyan mb-[2px]">{zet} ZET</div>
+        <div className="heading-24-bold text-cyan-400 mb-[2px]">{zet} ZET</div>
         <div className="body-16-semibold text-white">₩{price.toLocaleString()}</div>
       </div>
       <div className="absolute bottom-3 right-5">

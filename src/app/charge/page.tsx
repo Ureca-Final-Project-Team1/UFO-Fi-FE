@@ -25,8 +25,8 @@ export default function ZetChargePage() {
               alt="패키지 아이콘"
               className="mr-2 w-[20px] h-[20px]"
             />
-            <span className="body-16-bold text-badge-cyan">200</span>
-            <span className="body-16-bold text-badge-cyan ml-1">ZET</span>
+            <span className="body-16-bold text-cyan-400">200</span>
+            <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
           </div>
         </div>
         <div className="flex flex-col gap-3 mb-6">
