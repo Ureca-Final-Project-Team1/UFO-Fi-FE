@@ -1,10 +1,11 @@
 'use client';
+
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Title, Input, Button } from '@/shared';
+import { Input, Button } from '@/shared';
 
 type BankOption = { label: string; value: string; image: string };
 
@@ -74,6 +75,27 @@ export default function AccountConnectPage() {
   const [selectedBank, setSelectedBank] = useState<BankOption | null>(null);
   const [account, setAccount] = useState('');
 
+  // 드래그 관련 상태 및 함수
+  const [dragStartY, setDragStartY] = useState<number | null>(null);
+  const [dragTranslateY, setDragTranslateY] = useState(0);
+
+  const handleDragStart = (e: React.PointerEvent<HTMLDivElement>) => {
+    setDragStartY(e.clientY);
+  };
+  const handleDragMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartY !== null) {
+      const diff = e.clientY - dragStartY;
+      setDragTranslateY(diff > 0 ? diff : 0);
+    }
+  };
+  const handleDragEnd = () => {
+    if (dragTranslateY > 80) {
+      closeSheet();
+    }
+    setDragStartY(null);
+    setDragTranslateY(0);
+  };
+
   const handleBankSelect = (bank: BankOption) => {
     setSelectedBank(bank);
     setIsSheetOpen(false);
@@ -104,11 +126,27 @@ export default function AccountConnectPage() {
 
   return (
     <div className="relative min-h-full flex flex-col bg-transparent pb-24">
-      <Title
-        title="지구 자산 연결을 위해 계좌번호를 입력해 주세요"
-        iconVariant="close"
+      <button
+        type="button"
         onClick={() => router.back()}
-      />
+        className="absolute left-1 top-4 z-10 flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
+        aria-label="닫기 버튼"
+      >
+        <svg
+          className="w-6 h-6 text-white"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+        </svg>
+      </button>
+      <h1 className="mt-16 mb-6 text-left text-white heading-24-bold px-4">
+        지구 자산 연결을 위해
+        <br />
+        계좌번호를 입력해 주세요
+      </h1>
 
       <div className="flex flex-col gap-4 pt-2">
         <div
@@ -116,64 +154,109 @@ export default function AccountConnectPage() {
           onClick={openSheet}
         >
           {selectedBank?.label || <span className="text-gray-200">은행 선택</span>}
-          <svg
-            className="ml-auto"
-            width="24"
-            height="24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path d="M6 9l6 6 6-6" />
-          </svg>
+          {isSheetVisible && isSheetOpen ? (
+            <svg
+              className="ml-auto"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M6 15l6-6 6 6" />
+            </svg>
+          ) : (
+            <svg
+              className="ml-auto"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          )}
         </div>
-        <Input
-          placeholder="계좌번호 입력"
-          className="w-[375px] h-[66px] mx-auto placeholder:text-gray-200 text-gray-200"
-          value={account}
-          onChange={handleAccountChange}
-        />
+        <div className="relative">
+          <Input
+            placeholder="계좌번호 입력"
+            className="w-[375px] h-[66px] mx-auto placeholder:text-gray-200 text-gray-200"
+            value={account}
+            onChange={handleAccountChange}
+            disabled={!selectedBank}
+          />
+          {account && (
+            <button
+              type="button"
+              className="absolute right-5 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/10 transition"
+              onClick={() => setAccount('')}
+              tabIndex={-1}
+              aria-label="입력 전체 삭제"
+            >
+              <svg
+                className="w-4 h-4 text-gray-200"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+              </svg>
+            </button>
+          )}
+        </div>
+        {isSheetVisible && (
+          <>
+            <div
+              className={`fixed inset-0 bg-black/30 z-10 transition-opacity duration-300 ${isSheetOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              onClick={closeSheet}
+            />
+            <div
+              className={`fixed left-0 right-0 bottom-14 z-20 bg-white/90 rounded-t-2xl p-6 flex flex-col items-center min-h-[320px] transition-transform duration-300 ${isSheetOpen ? 'translate-y-0' : 'translate-y-full'}`}
+              style={{ transform: `translateY(${isSheetOpen ? dragTranslateY : 0}px)` }}
+            >
+              <div
+                className="w-12 h-1.5 bg-gray-300 rounded-full mb-6 cursor-pointer"
+                onPointerDown={handleDragStart}
+                onPointerMove={handleDragMove}
+                onPointerUp={handleDragEnd}
+                onPointerLeave={handleDragEnd}
+                aria-label="시트 닫기"
+              />
+              <div className="grid grid-cols-3 gap-4 w-full max-w-[375px]">
+                {BANK_OPTIONS.map((bank) => (
+                  <button
+                    key={bank.value}
+                    className="flex flex-col items-center justify-center h-20 rounded-xl bg-gray-100 hover:bg-gray-200 transition"
+                    onClick={() => {
+                      handleBankSelect(bank);
+                      closeSheet();
+                    }}
+                  >
+                    <Image
+                      src={bank.image}
+                      alt={bank.label}
+                      width={40}
+                      height={40}
+                      className="w-10 h-10 rounded-full mb-2 object-contain bg-white"
+                    />
+                    <span className="text-gray-800 text-sm font-semibold">{bank.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
-      {isSheetVisible && (
-        <>
-          <div
-            className={`fixed inset-0 bg-black/30 z-10 transition-opacity duration-300 ${isSheetOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-            onClick={closeSheet}
-          />
-          <div
-            className={`fixed left-0 right-0 bottom-14 z-20 bg-white/90 rounded-t-2xl p-6 flex flex-col items-center min-h-[320px] transition-transform duration-300 ${isSheetOpen ? 'translate-y-0' : 'translate-y-full'}`}
-          >
-            <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-6" />
-            <div className="grid grid-cols-3 gap-4 w-full max-w-[375px]">
-              {BANK_OPTIONS.map((bank) => (
-                <button
-                  key={bank.value}
-                  className="flex flex-col items-center justify-center h-20 rounded-xl bg-gray-100 hover:bg-gray-200 transition"
-                  onClick={() => {
-                    handleBankSelect(bank);
-                    closeSheet();
-                  }}
-                >
-                  <Image
-                    src={bank.image}
-                    alt={bank.label}
-                    width={40}
-                    height={40}
-                    className="w-10 h-10 rounded-full mb-2 object-contain bg-white"
-                  />
-                  <span className="text-gray-800 text-sm font-semibold">{bank.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
-
-      <div className="absolute left-0 right-0 bottom-0 px-4 pb-4 bg-transparent">
+      <div
+        className={`fixed left-0 right-0 bottom-19 px-4 transition-all duration-200 ${isSheetVisible ? 'z-10' : 'z-30'}`}
+      >
         <Button
-          className={`w-[350px] h-[54px] mx-auto ${isButtonActive ? 'bg-[#907AD6] text-white' : 'bg-gray-500 text-white'}`}
+          className={`w-full h-[54px] mx-auto ${isButtonActive ? 'bg-[#907AD6] text-white' : 'bg-gray-500 text-white'}`}
           disabled={!isButtonActive}
         >
           다음
