@@ -10,7 +10,7 @@ interface NavigationProviderProps {
   children: React.ReactNode;
 }
 
-export default function NavigationProvider({ children }: NavigationProviderProps) {
+export function NavigationProvider({ children }: NavigationProviderProps) {
   const pathname = usePathname();
 
   const isNavigationHidden =
