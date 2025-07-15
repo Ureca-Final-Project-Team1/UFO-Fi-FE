@@ -28,7 +28,7 @@ export function Progress({
           <Icon name="Signal" size={20} className="text-status-positive" />
 
           {/* 사용량 텍스트 (chart-4 색상 적용) */}
-          <span className="text-[28px] font-bold leading-none text-chart-4">{usedStorage}GB</span>
+          <span className="body-18-bold font-bold leading-none text-chart-4">{usedStorage}GB</span>
         </div>
       )}
 
@@ -46,7 +46,7 @@ export function Progress({
 
       {/* 최소값과 최대값 표시 */}
       {showMinMaxLabels && (
-        <div className="flex justify-between items-center text-sm text-gray-600">
+        <div className="flex justify-between items-center text-[10px] text-gray-600">
           <span>0GB</span>
           <span>{totalStorage}GB</span>
         </div>

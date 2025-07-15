@@ -13,6 +13,11 @@ export const IMAGE_PATHS = {
   BLACKHOLE_REAL: '/images/blackhole-real.png',
   NOT_FOUND: '/images/not-found.png',
   WARNING: '/images/warning.png',
+  PACKAGE_A: '/images/package-a.png',
+  PACKAGE_B: '/images/package-b.png',
+  PACKAGE_C: '/images/package-c.png',
+  PACKAGE_D: '/images/package-d.png',
+  PACKAGE_E: '/images/package-e.png',
   KAKAO_LOGIN_BUTTON: '/images/kakao-login-button.png',
   UFO_LOGIN: '/images/ufo-login.png',
 } as const;
