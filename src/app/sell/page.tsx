@@ -93,7 +93,7 @@ export default function SellPage() {
             1GB 당
           </div>
 
-          <div className="w-28 h-10 bg-blue-950 rounded-lg outline outline-1 outline-offset-[-0.5px] outline-blue-400 flex justify-center items-center px-2">
+          <div className="w-28 h-10 bg-blue-950 rounded-lg outline outline-offset-[-0.5px] outline-blue-400 flex justify-center items-center px-2">
             <PriceInput
               value={pricePerGB}
               onChange={(e) => handlePriceChange(e)}
