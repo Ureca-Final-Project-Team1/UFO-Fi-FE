@@ -16,7 +16,7 @@ export const modalVariants = cva(
         md: 'w-[320px] max-w-[90vw]',
         lg: 'w-[380px] max-w-[90vw]',
         square: 'w-[340px] h-[340px] max-w-[80vw] max-h-[80vh]',
-        'square-tall': 'w-[330px] h-[400px] max-w-[90vw] max-h-[90vh]',
+        'square-tall': 'w-[330px] h-[380px] max-w-[90vw] max-h-[90vh]',
       },
       rounded: {
         sm: 'rounded-lg', // 8px
