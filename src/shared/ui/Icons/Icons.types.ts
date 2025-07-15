@@ -26,14 +26,21 @@ export type LucideIconType =
   | 'Home'
   | 'Search'
   | 'Settings'
+  | 'FilePenLine' // 거래명세서 아이콘
   | 'Menu'
+  | 'Sparkles'
+  | 'Database'
+  | 'Coins'
+  | 'Calculator'
   | 'X'
+  | 'Sticker'
   | 'ChevronLeft'
   | 'ChevronRight'
   | 'ChevronDown'
   | 'ChevronUp'
   | 'Heart'
   | 'Star'
+  | 'Siren' // 신고 버튼
   | 'Download'
   | 'CirclePlus' // 판매 등록
   | 'RadioTower' // 전파 거래소

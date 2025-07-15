@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -8,15 +10,23 @@ import { Input } from './Input';
 import { CustomInputProps } from './Input.types';
 
 export function PriceInput(props: CustomInputProps) {
-  // rawValue: 숫자만 (실제 값)
-  const [rawValue, setRawValue] = useState('');
-  // 표시용 포맷팅 값 (1,000 단위)
-  const formattedValue = formatPrice(rawValue);
+  const [internalValue, setInternalValue] = useState('');
+  const isControlled = props.value !== undefined;
+  const currentValue = isControlled ? String(props.value || '') : internalValue;
+  const formattedValue = formatPrice(currentValue); // 표시용 포맷팅 값
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNums = getOnlyNumbers(e.target.value);
-    setRawValue(onlyNums);
-    props.onChange?.(e); // 외부 핸들러 유지
+
+    if (!isControlled) {
+      setInternalValue(onlyNums);
+    }
+
+    const syntheticEvent = {
+      ...e,
+      target: { ...e.target, value: onlyNums },
+    };
+    props.onChange?.(syntheticEvent);
   };
 
   return (

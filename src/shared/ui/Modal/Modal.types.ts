@@ -35,6 +35,7 @@ export interface ModalProps extends VariantProps<typeof modalVariants> {
   secondaryButtonText?: string;
   onPrimaryClick?: () => void;
   onSecondaryClick?: () => void;
+  primaryButtonDisabled?: boolean;
 
   className?: string;
 }
