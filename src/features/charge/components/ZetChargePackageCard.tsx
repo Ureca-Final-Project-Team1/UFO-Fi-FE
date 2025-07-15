@@ -3,6 +3,11 @@ import Image from 'next/image';
 import { IMAGE_PATHS } from '@/constants/images';
 import { Button } from '@/shared/ui/Button';
 
+const PACKAGE_SIZES = {
+  A: { width: 37, height: 37 },
+  DEFAULT: { width: 56, height: 60 },
+} as const;
+
 interface ZetChargePackageCardProps {
   id: string;
   zet: number;
@@ -11,13 +16,15 @@ interface ZetChargePackageCardProps {
 }
 
 export function ZetChargePackageCard({ id, zet, price, onBuyClick }: ZetChargePackageCardProps) {
+  const size = PACKAGE_SIZES[id as 'A'] || PACKAGE_SIZES.DEFAULT;
+
   return (
     <div className="gradient-card-1 w-[358px] h-[104px] rounded-2xl px-5 py-3 relative">
       <Image
         src={IMAGE_PATHS[`PACKAGE_${id}` as keyof typeof IMAGE_PATHS]}
         alt={`패키지 ${id} 이미지`}
-        width={id === 'A' ? 37 : 56}
-        height={id === 'A' ? 37 : 60}
+        width={size.width}
+        height={size.height}
         className={`absolute ${id === 'A' ? 'left-7' : 'left-5'} top-1/2 -translate-y-1/2`}
       />
       <div className="flex flex-col justify-center h-full ml-[64px]">
