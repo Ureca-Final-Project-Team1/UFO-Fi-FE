@@ -63,11 +63,11 @@ export type LucideIconType =
 export type CustomIconType =
   | 'ufo'
   | 'planet'
-  | 'trending'
   | 'astronaut'
   | 'satellite'
   | 'box'
-  | 'rotate';
+  | 'rotate'
+  | 'graph';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

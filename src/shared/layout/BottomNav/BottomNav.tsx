@@ -21,7 +21,7 @@ const navItems: NavItem[] = [
   { id: 'sell', label: '판매등록', icon: 'CirclePlus' as IconType },
   { id: 'exchange', label: '전파 거래소', icon: 'RadioTower' as IconType },
   { id: 'home', label: '홈', icon: 'planet' as IconType },
-  { id: 'market', label: '거래 시세', icon: 'trending' as IconType },
+  { id: 'signal', label: '전파 거리', icon: 'graph' as IconType },
   { id: 'mypage', label: '마이페이지', icon: 'astronaut' as IconType },
 ];
 
