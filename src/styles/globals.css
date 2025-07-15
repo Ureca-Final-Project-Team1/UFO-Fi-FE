@@ -134,6 +134,11 @@
   --color-primary-600: #594589;
   --color-primary-700: #1c145b;
 
+  /* zet package */
+  --color-zet-package-gradient-1: #7cc2ef;
+  --color-zet-package-gradient-2: #8094e8;
+  --color-zet-package-gradient-3: #bf98f9;
+
   /* 버튼 전용 primary 색상 추가 */
   --color-primary-text-dark: #3b2a64;
   --color-primary-hover: #a16cf0;
@@ -188,6 +193,7 @@
   --color-text-timeout: #505252;
   --color-badge-reported: #ffffff;
   --color-text-reported: #505252;
+  --color-background-card: #faf8f3;
 
   --color-login-description: #6ef4d7;
   --color-kakao-button: #fee500;
@@ -196,6 +202,7 @@
 
   --width-mobile-min: 375px;
   --width-mobile-max: 620px;
+  --color-border-zet: #1379c8;
 }
 
 @layer base {
