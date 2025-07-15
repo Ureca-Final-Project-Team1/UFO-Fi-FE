@@ -62,34 +62,42 @@ export default function Page() {
 
           <TabsContent value="followers" className="text-white">
             <div className="flex items-center flex-col px-4 space-y-4 min-h-[400px]">
-              {followers.map((user) => (
-                <FollowItem
-                  key={user.id}
-                  userId={user.userId}
-                  profileImage={user.profileImage}
-                  isFollowing={user.isFollowing}
-                  onFollow={handleFollow}
-                  onUnfollow={handleUnfollow}
-                  onDelete={handleDelete}
-                  type="follower"
-                />
-              ))}
+              {followers.length === 0 ? (
+                <p className="text-gray-400 mt-20">팔로워가 없습니다.</p>
+              ) : (
+                followers.map((user) => (
+                  <FollowItem
+                    key={user.id}
+                    userId={user.userId}
+                    profileImage={user.profileImage}
+                    isFollowing={user.isFollowing}
+                    onFollow={handleFollow}
+                    onUnfollow={handleUnfollow}
+                    onDelete={handleDelete}
+                    type="follower"
+                  />
+                ))
+              )}
             </div>
           </TabsContent>
 
           <TabsContent value="following" className="text-white">
             <div className="flex items-center flex-col px-4 space-y-4 min-h-[400px]">
-              {following.map((user) => (
-                <FollowItem
-                  key={user.id}
-                  userId={user.userId}
-                  profileImage={user.profileImage}
-                  isFollowing={user.isFollowing}
-                  onFollow={handleFollow}
-                  onUnfollow={handleUnfollow}
-                  type="following"
-                />
-              ))}
+              {following.length === 0 ? (
+                <p className="text-gray-400 mt-20">팔로잉한 사용자가 없습니다.</p>
+              ) : (
+                following.map((user) => (
+                  <FollowItem
+                    key={user.id}
+                    userId={user.userId}
+                    profileImage={user.profileImage}
+                    isFollowing={user.isFollowing}
+                    onFollow={handleFollow}
+                    onUnfollow={handleUnfollow}
+                    type="following"
+                  />
+                ))
+              )}
             </div>
           </TabsContent>
         </Tabs>
