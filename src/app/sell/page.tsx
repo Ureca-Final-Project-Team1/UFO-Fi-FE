@@ -8,6 +8,7 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { useSellData } from '@/features/hooks/useSellData';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
+import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
@@ -58,7 +59,7 @@ export default function SellPage() {
                 placeholder="글 제목을 입력해주세요."
                 variant="blueFill"
                 maxLength={15}
-                error={!isValidTitle && titleInput ? '제목은 1~15자 이내여야 합니다.' : undefined}
+                error={getSellErrorMessages.title(titleInput, isValidTitle)}
               />
             </div>
           </div>
@@ -95,12 +96,12 @@ export default function SellPage() {
 
           <div className="w-28 h-10 bg-blue-950 rounded-lg outline outline-offset-[-0.5px] outline-blue-400 flex justify-center items-center px-2">
             <PriceInput
-              value={pricePerGB}
+              value={String(pricePerGB)}
               onChange={(e) => handlePriceChange(e)}
               placeholder="금액"
               variant="blueFill"
-              className="w-full text-center text-cyan-400 text-lg font-semibold leading-relaxed bg-transparent border-none focus:outline-none"
-              error={!isValidPrice ? '총 판매 가격은 1ZET 이상이어야 합니다.' : undefined}
+              error={getSellErrorMessages.price(isValidPrice, pricePerGB)}
+              className="w-28 h-10 bg-blue-950 rounded-lg outline outline-offset-[-0.5px] outline-blue-400 text-center"
             />
           </div>
 
