@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -42,7 +43,10 @@ export default function RootLayout({
             <NavigationProvider>
               <BackgroundProvider>
                 <OnboardingGuardProvider>
-                  <FCMProvider>{children}</FCMProvider>
+                  <FCMProvider>
+                    {children}
+                    <Analytics />
+                  </FCMProvider>
                 </OnboardingGuardProvider>
               </BackgroundProvider>
             </NavigationProvider>
