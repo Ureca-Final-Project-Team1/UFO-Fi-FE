@@ -10,6 +10,7 @@ import {
   OnboardingGuardProvider,
   BackgroundProvider,
 } from '@/provider';
+import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -34,6 +35,7 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className={`${pretendard.variable} antialiased min-h-screen bg-transparent`}>
+        <GoogleAnalytics />
         <QueryProvider>
           <ViewportObserverProvider>
             <NavigationProvider>
