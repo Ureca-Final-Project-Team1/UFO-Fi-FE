@@ -8,13 +8,14 @@ export const formatDate = (date: Date): string => {
 };
 
 export const groupByDate = <T extends { createdAt: Date }>(items: T[]) => {
-  const groups: { [date: string]: T[] } = {};
-
-  items.forEach((item) => {
-    const formattedDate = formatDate(item.createdAt);
-    if (!groups[formattedDate]) groups[formattedDate] = [];
-    groups[formattedDate].push(item);
-  });
-
-  return groups;
+  return items.reduce(
+    (groups, item) => {
+      const formattedDate = formatDate(item.createdAt);
+      return {
+        ...groups,
+        [formattedDate]: [...(groups[formattedDate] || []), item],
+      };
+    },
+    {} as Record<string, T[]>,
+  );
 };
