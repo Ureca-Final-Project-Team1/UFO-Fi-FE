@@ -3,19 +3,34 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Firebase Admin 초기화
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+
+  // 모든 환경변수가 있을 때만 초기화
+  if (projectId && clientEmail && privateKey) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey,
+      }),
+    });
+  } else {
+    console.warn('Firebase Admin credentials not available - skipping initialization');
+  }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
-      return NextResponse.json({ error: 'Firebase not configured' }, { status: 500 });
+    // 환경변수 체크
+    if (!process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
+      return NextResponse.json(
+        {
+          error: 'Firebase Admin not configured for this environment',
+        },
+        { status: 500 },
+      );
     }
 
     const { token, title, body } = await request.json();
