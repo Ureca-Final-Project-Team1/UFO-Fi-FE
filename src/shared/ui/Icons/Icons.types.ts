@@ -63,6 +63,7 @@ export type LucideIconType =
 export type CustomIconType =
   | 'ufo'
   | 'planet'
+  | 'trending'
   | 'astronaut'
   | 'satellite'
   | 'box'

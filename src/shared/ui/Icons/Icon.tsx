@@ -45,6 +45,7 @@ export const Icon: React.FC<IconComponentProps> = ({
   const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
+    trending: CustomIcons.TrendingIcon,
     astronaut: CustomIcons.AstronautIcon,
     satellite: CustomIcons.SatelliteIcon,
     box: CustomIcons.BoxIcon,
