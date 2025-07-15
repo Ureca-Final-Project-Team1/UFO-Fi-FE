@@ -9,7 +9,7 @@ interface BackgroundProviderProps {
   children: React.ReactNode;
 }
 
-export default function BackgroundProvider({ children }: BackgroundProviderProps) {
+export function BackgroundProvider({ children }: BackgroundProviderProps) {
   const pathname = usePathname();
 
   const backgroundImageUrl = (() => {
