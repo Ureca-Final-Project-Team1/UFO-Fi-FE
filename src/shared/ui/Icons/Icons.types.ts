@@ -26,6 +26,7 @@ export type LucideIconType =
   | 'Home'
   | 'Search'
   | 'Settings'
+  | 'FilePenLine' // 거래명세서 아이콘
   | 'Menu'
   | 'X'
   | 'ChevronLeft'
