@@ -92,7 +92,12 @@ export function Modal({
           {imageSrc && (
             <>
               {isSquareModal ? (
-                <div className={cn('flex items-center justify-center flex-shrink-0 mb-4')}>
+                <div
+                  className={cn(
+                    'flex items-center justify-center flex-shrink-0 mb-4',
+                    isTallSquare ? 'h-28' : 'h-32',
+                  )}
+                >
                   <Image
                     src={imageSrc}
                     alt={imageAlt}
@@ -129,16 +134,18 @@ export function Modal({
           {/* 텍스트 영역 */}
           <div
             className={cn(
-              isSquareModal ? 'flex flex-col' : '',
+              isSquareModal ? 'flex flex-col flex-1 min-h-0' : '',
               isSquareModal && isTallSquare
-                ? 'flex-1 justify-start'
+                ? 'justify-start'
                 : isSquareModal
-                  ? 'flex-1 justify-center'
+                  ? 'justify-center'
                   : '',
             )}
           >
             {(title || description) && (
-              <div className={cn('mb-6', modalHeaderVariants({ align: headerAlign }))}>
+              <div
+                className={cn('mb-6 flex-shrink-0', modalHeaderVariants({ align: headerAlign }))}
+              >
                 {title && (
                   <DialogPrimitive.Title className="body-20-bold text-gray-900 mb-3">
                     {title}
@@ -153,12 +160,17 @@ export function Modal({
             )}
 
             {/* children 영역 */}
-            {children && <div className="mb-6 relative z-20">{children}</div>}
+            {children && <div className="mb-6 relative z-20 flex-shrink-0">{children}</div>}
           </div>
 
           {/* 버튼 영역 */}
           {type !== 'none' && (
-            <div className={cn('flex gap-3 relative z-20', isSquareModal ? 'mt-auto' : '')}>
+            <div
+              className={cn(
+                'flex gap-3 relative z-20 flex-shrink-0',
+                isSquareModal ? 'mt-auto' : '',
+              )}
+            >
               {type === 'double' && (
                 <Button
                   variant="secondary"
