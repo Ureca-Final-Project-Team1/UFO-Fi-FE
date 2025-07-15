@@ -8,11 +8,13 @@ import { TradeHistoryCard, TradeHistoryCardProps } from '@/features/mypage/compo
 import { Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
 import { groupByDate } from '@/utils/groupByDate';
 
-const Page = () => {
-  const [sellTrade, setSellTrade] = useState<(TradeHistoryCardProps & { createdAt: Date })[]>([]);
-  const [purchaseTrade, setPurchaseTrade] = useState<
-    (TradeHistoryCardProps & { createdAt: Date })[]
-  >([]);
+interface TradeHistory extends TradeHistoryCardProps {
+  createdAt: Date;
+}
+
+const MyTradeHistoryPage = () => {
+  const [sellTrade, setSellTrade] = useState<TradeHistory[]>([]);
+  const [purchaseTrade, setPurchaseTrade] = useState<TradeHistory[]>([]);
   const [activeTab, setActiveTab] = useState('tab1');
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -209,4 +211,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default MyTradeHistoryPage;
