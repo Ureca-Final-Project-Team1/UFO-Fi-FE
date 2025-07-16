@@ -21,7 +21,7 @@ const navItems: NavItem[] = [
   { id: 'sell', label: '판매등록', icon: 'CirclePlus' as IconType },
   { id: 'exchange', label: '전파 거래소', icon: 'RadioTower' as IconType },
   { id: 'home', label: '홈', icon: 'planet' as IconType },
-  { id: 'market', label: '거래 시세', icon: 'trending' as IconType },
+  { id: 'signal', label: '전파 거리', icon: 'graph' as IconType },
   { id: 'mypage', label: '마이페이지', icon: 'astronaut' as IconType },
 ];
 
@@ -37,9 +37,9 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
   };
 
   return (
-    <footer className="absolute bottom-0 left-0 right-0 h-14 z-30">
-      <div className="w-full h-14 bg-primary-700 border-t border-white/10">
-        <nav className="flex items-center justify-around h-14 w-full">
+    <footer className="absolute bottom-0 left-0 right-0 h-20 z-30">
+      <div className="w-full h-20 bg-primary-700 border-t border-white/10">
+        <nav className="flex items-center justify-around h-20 w-full">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             const isHome = item.id === 'home';
@@ -47,7 +47,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
             return (
               <div
                 key={item.id}
-                className={cn('flex justify-center items-end h-14', {
+                className={cn('flex justify-center items-end h-20', {
                   'relative z-10 w-18': isHome,
                   'flex-1': !isHome,
                 })}
@@ -55,10 +55,10 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
                 <button
                   onClick={() => handleTabClick(item.id)}
                   className={cn(
-                    'flex flex-col items-center justify-center gap-1 transition-all duration-200',
+                    'flex flex-col items-center justify-center gap-2 transition-all duration-200',
                     isHome
-                      ? 'w-full h-16 bg-primary-400 rounded-t-3xl'
-                      : 'w-full h-14 hover:bg-white/5 active:scale-95',
+                      ? 'w-full h-22 bg-primary-400 rounded-t-3xl'
+                      : 'w-full h-20 hover:bg-white/5 active:scale-95',
                     isActive ? 'text-secondary-yellow' : 'text-white/70',
                   )}
                   aria-label={item.label}
