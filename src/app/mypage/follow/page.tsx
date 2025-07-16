@@ -1,6 +1,6 @@
 'use client';
 
-import FollowItem from '@/features/mypage/follow/components/FollowItem';
+import FollowTabContent from '@/features/mypage/follow/components/FollowTabContent';
 import { FOLLOW_TYPE } from '@/features/mypage/follow/types/FollowType.types';
 import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui';
 
@@ -9,21 +9,20 @@ export default function Page() {
     {
       id: '#308',
       profileImage: '/images/avatar.png',
-      isFollowing: false, // 맞팔로우 여부
+      isFollowing: false,
     },
     {
       id: '#309',
       profileImage: '/images/avatar.png',
-      isFollowing: true, // 맞팔로우 상태
+      isFollowing: true,
     },
-    // 필요에 따라 더 추가
   ];
 
   const following = [
     {
       id: '#310',
       profileImage: '/images/avatar.png',
-      isFollowing: true, // 항상 true (내가 팔로우한 사람들)
+      isFollowing: true,
     },
   ];
 
@@ -35,16 +34,22 @@ export default function Page() {
     console.warn('[unfollow]', userId);
   };
 
-  const handleDelete = (userId: string) => {
-    console.warn('[delete]', userId);
+  // 팔로워 탭 액션 (삭제 기능 포함)
+  const followerActions = {
+    onFollow: handleFollow,
+    onUnfollow: handleUnfollow,
+  };
+
+  // 팔로잉 탭 액션 (삭제 기능 없음)
+  const followingActions = {
+    onFollow: handleFollow,
+    onUnfollow: handleUnfollow,
   };
 
   return (
     <div className="min-h-screen w-full text-white">
-      {/* 헤더 */}
       <Title title="팔로우 목록" iconVariant="back" onClick={() => window.history.back()} />
 
-      {/* 탭 메뉴 */}
       <div className="mx-4 mb-6">
         <Tabs defaultValue="followers">
           <TabsList className="bg-transparent w-full mb-6">
@@ -57,44 +62,21 @@ export default function Page() {
           </TabsList>
 
           <TabsContent value="followers" className="text-white">
-            <div className="flex items-center flex-col px-4 space-y-4 min-h-[400px]">
-              {followers.length === 0 ? (
-                <p className="text-gray-400 mt-20">팔로워가 없습니다.</p>
-              ) : (
-                followers.map((user) => (
-                  <FollowItem
-                    key={user.id}
-                    user={user}
-                    actions={{
-                      onFollow: handleFollow,
-                      onUnfollow: handleUnfollow,
-                      onDelete: handleDelete,
-                    }}
-                    type={FOLLOW_TYPE.FOLLOWER}
-                  />
-                ))
-              )}
-            </div>
+            <FollowTabContent
+              users={followers}
+              type={FOLLOW_TYPE.FOLLOWER}
+              actions={followerActions}
+              emptyMessage="팔로워가 없습니다."
+            />
           </TabsContent>
 
           <TabsContent value="following" className="text-white">
-            <div className="flex items-center flex-col px-4 space-y-4 min-h-[400px]">
-              {following.length === 0 ? (
-                <p className="text-gray-400 mt-20">팔로잉한 사용자가 없습니다.</p>
-              ) : (
-                following.map((user) => (
-                  <FollowItem
-                    key={user.id}
-                    user={user}
-                    actions={{
-                      onFollow: handleFollow,
-                      onUnfollow: handleUnfollow,
-                    }}
-                    type={FOLLOW_TYPE.FOLLOWING}
-                  />
-                ))
-              )}
-            </div>
+            <FollowTabContent
+              users={following}
+              type={FOLLOW_TYPE.FOLLOWING}
+              actions={followingActions}
+              emptyMessage="팔로잉한 사용자가 없습니다."
+            />
           </TabsContent>
         </Tabs>
       </div>
