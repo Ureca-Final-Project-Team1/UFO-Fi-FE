@@ -9,6 +9,7 @@ export interface ModalProps extends VariantProps<typeof modalVariants> {
   title?: string;
   description?: string;
   children?: ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'square' | 'square-tall';
 
   // 헤더 정렬
   headerAlign?: VariantProps<typeof modalHeaderVariants>['align'];

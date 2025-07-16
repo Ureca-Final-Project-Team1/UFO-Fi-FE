@@ -6,6 +6,8 @@ export const IMAGE_PATHS = {
   AL_REPORTED: '/images/alien-sad-reported.png',
   AL_BULK_PURCHASE: '/images/alien-bulk.png',
   AL_COMPLETE: '/images/alien-serious-reported.png',
+  AL_SOWHAT: '/images/alien-sowhat.svg',
+  AL_PW_WRONG: '/images/alien-wrong.svg',
   NEXT_BTN_ONBOARDING: '/images/next-btn.png',
   FIRE_BTN_ONBOARDING: '/images/fire-btn.png',
   BG_ONBOARDING: '/images/background-onboarding.png',

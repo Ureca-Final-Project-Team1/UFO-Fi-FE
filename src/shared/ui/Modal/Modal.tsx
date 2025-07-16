@@ -53,6 +53,10 @@ export function Modal({
     if (closeOnSecondary) onClose();
   };
 
+  // Square 모달 여부 확인
+  const isSquareModal = size === 'square' || size === 'square-tall';
+  const isTallSquare = size === 'square-tall';
+
   return (
     <DialogPrimitive.Root
       open={isOpen}
@@ -65,7 +69,7 @@ export function Modal({
 
       <DialogPrimitive.Content
         className={cn('relative', modalVariants({ size, rounded, hasCloseButton }), className)}
-        onInteractOutside={(e) => e.preventDefault()} // 오버레이 클릭 시 닫힘 방지
+        onInteractOutside={(e) => e.preventDefault()}
       >
         {/* 닫기 버튼 */}
         {hasCloseButton && (
@@ -82,74 +86,113 @@ export function Modal({
           </button>
         )}
 
-        {/* 이미지 */}
-        {imageSrc && (
+        {/* 통합 레이아웃 */}
+        <div className={cn('h-full', isSquareModal ? 'flex flex-col' : '')}>
+          {/* 이미지 영역 */}
+          {imageSrc && (
+            <>
+              {isSquareModal ? (
+                <div
+                  className={cn(
+                    'flex items-center justify-center flex-shrink-0 mb-4',
+                    isTallSquare ? 'h-28' : 'h-32',
+                  )}
+                >
+                  <Image
+                    src={imageSrc}
+                    alt={imageAlt}
+                    width={imageSize.width}
+                    height={imageSize.height}
+                    className="object-contain drop-shadow-lg"
+                    unoptimized
+                  />
+                </div>
+              ) : (
+                <div
+                  className="absolute z-10 pointer-events-none"
+                  style={{
+                    left: `${imagePosition.x}%`,
+                    top: `${imagePosition.y}%`,
+                    width: imageSize.width,
+                    height: imageSize.height,
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                >
+                  <Image
+                    src={imageSrc}
+                    alt={imageAlt}
+                    width={imageSize.width}
+                    height={imageSize.height}
+                    className="object-contain drop-shadow-lg"
+                    unoptimized
+                  />
+                </div>
+              )}
+            </>
+          )}
+
+          {/* 텍스트 영역 */}
           <div
-            className="absolute z-10 pointer-events-none"
-            style={{
-              left: `${imagePosition.x}%`,
-              top: `${imagePosition.y}%`,
-              width: imageSize.width,
-              height: imageSize.height,
-              transform: 'translate(-50%, -50%)',
-            }}
+            className={cn(
+              isSquareModal ? 'flex flex-col flex-1 min-h-0' : '',
+              isSquareModal && isTallSquare
+                ? 'justify-start'
+                : isSquareModal
+                  ? 'justify-center'
+                  : '',
+            )}
           >
-            <div className="relative w-full h-full">
-              <Image
-                src={imageSrc}
-                alt={imageAlt}
-                width={imageSize.width}
-                height={imageSize.height}
-                className="object-contain drop-shadow-lg"
-                unoptimized
-              />
-            </div>
-          </div>
-        )}
-
-        {/* 텍스트 헤더 */}
-        {(title || description) && (
-          <div className={cn('mb-6', modalHeaderVariants({ align: headerAlign }))}>
-            {title && (
-              <DialogPrimitive.Title className="text-[18px] font-bold text-gray-900 mb-3">
-                {title}
-              </DialogPrimitive.Title>
-            )}
-            {description && (
-              <DialogPrimitive.Description className="text-[14px] text-gray-600 leading-relaxed whitespace-pre-line">
-                {description}
-              </DialogPrimitive.Description>
-            )}
-          </div>
-        )}
-
-        {/* children 영역 */}
-        {children && <div className="mb-6 relative z-20">{children}</div>}
-
-        {/* 버튼 컨테이너 영역 */}
-        {type !== 'none' && (
-          <div className="flex gap-3 relative z-20">
-            {type === 'double' && (
-              <Button
-                variant="secondary"
-                size="default"
-                onClick={handleSecondaryClick}
-                className="flex-1"
+            {(title || description) && (
+              <div
+                className={cn('mb-6 flex-shrink-0', modalHeaderVariants({ align: headerAlign }))}
               >
-                {secondaryButtonText}
-              </Button>
+                {title && (
+                  <DialogPrimitive.Title className="body-20-bold text-gray-900 mb-3">
+                    {title}
+                  </DialogPrimitive.Title>
+                )}
+                {description && (
+                  <DialogPrimitive.Description className="body-16-regular text-gray-600 leading-relaxed whitespace-pre-line">
+                    {description}
+                  </DialogPrimitive.Description>
+                )}
+              </div>
             )}
-            <Button
-              variant="primary"
-              size="default"
-              onClick={handlePrimaryClick}
-              disabled={primaryButtonDisabled}
-              className={type === 'single' ? 'w-full' : 'flex-1'}
-            >
-              {primaryButtonText}
-            </Button>
+
+            {/* children 영역 */}
+            {children && <div className="mb-6 relative z-20 flex-shrink-0">{children}</div>}
           </div>
-        )}
+
+          {/* 버튼 영역 */}
+          {type !== 'none' && (
+            <div
+              className={cn(
+                'flex gap-3 relative z-20 flex-shrink-0',
+                isSquareModal ? 'mt-auto' : '',
+              )}
+            >
+              {type === 'double' && (
+                <Button
+                  variant="secondary"
+                  size="default"
+                  onClick={handleSecondaryClick}
+                  className="flex-1"
+                >
+                  {secondaryButtonText}
+                </Button>
+              )}
+              <Button
+                variant="primary"
+                size="default"
+                onClick={handlePrimaryClick}
+                disabled={primaryButtonDisabled}
+                className={type === 'single' ? 'w-full' : 'flex-1'}
+              >
+                {primaryButtonText}
+              </Button>
+            </div>
+          )}
+        </div>
       </DialogPrimitive.Content>
     </DialogPrimitive.Root>
   );
