@@ -3,42 +3,51 @@ import Image from 'next/image';
 import { Button } from '@/shared/ui';
 import { Icon } from '@/shared/ui/Icons';
 
-interface FollowItemProps {
-  userId: string;
-  profileImage: string;
-  isFollowing: boolean;
-  onFollow: (userId: string) => void;
-  onUnfollow: (userId: string) => void;
-  onDelete?: (userId: string) => void;
-  type: 'follower' | 'following';
-}
+import {
+  FollowItemProps,
+  FOLLOW_TYPE,
+  FOLLOW_ACTION,
+  FollowButtonConfig,
+} from '../types/FollowType.types';
 
-export default function FollowItem({
-  userId,
-  profileImage,
-  isFollowing,
-  onFollow,
-  onUnfollow,
-  onDelete,
-  type,
-}: FollowItemProps) {
-  const getButtonText = () => {
-    if (type === 'follower') {
-      return isFollowing ? '맞팔로우' : '팔로우';
+export default function FollowItem({ user, actions, type }: FollowItemProps) {
+  const { id: userId, profileImage, isFollowing } = user;
+  const { onFollow, onUnfollow, onDelete } = actions;
+
+  const getButtonConfig = (): FollowButtonConfig => {
+    if (type === FOLLOW_TYPE.FOLLOWER) {
+      return isFollowing
+        ? {
+            variant: 'following-button',
+            text: '맞팔로우',
+            action: FOLLOW_ACTION.UNFOLLOW,
+          }
+        : {
+            variant: 'follow-button',
+            text: '팔로우',
+            action: FOLLOW_ACTION.FOLLOW,
+          };
     } else {
-      return '언팔로우';
+      return {
+        variant: 'unfollow-button',
+        text: '언팔로우',
+        action: FOLLOW_ACTION.UNFOLLOW,
+      };
     }
   };
 
+  const buttonConfig = getButtonConfig();
+
   const handleButtonClick = () => {
-    if (type === 'follower') {
-      if (isFollowing) {
-        onUnfollow(userId);
-      } else {
+    switch (buttonConfig.action) {
+      case FOLLOW_ACTION.FOLLOW:
         onFollow(userId);
-      }
-    } else {
-      onUnfollow(userId);
+        break;
+      case FOLLOW_ACTION.UNFOLLOW:
+        onUnfollow(userId);
+        break;
+      default:
+        break;
     }
   };
 
@@ -55,32 +64,24 @@ export default function FollowItem({
 
       <div className="flex items-center gap-2">
         <Button
-          variant="outline"
-          size="sm"
+          variant={buttonConfig.variant}
+          size="follow-sm"
           onClick={handleButtonClick}
-          className={`px-4 py-2 rounded-lg caption-12-bold transition-colors ${
-            type === 'follower'
-              ? isFollowing
-                ? 'bg-white text-black border-white hover:bg-gray-200' // 맞팔로우 중이면 하얀버튼
-                : 'bg-blue-500 text-white border-blue-500 hover:bg-blue-600' // 팔로우 버튼은 파란색
-              : 'bg-white text-red-600 border-white hover:bg-gray-200' // 언팔로우는 글씨를 연한 빨간색
-          }`}
+          className="caption-12-bold"
+          aria-label={`${userId}을 ${buttonConfig.text}하기`}
         >
-          {getButtonText()}
+          {buttonConfig.text}
         </Button>
 
-        {type === 'follower' && (
+        {type === FOLLOW_TYPE.FOLLOWER && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => {
-              if (onDelete) {
-                onDelete(userId);
-              }
-            }}
-            className="w-8 h-8 p-0 rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center"
+            onClick={() => onDelete?.(userId)}
+            className="w-8 h-8 p-0 rounded-full hover:bg-red-500/20 transition-colors flex items-center justify-center"
+            aria-label={`${userId}을 목록에서 삭제하기`}
           >
-            <Icon name="X" size={16} className="text-gray-400 hover:text-gray-600" />
+            <Icon name="X" size={16} className="text-red-400 hover:text-red-600" />
           </Button>
         )}
       </div>

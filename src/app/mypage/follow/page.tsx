@@ -1,20 +1,18 @@
 'use client';
 
 import FollowItem from '@/features/mypage/follow/components/FollowItem';
+import { FOLLOW_TYPE } from '@/features/mypage/follow/types/FollowType.types';
 import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui';
 
 export default function Page() {
-  // 더미 데이터
   const followers = [
     {
-      id: 1,
-      userId: '#308',
+      id: '#308',
       profileImage: '/images/avatar.png',
       isFollowing: false, // 맞팔로우 여부
     },
     {
-      id: 2,
-      userId: '#309',
+      id: '#309',
       profileImage: '/images/avatar.png',
       isFollowing: true, // 맞팔로우 상태
     },
@@ -23,12 +21,10 @@ export default function Page() {
 
   const following = [
     {
-      id: 1,
-      userId: '#310',
+      id: '#310',
       profileImage: '/images/avatar.png',
       isFollowing: true, // 항상 true (내가 팔로우한 사람들)
     },
-    // 필요에 따라 더 추가
   ];
 
   const handleFollow = (userId: string) => {
@@ -68,13 +64,13 @@ export default function Page() {
                 followers.map((user) => (
                   <FollowItem
                     key={user.id}
-                    userId={user.userId}
-                    profileImage={user.profileImage}
-                    isFollowing={user.isFollowing}
-                    onFollow={handleFollow}
-                    onUnfollow={handleUnfollow}
-                    onDelete={handleDelete}
-                    type="follower"
+                    user={user}
+                    actions={{
+                      onFollow: handleFollow,
+                      onUnfollow: handleUnfollow,
+                      onDelete: handleDelete,
+                    }}
+                    type={FOLLOW_TYPE.FOLLOWER}
                   />
                 ))
               )}
@@ -89,12 +85,12 @@ export default function Page() {
                 following.map((user) => (
                   <FollowItem
                     key={user.id}
-                    userId={user.userId}
-                    profileImage={user.profileImage}
-                    isFollowing={user.isFollowing}
-                    onFollow={handleFollow}
-                    onUnfollow={handleUnfollow}
-                    type="following"
+                    user={user}
+                    actions={{
+                      onFollow: handleFollow,
+                      onUnfollow: handleUnfollow,
+                    }}
+                    type={FOLLOW_TYPE.FOLLOWING}
                   />
                 ))
               )}
