@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
 import { Button } from '@/shared/ui';
-import { Icon } from '@/shared/ui/Icons';
 
 import {
   FollowItemProps,
@@ -12,7 +11,7 @@ import {
 
 export default function FollowItem({ user, actions, type }: FollowItemProps) {
   const { id: userId, profileImage, isFollowing } = user;
-  const { onFollow, onUnfollow, onDelete } = actions;
+  const { onFollow, onUnfollow } = actions;
 
   const getButtonConfig = (): FollowButtonConfig => {
     if (type === FOLLOW_TYPE.FOLLOWER) {
@@ -72,18 +71,6 @@ export default function FollowItem({ user, actions, type }: FollowItemProps) {
         >
           {buttonConfig.text}
         </Button>
-
-        {type === FOLLOW_TYPE.FOLLOWER && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onDelete?.(userId)}
-            className="w-8 h-8 p-0 rounded-full hover:bg-red-500/20 transition-colors flex items-center justify-center"
-            aria-label={`${userId}을 목록에서 삭제하기`}
-          >
-            <Icon name="X" size={16} className="text-red-400 hover:text-red-600" />
-          </Button>
-        )}
       </div>
     </div>
   );

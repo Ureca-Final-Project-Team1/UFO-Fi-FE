@@ -30,7 +30,6 @@ export interface FollowUser {
 export interface FollowActions {
   onFollow: (userId: string) => void;
   onUnfollow: (userId: string) => void;
-  onDelete?: (userId: string) => void;
 }
 
 export interface FollowItemProps {
