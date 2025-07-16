@@ -8,21 +8,13 @@ import { Button } from '@/shared/ui/Button';
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-full">
+    <div
+      className="flex flex-col items-center justify-center min-h-full"
+      style={{ paddingTop: '45px' }}
+    >
       <div className="flex-1 flex flex-col items-center justify-center px-4">
         <div className="relative flex flex-col items-center">
-          <SpeechBubble>지구인님, 오늘 거래하실 건가요?</SpeechBubble>
-          <div
-            className="absolute left-1/2 top-full -translate-x-1/2 mt-[-2px] z-10"
-            style={{ pointerEvents: 'none' }}
-          >
-            <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[16px] border-t-white" />
-          </div>
-          <style jsx>{`
-            .relative :global(.absolute.left-full) {
-              display: none !important;
-            }
-          `}</style>
+          <SpeechBubble tailDirection="bottom">지구인님, 오늘 거래하실 건가요?</SpeechBubble>
         </div>
         <Image
           src={IMAGE_PATHS.MAIN}
