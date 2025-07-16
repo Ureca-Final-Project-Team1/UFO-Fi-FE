@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -10,6 +11,7 @@ import {
   OnboardingGuardProvider,
   BackgroundProvider,
 } from '@/provider';
+import FCMProvider from '@/shared/components/FCMProvider';
 import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
 
 const pretendard = localFont({
@@ -40,7 +42,12 @@ export default function RootLayout({
           <ViewportObserverProvider>
             <NavigationProvider>
               <BackgroundProvider>
-                <OnboardingGuardProvider>{children}</OnboardingGuardProvider>
+                <OnboardingGuardProvider>
+                  <FCMProvider>
+                    {children}
+                    <Analytics />
+                  </FCMProvider>
+                </OnboardingGuardProvider>
               </BackgroundProvider>
             </NavigationProvider>
             <ModalProvider />
