@@ -83,8 +83,8 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen">
-      <div className="flex flex-[0.9] flex-col justify-start items-start text-center w-full h-fit">
+    <div className="flex flex-col justify-between items-center w-full min-h-[calc(100vh-112px)] px-4 py-6">
+      <div className="flex flex-col justify-start items-start text-center w-full h-fit">
         <Title title="회원가입" className="body-20-bold w-fit pl-0" />
 
         <div className="flex flex-col items-start gap-3 sm:gap-6 w-full h-fit">

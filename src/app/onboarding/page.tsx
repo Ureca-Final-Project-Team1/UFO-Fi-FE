@@ -49,7 +49,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-6">
+    <div className="min-h-full flex flex-col justify-center items-center px-4 py-6">
       <div className="w-full max-w-[560px]">
         <div
           className={`transition-all duration-500 ease-in-out flex flex-col items-center ${

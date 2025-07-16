@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { SpeechBubble } from '@/features/main/components';
+import { Button } from '@/shared/ui/Button';
 
 export default function HomePage() {
   return (
@@ -31,19 +32,28 @@ export default function HomePage() {
           className="mx-auto mb-1"
           priority
         />
-        {/* 탐색 조건 박스 */}
         <div className="mt-2 w-full max-w-[320px] flex flex-row gap-4 justify-center">
-          <div className="bg-white rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full">
-            <span className="text-xs text-gray-500 mb-1">탐색 시작</span>
-          </div>
-          <div className="bg-white rounded-xl shadow-md px-6 py-3 flex flex-col items-center w-full">
-            <span className="text-xs text-gray-500 mb-1">탐색 조건</span>
-          </div>
+          <Button
+            variant="next-button"
+            size="default"
+            className="w-full rounded-xl shadow-md px-6 py-3 flex flex-col items-center"
+          >
+            <span className="text-xs mb-1">탐색 시작</span>
+          </Button>
+          <Button
+            variant="project-button"
+            size="default"
+            className="w-full rounded-xl shadow-md px-6 py-3 flex flex-col items-center"
+          >
+            <span className="text-xs mb-1">탐색 조건</span>
+          </Button>
         </div>
 
-        {/* 오늘의 평균값 박스 */}
         <div className="mt-2 w-full max-w-[320px] flex justify-center">
-          <div className="bg-white rounded-xl shadow-md px-6 py-3 flex flex-row items-end justify-between w-full">
+          <div
+            className="rounded-xl shadow-md px-6 py-3 flex flex-row items-end justify-between w-full"
+            style={{ backgroundColor: 'var(--color-primary-100)' }}
+          >
             <div className="flex flex-col items-center flex-1">
               <span className="text-xs text-gray-500 mb-1">오늘 LTE 평균값</span>
               <span className="text-2xl font-extrabold text-black leading-tight">1,200원</span>

@@ -2,10 +2,14 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import '../styles/globals.css';
-import { ModalProvider, QueryProvider } from '@/provider';
-import BackgroundProvider from '@/provider/BackgroundProvider';
-import NavigationProvider from '@/provider/NavigationProvider';
-import OnboardingGuardProvider from '@/provider/OnboardingGuardProvider';
+import {
+  ModalProvider,
+  QueryProvider,
+  ViewportObserverProvider,
+  NavigationProvider,
+  OnboardingGuardProvider,
+  BackgroundProvider,
+} from '@/provider';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -29,14 +33,16 @@ export default function RootLayout({
       <head>
         <meta name="format-detection" content="telephone=no" />
       </head>
-      <body className={`${pretendard.variable} antialiased`}>
+      <body className={`${pretendard.variable} antialiased min-h-screen bg-transparent`}>
         <QueryProvider>
-          <NavigationProvider>
-            <BackgroundProvider>
-              <OnboardingGuardProvider>{children}</OnboardingGuardProvider>
-            </BackgroundProvider>
-          </NavigationProvider>
-          <ModalProvider />
+          <ViewportObserverProvider>
+            <NavigationProvider>
+              <BackgroundProvider>
+                <OnboardingGuardProvider>{children}</OnboardingGuardProvider>
+              </BackgroundProvider>
+            </NavigationProvider>
+            <ModalProvider />
+          </ViewportObserverProvider>
         </QueryProvider>
       </body>
     </html>
