@@ -96,7 +96,7 @@ export default function ExchangePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <div className="flex flex-col min-h-full w-full pb-6">
       <div className="flex-1">
         {/* 헤더 */}
         <div className="flex items-center justify-between">
@@ -129,17 +129,17 @@ export default function ExchangePage() {
           </Button>
         </div>
 
-        {/* 알림 설정 필터링으로 이동할 뱃지 */}
-        <div className="mb-4">
-          {/* 뱃지 필터 */}
+        {/* 뱃지 필터와 일괄구매 버튼 */}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 sm:relative">
+          {/* TODO: 추후 필터링을 통한 정렬 적용 필요 */}
           <div className="flex flex-wrap gap-2">
             <Chip rightIcon={<Icon name="ChevronDown" />}>통신사</Chip>
-            <Chip rightIcon={<Icon name="ChevronDown" />}>용량</Chip>
-            <Chip rightIcon={<Icon name="ChevronDown" />}>가격</Chip>
+            <Chip>용량</Chip>
+            <Chip>가격</Chip>
           </div>
 
-          {/* 모바일에선 아래쪽, 태블릿 이상에선 우측 배치 */}
-          <div className="mt-2 sm:mt-0 sm:absolute sm:right-0 sm:top-0">
+          {/* 일괄구매 버튼 */}
+          <div className="ml-auto sm:absolute sm:right-0 sm:top-0">
             <Button size="sm" variant="exploration-button" onClick={handleBulkPurchase}>
               <Icon name="box" className="w-3 h-3 pr-1" />
               <span className="caption-14-bold"> 일괄구매</span>
