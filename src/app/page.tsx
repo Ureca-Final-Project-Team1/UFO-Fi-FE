@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { SpeechBubble } from '@/features/onboarding/components';
+import { SpeechBubble } from '@/features/main/components';
 
 export default function HomePage() {
   return (
