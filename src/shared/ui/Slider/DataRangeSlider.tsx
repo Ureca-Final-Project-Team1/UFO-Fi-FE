@@ -23,7 +23,9 @@ export function DataRangeSlider({
 
   return (
     <div className="w-full max-w-md px-4">
-      <div className="text-center font-bold text-lg mb-2 text-cyan-300">{getRangeLabel(value)}</div>
+      <div className="text-center font-bold text-lg mb-2 text-cyan-300">
+        {getRangeLabel(value, max)}
+      </div>
       <BaseSlider
         thumbs={value}
         min={min}
@@ -31,8 +33,8 @@ export function DataRangeSlider({
         step={1}
         value={value}
         onValueChange={handleChange}
-        className="relative flex w-full max-w-[320px] touch-none select-none items-center"
-        getThumbValueText={(v) => `${v}원`}
+        className="relative flex w-full touch-none select-none items-center"
+        getThumbValueText={(v) => `${v}ZET`}
       />
       {(minLabel || maxLabel) && (
         <div className="flex justify-between text-white text-sm mt-1">

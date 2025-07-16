@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -10,6 +11,8 @@ import {
   OnboardingGuardProvider,
   BackgroundProvider,
 } from '@/provider';
+import FCMProvider from '@/shared/components/FCMProvider';
+import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -34,11 +37,17 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className={`${pretendard.variable} antialiased min-h-screen bg-transparent`}>
+        <GoogleAnalytics />
         <QueryProvider>
           <ViewportObserverProvider>
             <NavigationProvider>
               <BackgroundProvider>
-                <OnboardingGuardProvider>{children}</OnboardingGuardProvider>
+                <OnboardingGuardProvider>
+                  <FCMProvider>
+                    {children}
+                    <Analytics />
+                  </FCMProvider>
+                </OnboardingGuardProvider>
               </BackgroundProvider>
             </NavigationProvider>
             <ModalProvider />

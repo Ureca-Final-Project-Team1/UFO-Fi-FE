@@ -402,6 +402,14 @@
     letter-spacing: 0.1px;
   }
 
+  .caption-11-regular {
+    font-family: Pretendard, sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: 0.1px;
+  }
+
   .caption-10-bold {
     font-family: Pretendard, sans-serif;
     font-weight: 700;

@@ -12,6 +12,7 @@ export function DataSlider({
   showLabels = false,
   minLabel,
   maxLabel,
+  showMiddleLabels = true,
   max = 10, // 기본값 10, props로 받을 수 있게
 }: DataSliderProps & { max?: number }) {
   const steps = max;
@@ -19,8 +20,9 @@ export function DataSlider({
   return (
     <div className="relative w-full max-w-md px-4">
       {/* 중앙 값 라벨 */}
-      <div className="text-center text-cyan-300 font-bold text-lg mb-2">{value[0]}GB</div>
-
+      {showMiddleLabels && (
+        <div className="text-center text-cyan-300 font-bold text-lg mb-2">{value[0]}GB</div>
+      )}
       <div className="relative w-full max-w-[320px] mx-auto">
         {/* 눈금선 + 숫자 (min/max label은 하단에서만 표시) */}
         {showTicks && (

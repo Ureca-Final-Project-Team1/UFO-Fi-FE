@@ -15,6 +15,8 @@ export const modalVariants = cva(
         sm: 'w-[280px] max-w-[90vw]',
         md: 'w-[320px] max-w-[90vw]',
         lg: 'w-[380px] max-w-[90vw]',
+        square: 'w-[340px] h-[340px] max-w-[80vw] max-h-[80vh]',
+        'square-tall': 'w-[330px] h-[380px] max-w-[90vw] max-h-[90vh]',
       },
       rounded: {
         sm: 'rounded-lg', // 8px
@@ -27,6 +29,18 @@ export const modalVariants = cva(
         false: 'p-6',
       },
     },
+    compoundVariants: [
+      {
+        size: 'square',
+        hasCloseButton: false,
+        className: 'pt-6 pb-6 px-6',
+      },
+      {
+        size: 'square-tall',
+        hasCloseButton: false,
+        className: 'pt-6 pb-6 px-8',
+      },
+    ],
     defaultVariants: {
       size: 'md',
       rounded: 'sm',
