@@ -1,43 +1,20 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { FilterBox } from '@/features/exchange/components/FilterBox';
+import { useFilteredItemCount } from '@/hooks/useFilteredItemCount';
+import { useFilterState } from '@/hooks/useFilterState';
 import { Button, Chip, DataRangeSlider, DataSlider, Icon, Title } from '@/shared';
 import '@/styles/globals.css';
 
 const FilterNotificationPage = () => {
-  const router = useRouter();
-
-  const [data, setData] = useState([5]);
-  const [range, setRange] = useState([0, 100]);
-
-  const [minData, setMinData] = useState(0);
-  const [maxData, setMaxData] = useState(10);
-
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
-
-  const [count, setCount] = useState(10);
-
-  useEffect(() => {
-    setMinData(0);
-    setMaxData(10);
-    setMinValue(0);
-    setMaxValue(100);
-    setCount(10);
-  }, []);
+  const { data, range, minData, maxData, minValue, maxValue, setData, setRange } = useFilterState();
+  const { count } = useFilteredItemCount();
 
   return (
     <div className="flex flex-col justify-start items-center w-full h-[calc(100vh-112px)]">
-      <Title
-        title="알림 조건 설정"
-        iconVariant="back"
-        onClick={() => {
-          router.back();
-        }}
-      />
+      <Title title="알림 조건 설정" iconVariant="back" />
       <div className="overflow-y-auto flex flex-col gap-4 h-full mb-4 hide-scrollbar">
         <FilterBox name="통신사" isMultipleSelection={true}>
           <div className="flex flex-wrap w-full items-center gap-2">
@@ -63,7 +40,7 @@ const FilterNotificationPage = () => {
             />
           </div>
         </FilterBox>
-        <FilterBox name="단위가격">
+        <FilterBox name="단위가격" className="flex w-full justify-center">
           <DataRangeSlider
             value={range}
             onValueChange={setRange}

@@ -24,10 +24,6 @@ export const FilterBox = ({
         className,
       )}
     >
-      <div className="relative z-10 flex flex-col items-start justify-start w-full gap-3">
-        <div className="body-18-bold">{name}</div>
-      </div>
-
       <div
         className="absolute inset-0 w-full min-h-full rounded-2xl"
         style={{
@@ -35,8 +31,11 @@ export const FilterBox = ({
           opacity: 0.65,
         }}
       />
-      <div className="relative z-10 flex flex-col items-start justify-start w-full gap-3">
-        {isMultipleSelection && <div className="caption-11-regular">중복 선택 가능</div>}
+      <div className="relative z-10 flex flex-col items-start justify-start w-full">
+        <div className="mb-2 body-18-bold">
+          {name}
+          {isMultipleSelection && <p className="caption-11-regular">중복 선택 가능</p>}
+        </div>
         {children}
       </div>
     </div>

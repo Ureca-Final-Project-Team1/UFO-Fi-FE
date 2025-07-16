@@ -33,7 +33,7 @@ export function DataRangeSlider({
         step={1}
         value={value}
         onValueChange={handleChange}
-        className="relative flex w-full max-w-[320px] touch-none select-none items-center"
+        className="relative flex w-full touch-none select-none items-center"
         getThumbValueText={(v) => `${v}ZET`}
       />
       {(minLabel || maxLabel) && (
