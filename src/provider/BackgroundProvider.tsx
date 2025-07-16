@@ -12,6 +12,8 @@ interface BackgroundProviderProps {
 export function BackgroundProvider({ children }: BackgroundProviderProps) {
   const pathname = usePathname();
 
+  const isPasswordPage = pathname.includes('password');
+
   const backgroundImageUrl = (() => {
     if (
       pathname.startsWith('/login') ||
@@ -25,14 +27,26 @@ export function BackgroundProvider({ children }: BackgroundProviderProps) {
       return IMAGE_PATHS.BG_ONBOARDING;
     }
 
+    if (isPasswordPage) {
+      return '';
+    }
+
     return IMAGE_PATHS.BG_BASIC;
   })();
 
+  const containerClass = [
+    'w-full min-h-full flex flex-col items-center justify-between sm:px-10.5 px-4 text-white',
+    isPasswordPage ? '' : 'bg-cover bg-no-repeat bg-top',
+  ].join(' ');
+
+  const containerStyle = isPasswordPage
+    ? { backgroundColor: 'var(--color-password-bg)' }
+    : backgroundImageUrl
+      ? { backgroundImage: `url(${backgroundImageUrl})` }
+      : {};
+
   return (
-    <div
-      className="w-full min-h-full bg-cover bg-no-repeat bg-top flex flex-col items-center justify-between sm:px-10.5 px-4 text-white"
-      style={{ backgroundImage: `url(${backgroundImageUrl})` }}
-    >
+    <div className={containerClass} style={containerStyle}>
       {children}
     </div>
   );
