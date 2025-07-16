@@ -40,7 +40,7 @@ const FilterNotificationPage = () => {
             />
           </div>
         </FilterBox>
-        <FilterBox name="단위가격" className="flex w-full justify-center">
+        <FilterBox name="단위가격">
           <DataRangeSlider
             value={range}
             onValueChange={setRange}
