@@ -78,10 +78,12 @@ npm run dev
 
 ## Code Convention
 
-[Git Convention]()
-[프론트엔드 코드 컨벤션 바로가기](https://github.com/Ureca-Final-Project-Team1/UFO-Fi-FE/wiki/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-Code-Convention)
+- [Git Convention](https://github.com/Ureca-Final-Project-Team1/UFO-Fi-FE/wiki/Git-Convention)
+- [FE Code Convention](https://github.com/Ureca-Final-Project-Team1/UFO-Fi-FE/wiki/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-Code-Convention)
 
 ## IA
+
+![IA](/docs/readme/ia.png)
 
 ## FE 팀원 소개
 
