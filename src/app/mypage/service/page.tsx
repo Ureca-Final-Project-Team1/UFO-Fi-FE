@@ -1,13 +1,13 @@
 'use client';
 
-import { Title } from '@/shared';
+import React, { JSX } from 'react';
 
 const termsRaw = `
 ## 제 1장 (총칙)
 
 ### - 제 1조 (목적)
 
-본 약관은 UFO-Fi (이하 ‘회사’)가 제공하는 데이터 거래 플랫폼 (이하 ‘서비스’)의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
+본 약관은 UFO-Fi (이하 '회사')가 제공하는 데이터 거래 플랫폼 (이하 '서비스')의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
 
 ### - 제 2조 (정의)
 
@@ -24,15 +24,15 @@ const termsRaw = `
 ### - 제 3조 (약관의 효력 및 변경)
 
 1. 회사는 본 약관의 내용을 회원이 쉽게 확인할 수 있도록 웹사이트 및 모바일 앱 화면에 게시합니다.
-2. 회사는 전자상거래 등에서의 소비자보호에 관한 법률(이하 “전자상거래법”), 약관의 규제에 관한 법률(이하 “약관법”), 전자문서 및 전자거래기본법, 정보통신망 이용촉진 및 정보보호 등에 관한 법률(이하 “정보통신망법”), 소비자기본법 등 관련 법령을 위반하지 않는 범위 내에서 본 약관을 개정할 수 있습니다.
+2. 회사는 전자상거래 등에서의 소비자보호에 관한 법률(이하 "전자상거래법"), 약관의 규제에 관한 법률(이하 "약관법"), 전자문서 및 전자거래기본법, 정보통신망 이용촉진 및 정보보호 등에 관한 법률(이하 "정보통신망법"), 소비자기본법 등 관련 법령을 위반하지 않는 범위 내에서 본 약관을 개정할 수 있습니다.
 3. 회사는 약관을 개정할 경우에 적용 일자, 개정 내용 및 개정 사유를 명시하여 그 적용일자로부터 최소한 7일 이전부터 서비스 내 전자게시판에 공지합니다. 다만, 개정 약관의 내용이 회원에게 불리한 경우에는 개정 약관 적용 일자 30일 전부터 공지합니다.
-4. 본 약관에 명시되지 않은 사항은 전자상거래법, 약관법, 전자상거래 등에서의 소비자보호지침 등 관련 법령 또는 상관례에 따릅니다. 
+4. 본 약관에 명시되지 않은 사항은 전자상거래법, 약관법, 전자상거래 등에서의 소비자보호지침 등 관련 법령 또는 상관례에 따릅니다. 
 
 ## 제 2장 (서비스)
 
 ### - 제 4조 (회원 자격 및 가입)
 
-1. 회원이 되고자 하는 자 (이하 ‘가입신청자’)는 회사가 제공하는 가입 양식에 따라 필요한 정보를 기이하고 본인확인 등 관련 절차를 완료한 후 본 약관에 동의한다는 의사표시를 함으로써 회원 가입을 신청합니다.
+1. 회원이 되고자 하는 자 (이하 '가입신청자')는 회사가 제공하는 가입 양식에 따라 필요한 정보를 기이하고 본인확인 등 관련 절차를 완료한 후 본 약관에 동의한다는 의사표시를 함으로써 회원 가입을 신청합니다.
 2. 회사는 가입신청자가 제 1항에 따라 회원 가입을 신청한 경우 특별한 사유가 없는 한 서비스의 이용을 승낙합니다. 다만, 가입신청자에게 다음 각 호의 사유가 있는 경우 회원 가입이 거절될 수 있습니다.
     
     가.   만 14세 미만인 경우
@@ -243,13 +243,13 @@ UFO-Fi에서 제공되는 모든 콘텐츠, 사용자가 게시한 콘텐츠 및
 
 위와 같이 무단으로 데이터 수집 등 행위를 하거나, 인공지능 학습 등에 UFO-Fi의 콘텐츠를 사용하거나, robots.txt 파일을 우회하여 데이터를 수집하는 행위, 그리고 제3자가 위 행위들을 수행하도록 지원하거나 유도하는 행위 등은, 고의성의 여부를 불문하고 국제적인 인터넷 검색 서비스와 개인정보보호를 위한 규칙에 어긋나는 것이며, 경우에 따라 「저작권법」, 「정보통신망 이용촉진 및 정보보호에 관한 법률」 등 관련 법령에 위반될 수 있습니다. 이에 대해 UFO-Fi은 법적 절차를 포함하여 엄중한 책임을 물을 것입니다.
 
-# **약관 수정**
+## 약관 수정
 
 UFO-Fi은 법률이나 UFO-Fi 서비스의 변경사항을 반영하기 위한 목적 등으로 본 약관이나 각 UFO-Fi 서비스 고객센터의 UFO-Fi 서비스 이용방법, 해당 안내 및 고지사항을 수정할 수 있습니다. 본 약관이 변경되는 경우 UFO-Fi은 변경 사항을 개별 UFO-Fi 서비스 초기화면에 게시하며, 변경된 약관은 게시한 날로부터 7일 후부터 효력이 발생합니다. 다만 사용자에게 불리한 변경에 해당하는 경우에는 변경된 약관은 게시한 날로부터 30일 후부터 효력이 발생하며, 전자적 방식 등을 통해 개별적으로 알리겠습니다.
 
 UFO-Fi은 변경된 약관을 게시한 날로부터 효력이 발생되는 날까지 약관변경에 대한 사용자의 의견을 기다리겠습니다. 위 기간이 지나도록 사용자의 의견이 UFO-Fi에 접수되지 않으면, 사용자가 변경된 약관에 따라 서비스를 이용하는 데에 동의하는 것으로 보겠습니다. 사용자가 변경된 약관에 동의하지 않는 경우 변경된 약관의 적용을 받는 해당 서비스의 제공이 더 이상 불가능하게 됩니다.
 
-# **사용자 의견**
+## 사용자 의견
 
 UFO-Fi은 사용자의 의견을 소중하게 생각합니다. 사용자는 언제든지 서비스 내 UFO-Fi 운영자 문의란을 통해 의견을 개진할 수 있습니다. UFO-Fi은 푸시 알림, 채팅 방법, 휴대폰 번호 등으로 사용자에게 여러 가지 소식을 알려드리며, 사용자 전체에 대한 통지는 UFO-Fi 서비스 초기화면 또는 공지사항 란에 게시함으로써 효력이 발생합니다.
 
@@ -262,9 +262,105 @@ UFO-Fi은 사용자의 의견을 소중하게 생각합니다. 사용자는 언�
 UFO-Fi
 `;
 
-function renderTermsWithHeadingsAndLists(text: string) {
+function processLinks(text: string): (string | JSX.Element)[] {
+  // 이메일과 URL을 찾아서 React 요소로 변환
+  const parts = [];
+  let lastIndex = 0;
+
+  // 이메일 정규식
+  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+  // URL 정규식 (www로 시작하거나 도메인.확장자 형태)
+  const urlRegex = /((?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s\)]*)?)/g;
+
+  // 모든 매치 찾기
+  const matches = [];
+  let match;
+
+  // 이메일 매치
+  while ((match = emailRegex.exec(text)) !== null) {
+    matches.push({
+      type: 'email',
+      value: match[1],
+      index: match.index,
+      length: match[1].length,
+    });
+  }
+
+  // URL 매치 (이메일이 아닌 것만)
+  while ((match = urlRegex.exec(text)) !== null) {
+    if (!match[1].includes('@')) {
+      matches.push({
+        type: 'url',
+        value: match[1],
+        index: match.index,
+        length: match[1].length,
+      });
+    }
+  }
+
+  // 인덱스 순으로 정렬
+  matches.sort((a, b) => a.index - b.index);
+
+  // 텍스트를 파트별로 나누어 처리
+  matches.forEach((matchItem, idx) => {
+    // 이전 매치와 현재 매치 사이의 일반 텍스트
+    if (matchItem.index > lastIndex) {
+      const beforeText = text.slice(lastIndex, matchItem.index);
+      if (beforeText) {
+        parts.push(beforeText);
+      }
+    }
+
+    // 링크 처리
+    if (matchItem.type === 'email') {
+      parts.push(
+        React.createElement(
+          'a',
+          {
+            key: `email-${idx}`,
+            href: `mailto:${matchItem.value}`,
+            className: 'text-blue-400 underline hover:text-blue-300',
+          },
+          matchItem.value,
+        ),
+      );
+    } else if (matchItem.type === 'url') {
+      const fullUrl = matchItem.value.startsWith('http')
+        ? matchItem.value
+        : `http://${matchItem.value}`;
+      parts.push(
+        React.createElement(
+          'a',
+          {
+            key: `url-${idx}`,
+            href: fullUrl,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            className: 'text-blue-400 underline hover:text-blue-300',
+          },
+          matchItem.value,
+        ),
+      );
+    }
+
+    lastIndex = matchItem.index + matchItem.length;
+  });
+
+  // 마지막 매치 이후의 텍스트
+  if (lastIndex < text.length) {
+    const afterText = text.slice(lastIndex);
+    if (afterText) {
+      parts.push(afterText);
+    }
+  }
+
+  // 매치가 없으면 원본 텍스트를 배열로 반환
+  return parts.length > 0 ? parts : [text];
+}
+
+function renderTermsWithHeadingsAndLinks(text: string) {
   const lines = text.split('\n');
-  const result: React.ReactNode[] = [];
+  const result = [];
   let olBuffer: string[] = [];
   let ulBuffer: string[] = [];
   let isOl = false;
@@ -273,33 +369,48 @@ function renderTermsWithHeadingsAndLists(text: string) {
   const flushOl = (parentIdx: number) => {
     if (olBuffer.length > 0) {
       result.push(
-        <ol className="list-decimal pl-6 mb-2" key={'ol-' + parentIdx + '-' + result.length}>
-          {olBuffer.map((item, idx2) => (
-            <li
-              key={'olitem-' + parentIdx + '-' + idx2}
-              className="break-words whitespace-pre-line"
-            >
-              {item.replace(/^\d+\.\s/, '')}
-            </li>
-          ))}
-        </ol>,
+        React.createElement(
+          'ol',
+          {
+            className: 'list-decimal pl-6 mb-2',
+            key: `ol-${parentIdx}-${result.length}`,
+          },
+          olBuffer.map((item, idx2) =>
+            React.createElement(
+              'li',
+              {
+                key: `olitem-${parentIdx}-${idx2}`,
+                className: 'break-words whitespace-pre-line',
+              },
+              processLinks(item.replace(/^\d+\.\s/, '')),
+            ),
+          ),
+        ),
       );
       olBuffer = [];
     }
   };
+
   const flushUl = (parentIdx: number) => {
     if (ulBuffer.length > 0) {
       result.push(
-        <ul className="list-[lower-korean] pl-8 mb-2" key={'ul-' + parentIdx + '-' + result.length}>
-          {ulBuffer.map((item, idx2) => (
-            <li
-              key={'ulitem-' + parentIdx + '-' + idx2}
-              className="break-words whitespace-pre-line"
-            >
-              {item.replace(/^[가-힣]\.\s/, '')}
-            </li>
-          ))}
-        </ul>,
+        React.createElement(
+          'ul',
+          {
+            className: 'list-disc pl-8 mb-2',
+            key: `ul-${parentIdx}-${result.length}`,
+          },
+          ulBuffer.map((item, idx2) =>
+            React.createElement(
+              'li',
+              {
+                key: `ulitem-${parentIdx}-${idx2}`,
+                className: 'break-words whitespace-pre-line',
+              },
+              processLinks(item.replace(/^[가-힣]\.\s/, '').replace(/^-\s/, '')),
+            ),
+          ),
+        ),
       );
       ulBuffer = [];
     }
@@ -311,9 +422,14 @@ function renderTermsWithHeadingsAndLists(text: string) {
       flushOl(i);
       flushUl(i);
       result.push(
-        <h1 key={i} className="text-lg font-bold text-white mt-6 mb-2">
-          {line.replace('# ', '')}
-        </h1>,
+        React.createElement(
+          'h1',
+          {
+            key: i,
+            className: 'text-lg font-bold text-white mt-6 mb-2',
+          },
+          processLinks(line.replace('# ', '')),
+        ),
       );
       continue;
     }
@@ -321,9 +437,14 @@ function renderTermsWithHeadingsAndLists(text: string) {
       flushOl(i);
       flushUl(i);
       result.push(
-        <h2 key={i} className="text-lg font-bold text-white mt-6 mb-2">
-          {line.replace('## ', '')}
-        </h2>,
+        React.createElement(
+          'h2',
+          {
+            key: i,
+            className: 'text-lg font-bold text-white mt-6 mb-2',
+          },
+          processLinks(line.replace('## ', '')),
+        ),
       );
       continue;
     }
@@ -331,9 +452,14 @@ function renderTermsWithHeadingsAndLists(text: string) {
       flushOl(i);
       flushUl(i);
       result.push(
-        <h3 key={i} className="text-base font-bold text-white mt-4 mb-1">
-          {line.replace('### ', '')}
-        </h3>,
+        React.createElement(
+          'h3',
+          {
+            key: i,
+            className: 'text-base font-bold text-white mt-4 mb-1',
+          },
+          processLinks(line.replace('### ', '')),
+        ),
       );
       continue;
     }
@@ -364,9 +490,14 @@ function renderTermsWithHeadingsAndLists(text: string) {
     flushOl(i);
     flushUl(i);
     result.push(
-      <div key={i} className="whitespace-pre-wrap">
-        {line === '' ? <br /> : line}
-      </div>,
+      React.createElement(
+        'div',
+        {
+          key: i,
+          className: 'whitespace-pre-wrap break-words',
+        },
+        line === '' ? React.createElement('br') : processLinks(line),
+      ),
     );
     isOl = false;
     isUl = false;
@@ -377,17 +508,52 @@ function renderTermsWithHeadingsAndLists(text: string) {
 }
 
 export default function TermsPage() {
-  return (
-    <div>
-      <Title
-        title="이용 약관"
-        iconVariant="back"
-        onClick={() => window.history.back()}
-        className="mb-6"
-      />
-      <div className="text-white overflow-x-hidden overflow-y-auto text-sm min-h-screen p-2 pb-24 bg-black/30 rounded-lg flex flex-col gap-2 leading-relaxed">
-        {renderTermsWithHeadingsAndLists(termsRaw)}
-      </div>
-    </div>
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
+      'div',
+      {
+        className: 'flex items-center mb-6',
+      },
+      React.createElement(
+        'button',
+        {
+          onClick: () => window.history.back(),
+          className: 'mr-3 p-2 text-white hover:bg-gray-700 rounded',
+        },
+        '←',
+      ),
+      React.createElement(
+        'h1',
+        {
+          className: 'text-xl font-bold text-white',
+        },
+        '이용약관',
+      ),
+    ),
+    React.createElement(
+      'div',
+      {
+        className:
+          'text-white overflow-y-auto text-sm max-h-[80vh] p-2 bg-black/30 rounded-lg flex flex-col gap-2 leading-relaxed hide-scrollbar',
+      },
+      renderTermsWithHeadingsAndLinks(termsRaw),
+    ),
+    React.createElement(
+      'style',
+      {
+        jsx: true,
+      },
+      `
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+    `,
+    ),
   );
 }
