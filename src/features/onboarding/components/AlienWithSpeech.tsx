@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
 
+import { SpeechBubble } from '@/features/main/components/SpeechBubble';
+
 import { AlienCharacter } from './AlienCharacter';
-import { SpeechBubble } from '../../main/components/SpeechBubble';
 
 export const AlienWithSpeech = ({ message }: { message: string }) => (
   <div className="flex justify-between items-end gap-6 z-40 relative min-w-full px-4">
