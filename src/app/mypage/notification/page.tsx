@@ -41,8 +41,7 @@ const MypageNotificationPage = () => {
           INTERESTED_POST: response.interestedPost ?? false,
           FOLLOWER_POST: response.followerPost ?? false,
           REPORTED: response.reported ?? false,
-          TRADE:
-            response.sell && response.interestedPost && response.followerPost && response.reported,
+          TRADE: response.tradeAll ?? false,
         });
       } catch (err) {
         console.error('알림 설정 조회 실패:', err);
@@ -65,8 +64,6 @@ const MypageNotificationPage = () => {
     } else if (tradeKeys.includes(type)) {
       newNotificationState.TRADE = false;
     }
-    newNotificationState[type] = value;
-
     setNotificationState(newNotificationState);
     return;
   };
