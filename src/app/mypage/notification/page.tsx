@@ -41,7 +41,10 @@ const MypageNotificationPage = () => {
           INTERESTED_POST: response.interestedPost ?? false,
           FOLLOWER_POST: response.followerPost ?? false,
           REPORTED: response.reported ?? false,
-          TRADE: response.tradeAll ?? false,
+          // TODO: BE 로직에서는 tradeAll이 자동으로 true에서 false로 변하지 않음
+          // TODO: TRADE: response.tradeAll ?? false로 추후 변경
+          TRADE:
+            response.sell && response.interestedPost && response.followerPost && response.reported,
         });
       } catch (err) {
         console.error('알림 설정 조회 실패:', err);
