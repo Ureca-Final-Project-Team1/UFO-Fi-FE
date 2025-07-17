@@ -1,6 +1,6 @@
 'use client';
 
-import { Title } from '@/shared/ui/Title';
+import { Title } from '@/shared';
 
 const termsRaw = `
 ## 제 1장 (총칙)
@@ -385,7 +385,7 @@ export default function TermsPage() {
         onClick={() => window.history.back()}
         className="mb-6"
       />
-      <div className="text-white overflow-x-auto text-sm max-h-[80vh] p-2 bg-black/30 rounded-lg flex flex-col gap-2 leading-relaxed">
+      <div className="text-white overflow-x-hidden overflow-y-auto text-sm min-h-screen p-2 pb-24 bg-black/30 rounded-lg flex flex-col gap-2 leading-relaxed">
         {renderTermsWithHeadingsAndLists(termsRaw)}
       </div>
     </div>
