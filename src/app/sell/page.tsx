@@ -9,7 +9,6 @@ import { useSellData } from '@/features/hooks/useSellData';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
-
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
@@ -94,7 +93,6 @@ export default function SellPage() {
           <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">
             1GB 당
           </div>
-
 
           <div className="w-28 h-10 bg-blue-950 rounded-lg outline outline-offset-[-0.5px] outline-blue-400 flex justify-center items-center px-2">
             <PriceInput
