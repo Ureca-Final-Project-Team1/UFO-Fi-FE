@@ -1,10 +1,27 @@
-# UFO-Fi
+# <div align="center">UFO-Fi</div>
 
-## 서비스 소개
+## <div align="center">서비스 소개</div>
 
-**UFO-Fi**는 유휴 데이터를 플랫폼이 대신 보관하고 거래를 중개하는 **수탁형 C2C 데이터 거래 구조**를 채택하였습니다.
+<div style="text-align: center">
 
-무제한 요금제 확산으로 매달 소멸되는 데이터를 **ZET**(Zero Expired Traffic)라는 자체 재화로 전환하여, 실질적 가치를 부여하고 재사용 가능하도록 설계했습니다.
+<p>
+서비스명 <strong>유포파이(UFO-Fi)</strong>는 <em>UFO</em>와 <em>Wi-Fi</em>의 합성어로,<br>
+남는 데이터를 가치 있는 연결로 전환하는 <strong>새로운 데이터 순환 허브</strong>를 지향합니다.
+</p>
+
+<p>
+유포파이는 유휴 데이터를 대신 보관하고 거래를 중개하는<br>
+<strong>수탁형 C2C 데이터 거래 구조</strong>를 바탕으로,<br>
+매달 소멸되는 데이터를 <strong>ZET(Zero Expired Traffic)</strong>라는 자체 재화로 전환해<br>
+가치를 부여하고 <strong>재사용 가능한 자산</strong>으로 만듭니다.
+</p>
+
+<p>
+마치 외계 네트워크가 데이터를 대신 관리하고 중개하는 듯한 <strong>신뢰 구조</strong>를 통해,<br>
+사용자는 단순한 이용자가 아닌 <strong>데이터 생태계의 참여자</strong>가 됩니다.
+</p>
+
+</div>
 
 ## 프로젝트 개요
 
@@ -70,4 +87,8 @@ npm run dev
 
 ## 프로젝트 산출물
 
-[배포링크](https://www.ufo-fi.store) [기획안](https://docs.google.com/document/d/1Q-n-EQk9siN3CXEcM6chsUgfc310rLre/edit?usp=drive_link&ouid=101077923369398316818&rtpof=true&sd=true) [피그마]() [발표자료]() [시연 영상]()
+**[서비스 배포](https://www.ufo-fi.store)**
+\| **[Storybook 배포](https://686aad151c7964b9495b4f40-hqvfjpyhnx.chromatic.com/?path=/docs/components-bulk-bulkcapacityslider--docs)**
+\| **[기획안](https://docs.google.com/document/d/1NqRLayCa4AnSClRW7G0doHbIlRZeVMeL/edit?usp=sharing&ouid=101077923369398316818&rtpof=true&sd=true)**
+\| **[WBS](https://docs.google.com/spreadsheets/d/1-bXQZqGRbWhyofkfMdC6lOKrp5KHEylr/edit?usp=sharing&ouid=101077923369398316818&rtpof=true&sd=true)**
+\| **[ERD Diagram](https://www.erdcloud.com/d/u8JYmdPAEqxb5cRG3)**
