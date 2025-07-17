@@ -1,8 +1,10 @@
 # <div align="center">UFO-Fi</div>
 
+<img src='docs/readme/thumnail.svg' widtj='120' />
+
 ## <div align="center">서비스 소개</div>
 
-<div style="text-align: center">
+<div align="center">
 
 <p>
 서비스명 <strong>유포파이(UFO-Fi)</strong>는 <em>UFO</em>와 <em>Wi-Fi</em>의 합성어로,<br>
