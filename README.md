@@ -83,7 +83,7 @@ npm run dev
 
 ## IA
 
-![IA](/docs/readme/ia.png)
+![IA](/docs/readme/IA.svg)
 
 ## FE 팀원 소개
 
