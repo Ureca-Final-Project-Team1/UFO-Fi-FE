@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { SpeechBubble } from '@/features/main/components';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/shared';
 
 export default function HomePage() {
   return (
