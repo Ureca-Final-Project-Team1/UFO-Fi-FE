@@ -78,6 +78,8 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --font-pretendard: 'Pretendard';
+  --font-pyeongchangpeace-bold: 'PyeongChangPeace-Bold';
+  --font-pyeongchangpeace-light: 'PyeongChangPeace-Light';
   --bg-trade-card: linear-gradient(180deg, #7cc2ef 0%, #485bac 56%, #7f6fc3 100%);
   --bg-trade-reported: #606060;
 }
@@ -120,6 +122,24 @@
   font-family: 'Pretendard';
   src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
   font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PyeongChangPeace-Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2')
+    format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PyeongChangPeace-Light';
+  src: url('https://cdn.jsdelivr.net/gh/fontbee/font@main/Pc/PyeongChangPeace-Light.woff2')
+    format('woff2');
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
@@ -426,6 +446,34 @@
     font-size: 10px;
     line-height: 14px;
     letter-spacing: 0.1px;
+  }
+
+  .pyeongchangpeace-title-1 {
+    font-family: var(--font-pyeongchangpeace-bold);
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    color: var(--bg, #fff);
+    text-align: center;
+  }
+
+  .pyeongchangpeace-title-2 {
+    font-family: var(--font-pyeongchangpeace-light);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  .pyeongchangpeace-logo {
+    font-family: var(--font-pyeongchangpeace-bold);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.2px;
   }
 
   .exploration-button {
