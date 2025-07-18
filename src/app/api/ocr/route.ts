@@ -1,8 +1,13 @@
 import { Buffer } from 'buffer';
-import path from 'path';
 
 import vision from '@google-cloud/vision';
 import { NextResponse } from 'next/server';
+
+export function parseCredentialsFromEnv() {
+  const keyBase64 = process.env.GCLOUD_KEY_BASE64!;
+  const keyJson = Buffer.from(keyBase64, 'base64').toString('utf-8');
+  return JSON.parse(keyJson);
+}
 
 export async function POST(req: Request) {
   try {
@@ -15,17 +20,19 @@ export async function POST(req: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const credentials = parseCredentialsFromEnv();
 
-    process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(
-      process.cwd(),
-      'ufo-fi-466307-c8452e8846a5.json',
-    );
-
-    const client = new vision.ImageAnnotatorClient();
+    const client = new vision.ImageAnnotatorClient({
+      projectId: credentials.project_id,
+      credentials: {
+        client_email: credentials.client_email,
+        private_key: credentials.private_key,
+      },
+    });
 
     const [result] = await client.textDetection({ image: { content: buffer } });
-
     const text = result.textAnnotations?.[0]?.description || '';
+
     return NextResponse.json({ text, description });
   } catch (error) {
     console.error('OCR 실패:', error);
