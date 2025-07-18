@@ -7,7 +7,7 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { Button, Title } from '@/shared/ui';
 import { useViewportStore } from '@/stores/useViewportStore';
 
-export default function BlackholePage() {
+export default function AccounSuccessPage() {
   // const router = useRouter();
   const isMobile = useViewportStore((state) => state.isMobile);
 
@@ -20,7 +20,7 @@ export default function BlackholePage() {
         >
           <Image
             src={IMAGE_PATHS['PAYMENT_CHECK']}
-            alt="Blackhole"
+            alt="계좌 등록 확인"
             width={isMobile ? 48 : 56}
             height={isMobile ? 48 : 56}
           />

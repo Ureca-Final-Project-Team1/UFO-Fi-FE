@@ -6,7 +6,7 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { Button, Icon, Title } from '@/shared/ui';
 import { useViewportStore } from '@/stores/useViewportStore';
 
-export default function BlackholePage() {
+export default function PaymentFailPage() {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   return (

@@ -6,7 +6,7 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { Button, Icon, Title } from '@/shared/ui';
 import { useViewportStore } from '@/stores/useViewportStore';
 
-export default function BlackholePage() {
+export default function PaymentSuccessPage() {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
@@ -16,7 +16,7 @@ export default function BlackholePage() {
         <div
           className={`flex flex-col items-center text-center ${isMobile ? 'space-y-4' : 'space-y-6'}`}
         >
-          <Image src={IMAGE_PATHS['AL_SUCCESS']} alt="결제 실패" width={117} height={201} />
+          <Image src={IMAGE_PATHS['AL_SUCCESS']} alt="결제 성공" width={117} height={201} />
           <div
             className={`flex items-center justify-center gap-2 ${isMobile ? 'body-20-bold' : 'heading-24-bold'} text-white-600`}
           >
