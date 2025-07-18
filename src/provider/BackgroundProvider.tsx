@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
+import { cn } from '@/lib/utils';
 
 interface BackgroundProviderProps {
   children: React.ReactNode;
@@ -34,16 +35,20 @@ export function BackgroundProvider({ children }: BackgroundProviderProps) {
     return IMAGE_PATHS.BG_BASIC;
   })();
 
-  const containerClass = [
-    'w-full min-h-full flex flex-col items-center justify-between sm:px-10.5 px-4 text-white',
-    isPasswordPage ? '' : 'bg-cover bg-no-repeat bg-top',
-  ].join(' ');
-
   const containerStyle = isPasswordPage
     ? { backgroundColor: 'var(--color-password-bg)' }
     : backgroundImageUrl
-      ? { backgroundImage: `url(${backgroundImageUrl})` }
+      ? {
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'top',
+          backgroundSize: 'cover',
+        }
       : {};
+
+  const containerClass = cn(
+    'w-full min-h-full flex flex-col items-center justify-between sm:px-10.5 px-4 text-white',
+  );
 
   return (
     <div className={containerClass} style={containerStyle}>

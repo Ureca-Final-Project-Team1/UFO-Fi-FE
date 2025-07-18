@@ -10,6 +10,9 @@ interface NavigationProviderProps {
   children: React.ReactNode;
 }
 
+const NAV_HEIGHT = 56; // TopNav 높이
+const BOTTOM_NAV_HEIGHT = 64; // BottomNav 높이
+
 export function NavigationProvider({ children }: NavigationProviderProps) {
   const pathname = usePathname();
 
@@ -25,8 +28,8 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
         <main
           className="overflow-y-auto hide-scrollbar"
           style={{
-            height: `calc(100dvh - ${isNavigationHidden ? '0px' : '112px'})`, // TopNav(56px) + BottomNav(56px)
-            marginTop: isNavigationHidden ? '0px' : '56px',
+            height: `calc(100dvh - ${isNavigationHidden ? '0px' : `${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px`})`,
+            marginTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
           }}
