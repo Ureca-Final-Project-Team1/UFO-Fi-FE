@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
@@ -36,7 +37,9 @@ const TopNav: React.FC<TopNavProps> = ({
           ) : (
             <Icon name="ufo" size="xl" />
           )}
-          <span className="pyeongchangpeace-logo font-bold text-white tracking-tight">{title}</span>
+          <Link href="/" className="pyeongchangpeace-logo font-bold text-white tracking-tight">
+            {title}
+          </Link>
         </div>
 
         {showNotification && (

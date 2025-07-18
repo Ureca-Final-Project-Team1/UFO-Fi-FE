@@ -21,7 +21,7 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   return (
     <div className="min-h-screen w-full flex justify-center">
       <div className="relative w-full min-w-[375px] max-w-[620px] overflow-hidden h-screen">
-        {!isNavigationHidden && <TopNav title="UFO-Fi" />}
+        {!isNavigationHidden && <TopNav />}
         <main
           className="overflow-y-auto hide-scrollbar"
           style={{
