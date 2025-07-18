@@ -58,7 +58,8 @@ export type LucideIconType =
   | 'ImageOff' // 이미지 에러용
   | 'Loader2' // 로딩용
   | 'Signal' // 신호 아이콘 추가
-  | 'RotateCw';
+  | 'RotateCw'
+  | 'Check';
 
 // 커스텀 아이콘 타입
 export type CustomIconType =
