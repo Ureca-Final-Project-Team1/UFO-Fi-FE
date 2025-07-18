@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+ufo-fi-466307-c8452e8846a5.json
 
 # vercel
 .vercel
