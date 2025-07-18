@@ -50,6 +50,7 @@ export const Icon: React.FC<IconComponentProps> = ({
     satellite: CustomIcons.SatelliteIcon,
     box: CustomIcons.BoxIcon,
     rotate: CustomIcons.RotateIcon,
+    graph: CustomIcons.GraphIcon,
   };
 
   if (name in customIconComponents) {

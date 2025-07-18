@@ -3,21 +3,9 @@ import React from 'react';
 
 import { buttonVariants } from './buttonVariants';
 
-export type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'destructive'
-  | 'outline'
-  | 'ghost'
-  | 'link'
-  | 'exploration-button'
-  | 'cancel-button'
-  | 'number-badge'
-  | 'action-button'
-  | 'next-button'
-  | 'project-button';
-
-export type ButtonSize = 'sm' | 'default' | 'lg' | 'icon' | 'full-width' | 'compact';
+// buttonVariants에서 자동으로 타입 추론
+export type ButtonVariant = VariantProps<typeof buttonVariants>['variant'];
+export type ButtonSize = VariantProps<typeof buttonVariants>['size'];
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,

@@ -1,6 +1,6 @@
 export const ROUTE_CONFIG = {
   // 온보딩이 필요한 보호된 라우트
-  PROTECTED_ROUTES: ['/sell', '/exchange', '/market', '/mypage'],
+  PROTECTED_ROUTES: ['/sell', '/exchange', '/signal', '/mypage'],
 
   // 온보딩 없이 접근 가능한 예외 라우트
   EXEMPT_ROUTES: ['/onboarding', '/login', '/signup', '/blackhole', '/_next', '/favicon.ico'],

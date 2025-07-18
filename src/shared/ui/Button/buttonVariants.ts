@@ -27,9 +27,18 @@ export const buttonVariants = cva(
         'next-button': 'bg-primary-300 text-white hover:bg-next-hover',
 
         'project-button': 'rounded-[5px] bg-primary-200 text-black-700 hover:bg-primary-300/30',
+
+        // 팔로우 관련 버튼들 - 기존 패턴과 일치하도록 kebab-case 사용
+        'follow-button':
+          'bg-blue-500 text-white border border-blue-500 hover:bg-blue-600 focus:ring-blue-300',
+        'following-button':
+          'bg-white text-black border border-white hover:bg-gray-200 focus:ring-gray-300',
+        'unfollow-button':
+          'bg-white text-red-600 border border-white hover:bg-gray-200 focus:ring-red-300',
       },
       size: {
         sm: 'h-9 w-[100px] rounded-md px-3 text-sm',
+        'follow-sm': 'h-8 w-[80px] rounded-lg px-3 text-xs', // 팔로우 버튼 전용 크기
         default: 'h-10 w-[200px] px-4 py-2 text-md',
         lg: 'h-11 w-[300px] rounded-md px-8 text-lg',
         icon: 'h-10 w-10 rounded-md',

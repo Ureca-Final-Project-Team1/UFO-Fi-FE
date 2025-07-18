@@ -12,7 +12,7 @@ export const useNavigation = () => {
     if (pathname === '/') return 'home';
     if (pathname.startsWith('/sell')) return 'sell';
     if (pathname.startsWith('/exchange')) return 'exchange';
-    if (pathname.startsWith('/market')) return 'market';
+    if (pathname.startsWith('/signal')) return 'signal';
     if (pathname.startsWith('/mypage')) return 'mypage';
     return 'home';
   });
@@ -37,8 +37,8 @@ export const useNavigation = () => {
           case 'home':
             router.push('/');
             break;
-          case 'market':
-            router.push('/market');
+          case 'signal':
+            router.push('/signal');
             break;
           case 'mypage':
             router.push('/mypage');

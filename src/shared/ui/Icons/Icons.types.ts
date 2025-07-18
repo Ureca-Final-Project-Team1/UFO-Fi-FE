@@ -68,7 +68,8 @@ export type CustomIconType =
   | 'astronaut'
   | 'satellite'
   | 'box'
-  | 'rotate';
+  | 'rotate'
+  | 'graph';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

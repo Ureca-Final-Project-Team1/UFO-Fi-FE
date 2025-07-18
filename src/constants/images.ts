@@ -16,6 +16,7 @@ export const IMAGE_PATHS = {
   BLACKHOLE_REAL: '/images/blackhole-real.png',
   NOT_FOUND: '/images/not-found.png',
   WARNING: '/images/warning.png',
+  MAIN: '/images/main.png',
   PACKAGE_A: '/images/package-a.png',
   PACKAGE_B: '/images/package-b.png',
   PACKAGE_C: '/images/package-c.png',
