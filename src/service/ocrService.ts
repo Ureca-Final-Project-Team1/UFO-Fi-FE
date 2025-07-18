@@ -1,4 +1,4 @@
-export const planOCR = async (formData: FormData): Promise<string> => {
+export const ocrService = async (formData: FormData): Promise<string> => {
   const response = await fetch('/api/ocr', {
     method: 'POST',
     body: formData,

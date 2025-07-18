@@ -3,7 +3,7 @@ import { Buffer } from 'buffer';
 import vision from '@google-cloud/vision';
 import { NextResponse } from 'next/server';
 
-export function parseCredentialsFromEnv() {
+function parseCredentialsFromEnv() {
   const keyBase64 = process.env.GCLOUD_KEY_BASE64!;
   const keyJson = Buffer.from(keyBase64, 'base64').toString('utf-8');
   return JSON.parse(keyJson);

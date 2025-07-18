@@ -1,6 +1,9 @@
 import { ChatResult } from '@/types/ocr';
 
-export const gptOCR = async (info: { message: string; prompt: string }): Promise<ChatResult> => {
+export const gptService = async (info: {
+  message: string;
+  prompt: string;
+}): Promise<ChatResult> => {
   const response = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

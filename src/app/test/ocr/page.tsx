@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
-import { planOCR } from '@/service/ocr';
+import { ocrService } from '@/service/ocrService';
 
 export default function OCRTestPage() {
   const [fileName, setFileName] = useState('');
@@ -27,7 +27,7 @@ export default function OCRTestPage() {
     setLoading(true);
     try {
       // 1. OCR 먼저 실행
-      const extracted = await planOCR(formData);
+      const extracted = await ocrService(formData);
       setOcrText(extracted);
 
       // 2. GPT 분석 실행
