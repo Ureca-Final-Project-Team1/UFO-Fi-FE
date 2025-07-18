@@ -36,7 +36,7 @@ const TopNav: React.FC<TopNavProps> = ({
           ) : (
             <Icon name="ufo" size="xl" />
           )}
-          <span className="text-xl font-bold text-white tracking-tight">{title}</span>
+          <span className="pyeongchangpeace-logo font-bold text-white tracking-tight">{title}</span>
         </div>
 
         {showNotification && (
