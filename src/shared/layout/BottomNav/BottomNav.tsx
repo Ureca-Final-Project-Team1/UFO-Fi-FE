@@ -55,7 +55,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
                 <button
                   onClick={() => handleTabClick(item.id)}
                   className={cn(
-                    'flex flex-col items-center justify-center gap-1 transition-all duration-200',
+                    'flex flex-col items-center justify-center gap-1 transition-all duration-200 cursor-pointer',
                     isHome
                       ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
                       : 'w-full h-16 hover:bg-white/5 active:scale-95',
