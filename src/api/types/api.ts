@@ -7,7 +7,7 @@ export interface BaseApiResponse {
 // 성공 응답 타입
 export interface SuccessApiResponse<T = unknown> extends BaseApiResponse {
   statusCode: 200 | 201 | 204;
-  data: T;
+  content: T;
 }
 
 // 에러 응답 타입
