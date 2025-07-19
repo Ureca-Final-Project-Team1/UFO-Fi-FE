@@ -1,12 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { toast } from 'sonner';
 
-// 토큰 관리
-const getAuthToken = (): string | null => {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
-};
-
 // 커스텀 에러 클래스 (상태코드 포함)
 export class ApiError extends Error {
   public statusCode: number;
@@ -29,19 +23,61 @@ const axiosInstance = axios.create({
 });
 
 // 요청 인터셉터
-axiosInstance.interceptors.request.use((config) => {
-  const token = getAuthToken();
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+axiosInstance.interceptors.request.use((config) => config);
 
 // 응답 인터셉터 - 에러 처리 및 토스트
+let isRefreshing = false;
+let queue: ((token: string) => void)[] = [];
+
+const processQueue = (token: string) => {
+  queue.forEach((cb) => cb(token));
+  queue = [];
+};
+
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
     const statusCode = error.response?.status || 500;
+
+    if (statusCode === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          queue.push(() => resolve(axiosInstance(originalRequest)));
+        });
+      }
+
+      isRefreshing = true;
+
+      try {
+        const refreshToken = sessionStorage.getItem('refreshToken');
+        if (!refreshToken) throw new Error('RefreshToken 없음');
+
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/refresh`,
+          {},
+          {
+            headers: {
+              Refresh: refreshToken,
+            },
+            withCredentials: true,
+          },
+        );
+
+        const newAccessToken = res.data.accessToken;
+        processQueue(newAccessToken);
+
+        return axiosInstance(originalRequest);
+      } catch (err) {
+        toast.error('로그인이 만료되었습니다.');
+        window.location.href = '/login';
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
+    }
     const message =
       (error.response?.data as { content?: string })?.content ||
       '요청 처리 중 오류가 발생했습니다.';
@@ -92,5 +128,4 @@ export const apiRequest = {
   delete: <T>(url: string, config?: AxiosRequestConfig) => axiosInstance.delete<T>(url, config),
 };
 
-export { getAuthToken };
 export default axiosInstance;
