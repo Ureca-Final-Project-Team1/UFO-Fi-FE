@@ -1,4 +1,4 @@
-export interface MypageResponse {
+export interface MyInfoResponse {
   statusCode: number;
   message: string;
   content: {
