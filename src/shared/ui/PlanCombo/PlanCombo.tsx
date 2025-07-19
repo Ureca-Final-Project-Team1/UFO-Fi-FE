@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { cn } from '@/lib/utils';
 import {
   Command,
   CommandEmpty,
@@ -19,7 +18,6 @@ import { planComboHeaderClass, planComboItemClass } from './planComboVariants';
 export function PlanCombo({ planNames = [], onSelect }: PlanComboProps) {
   const [input, setInput] = useState('');
   const [selected, setSelected] = useState('');
-  const [showList, setShowList] = useState(true);
 
   const handlePlanSelect = (value: string) => {
     const newValue = value === selected ? '' : value;
@@ -28,10 +26,7 @@ export function PlanCombo({ planNames = [], onSelect }: PlanComboProps) {
     onSelect?.(newValue);
   };
 
-  useEffect(() => {
-    if (input === selected && input !== '') setShowList(false);
-    else setShowList(true);
-  }, [input, selected]);
+  const showList = input !== selected || input === '';
 
   return (
     <div>
@@ -40,7 +35,7 @@ export function PlanCombo({ planNames = [], onSelect }: PlanComboProps) {
         <CommandInput
           placeholder="요금제를 선택해 주세요."
           value={input}
-          onInput={(e) => setInput(e.currentTarget.value)}
+          onInput={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.currentTarget.value)}
           className="h-[50px] justify-between text-[16px]"
         />
 
@@ -56,10 +51,7 @@ export function PlanCombo({ planNames = [], onSelect }: PlanComboProps) {
                   className={planComboItemClass}
                 >
                   {name}
-                  <Icon
-                    name="Check"
-                    className={cn('ml-auto', selected === name ? 'opacity-100' : 'opacity-0')}
-                  />
+                  {selected === name && <Icon name="Check" className="ml-auto opacity-100" />}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PlanCombo } from './PlanCombo';
 
 const meta: Meta<typeof PlanCombo> = {
-  title: 'UI/PlanCombo',
+  title: 'Components/signup/PlanCombo',
   component: PlanCombo,
 };
 
