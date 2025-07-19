@@ -12,6 +12,8 @@ interface BackgroundProviderProps {
 export function BackgroundProvider({ children }: BackgroundProviderProps) {
   const pathname = usePathname();
 
+  const isPasswordPage = pathname.includes('password');
+
   const backgroundImageUrl = (() => {
     if (
       pathname.startsWith('/login') ||
@@ -23,6 +25,10 @@ export function BackgroundProvider({ children }: BackgroundProviderProps) {
 
     if (pathname.startsWith('/onboarding')) {
       return IMAGE_PATHS.BG_ONBOARDING;
+    }
+
+    if (isPasswordPage) {
+      return '';
     }
 
     return IMAGE_PATHS.BG_BASIC;

@@ -203,6 +203,8 @@
   --width-mobile-min: 375px;
   --width-mobile-max: 620px;
   --color-border-zet: #1379c8;
+
+  --color-password-bg: #070d24;
 }
 
 @layer base {
