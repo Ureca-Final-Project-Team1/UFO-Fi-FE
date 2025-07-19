@@ -1,0 +1,54 @@
+@layer utilities {
+  .exploration-button {
+    position: relative;
+    z-index: 0;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 12px 24px;
+    color: white;
+    background: none;
+  }
+
+  .exploration-button::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 10px;
+    padding: 2px;
+    background: linear-gradient(
+      to right,
+      var(--color-exploration-border-from),
+      var(--color-exploration-border-via) 53%,
+      var(--color-exploration-border-to)
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+  }
+
+  .exploration-button::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 10px;
+    background: linear-gradient(
+      to right bottom,
+      var(--color-exploration-gradient-from),
+      var(--color-exploration-gradient-to)
+    );
+    z-index: -2;
+  }
+
+  .exploration-button:hover {
+    opacity: 0.9;
+  }
+
+  .exploration-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

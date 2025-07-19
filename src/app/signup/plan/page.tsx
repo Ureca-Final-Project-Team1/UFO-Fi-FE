@@ -7,10 +7,8 @@ import '@/styles/globals.css';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { getPlanByTelecom } from '@/api/signup/getPlansByTelecom';
-import { signupWithPlan } from '@/api/signup/signupWithPlan';
+import { Plan, plansAPI, signupAPI } from '@/api';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
-import { Plan } from '@/shared/types/plan';
 import {
   Button,
   Select,
@@ -60,7 +58,7 @@ const PlanPage = () => {
       setApiError(null);
 
       try {
-        const response = await getPlanByTelecom(watchedCarrier);
+        const response = await plansAPI.getByCarrier(watchedCarrier);
         setPlans(response);
 
         // 통신사 변경 시 요금제 선택 초기화
@@ -68,7 +66,7 @@ const PlanPage = () => {
         setMaxData(null);
         setNetworkType('');
 
-        if (response.length === 0) {
+        if (!response || response.length === 0) {
           setApiError('해당 통신사의 요금제를 찾을 수 없습니다.');
           toast.error('해당 통신사의 요금제를 찾을 수 없습니다.');
         }
@@ -140,15 +138,10 @@ const PlanPage = () => {
         },
       };
 
-      const response = await signupWithPlan(requestData);
-
-      if (response?.statusCode === 200) {
-        toast.success(`회원가입이 완료되었습니다!`);
-        useSignupStore.getState().reset();
-        router.push('/');
-      } else {
-        toast.error('회원가입에 실패했습니다. 다시 시도해주세요.');
-      }
+      await signupAPI.signup(requestData);
+      toast.success(`회원가입이 완료되었습니다!`);
+      useSignupStore.getState().reset();
+      router.push('/');
     } catch (error) {
       console.error('회원가입 에러:', error);
       toast.error('회원가입 중 오류가 발생했습니다.');
