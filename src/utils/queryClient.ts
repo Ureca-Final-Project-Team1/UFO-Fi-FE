@@ -22,10 +22,18 @@ const queryClient = new QueryClient({
 });
 
 // 기본 query key 팩토리
-export const queryKeys = {
-  notifications: (userId: number) => ['notifications', userId],
-  plans: (carrier: string) => ['plans', carrier],
-  user: (userId: string) => ['user', userId],
+interface QueryKeys {
+  notifications: (userId: number) => readonly [string, number];
+  plans: (carrier: string) => readonly [string, string];
+  user: (userId: string) => readonly [string, string];
+  exchangePostsInfinite: (params?: unknown) => readonly [string, unknown?];
+}
+
+export const queryKeys: QueryKeys = {
+  notifications: (userId: number) => ['notifications', userId] as const,
+  plans: (carrier: string) => ['plans', carrier] as const,
+  user: (userId: string) => ['user', userId] as const,
+  exchangePostsInfinite: (params?: unknown) => ['exchange-posts-infinite', params],
 } as const;
 
 export default queryClient;
