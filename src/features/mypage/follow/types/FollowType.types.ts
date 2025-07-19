@@ -24,6 +24,7 @@ export interface FollowUser {
   profileImage: string;
   isFollowing: boolean;
   username?: string;
+  nickname?: string;
   status?: 'online' | 'offline';
 }
 
