@@ -19,7 +19,12 @@ export const POST = async (req: Request) => {
     });
 
     const full = completion.choices[0].message?.content ?? '';
-    const parsed = JSON.parse(full);
+    let parsed;
+    try {
+      parsed = JSON.parse(full);
+    } catch (e) {
+      return NextResponse.json({ error: `Invalid response format: ${e}` });
+    }
 
     return new Response(JSON.stringify(parsed), {
       headers: {

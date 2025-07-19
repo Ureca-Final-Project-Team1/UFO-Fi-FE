@@ -4,9 +4,18 @@ import vision from '@google-cloud/vision';
 import { NextResponse } from 'next/server';
 
 function parseCredentialsFromEnv() {
-  const keyBase64 = process.env.GCLOUD_KEY_BASE64!;
-  const keyJson = Buffer.from(keyBase64, 'base64').toString('utf-8');
-  return JSON.parse(keyJson);
+  try {
+    const keyBase64 = process.env.GCLOUD_KEY_BASE64;
+    if (!keyBase64) {
+      throw new Error('GCLOUD_KEY_BASE64 환경변수가 설정되어 있지 않습니다.');
+    }
+
+    const keyJson = Buffer.from(keyBase64, 'base64').toString('utf-8');
+    return JSON.parse(keyJson);
+  } catch (error) {
+    console.error('[GCLOUD] 인증 정보 파싱 실패:', error);
+    return null;
+  }
 }
 
 export async function POST(req: Request) {
