@@ -31,7 +31,7 @@ const Page = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-between items-center w-full min-h-[calc(100vh-112px)] px-4 py-6"
+      className="flex flex-col justify-between items-center w-full min-h-full px-4 py-6"
     >
       <div className="flex flex-col justify-start items-start text-center gap-5 w-full h-full">
         <p className="body-20-bold">회원가입</p>

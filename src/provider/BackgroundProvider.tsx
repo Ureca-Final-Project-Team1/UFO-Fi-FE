@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
+import { cn } from '@/lib/utils';
 
 interface BackgroundProviderProps {
   children: React.ReactNode;
@@ -34,22 +35,23 @@ export function BackgroundProvider({ children }: BackgroundProviderProps) {
     return IMAGE_PATHS.BG_BASIC;
   })();
 
-  // 네비게이션이 숨겨지는 페이지인지 확인
-  const isNavigationHidden =
-    pathname.startsWith('/login') ||
-    pathname.startsWith('/onboarding') ||
-    pathname.startsWith('/signup') ||
-    pathname.startsWith('/blackhole');
+  const containerStyle = isPasswordPage
+    ? { backgroundColor: 'var(--color-password-bg)' }
+    : backgroundImageUrl
+      ? {
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'top',
+          backgroundSize: 'cover',
+        }
+      : {};
+
+  const containerClass = cn(
+    'w-full min-h-full flex flex-col items-center justify-between sm:px-10.5 px-4 text-white',
+  );
 
   return (
-    <div
-      className={`w-full h-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-between sm:px-10.5 px-4 text-white ${
-        isNavigationHidden ? 'min-h-screen' : 'min-h-full'
-      }`}
-      style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
-      }}
-    >
+    <div className={containerClass} style={containerStyle}>
       {children}
     </div>
   );

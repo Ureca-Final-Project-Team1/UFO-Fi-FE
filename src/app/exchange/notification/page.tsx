@@ -13,7 +13,7 @@ const FilterNotificationPage = () => {
   const { count } = useFilteredItemCount();
 
   return (
-    <div className="flex flex-col justify-start items-center w-full h-[calc(100vh-112px)]">
+    <div className="flex flex-col justify-start items-center w-full min-h-full">
       <Title title="알림 조건 설정" iconVariant="back" />
       <div className="overflow-y-auto flex flex-col gap-4 h-full mb-4 hide-scrollbar">
         <FilterBox name="통신사" isMultipleSelection={true}>

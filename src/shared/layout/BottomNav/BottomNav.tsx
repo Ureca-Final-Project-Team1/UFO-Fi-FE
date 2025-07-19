@@ -37,9 +37,9 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
   };
 
   return (
-    <footer className="absolute bottom-0 left-0 right-0 h-20 z-30">
-      <div className="w-full h-20 bg-primary-700 border-t border-white/10">
-        <nav className="flex items-center justify-around h-20 w-full">
+    <footer className="absolute bottom-0 left-0 right-0 h-16 z-30">
+      <div className="w-full h-16 bg-primary-700 border-t border-white/10">
+        <nav className="flex items-center justify-around h-16 w-full">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             const isHome = item.id === 'home';
@@ -47,18 +47,18 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
             return (
               <div
                 key={item.id}
-                className={cn('flex justify-center items-end h-20', {
-                  'relative z-10 w-18': isHome,
+                className={cn('flex justify-center items-end h-16', {
+                  'relative z-10 w-18 mt-0': isHome,
                   'flex-1': !isHome,
                 })}
               >
                 <button
                   onClick={() => handleTabClick(item.id)}
                   className={cn(
-                    'flex flex-col items-center justify-center gap-2 transition-all duration-200',
+                    'flex flex-col items-center justify-center gap-1 transition-all duration-200',
                     isHome
-                      ? 'w-full h-22 bg-primary-400 rounded-t-3xl'
-                      : 'w-full h-20 hover:bg-white/5 active:scale-95',
+                      ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
+                      : 'w-full h-16 hover:bg-white/5 active:scale-95',
                     isActive ? 'text-secondary-yellow' : 'text-white/70',
                   )}
                   aria-label={item.label}
