@@ -3,6 +3,7 @@ export { notificationAPI } from './services/notification/settings';
 export { signupAPI } from './services/auth/signup';
 export { plansAPI } from './services/auth/plans';
 export { sellAPI } from './services/sell/posts';
+export { exchangeAPI } from './services/exchange/posts';
 
 // 타입들 re-export
 export type * from './types';
