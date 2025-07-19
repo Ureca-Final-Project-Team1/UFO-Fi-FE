@@ -1,5 +1,5 @@
-import axiosInstance from '../axios';
 import { purchaseHistoryResponse } from './history.types';
+import axiosInstance from '../client/axios';
 
 export const purchaseHistoryAPI = async (): Promise<purchaseHistoryResponse[] | undefined> => {
   try {
