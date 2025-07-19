@@ -1,3 +1,5 @@
+import { Plan } from '@/shared/types/plan';
+
 export interface SignupWithPlanResponse {
   statusCode: number;
   message: string;
@@ -16,16 +18,6 @@ export interface SignupWithPlanRequest {
     planId: number;
     planName: string;
   };
-}
-
-export interface Plan {
-  planId: number;
-  planName: string;
-  carrier: 'SKT' | 'KT' | 'LGU';
-  mobileDataAmount: number;
-  isUltimatedAmount: boolean;
-  sellMobileDataCapacityGB: number;
-  mobileDataType: 'LTE' | '5G';
 }
 
 export interface PlansResponse {
