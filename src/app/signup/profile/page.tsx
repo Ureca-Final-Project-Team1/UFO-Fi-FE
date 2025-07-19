@@ -28,12 +28,7 @@ const ProfilePage = () => {
 
   const onSubmit = (data: SignupProfileSchema) => {
     setForm(data);
-
-    if (data.name && data.phoneNumber) {
-      router.push('/signup/plan');
-    } else {
-      alert('이름과 전화번호를 모두 입력해주세요.');
-    }
+    router.push('/signup/plan');
   };
 
   return (
