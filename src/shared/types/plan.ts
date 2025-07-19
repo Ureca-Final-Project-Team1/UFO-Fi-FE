@@ -1,8 +1,9 @@
 export interface Plan {
-  planName: string | null;
-  carrier: string | null;
-  isUltimatedAmount: boolean | null;
-  mobileDataAmount: number | null;
-  mobileDataType: string;
-  sellMobileDataCapacityGB: number | null;
+  planId: number;
+  planName: string;
+  carrier: 'SKT' | 'KT' | 'LGU';
+  mobileDataAmount: number;
+  isUltimatedAmount: boolean;
+  sellMobileDataCapacityGB: number;
+  mobileDataType: 'LTE' | '_5G';
 }
