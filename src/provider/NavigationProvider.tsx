@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
+import { IMAGE_PATHS } from '@/constants/images';
 import BottomNav from '@/shared/layout/BottomNav';
 import TopNav from '@/shared/layout/TopNav';
 
@@ -21,12 +22,47 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     pathname.startsWith('/onboarding') ||
     pathname.startsWith('/signup/privacy');
 
+  const isPasswordPage = pathname.includes('password');
+
+  const backgroundImageUrl = (() => {
+    if (
+      pathname.startsWith('/login') ||
+      pathname.startsWith('/signup') ||
+      pathname.startsWith('/blackhole')
+    ) {
+      return IMAGE_PATHS.BG_LOGIN;
+    }
+    if (pathname.startsWith('/onboarding')) {
+      return IMAGE_PATHS.BG_ONBOARDING;
+    }
+    if (isPasswordPage) {
+      return '';
+    }
+    return IMAGE_PATHS.BG_BASIC;
+  })();
+
+  const containerStyle = backgroundImageUrl
+    ? {
+        backgroundImage: `url(${backgroundImageUrl})`,
+      }
+    : isPasswordPage
+      ? {
+          backgroundColor: 'var(--color-password-bg)',
+        }
+      : {};
+
   return (
     <div className="min-h-screen w-full flex justify-center">
-      <div className="relative w-full min-w-[375px] max-w-[620px] overflow-hidden h-screen">
+      <div
+        className={`
+          relative w-full min-w-[375px] max-w-[620px] overflow-hidden h-screen
+          ${backgroundImageUrl ? 'nav-container-bg' : ''}
+        `}
+        style={containerStyle}
+      >
         {!isNavigationHidden && <TopNav />}
         <main
-          className="overflow-y-auto hide-scrollbar"
+          className="overflow-y-auto hide-scrollbar relative z-10"
           style={{
             height: `calc(100dvh - ${isNavigationHidden ? '0px' : `${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px`})`,
             marginTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
