@@ -118,10 +118,40 @@ export const LucideIcons: Story = {
             'Home',
             'Search',
             'Settings',
+            'FilePenLine', // 거래명세서 아이콘
             'Menu',
+            'Sparkles',
+            'Database',
+            'Coins',
+            'Calculator',
             'X',
+            'Sticker',
+            'ChevronLeft',
+            'ChevronRight',
+            'ChevronDown',
+            'ChevronUp',
             'Heart',
             'Star',
+            'Siren', // 신고 버튼
+            'Download',
+            'CirclePlus', // 판매 등록
+            'RadioTower', // 전파 거래소
+            'Upload',
+            'Edit',
+            'Trash2',
+            'Eye',
+            'EyeOff',
+            'Hourglass',
+            'CircleCheck',
+            'Dot',
+            'ChartNoAxesColumn',
+            'BellRing',
+            'AlertCircle', // 에러용
+            'ImageOff', // 이미지 에러용
+            'Loader2', // 로딩용
+            'Signal', // 신호 아이콘 추가
+            'RotateCw',
+            'Check',
           ] as const
         ).map((iconName) => (
           <div key={iconName} className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded">
