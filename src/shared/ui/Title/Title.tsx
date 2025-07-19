@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -25,8 +26,21 @@ export const Title: React.FC<TitleProps> = ({
   className,
   ...props
 }) => {
+  const router = useRouter();
   const iconName = getIconName(iconVariant);
   const hasIcon = iconName !== null;
+
+  // 아이콘 클릭 핸들러
+  const handleClick = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>): void => {
+      if (onClick) {
+        onClick(e);
+      } else if (iconVariant === 'back') {
+        router.back();
+      }
+    },
+    [onClick, iconVariant, router],
+  );
 
   return (
     <div className={cn('relative w-full flex items-center py-4 px-4', className)} {...props}>
@@ -34,7 +48,7 @@ export const Title: React.FC<TitleProps> = ({
       {hasIcon && (
         <button
           type="button"
-          onClick={onClick}
+          onClick={handleClick}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
           aria-label={`${iconVariant} 버튼`}
         >
