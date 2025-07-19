@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { sellApi } from '@/api/sell';
+import { sellAPI } from '@/api';
 
 export const useSellData = () => {
   const [value, setValue] = useState([5]);
@@ -28,9 +28,10 @@ export const useSellData = () => {
   };
 
   const sellMutation = useMutation({
-    mutationFn: (data: Parameters<typeof sellApi.createSellPost>[0]) =>
+    mutationFn: async (data: Parameters<typeof sellAPI.createPost>[0]) => {
       // TODO: userId 더미데이터라 변경 필요
-      sellApi.createSellPost(data, '2'),
+      return await sellAPI.createPost(data, '2');
+    },
     onSuccess: () => {
       toast.success(`판매 등록이 완료되었습니다!`);
       setTitleInput('');

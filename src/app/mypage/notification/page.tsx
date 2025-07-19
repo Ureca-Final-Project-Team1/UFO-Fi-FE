@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { getNotificationAPI } from '@/api/notification/getNotificationAPI';
-import { updateNotificationAPI } from '@/api/notification/updateNotificationAPI';
+import { notificationAPI } from '@/api';
 import { Title } from '@/shared';
 import { Switch } from '@/shared/ui/Switch';
 import '@/styles/globals.css';
@@ -32,7 +31,8 @@ const MypageNotificationPage = () => {
     const fetchNotificationSettings = async () => {
       try {
         // TODO: 인증 도입 시 변경할 것
-        const response = await getNotificationAPI({ userId: 1 });
+        const response = await notificationAPI.getSettings({ userId: 1 });
+
         if (!response) return;
 
         setNotificationState({
@@ -58,7 +58,11 @@ const MypageNotificationPage = () => {
     const newNotificationState = { ...notificationState, [type]: value };
 
     // TODO: 인증 도입 시 변경할 것
-    updateNotificationAPI({ userId: 1, type, enable: value });
+    await notificationAPI.updateSetting({
+      userId: 1,
+      type: 'sell',
+      enable: false,
+    });
 
     if (type === 'TRADE') {
       tradeKeys.forEach((key) => {
