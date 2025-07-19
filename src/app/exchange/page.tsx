@@ -1,99 +1,110 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useMemo, useEffect } from 'react';
-import { toast } from 'sonner';
+import { useMemo } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { ICON_PATHS } from '@/constants/icons';
 import SellingItem from '@/features/exchange/components/SellingItem';
+import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
 import { Button, Chip, Icon, Title } from '@/shared';
+import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 export default function ExchangePage() {
   const router = useRouter();
 
-  // 더미 데이터
-  const sellingItems = useMemo(
-    () => [
-      {
-        id: 1,
-        carrier: 'KT',
-        networkType: '5G',
-        capacity: '1GB',
-        price: '2,500원',
-        timeLeft: '30분전',
-        isOwner: false,
-      },
-      {
-        id: 2,
-        carrier: 'SKT',
-        networkType: 'LTE',
-        capacity: '1GB',
-        price: '2,500원',
-        timeLeft: '30분전',
-        isOwner: true,
-      },
-      {
-        id: 3,
-        carrier: 'LG U+',
-        networkType: '5G',
-        capacity: '1GB',
-        price: '2,500원',
-        timeLeft: '30분전',
-        isOwner: false,
-      },
-      {
-        id: 4,
-        carrier: 'KT',
-        networkType: '5G',
-        capacity: '2GB',
-        price: '4,500원',
-        timeLeft: '1시간전',
-        isOwner: false,
-      },
-    ],
-    [],
-  );
+  // 무한스크롤 데이터 조회
+  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteExchangePosts();
 
-  useEffect(() => {
-    const invalidItem = sellingItems.find(
-      (item) => !item.carrier || !item.capacity || !item.price || !item.timeLeft,
-    );
-    if (invalidItem) {
-      toast.error('모든 정보가 입력되었는지 확인해주세요!');
-    }
-  }, [sellingItems]);
+  // 무한스크롤 트리거 (화면 하단 감지)
+  const { ref: loadMoreRef } = useInView({
+    threshold: 0,
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+  });
+
+  const sellingItems = useMemo(() => {
+    if (!data?.pages) return [];
+
+    return data.pages
+      .flatMap((page) => page.posts) // 모든 페이지의 posts 합치기
+      .filter((post) => post.status !== 'DELETED') // 삭제된 글 제외
+      .map((post) => ({
+        id: post.postId,
+        carrier: post.carrier,
+        networkType: post.mobileDataType === '_5G' ? '5G' : 'LTE',
+        capacity: `${post.sellMobileDataCapacityGb}GB`,
+        price: `${post.totalPrice.toLocaleString()}ZET`,
+        timeLeft: formatTimeAgo(post.createdAt),
+        isOwner: false, // TODO: 현재 사용자 ID와 비교 필요
+        status: post.status,
+      }));
+  }, [data?.pages]);
 
   const handleEdit = (id: number) => {
+    // eslint-disable-next-line no-console
     console.log('Edit item:', id);
   };
 
   const handleDelete = (id: number) => {
+    // eslint-disable-next-line no-console
     console.log('Delete item:', id);
   };
 
   const handleReport = (id: number) => {
+    // eslint-disable-next-line no-console
     console.log('Report item:', id);
   };
 
   const handlePurchase = (id: number) => {
+    // eslint-disable-next-line no-console
     console.log('Purchase item:', id);
   };
 
   const handleNotificationSettings = () => {
-    router.push('/notification');
+    router.push('/exchange/notification');
   };
 
   const handleCharge = () => {
-    console.log('Charge ZET');
+    router.push('/charge');
   };
-
-  // const handleFilterClick = () => {
-  //   router.push('/notification');
-  // };
 
   const handleBulkPurchase = () => {
-    console.log('Bulk purchase');
+    router.push('/exchange/bulk');
   };
+
+  // 초기 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="flex flex-col min-h-full w-full pb-6">
+        <Title title="전파 거래소" />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-white">게시글을 불러오는 중...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className="flex flex-col min-h-full w-full pb-6">
+        <Title title="전파 거래소" />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-red-400 mb-2">데이터를 불러오는데 실패했습니다</div>
+            <Button size="sm" onClick={() => window.location.reload()} className="text-white">
+              다시 시도
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-full w-full pb-6">
@@ -131,14 +142,12 @@ export default function ExchangePage() {
 
         {/* 뱃지 필터와 일괄구매 버튼 */}
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2 sm:relative">
-          {/* TODO: 추후 필터링을 통한 정렬 적용 필요 */}
           <div className="flex flex-wrap gap-2">
             <Chip rightIcon={<Icon name="ChevronDown" />}>통신사</Chip>
             <Chip>용량</Chip>
             <Chip>가격</Chip>
           </div>
 
-          {/* 일괄구매 버튼 */}
           <div className="ml-auto sm:absolute sm:right-0 sm:top-0">
             <Button size="sm" variant="exploration-button" onClick={handleBulkPurchase}>
               <Icon name="box" className="w-3 h-3 pr-1" />
@@ -148,25 +157,54 @@ export default function ExchangePage() {
         </div>
 
         {/* 판매글 아이템 목록 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {sellingItems
-            .filter((item) => item.carrier && item.capacity && item.price && item.timeLeft)
-            .map((item) => (
-              <SellingItem
-                key={item.id}
-                carrier={item.carrier}
-                networkType={item.networkType}
-                capacity={item.capacity}
-                price={item.price}
-                timeLeft={item.timeLeft}
-                isOwner={item.isOwner}
-                onEdit={() => handleEdit(item.id)}
-                onDelete={() => handleDelete(item.id)}
-                onReport={() => handleReport(item.id)}
-                onPurchase={() => handlePurchase(item.id)}
-              />
-            ))}
-        </div>
+        {sellingItems.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {sellingItems.map((item) => (
+                <SellingItem
+                  key={item.id}
+                  carrier={item.carrier}
+                  networkType={item.networkType}
+                  capacity={item.capacity}
+                  price={item.price}
+                  timeLeft={item.timeLeft}
+                  isOwner={item.isOwner}
+                  onEdit={() => handleEdit(item.id)}
+                  onDelete={() => handleDelete(item.id)}
+                  onReport={() => handleReport(item.id)}
+                  onPurchase={() => handlePurchase(item.id)}
+                />
+              ))}
+            </div>
+
+            {/* 무한스크롤 트리거 영역 */}
+            <div ref={loadMoreRef} className="w-full py-4 flex justify-center">
+              {isFetchingNextPage ? (
+                <div className="text-white text-sm">더 많은 게시글을 불러오는 중...</div>
+              ) : hasNextPage ? (
+                <div className="text-gray-400 text-sm">스크롤하여 더 보기</div>
+              ) : (
+                <div className="text-gray-400 text-sm">모든 게시글을 불러왔습니다!</div>
+              )}
+            </div>
+          </>
+        ) : (
+          /* 데이터가 없을 때 */
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="text-gray-400 text-center">
+              <Icon name="Package" size="xl" className="mx-auto mb-4 opacity-50" />
+              <p className="text-lg mb-2">등록된 판매글이 없습니다</p>
+              <p className="text-sm mb-6">첫 번째 거래글을 등록해보세요!</p>
+              <Button
+                variant="exploration-button"
+                onClick={() => router.push('/sell')}
+                className="px-6"
+              >
+                판매글 등록하기
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
