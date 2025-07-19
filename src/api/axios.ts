@@ -53,16 +53,15 @@ const createAxiosInstance = (): AxiosInstance => {
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080',
     timeout: 30000, // 30초
 
-    // TODO: 추후 인증 기능 붙이면 true로 변경할 것
-    // withCredentials: true,
-    withCredentials: false,
+    // 쿠키 기반 인증을 위해 true로 변경
+    withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
   });
 
-  // 요청 인터셉터
+  // 요청 인터셉터에 쿠키 로깅 추가
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       // 토큰이 있다면 Authorization 헤더에 추가
@@ -78,7 +77,7 @@ const createAxiosInstance = (): AxiosInstance => {
     },
   );
 
-  // 응답 인터셉터
+  // 응답 인터셉터에 쿠키 로깅 추가
   instance.interceptors.response.use(
     (response: AxiosResponse<ApiResponse>) => {
       // 응답 데이터가 API 형식과 일치하는지 확인
@@ -131,7 +130,8 @@ const createAxiosInstance = (): AxiosInstance => {
           // 리프레시 실패 시 로그아웃 처리
           removeAuthToken();
           if (typeof window !== 'undefined') {
-            window.location.href = '/login';
+            // TODO: 나중에 주석 풀기
+            // window.location.href = '/login';
           }
         }
       }

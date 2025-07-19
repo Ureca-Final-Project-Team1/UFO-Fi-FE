@@ -1,0 +1,37 @@
+@layer utilities {
+  /* NavigationProvider */
+  .nav-container-bg {
+    position: relative;
+  }
+
+  .nav-container-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+  }
+
+  @media (min-width: 769px) {
+    .nav-container-bg::before {
+      background-attachment: fixed;
+    }
+  }
+
+  /* iOS Safari 최적화 */
+  @media (max-width: 768px) {
+    .nav-container-bg::before {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+  }
+}

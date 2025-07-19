@@ -7,13 +7,12 @@ import { useForm } from 'react-hook-form';
 import '@/styles/globals.css';
 
 import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
-import { Button, PhoneInput } from '@/shared/ui';
-import { Input } from '@/shared/ui';
+import { Button, PhoneInput, Input, Title } from '@/shared/ui';
 import { useSignupStore } from '@/stores/useSignupStore';
 
-const Page = () => {
+const ProfilePage = () => {
   const router = useRouter();
-  const { setForm } = useSignupStore();
+  const { setForm, name, phoneNumber } = useSignupStore();
 
   const {
     register,
@@ -21,6 +20,10 @@ const Page = () => {
     formState: { errors },
   } = useForm<SignupProfileSchema>({
     resolver: zodResolver(signupProfileSchema),
+    defaultValues: {
+      name: name || '',
+      phoneNumber: phoneNumber || '',
+    },
   });
 
   const onSubmit = (data: SignupProfileSchema) => {
@@ -29,44 +32,51 @@ const Page = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-between items-center w-full min-h-[calc(100vh-112px)] px-4 py-6"
-    >
-      <div className="flex flex-col justify-start items-start text-center gap-5 w-full h-full">
-        <p className="body-20-bold">회원가입</p>
+    <div className="w-full min-h-screen flex flex-col">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col justify-start items-start">
+          <Title title="회원가입" />
 
-        <div className="flex flex-col gap-3 w-full text-left">
-          <label className="flex items-center gap-5 body-16-bold">
-            이름
-            {errors.name && <p className="text-red-600 caption-10-medium">{errors.name.message}</p>}
-          </label>
-          <Input
-            {...register('name')}
-            className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
-            placeholder="실명을 입력해주세요."
-          />
-        </div>
-        <div className="flex flex-col gap-3 w-full text-left">
-          <label className="flex items-center gap-5 body-16-bold">
-            전화번호
-            {errors.phoneNumber && (
-              <p className="text-red-600 caption-10-medium">{errors.phoneNumber.message}</p>
-            )}
-          </label>
-          <PhoneInput
-            {...register('phoneNumber')}
-            className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
-            placeholder="010-XXXX-XXXX 형식으로 입력해주세요."
-          />
-        </div>
-      </div>
+          <div className="flex flex-col gap-6 w-full">
+            <div className="flex flex-col gap-3 w-full text-left">
+              <label className="flex items-center gap-5 body-16-bold">
+                이름
+                {errors.name && (
+                  <p className="text-red-600 caption-10-medium">{errors.name.message}</p>
+                )}
+              </label>
+              <Input
+                {...register('name')}
+                className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
+                placeholder="실명을 입력해주세요."
+              />
+            </div>
 
-      <Button type="submit" size="full-width" className="body-16-medium h-10 sm:h-14 text-white">
-        다음
-      </Button>
-    </form>
+            <div className="flex flex-col gap-3 w-full text-left">
+              <label className="flex items-center gap-5 body-16-bold">
+                전화번호
+                {errors.phoneNumber && (
+                  <p className="text-red-600 caption-10-medium">{errors.phoneNumber.message}</p>
+                )}
+              </label>
+              <PhoneInput
+                {...register('phoneNumber')}
+                className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
+                placeholder="숫자만 입력해주세요. (- 제외)"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* 고정된 하단 버튼 */}
+        <div className="sticky bottom-0 bg-inherit pb-4">
+          <Button type="submit" size="full-width" className="body-16-medium h-14 text-white">
+            다음
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
-export default Page;
+export default ProfilePage;
