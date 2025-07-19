@@ -67,7 +67,7 @@ const ProfilePage = () => {
               <PhoneInput
                 {...register('phoneNumber')}
                 className="caption-14-regular bg-white h-[50px] text-black placeholder-gray-400 rounded-sm w-full"
-                placeholder="010-XXXX-XXXX 형식으로 입력해주세요."
+                placeholder="숫자만 입력해주세요. (- 제외)"
               />
             </div>
           </div>
