@@ -1,0 +1,29 @@
+@layer utilities {
+  /* 스크롤바 숨기기 */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe area */
+  .safe-area-top {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+
+  /* 그라데이션 색상 */
+  .gradient-card-1 {
+    @apply bg-gradient-to-br from-sky-300/70 via-indigo-400/50 to-purple-400/70;
+  }
+
+  .gradient-card-2 {
+    @apply bg-gradient-to-br from-blue-600 to-fuchsia-600 border-2 border-cyan-300;
+  }
+}

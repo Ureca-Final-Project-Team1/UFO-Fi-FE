@@ -3,7 +3,15 @@ export const ROUTE_CONFIG = {
   PROTECTED_ROUTES: ['/sell', '/exchange', '/signal', '/mypage'],
 
   // 온보딩 없이 접근 가능한 예외 라우트
-  EXEMPT_ROUTES: ['/onboarding', '/login', '/signup', '/blackhole', '/_next', '/favicon.ico'],
+  EXEMPT_ROUTES: [
+    '/onboarding',
+    '/login',
+    '/signup/**', // 회원가입 관련 페이지 전체
+    '/blackhole',
+    '/_next',
+    '/favicon.ico',
+    '/', // 홈 페이지
+  ],
 
   // 온보딩 완료 후 이동할 페이지
   DEFAULT_REDIRECT: '/',
@@ -14,11 +22,13 @@ export const ROUTE_CONFIG = {
 // 라우트 체크 유틸리티 함수들
 export const routeUtils = {
   isProtectedRoute: (pathname: string): boolean => {
-    return ROUTE_CONFIG.PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
+    const isProtected = ROUTE_CONFIG.PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
+    return isProtected;
   },
 
   isExemptRoute: (pathname: string): boolean => {
-    return ROUTE_CONFIG.EXEMPT_ROUTES.some((route) => pathname.startsWith(route));
+    const isExempt = ROUTE_CONFIG.EXEMPT_ROUTES.some((route) => pathname.startsWith(route));
+    return isExempt;
   },
 
   shouldRedirectToOnboarding: (pathname: string, isOnboarded: boolean): boolean => {
