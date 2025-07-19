@@ -280,6 +280,50 @@
     }
   }
 
+  /* 스크롤 영역 배경 확장 클래스 */
+  .scroll-bg-full {
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* 스크롤 시에도 배경이 유지되도록 하는 클래스 */
+  .bg-scroll-extended::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 620px;
+    min-width: 375px;
+    height: 100vh;
+    z-index: -1;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  /* 모바일에서는 fixed 대신 scroll 사용 */
+  @media (max-width: 768px) {
+    .bg-scroll-extended::before {
+      position: absolute;
+      height: 100dvh;
+      background-attachment: scroll;
+      -webkit-transform: translateX(-50%) translateZ(0);
+      transform: translateX(-50%) translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+  }
+
+  /* 컨텐츠 영역이 배경 위에 나타나도록 */
+  .content-above-bg {
+    position: relative;
+    z-index: 1;
+  }
+
   /* 스크롤바 숨기기 (크로스브라우징) */
   .hide-scrollbar {
     -ms-overflow-style: none;
