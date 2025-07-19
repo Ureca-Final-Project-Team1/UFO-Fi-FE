@@ -41,14 +41,10 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     return IMAGE_PATHS.BG_BASIC;
   })();
 
-  const containerStyle = backgroundImageUrl
-    ? {
-        backgroundImage: `url(${backgroundImageUrl})`,
-      }
-    : isPasswordPage
-      ? {
-          backgroundColor: 'var(--color-password-bg)',
-        }
+  const containerStyle = isPasswordPage
+    ? { backgroundColor: 'var(--color-password-bg)' }
+    : backgroundImageUrl
+      ? { backgroundImage: `url(${backgroundImageUrl})` }
       : {};
 
   return (
