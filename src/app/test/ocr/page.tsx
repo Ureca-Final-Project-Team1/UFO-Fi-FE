@@ -3,11 +3,9 @@
 import { useState } from 'react';
 
 import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
-import { ocrService } from '@/service/ocrService';
 
 export default function OCRTestPage() {
   const [fileName, setFileName] = useState('');
-  const [ocrText, setOcrText] = useState('');
   const [planName, setPlanName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -25,18 +23,7 @@ export default function OCRTestPage() {
     formData.append('file', file);
 
     setLoading(true);
-    try {
-      // 1. OCR 먼저 실행
-      const extracted = await ocrService(formData);
-      setOcrText(extracted);
-
-      // 2. GPT 분석 실행
-      runOCRAndGPT(formData);
-    } catch (err) {
-      console.error(err);
-      alert('OCR 또는 GPT 처리 실패');
-      setLoading(false);
-    }
+    runOCRAndGPT(formData);
   };
 
   return (
@@ -58,25 +45,14 @@ export default function OCRTestPage() {
       {loading ? (
         <p className="text-blue-600 mt-4">OCR + GPT 분석 중입니다...</p>
       ) : (
-        <>
-          {ocrText && (
-            <div className="mt-6">
-              <h2 className="text-lg font-semibold mb-2">📄 추출된 텍스트 (OCR)</h2>
-              <pre className="whitespace-pre-wrap text-black bg-gray-100 p-4 rounded border border-gray-200 text-sm">
-                {ocrText}
-              </pre>
-            </div>
-          )}
-
-          {planName && (
-            <div className="mt-6">
-              <h2 className="text-lg font-semibold mb-2">💡 GPT 분석 결과</h2>
-              <p className="text-md bg-green-50 text-green-800 border border-green-200 rounded px-4 py-2">
-                요금제 이름: <strong>{planName}</strong>
-              </p>
-            </div>
-          )}
-        </>
+        planName && (
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold mb-2">💡 GPT 분석 결과</h2>
+            <p className="text-md bg-green-50 text-green-800 border border-green-200 rounded px-4 py-2">
+              요금제 이름: <strong>{planName}</strong>
+            </p>
+          </div>
+        )
       )}
     </div>
   );

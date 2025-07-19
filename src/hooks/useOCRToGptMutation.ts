@@ -1,15 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { gptService } from '@/service/gptService';
-import { ocrService } from '@/service/ocrService';
-import { OCR_PROMPT } from '@/utils/OCRPrompt';
+import { ocrToGptService } from '@/service/ocrToGptService';
 
 const handleOCRToGpt = async (formData: FormData): Promise<string> => {
-  const ocrResult = await ocrService(formData);
-  const gptResult = await gptService({ message: ocrResult, prompt: OCR_PROMPT });
-
-  const parsed = gptResult.item;
-  return parsed;
+  const result = await ocrToGptService(formData);
+  return result;
 };
 
 export const useOCRToGptMutation = (onComplete: (result: string) => void) => {
