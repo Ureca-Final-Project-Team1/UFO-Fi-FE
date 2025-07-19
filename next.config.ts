@@ -1,17 +1,19 @@
 import type { NextConfig } from 'next';
 
-const nextConfig: NextConfig = {
-  /* config options here */
+const imageHostname = process.env.NEXT_PUBLIC_IMAGE_DOMAIN;
 
+const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_IMAGE_DOMAIN || '',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    remotePatterns: imageHostname
+      ? [
+          {
+            protocol: 'https',
+            hostname: imageHostname,
+            port: '',
+            pathname: '/**',
+          },
+        ]
+      : [],
   },
 
   webpack(config) {
