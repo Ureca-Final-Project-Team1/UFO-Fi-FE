@@ -26,6 +26,8 @@ export const queryKeys = {
   notifications: (userId: number) => ['notifications', userId],
   plans: (carrier: string) => ['plans', carrier],
   user: (userId: string) => ['user', userId],
+  followers: () => ['followers'],
+  following: () => ['following'],
 } as const;
 
 export default queryClient;
