@@ -1,0 +1,26 @@
+@layer base {
+  /* 모바일 터치 최적화 */
+  button,
+  input,
+  select,
+  textarea {
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 16px;
+  }
+
+  /* iOS Safari input zoom 방지 */
+  @media screen and (max-width: 767px) {
+    input[type='text'],
+    input[type='email'],
+    input[type='password'],
+    input[type='search'],
+    input[type='tel'],
+    input[type='url'],
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+}
