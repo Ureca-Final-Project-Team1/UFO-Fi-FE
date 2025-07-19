@@ -1,32 +1,89 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 
+import {
+  purchaseHistoryAPI,
+  purchaseHistoryResponse,
+  sellHistoryAPI,
+  sellHistoryResponse,
+} from '@/api/history';
 import { TradeHistoryCard, TradeHistoryCardProps } from '@/features/mypage/components';
 import { useTradeHistory } from '@/hooks/useTradeHistory';
+import { BadgeState } from '@/shared';
 import { Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
 import { groupByDate } from '@/utils/groupByDate';
 
+type TradeCardItem = TradeHistoryCardProps & { createdAt: Date };
+
+const STATUS_MAP: Record<string, BadgeState> = {
+  SELLING: 'selling',
+  SOLD_OUT: 'sold',
+  TIME_OUT: 'timeout',
+  REPORTED: 'reported',
+};
+
+const convertStatusToBadgeState = (status: string): BadgeState => {
+  return STATUS_MAP[status] ?? 'selling';
+};
+
+const convertToCardProps = (
+  items: sellHistoryResponse[] | purchaseHistoryResponse[],
+  isSell: boolean,
+): TradeCardItem[] =>
+  items.map((item) => ({
+    createdAt: new Date(item.createdAt),
+    carrier: item.carrier ?? '',
+    message: item.title ?? '',
+    price: item.totalZet ?? 0,
+    // TODO: 임시 고정
+    dataAmount: 1,
+    state: isSell && 'status' in item ? convertStatusToBadgeState(item.status) : 'sold',
+  }));
+
 const MyTradeHistoryPage = () => {
-  const [activeTab, setActiveTab] = useState('tab1');
-  const { sellTrade, purchaseTrade } = useTradeHistory();
+  const [activeTab, setActiveTab] = useState<'sell' | 'purchase'>('sell');
+  const { sellTrade, purchaseTrade, setSellTrade, setPurchaseTrade } = useTradeHistory();
 
   const contentRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    requestAnimationFrame(() => {
-      if (contentRef.current) {
-        contentRef.current.scrollTop = 0;
+  const [fetchedTabs, setFetchedTabs] = useState<{ sell: boolean; purchase: boolean }>({
+    sell: false,
+    purchase: false,
+  });
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (activeTab === 'sell' && !fetchedTabs.sell) {
+        const response = await sellHistoryAPI({ userId: 1 });
+        console.log(response);
+        setSellTrade(response ?? []);
+        setFetchedTabs((prev) => ({ ...prev, sell: true }));
       }
+      if (activeTab === 'purchase' && !fetchedTabs.purchase) {
+        const response = await purchaseHistoryAPI({ userId: 1 });
+        console.log(response);
+        setPurchaseTrade(response ?? []);
+        setFetchedTabs((prev) => ({ ...prev, purchase: true }));
+      }
+    };
+
+    fetchHistory();
+  }, [activeTab]);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value as 'sell' | 'purchase');
+    requestAnimationFrame(() => {
+      contentRef.current?.scrollTo(0, 0);
     });
   };
 
-  const groupedSellTrade = groupByDate(sellTrade);
-  const groupedPurchaseTrade = groupByDate(purchaseTrade);
+  // ✅ 변환 후 그룹핑
+  const groupedSellTrade = groupByDate<TradeCardItem>(convertToCardProps(sellTrade, true));
+  const groupedPurchaseTrade = groupByDate<TradeCardItem>(convertToCardProps(purchaseTrade, false));
 
   const EmptyTradeNotice = ({ label = '아직 거래한 내용이 없어요!' }: { label?: string }) => (
     <div className="flex flex-col items-center justify-center h-full gap-8">
@@ -37,9 +94,7 @@ const MyTradeHistoryPage = () => {
     </div>
   );
 
-  const renderGroupedHistory = (
-    grouped: Record<string, (TradeHistoryCardProps & { createdAt: Date })[]>,
-  ) =>
+  const renderGroupedHistory = (grouped: Record<string, TradeCardItem[]>) =>
     Object.entries(grouped)
       .sort(([a], [b]) => (a > b ? -1 : 1))
       .map(([date, items]) => (
@@ -49,11 +104,11 @@ const MyTradeHistoryPage = () => {
             {items.map((item, idx) => (
               <TradeHistoryCard
                 key={idx}
-                carrier={item.carrier ?? ''}
-                message={item.message ?? ''}
-                dataAmount={item.dataAmount ?? 0}
-                price={item.price ?? 0}
-                state={item.state ?? undefined}
+                carrier={item.carrier}
+                message={item.message}
+                dataAmount={item.dataAmount}
+                price={item.price}
+                state={item.state}
               />
             ))}
           </div>
@@ -63,7 +118,7 @@ const MyTradeHistoryPage = () => {
   return (
     <div className="flex flex-col justify-start items-center w-full h-[calc(100vh-112px)]">
       <Tabs
-        defaultValue="tab1"
+        defaultValue="sell"
         value={activeTab}
         onValueChange={handleTabChange}
         className="w-full h-full"
@@ -71,7 +126,7 @@ const MyTradeHistoryPage = () => {
         <TabsList className="bg-transparent w-full py-6 sm:py-8">
           <TabsTrigger
             className="flex body-20-bold items-center py-6 sm:py-8"
-            value="tab1"
+            value="sell"
             variant="darkTab"
             size="full"
           >
@@ -79,7 +134,7 @@ const MyTradeHistoryPage = () => {
           </TabsTrigger>
           <TabsTrigger
             className="flex body-20-bold items-center py-6 sm:py-8"
-            value="tab2"
+            value="purchase"
             variant="darkTab"
             size="full"
           >
@@ -87,10 +142,10 @@ const MyTradeHistoryPage = () => {
           </TabsTrigger>
         </TabsList>
         <div ref={contentRef} className="px-8 overflow-y-auto h-full pt-4 mb-4 hide-scrollbar">
-          <TabsContent value="tab1" className="text-white h-full">
+          <TabsContent value="sell" className="text-white h-full">
             {sellTrade.length === 0 ? <EmptyTradeNotice /> : renderGroupedHistory(groupedSellTrade)}
           </TabsContent>
-          <TabsContent value="tab2" className="text-white h-full">
+          <TabsContent value="purchase" className="text-white h-full">
             {purchaseTrade.length === 0 ? (
               <EmptyTradeNotice />
             ) : (
