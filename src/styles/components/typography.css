@@ -1,0 +1,113 @@
+@layer utilities {
+  /* Heading Styles */
+  .heading-24-bold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.3px;
+  }
+
+  .heading-24-regular {
+    font-family: Pretendard, sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0px;
+  }
+
+  /* Body Styles */
+  .body-20-bold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0px;
+  }
+
+  .body-16-bold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  .body-16-semibold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  .body-16-medium {
+    font-family: Pretendard, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  /* Caption Styles */
+  .caption-14-bold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  .caption-14-regular {
+    font-family: Pretendard, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  .caption-12-bold {
+    font-family: Pretendard, sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.1px;
+  }
+
+  .caption-10-medium {
+    font-family: Pretendard, sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: 0.1px;
+  }
+
+  /* 특수 폰트 */
+  .pyeongchangpeace-title-1 {
+    font-family: var(--font-pyeongchangpeace-bold);
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    color: var(--bg, #fff);
+    text-align: center;
+  }
+
+  .pyeongchangpeace-title-2 {
+    font-family: var(--font-pyeongchangpeace-light);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  .pyeongchangpeace-logo {
+    font-family: var(--font-pyeongchangpeace-bold);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.2px;
+  }
+}
