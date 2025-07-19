@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { Icon } from '@/shared';
+
 const termsRaw = `
 # 개인정보 처리방침 (UFO-Fi)
 
@@ -201,22 +203,16 @@ function renderTermsWithHeadingsAndLinks(text: string) {
   let isOl = false;
   let isUl = false;
 
-  // 링크 처리 함수
   const processLinks = (text: string) => {
-    // 이메일과 URL을 찾아서 React 요소로 변환
     const parts = [];
     let lastIndex = 0;
 
-    // 이메일 정규식
     const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
-    // URL 정규식 (www로 시작하거나 도메인.확장자 형태)
     const urlRegex = /((?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s\)]*)?)/g;
 
-    // 모든 매치 찾기
     const matches = [];
     let match;
 
-    // 이메일 매치
     while ((match = emailRegex.exec(text)) !== null) {
       matches.push({
         type: 'email',
@@ -226,7 +222,6 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       });
     }
 
-    // URL 매치 (이메일이 아닌 것만)
     while ((match = urlRegex.exec(text)) !== null) {
       if (!match[1].includes('@')) {
         matches.push({
@@ -238,12 +233,9 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       }
     }
 
-    // 인덱스 순으로 정렬
     matches.sort((a, b) => a.index - b.index);
 
-    // 텍스트를 파트별로 나누어 처리
     matches.forEach((matchItem, idx) => {
-      // 이전 매치와 현재 매치 사이의 일반 텍스트
       if (matchItem.index > lastIndex) {
         const beforeText = text.slice(lastIndex, matchItem.index);
         if (beforeText) {
@@ -251,7 +243,6 @@ function renderTermsWithHeadingsAndLinks(text: string) {
         }
       }
 
-      // 링크 처리
       if (matchItem.type === 'email') {
         parts.push(
           <a
@@ -282,7 +273,6 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       lastIndex = matchItem.index + matchItem.length;
     });
 
-    // 마지막 매치 이후의 텍스트
     if (lastIndex < text.length) {
       const afterText = text.slice(lastIndex);
       if (afterText) {
@@ -290,7 +280,6 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       }
     }
 
-    // 매치가 없으면 원본 텍스트 반환
     return parts.length > 0 ? parts : text;
   };
 
@@ -376,7 +365,6 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       ulBuffer.push(line);
       continue;
     }
-    // 들여쓰기된 줄(리스트 본문) 처리
     if (/^\s{2,}.+/.test(line) && (isOl || isUl)) {
       if (isOl && olBuffer.length > 0) {
         olBuffer[olBuffer.length - 1] += '\n' + line;
@@ -385,7 +373,6 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       }
       continue;
     }
-    // 일반 줄
     flushOl(i);
     flushUl(i);
     result.push(
@@ -404,16 +391,18 @@ function renderTermsWithHeadingsAndLinks(text: string) {
 export default function TermsPage() {
   return (
     <div>
-      <div className="flex items-center mb-6">
+      <div className="relative w-full flex items-center py-4 px-4">
         <button
+          type="button"
           onClick={() => window.history.back()}
-          className="mr-3 p-2 text-white hover:bg-gray-700 rounded"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
+          aria-label="back 버튼"
         >
-          ←
+          <Icon name="ChevronLeft" size="md" color="white" className="w-6 h-6 text-white" />
         </button>
-        <h1 className="text-xl font-bold text-white">개인정보 처리방침</h1>
+        <h1 className="body-20-bold text-white w-full text-center">개인정보 처리방침</h1>
       </div>
-      <div className="text-white overflow-y-auto text-sm max-h-[80vh] p-2 bg-black/30 rounded-lg flex flex-col gap-2 leading-relaxed hide-scrollbar">
+      <div className="text-white overflow-y-auto text-sm max-h-[80vh] p-2 rounded-lg flex flex-col gap-1 leading-relaxed hide-scrollbar">
         {renderTermsWithHeadingsAndLinks(termsRaw)}
       </div>
 

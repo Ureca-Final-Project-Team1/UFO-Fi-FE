@@ -2,6 +2,8 @@
 
 import React, { JSX } from 'react';
 
+import { Icon } from '@/shared';
+
 const termsRaw = `
 ## 제 1장 (총칙)
 
@@ -263,20 +265,15 @@ UFO-Fi
 `;
 
 function processLinks(text: string): (string | JSX.Element)[] {
-  // 이메일과 URL을 찾아서 React 요소로 변환
   const parts = [];
   let lastIndex = 0;
 
-  // 이메일 정규식
   const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
-  // URL 정규식 (www로 시작하거나 도메인.확장자 형태)
   const urlRegex = /((?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s\)]*)?)/g;
 
-  // 모든 매치 찾기
   const matches = [];
   let match;
 
-  // 이메일 매치
   while ((match = emailRegex.exec(text)) !== null) {
     matches.push({
       type: 'email',
@@ -286,7 +283,6 @@ function processLinks(text: string): (string | JSX.Element)[] {
     });
   }
 
-  // URL 매치 (이메일이 아닌 것만)
   while ((match = urlRegex.exec(text)) !== null) {
     if (!match[1].includes('@')) {
       matches.push({
@@ -298,12 +294,9 @@ function processLinks(text: string): (string | JSX.Element)[] {
     }
   }
 
-  // 인덱스 순으로 정렬
   matches.sort((a, b) => a.index - b.index);
 
-  // 텍스트를 파트별로 나누어 처리
   matches.forEach((matchItem, idx) => {
-    // 이전 매치와 현재 매치 사이의 일반 텍스트
     if (matchItem.index > lastIndex) {
       const beforeText = text.slice(lastIndex, matchItem.index);
       if (beforeText) {
@@ -311,7 +304,6 @@ function processLinks(text: string): (string | JSX.Element)[] {
       }
     }
 
-    // 링크 처리
     if (matchItem.type === 'email') {
       parts.push(
         React.createElement(
@@ -346,7 +338,6 @@ function processLinks(text: string): (string | JSX.Element)[] {
     lastIndex = matchItem.index + matchItem.length;
   });
 
-  // 마지막 매치 이후의 텍스트
   if (lastIndex < text.length) {
     const afterText = text.slice(lastIndex);
     if (afterText) {
@@ -354,7 +345,6 @@ function processLinks(text: string): (string | JSX.Element)[] {
     }
   }
 
-  // 매치가 없으면 원본 텍스트를 배열로 반환
   return parts.length > 0 ? parts : [text];
 }
 
@@ -477,7 +467,7 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       ulBuffer.push(line);
       continue;
     }
-    // 들여쓰기된 줄(리스트 본문) 처리
+
     if (/^\s{2,}.+/.test(line) && (isOl || isUl)) {
       if (isOl && olBuffer.length > 0) {
         olBuffer[olBuffer.length - 1] += '\n' + line;
@@ -486,7 +476,7 @@ function renderTermsWithHeadingsAndLinks(text: string) {
       }
       continue;
     }
-    // 일반 줄
+
     flushOl(i);
     flushUl(i);
     result.push(
@@ -514,20 +504,28 @@ export default function TermsPage() {
     React.createElement(
       'div',
       {
-        className: 'flex items-center mb-6',
+        className: 'relative w-full flex items-center py-4 px-4',
       },
       React.createElement(
         'button',
         {
+          type: 'button',
           onClick: () => window.history.back(),
-          className: 'mr-3 p-2 text-white hover:bg-gray-700 rounded',
+          className:
+            'absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors',
+          'aria-label': 'back 버튼',
         },
-        '←',
+        React.createElement(Icon, {
+          name: 'ChevronLeft',
+          size: 'md',
+          color: 'white',
+          className: 'w-6 h-6 text-white',
+        }),
       ),
       React.createElement(
         'h1',
         {
-          className: 'text-xl font-bold text-white',
+          className: 'body-20-bold text-white w-full text-center',
         },
         '이용약관',
       ),
@@ -536,16 +534,11 @@ export default function TermsPage() {
       'div',
       {
         className:
-          'text-white overflow-y-auto text-sm max-h-[80vh] p-2 bg-black/30 rounded-lg flex flex-col gap-2 leading-relaxed hide-scrollbar',
+          'text-white overflow-y-auto text-sm max-h-[80vh] p-2 rounded-lg flex flex-col gap-1 leading-relaxed hide-scrollbar',
       },
       renderTermsWithHeadingsAndLinks(termsRaw),
     ),
-    React.createElement(
-      'style',
-      {
-        jsx: true,
-      },
-      `
+    <style jsx>{`
       .hide-scrollbar {
         -ms-overflow-style: none;
         scrollbar-width: none;
@@ -553,7 +546,6 @@ export default function TermsPage() {
       .hide-scrollbar::-webkit-scrollbar {
         display: none;
       }
-    `,
-    ),
+    `}</style>,
   );
 }
