@@ -7,6 +7,8 @@ export const IMAGE_PATHS = {
   AL_BULK_PURCHASE: '/images/alien-bulk.png',
   AL_COMPLETE: '/images/alien-serious-reported.png',
   AL_SOWHAT: '/images/alien-sowhat.svg',
+  AL_SUCCESS: '/images/alien-success.svg',
+  AL_FAIL: '/images/alien-fail.svg',
   AL_PW_WRONG: '/images/alien-wrong.svg',
   NEXT_BTN_ONBOARDING: '/images/next-btn.png',
   FIRE_BTN_ONBOARDING: '/images/fire-btn.png',
@@ -33,4 +35,5 @@ export const IMAGE_PATHS = {
   BANK_HANA: '/images/bank-hana.png',
   KAKAO_LOGIN_BUTTON: '/images/kakao-login-button.png',
   UFO_LOGIN: '/images/ufo-login.png',
+  PAYMENT_CHECK: '/images/check-primary.svg',
 } as const;

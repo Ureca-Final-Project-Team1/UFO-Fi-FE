@@ -34,19 +34,22 @@ export function BackgroundProvider({ children }: BackgroundProviderProps) {
     return IMAGE_PATHS.BG_BASIC;
   })();
 
-  const containerClass = [
-    'w-full min-h-full flex flex-col items-center justify-between sm:px-10.5 px-4 text-white',
-    isPasswordPage ? '' : 'bg-cover bg-no-repeat bg-top',
-  ].join(' ');
-
-  const containerStyle = isPasswordPage
-    ? { backgroundColor: 'var(--color-password-bg)' }
-    : backgroundImageUrl
-      ? { backgroundImage: `url(${backgroundImageUrl})` }
-      : {};
+  // 네비게이션이 숨겨지는 페이지인지 확인
+  const isNavigationHidden =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/onboarding') ||
+    pathname.startsWith('/signup') ||
+    pathname.startsWith('/blackhole');
 
   return (
-    <div className={containerClass} style={containerStyle}>
+    <div
+      className={`w-full h-full bg-cover bg-center bg-no-repeat flex flex-col items-center justify-between sm:px-10.5 px-4 text-white ${
+        isNavigationHidden ? 'min-h-screen' : 'min-h-full'
+      }`}
+      style={{
+        backgroundImage: `url(${backgroundImageUrl})`,
+      }}
+    >
       {children}
     </div>
   );
