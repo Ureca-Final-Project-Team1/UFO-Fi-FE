@@ -1,7 +1,3 @@
-export interface purchaseHistoryRequest {
-  userId: number;
-}
-
 export interface purchaseHistoryResponse {
   postId: number;
   purchaseHistoryId: number;
@@ -10,10 +6,6 @@ export interface purchaseHistoryResponse {
   title: string;
   totalZet: number;
   mobileDataType: string;
-}
-
-export interface sellHistoryRequest {
-  userId: number;
 }
 
 export interface sellHistoryResponse {

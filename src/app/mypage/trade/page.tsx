@@ -58,14 +58,12 @@ const MyTradeHistoryPage = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       if (activeTab === 'sell' && !fetchedTabs.sell) {
-        const response = await sellHistoryAPI({ userId: 1 });
-        console.log(response);
+        const response = await sellHistoryAPI();
         setSellTrade(response ?? []);
         setFetchedTabs((prev) => ({ ...prev, sell: true }));
       }
       if (activeTab === 'purchase' && !fetchedTabs.purchase) {
-        const response = await purchaseHistoryAPI({ userId: 1 });
-        console.log(response);
+        const response = await purchaseHistoryAPI();
         setPurchaseTrade(response ?? []);
         setFetchedTabs((prev) => ({ ...prev, purchase: true }));
       }
@@ -81,7 +79,6 @@ const MyTradeHistoryPage = () => {
     });
   };
 
-  // ✅ 변환 후 그룹핑
   const groupedSellTrade = groupByDate<TradeCardItem>(convertToCardProps(sellTrade, true));
   const groupedPurchaseTrade = groupByDate<TradeCardItem>(convertToCardProps(purchaseTrade, false));
 
