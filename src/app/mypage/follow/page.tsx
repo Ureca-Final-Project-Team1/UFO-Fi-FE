@@ -48,7 +48,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen w-full text-white">
-      <Title title="팔로우 목록" iconVariant="back" onClick={() => window.history.back()} />
+      <Title title="팔로우 목록" iconVariant="back" />
 
       <div className="mx-4 mb-6">
         <Tabs defaultValue="followers">

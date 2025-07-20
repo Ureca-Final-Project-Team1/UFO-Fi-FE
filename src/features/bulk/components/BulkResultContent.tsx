@@ -175,7 +175,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
   return (
     <div className="flex flex-col min-h-full w-full">
-      <Title title="매칭된 데이터" iconVariant="back" />
+      <Title title="매칭된 데이터" iconVariant="back" onClick={() => router.back()} />
       <div className="px-4">
         <BulkResultDisplay
           data={resultData}
