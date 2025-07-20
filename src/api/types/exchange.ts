@@ -1,22 +1,30 @@
+export const CARRIERS = ['SKT', 'KT', 'LGU'] as const;
+export const EXCHANGE_STATUSES = ['SELLING', 'SOLD_OUT', 'REPORTED', 'EXPIRED', 'DELETED'] as const;
+export const MOBILE_DATA_TYPES = ['LTE', '_5G'] as const;
+
+export type Carrier = (typeof CARRIERS)[number];
+export type ExchangeStatus = (typeof EXCHANGE_STATUSES)[number];
+export type MobileDataType = (typeof MOBILE_DATA_TYPES)[number];
+
 export interface ExchangePost {
   postId: number;
   title: string;
   totalPrice: number;
   sellMobileDataCapacityGb: number;
-  carrier: 'SKT' | 'KT' | 'LGU';
-  status: 'SELLING' | 'SOLD_OUT' | 'REPORTED' | 'EXPIRED' | 'DELETED';
+  carrier: Carrier;
+  status: ExchangeStatus;
   createdAt: string;
   pricePerUnit: number;
-  mobileDataType: 'LTE' | '_5G';
+  mobileDataType: MobileDataType;
 }
 
 export interface ExchangeCursor {
   createdAt: string;
-  id: number;
+  cursorId: number;
 }
 
 export interface GetExchangePostsRequest {
-  carrier?: 'SKT' | 'KT' | 'LGU';
+  carrier?: Carrier;
   maxTotalZet?: number;
   minTotalZet?: number;
   maxCapacity?: number;
