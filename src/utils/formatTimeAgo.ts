@@ -14,6 +14,9 @@ export function formatTimeAgo(dateString: string): string {
   // 현재 시간과 과거 시간의 차이 (밀리초)
   const diffMs = now.getTime() - past.getTime();
 
+  // 미래 시간일 경우 예외 처리
+  if (diffMs < 0) return '방금 전';
+
   // 밀리초를 분, 시간, 일 단위로 변환
   const diffMins = Math.floor(diffMs / (1000 * 60)); // 분 단위
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60)); // 시간 단위
