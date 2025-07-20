@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 
 import { fcmAPI } from '@/api';
+import { Carrier, CARRIER_DISPLAY_NAMES } from '@/api/types/carrier';
 import { FilterBox } from '@/features/exchange/components/FilterBox';
 import { useFilteredItemCount } from '@/hooks/useFilteredItemCount';
 import { useFilterState } from '@/hooks/useFilterState';
@@ -14,12 +15,12 @@ import '@/styles/globals.css';
 const FilterNotificationPage = () => {
   const { data, range, minData, maxData, minValue, maxValue, setData, setRange } = useFilterState();
   useFilteredItemCount();
-  const [selectedCarriers, setSelectedCarriers] = useState<('SKT' | 'KT' | 'LGU')[]>(['SKT']);
+  const [selectedCarriers, setSelectedCarriers] = useState<Carrier[]>([Carrier.SKT]);
   const [selectedReputations, setSelectedReputations] = useState<string[]>(['첫 출발']);
   const [isLoading, setIsLoading] = useState(false);
 
   // 통신사 선택 토글
-  const toggleCarrier = (carrier: 'SKT' | 'KT' | 'LGU') => {
+  const toggleCarrier = (carrier: Carrier) => {
     setSelectedCarriers((prev) => {
       const newCarriers = prev.includes(carrier)
         ? prev.filter((c) => c !== carrier)
@@ -34,7 +35,6 @@ const FilterNotificationPage = () => {
       const newReputations = prev.includes(reputation)
         ? prev.filter((r) => r !== reputation)
         : [...prev, reputation];
-
       return newReputations;
     });
   };
@@ -62,38 +62,28 @@ const FilterNotificationPage = () => {
       // 로그인 상태 확인
       const isLoggedIn = await checkAuthStatus();
       if (!isLoggedIn) {
-        toast('로그인이 필요합니다. 다시 로그인해주세요.');
+        toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
         window.location.href = '/login';
         return;
       }
 
-      // const filterData = {
-      //   carriers: carriersToBitField(selectedCarriers),
-      //   interestedMaxCapacity: data[0],
-      //   interestedMinCapacity: 0,
-      //   interestedMaxZet: range[1],
-      //   interestedMinZet: range[0],
-      //   interestedMaxPrice: maxValue,
-      //   interestedMinPrice: minValue,
-      //   reputation: selectedReputations.join(','),
-      // };
-
-      // 타입 안전한 API 호출
       await fcmAPI.setInterestedPostFilter({
-        carriers: ['SKT', 'LGU'],
-        interestedMaxCapacity: 5,
+        carriers: selectedCarriers,
+        interestedMaxCapacity: data[0],
         interestedMinCapacity: 0,
-        interestedMaxPrice: 1000,
-        interestedMinPrice: 100,
+        interestedMaxPrice: range[1],
+        interestedMinPrice: range[0],
       });
 
-      toast('알림 조건이 저장되었습니다!');
+      toast.success('알림 조건이 저장되었습니다!');
     } catch (error) {
-      if (error instanceof Error) {
-        toast('로그인이 만료되었습니다. 다시 로그인해주세요.');
+      console.error('알림 필터 저장 실패:', error);
+
+      if (error instanceof Error && error.message.includes('401')) {
+        toast.error('로그인이 만료되었습니다. 다시 로그인해주세요.');
         window.location.href = '/login';
       } else {
-        toast('알림 조건 저장에 실패했습니다. 다시 시도해주세요.');
+        toast.error('알림 조건 저장에 실패했습니다. 다시 시도해주세요.');
       }
     } finally {
       setIsLoading(false);
@@ -102,10 +92,11 @@ const FilterNotificationPage = () => {
 
   // 전체 초기화
   const handleReset = () => {
-    setSelectedCarriers(['SKT']);
+    setSelectedCarriers([Carrier.SKT]);
     setSelectedReputations(['첫 출발']);
     setData([minData]);
     setRange([minValue, maxValue]);
+    toast.info('전체 조건이 초기화되었습니다.');
   };
 
   return (
@@ -117,19 +108,16 @@ const FilterNotificationPage = () => {
           <div className="flex flex-wrap w-full items-center gap-2">
             <Icon name="RotateCw" />
             <div className="flex justify-start items-center gap-2">
-              {(['SKT', 'LG', 'KT'] as const).map((displayName) => {
-                const actualName = displayName === 'LG' ? 'LGU' : displayName;
-                const isSelected = selectedCarriers.includes(actualName);
+              {Object.values(Carrier).map((carrier) => {
+                const displayName = CARRIER_DISPLAY_NAMES[carrier];
+                const isSelected = selectedCarriers.includes(carrier);
 
                 return (
                   <Chip
-                    key={displayName}
-                    className={`w-[80px] flex justify-center cursor-pointer transition-colors ${
-                      isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => {
-                      toggleCarrier(actualName);
-                    }}
+                    key={carrier}
+                    selected={isSelected}
+                    className="w-[80px] flex justify-center cursor-pointer transition-colors"
+                    onClick={() => toggleCarrier(carrier)}
                   >
                     {displayName}
                   </Chip>
@@ -144,9 +132,7 @@ const FilterNotificationPage = () => {
           <div className="w-full h-fit mt-2">
             <DataSlider
               value={data}
-              onValueChange={(newData) => {
-                setData(newData);
-              }}
+              onValueChange={setData}
               showTicks={true}
               showLabels={true}
               minLabel={`${minData}GB`}
@@ -161,9 +147,7 @@ const FilterNotificationPage = () => {
         <FilterBox name="단위가격">
           <DataRangeSlider
             value={range}
-            onValueChange={(newRange) => {
-              setRange(newRange);
-            }}
+            onValueChange={setRange}
             min={minValue}
             max={maxValue}
             minLabel={`${minValue}ZET`}
@@ -176,7 +160,6 @@ const FilterNotificationPage = () => {
           <div className="flex w-full items-center gap-3">
             <Icon name="RotateCw" />
             <div className="flex flex-wrap justify-center items-center gap-2">
-              {/* TODO: 추후 평판 ENUM 타입으로 변경 필요 */}
               {['첫 출발', '우주 새싹', '별빛 상인', '은하 베테랑', '우주 전설'].map(
                 (reputation) => {
                   const isSelected = selectedReputations.includes(reputation);
@@ -184,9 +167,8 @@ const FilterNotificationPage = () => {
                   return (
                     <Chip
                       key={reputation}
-                      className={`cursor-pointer transition-colors ${
-                        isSelected ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'
-                      }`}
+                      selected={isSelected}
+                      className="cursor-pointer transition-colors"
                       onClick={() => toggleReputation(reputation)}
                     >
                       {reputation}
@@ -220,6 +202,22 @@ const FilterNotificationPage = () => {
           >
             {isLoading ? '저장 중...' : '알림 조건 저장'}
           </Button>
+        </div>
+
+        {/* TODO: 현재 선택된 조건을 표시하며, 배포 이후 이 부분은 지울 예정 */}
+        <div className="bg-gray-50 p-3 rounded-lg text-sm text-black">
+          <div className="font-semibold mb-2">현재 설정:</div>
+          <div>
+            통신사:{' '}
+            {selectedCarriers.length > 0
+              ? selectedCarriers.map((c) => CARRIER_DISPLAY_NAMES[c]).join(', ')
+              : '선택 없음'}
+          </div>
+          <div>용량: {data[0]}GB</div>
+          <div>
+            가격: {range[0]} - {range[1]} ZET
+          </div>
+          <div className="mt-2 text-xs text-gray-500">※ 평판 필터는 현재 지원하지 않습니다</div>
         </div>
       </div>
     </div>
