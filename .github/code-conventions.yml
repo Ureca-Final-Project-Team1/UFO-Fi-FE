@@ -1,0 +1,47 @@
+# Folder Structure (FSD)
+structure:
+  - 'features/[domain]/components/ vs shared/ui/ proper separation'
+  - 'src/api/services/[domain]/ structure compliance'
+  - 'shared/ui only when used by 3+ domains'
+
+# Naming Conventions
+naming:
+  - 'files/folders: kebab-case'
+  - 'components: PascalCase'
+  - 'functions/variables: camelCase'
+  - 'constants: UPPER_SNAKE_CASE'
+  - 'hooks: use + PascalCase'
+
+# API Patterns
+api:
+  - '{domain}API.{method} pattern'
+  - "import { notificationAPI } from '@/api'"
+  - 'types in src/api/types/[domain].ts'
+
+# React Rules
+react:
+  - 'Props interface + destructuring required'
+  - 'No explicit boolean props (isOpen={true}=>bad)'
+  - 'No array index as key prop'
+  - 'Use useCallback/useMemo appropriately'
+
+# State Management
+state:
+  - 'Zustand: useXxxStore, setXxx/resetXxx actions'
+  - "React Query: array keys ['users', userId]"
+
+# Styling
+styling:
+  - 'Tailwind first, minimal custom CSS'
+  - 'CSS classes: kebab-case'
+
+# Next.js
+nextjs:
+  - "'use client' only when needed"
+  - 'Server Component preferred'
+
+# Required Comments
+comments:
+  - 'Complex business logic'
+  - 'Performance optimization code'
+  - 'Workaround code'

@@ -15,3 +15,5 @@ export * from './Input';
 export * from './Tabs';
 export * from './Chip';
 export * from './Avatar';
+export * from './Dialog';
+export * from './Command';

@@ -38,6 +38,8 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_ORGANIZATION_ID: ${{ secrets.OPENAI_ORGANIZATION_ID }}
 
       - name: Test
         run: npm test
@@ -65,6 +67,8 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_ORGANIZATION_ID: ${{ secrets.OPENAI_ORGANIZATION_ID }}
 
       - name: Create deployment package
         run: |
