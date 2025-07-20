@@ -1,4 +1,5 @@
 import type { SuccessApiResponse } from './api';
+import type { Carrier } from './carrier';
 
 export interface FCMTokenRequest {
   token: string;
@@ -11,7 +12,7 @@ export interface FCMTokenContent {
 export type FCMTokenResponse = SuccessApiResponse<FCMTokenContent>;
 
 export interface NotificationFilterRequest {
-  carriers: string[]; // 문자열 배열 ["SKT", "KT", "LGU"]
+  carriers: Carrier[];
   interestedMaxCapacity: number;
   interestedMinCapacity: number;
   interestedMaxPrice: number;
