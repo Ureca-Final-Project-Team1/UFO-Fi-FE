@@ -22,7 +22,7 @@ const getIconName = (variant: TitleIconVariant | undefined): IconType | null => 
 export const Title: React.FC<TitleProps> = ({
   title,
   iconVariant = 'none',
-  onClick,
+  onIconClick,
   className,
   ...props
 }) => {
@@ -33,13 +33,13 @@ export const Title: React.FC<TitleProps> = ({
   // 아이콘 클릭 핸들러
   const handleClick = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>): void => {
-      if (onClick) {
-        onClick(e);
+      if (onIconClick) {
+        onIconClick(e);
       } else if (iconVariant === 'back') {
         router.back();
       }
     },
-    [onClick, iconVariant, router],
+    [onIconClick, iconVariant, router],
   );
 
   return (
