@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { getMypageUserAPI } from '@/api/mypage/getMypageUserAPI';
-import { MypageResponse } from '@/api/mypage/mypageUser.types';
+import { myInfoAPI } from '@/api/services/mypage/myInfo';
+import { MyInfoResponse } from '@/api/types/myInfo';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { Icon } from '@/shared/ui/Icons';
@@ -12,10 +12,10 @@ import { Icon } from '@/shared/ui/Icons';
 export default function MyPage() {
   const router = useRouter();
   // content 객체 타입으로 수정 (닉네임, email, zetAsset 등 실제 프로필 정보)
-  const [mypageInfo, setMypageInfo] = useState<MypageResponse['content'] | null>(null);
+  const [mypageInfo, setMypageInfo] = useState<MyInfoResponse['content'] | null>(null);
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getMypageUserAPI();
+      const data = await myInfoAPI.get();
       if (data) setMypageInfo(data);
     };
     fetchData();
