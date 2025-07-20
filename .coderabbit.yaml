@@ -9,6 +9,18 @@ reviews:
   auto_review:
     enabled: true
     drafts: false
+  commit_status: true
+  changed_files_summary: true
+  suggested_labels: true
+  auto_apply_labels: true
+  suggested_reviewers: true
+  auto_assign_reviewers: true
+  pre_merge_checks:
+    docstrings:
+      mode: warning
+  finishing_touches:
+    docstrings:
+      enabled: true
   path_filters:
     - '!**/*.md'
     - '!**/*.txt'
@@ -29,18 +41,6 @@ reviews:
     - path: '**/shared/**/*.{ts,tsx}'
       instructions: |
         ...
-
-commit_status: true
-changed_files_summary: true
-suggested_labels: true
-auto_apply_labels: true
-suggested_reviewers: true
-auto_assign_reviewers: true
-pre_merge_checks: true
-related_issues: true
-related_prs: true
-assess_linked_issues: true
-finishing_touches: true
 
 chat:
   auto_reply: true
