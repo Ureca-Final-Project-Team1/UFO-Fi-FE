@@ -71,7 +71,7 @@ export default function SignalCard({
         <div className="flex-1 space-y-1">
           <div className="flex justify-between items-center">
             <span className="body-20-bold text-black">
-              지구인 <span className="font-bold">{userId}</span>
+              <span className="font-bold">{userId ? userId : '지구인'}</span>
             </span>
           </div>
 
