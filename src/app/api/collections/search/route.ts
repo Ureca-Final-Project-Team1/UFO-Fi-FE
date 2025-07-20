@@ -36,33 +36,35 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // type 계산
-    const trades = await prisma.trade_histories.findMany({
-      where: {
-        user_id: baseUser.id,
-        status: { in: ['PURCHASE', 'SALE'] },
-      },
-    });
-    const sales = trades.filter((t) => t.status === 'SALE').length;
-    const purchases = trades.filter((t) => t.status === 'PURCHASE').length;
-    const type = sales >= purchases ? 'seller' : 'purchaser';
+    // const trades = await prisma.trade_histories.findMany({
+    //   where: {
+    //     user_id: baseUser.id,
+    //     status: { in: ['PURCHASE', 'SALE'] },
+    //   },
+    // });
 
-    // carrier, mobile_data_type 계산
-    const userPlans = Array.isArray(baseUser.user_plans) ? baseUser.user_plans : [];
-    const carriers = userPlans.map((p) => p.plans?.carrier).filter((c): c is string => !!c);
-    const carrier =
-      carriers.sort(
-        (a, b) => carriers.filter((v) => v === b).length - carriers.filter((v) => v === a).length,
-      )[0] ?? '';
+    // const sales = trades.filter((t) => t.status === 'SALE').length;
+    // const purchases = trades.filter((t) => t.status === 'PURCHASE').length;
+    // const type = sales >= purchases ? 'seller' : 'purchaser';
+    // const oppositeType = type === 'seller' ? 'purchaser' : 'seller';
 
-    const types = userPlans.map((p) => p.plans?.mobile_data_type).filter((t): t is string => !!t);
-    const mobile_data_type =
-      types.sort(
-        (a, b) => types.filter((v) => v === b).length - types.filter((v) => v === a).length,
-      )[0] ?? '';
+    // const userPlans = baseUser.user_plans ?? [];
 
-    // Qdrant 요청
-    const qdrantUrl = `${process.env.QDRANT_API_BASE_URL}/collections/ufo_fi/points/query`;
+    // const carriers = userPlans.map((p) => p.plans?.carrier).filter((c): c is string => !!c);
+
+    // const carrier =
+    //   carriers.sort((a, b) => {
+    //     return carriers.filter((v) => v === b).length - carriers.filter((v) => v === a).length;
+    //   })[0] ?? '';
+
+    // const types = userPlans.map((p) => p.plans?.mobile_data_type).filter((t): t is string => !!t);
+
+    // const mobile_data_type =
+    //   types.sort((a, b) => {
+    //     return types.filter((v) => v === b).length - types.filter((v) => v === a).length;
+    //   })[0] ?? '';
+
+    const qdrantUrl = `${process.env.QDRANT_API_BASE_URL}/collections/ufo_fi/points/recommend`;
 
     const res = await fetch(qdrantUrl, {
       method: 'POST',
@@ -71,40 +73,39 @@ export async function GET(req: NextRequest) {
         'api-key': process.env.QDRANT_API_KEY!,
       },
       body: JSON.stringify({
-        query: {
-          recommend: {
-            positive: [Number(userId)],
-            strategy: 'average_vector',
-          },
-        },
-        filter: {
-          must: [
-            { key: 'role', match: { value: 1 } },
-            { key: 'type', match: { value: type === 'seller' ? 'purchaser' : 'seller' } },
-            { key: 'carrier', match: { value: carrier } },
-            { key: 'mobile_data_type', match: { value: mobile_data_type } },
-          ],
-          must_not: [{ key: 'id', match: { value: Number(userId) } }],
-        },
+        positive: [Number(userId)],
         limit: 5,
         with_payload: true,
+        filter: {
+          must: [{ key: 'role', match: { value: 1 } }],
+          // should: [
+          //   { key: 'type', match: { value: oppositeType } },
+          //   { key: 'carrier', match: { value: carrier } },
+          //   { key: 'mobile_data_type', match: { value: mobile_data_type } },
+          // ],
+          must_not: [{ key: 'id', match: { value: Number(userId) } }],
+        },
       }),
     });
 
     if (!res.ok) {
-      const data = await res.text();
-      throw new Error(`Qdrant request failed: ${res.status} ${res.statusText}\n${data}`);
+      const errorText = await res.text();
+      throw new Error(`Qdrant request failed: ${res.status} ${res.statusText}\n${errorText}`);
     }
 
     const data: QdrantResponse = await res.json();
+    const neighbors = Array.isArray(data.result)
+      ? data.result.map((point) => ({
+          id: point.payload?.id ?? point.id,
+          name: point.payload?.name ?? null,
+          score: point.score,
+        }))
+      : [];
 
-    const neighbors = (data.result ?? []).map((point) => ({
-      id: point.payload?.id ?? point.id,
-      score: point.score,
-      name: point.payload?.name ?? null,
-    }));
-
-    return NextResponse.json({ neighbors });
+    return NextResponse.json({
+      neighbors,
+      message: neighbors.length > 0 ? '✅ 추천 결과 반환 성공' : '⚠️ 추천 결과가 없습니다',
+    });
   } catch (err) {
     console.error('Recommend failed:', err);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
