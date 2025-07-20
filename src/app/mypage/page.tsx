@@ -13,10 +13,18 @@ export default function MyPage() {
   const router = useRouter();
   // content 객체 타입으로 수정 (닉네임, email, zetAsset 등 실제 프로필 정보)
   const [mypageInfo, setMypageInfo] = useState<MyInfoResponse['content'] | null>(null);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const fetchData = async () => {
-      const data = await myInfoAPI.get();
-      if (data) setMypageInfo(data);
+      try {
+        const data = await myInfoAPI.get();
+        if (data) {
+          setMypageInfo(data);
+        }
+      } catch (err) {
+        console.error('mypage 정보를 가져오는 데 실패했습니다:', err);
+        setError('프로필 정보를 불러오는 데 실패했습니다. 나중에 다시 시도해 주세요.');
+      }
     };
     fetchData();
   }, []);
@@ -47,6 +55,7 @@ export default function MyPage() {
         maxData={mypageInfo?.sellMobileDataCapacityGb ?? 0}
       />
 
+      {error && <div className="text-red-500 text-sm text-center my-4">{error}</div>}
       <hr className="my-6 border-white/20" />
 
       {/* 메뉴 */}
