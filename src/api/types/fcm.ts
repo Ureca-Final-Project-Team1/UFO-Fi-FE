@@ -11,10 +11,9 @@ export interface FCMTokenContent {
 export type FCMTokenResponse = SuccessApiResponse<FCMTokenContent>;
 
 export interface NotificationFilterRequest {
-  carrier?: number; // BIT 필드로 관리
-  interestedMaxCapacity?: number;
-  interestedMinCapacity?: number;
-  interestedMaxZet?: number;
-  interestedMinZet?: number;
-  reputation?: string;
+  carriers: string[]; // 문자열 배열 ["SKT", "KT", "LGU"]
+  interestedMaxCapacity: number;
+  interestedMinCapacity: number;
+  interestedMaxPrice: number;
+  interestedMinPrice: number;
 }
