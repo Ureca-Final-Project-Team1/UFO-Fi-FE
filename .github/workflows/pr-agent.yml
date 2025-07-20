@@ -12,7 +12,9 @@ concurrency:
 
 jobs:
   build-check:
-    if: ${{ github.event.sender.type != 'Bot' && !github.event.pull_request.draft }}
+    if: |
+      (github.event_name == 'pull_request' && github.event.sender.type != 'Bot' && !github.event.pull_request.draft) ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '/review'))
     runs-on: ubuntu-latest
     outputs:
       build-success: ${{ steps.build.outcome == 'success' }}
@@ -34,34 +36,27 @@ jobs:
         run: npm run build
         continue-on-error: true
 
-  # PR Agent는 빌드 실패와 관계없이 실행
   pr_agent_job:
     needs: build-check
-    if: ${{ github.event.sender.type != 'Bot' && !github.event.pull_request.draft }}
+    if: |
+      (github.event_name == 'pull_request' && github.event.sender.type != 'Bot' && !github.event.pull_request.draft) ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '/review'))
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
       contents: read
-    name: Run PR Agent (GPT-4o-mini)
+    name: Run PR Agent
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 빌드 실패 시 추가 컨텍스트 제공
       - name: Add build context
         if: ${{ needs.build-check.outputs.build-success != 'true' }}
-        run: |
-          echo "BUILD_FAILED=true" >> $GITHUB_ENV
-          echo "빌드가 실패했습니다. PR Agent가 빌드 오류도 함께 분석합니다." >> $GITHUB_STEP_SUMMARY
+        run: echo "BUILD_FAILED=true" >> $GITHUB_ENV
 
       - name: PR Agent action
-        id: pragent
         uses: Codium-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BUILD_STATUS: ${{ needs.build-check.outputs.build-success }}
-          PR_AGENT.PR_REVIEWER.EXTRA_INSTRUCTIONS: |
-            모든 리뷰 코멘트는 반드시 한국어로 작성해주세요.
-            ${{ needs.build-check.outputs.build-success != 'true' && '빌드가 실패했습니다. 빌드 오류 원인도 함께 분석해주세요.' || '' }}
