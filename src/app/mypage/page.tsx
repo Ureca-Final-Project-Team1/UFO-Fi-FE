@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { myInfoAPI } from '@/api/services/mypage/myInfo';
+import { myInfoAPI } from '@/api';
 import { MyInfoResponse } from '@/api/types/myInfo';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
