@@ -1,12 +1,12 @@
 [config]
 model = "gpt-4o-mini"
-model_turbo = "gpt-3.5-turbo"
+model_turbo = "gpt-4o-mini"  
 language = "ko"
 verbosity_level = 0
 
 [pr_reviewer]
 auto_review = true
-num_code_suggestions = 3 
+num_code_suggestions = 3
 inline_code_comments = true
 enable_help_text = false
 persistent_comment = true
@@ -38,10 +38,6 @@ auto_improve = true
 num_code_suggestions = 2
 commitable_code_suggestions = true
 
-[pr_update_changelog]
-publish_changelog = true  
-changelog_file = "docs/CHANGELOG.md"
-
 extra_instructions = """
 한국어로 체인지로그 작성:
 
@@ -63,7 +59,3 @@ extra_instructions = """
 publish_inline_comments = true
 publish_review_comments = true
 add_pr_commands_text = true
-
-[litellm]
-request_timeout = 120
-max_tokens = 2000 
