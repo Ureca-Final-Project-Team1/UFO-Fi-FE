@@ -5,27 +5,6 @@ import { qdrantClient } from '@/lib/qdrantClient';
 import { createQdrantFieldIndex } from '@/lib/qdrantFieldIndex';
 import { getVectorFromProfile } from '@/lib/vectorizer';
 
-type TradeHistory = {
-  status: 'PURCHASE' | 'SALE';
-  created_at: Date | null;
-};
-
-type TradePost = {
-  zet_per_unit: number | null;
-  sell_mobile_data_capacity_gb: number | null;
-  carrier: string | null;
-  mobile_data_type: string | null;
-};
-
-type User = {
-  id: number;
-  name: string | null;
-  role: 'ROLE_USER' | 'ROLE_REPORTED';
-  is_active: boolean;
-  trade_histories: TradeHistory[];
-  trade_posts: TradePost[];
-};
-
 export async function POST() {
   try {
     const collections = await qdrantClient.getCollections();
@@ -53,7 +32,7 @@ export async function POST() {
     ]);
     console.log('✅ 필드 인덱스 설정 완료');
 
-    const users: User[] = await prisma.users.findMany({
+    const users = await prisma.users.findMany({
       where: {
         role: { in: ['ROLE_USER', 'ROLE_REPORTED'] },
         is_active: true,
@@ -121,7 +100,7 @@ export async function POST() {
       });
 
       return {
-        id: user.id,
+        id: Number(user.id),
         vector,
         payload: {
           id: user.id,
