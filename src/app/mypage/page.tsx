@@ -40,8 +40,8 @@ export default function MyPage() {
     <div className="w-full text-white py-6 ">
       {/* Signal Card */}
       <SignalCard
-        userId={mypageInfo ? mypageInfo.nickname : ''} // 필요하면 prop명과 값을 맞춰주세요
-        profileImageUrl="/assets/user-308.png"
+        userId={mypageInfo ? mypageInfo.nickname : ''}
+        profileImageUrl={mypageInfo?.profileImageUrl}
         zetAmount={mypageInfo?.zetAsset ?? 0}
         availableData={mypageInfo?.sellableDataAmount ?? 0}
         maxData={mypageInfo?.sellMobileDataCapacityGb ?? 0}

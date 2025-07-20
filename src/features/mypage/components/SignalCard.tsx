@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 
+import { Avatar } from '@/shared/ui';
 import { Button } from '@/shared/ui';
 import { Progress } from '@/shared/ui/Progress';
 
@@ -13,7 +14,7 @@ interface SignalCardProps {
   maxData: number; // GB
 }
 
-const PROFILE_DEFAULT = '/images/avatar.png';
+const PROFILE_DEFAULT = '/images/avatar.svg';
 const QR_IMAGE = '/images/QR.png';
 const IC_IMAGE = '/images/IC.png';
 
@@ -51,14 +52,16 @@ export default function SignalCard({
       <div className="flex justify-between items-start px-4 sm:px-6 pb-3 gap-3 sm:gap-5">
         {/* 왼쪽 캐릭터 */}
         <div className="flex flex-col items-center shrink-0">
-          <Image
-            src={profileImageUrl || PROFILE_DEFAULT}
-            alt="지구인"
-            width={64}
-            height={64}
-            className="rounded-md border sm:w-[80px] sm:h-[80px]"
-            style={{ borderColor: 'var(--chart-4)' }}
-          />
+          <Avatar size="md" className="border sm:w-[80px] sm:h-[80px]" variant="default">
+            <img
+              src={profileImageUrl || PROFILE_DEFAULT}
+              alt="지구인"
+              width={64}
+              height={64}
+              className="rounded-md w-full h-full object-cover"
+              style={{ borderColor: 'var(--chart-4)' }}
+            />
+          </Avatar>
           <button
             className="w-[5rem] mt-2 rounded-md text-xs text-white py-0.5"
             style={{ backgroundColor: 'var(--chart-4)' }}

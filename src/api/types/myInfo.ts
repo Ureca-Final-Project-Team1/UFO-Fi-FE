@@ -7,5 +7,6 @@ export interface MyInfoResponse {
     sellMobileDataCapacityGb: number;
     sellableDataAmount: number;
     zetAsset: number | null;
+    profileImageUrl?: string;
   };
 }
