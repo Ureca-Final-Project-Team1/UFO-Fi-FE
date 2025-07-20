@@ -15,7 +15,7 @@ export const useInfiniteExchangePosts = (params?: Omit<GetExchangePostsRequest, 
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => {
       // nextCursor가 있으면 다음 페이지 존재
-      return lastPage.nextCursor?.id;
+      return lastPage.nextCursor?.cursorId;
     },
     staleTime: 1000 * 60 * 2, // 2분 캐시
   });
