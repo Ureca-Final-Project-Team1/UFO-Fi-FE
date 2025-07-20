@@ -12,6 +12,6 @@ export const fcmAPI = {
   },
 
   async setInterestedPostFilter(data: NotificationFilterRequest): Promise<void> {
-    await apiRequest.post('/v1/notification-filters/interested-post', data);
+    await apiRequest.patch('/v1/notification-filters/interested-post', data);
   },
 };
