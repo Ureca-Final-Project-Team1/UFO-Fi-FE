@@ -11,23 +11,52 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build-check:
+    if: |
+      (github.event_name == 'pull_request' && github.event.sender.type != 'Bot' && !github.event.pull_request.draft) ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '/review'))
+    runs-on: ubuntu-latest
+    outputs:
+      build-success: ${{ steps.build.outcome == 'success' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build check
+        id: build
+        run: npm run build
+        continue-on-error: true
+
   pr_agent_job:
-    if: ${{ github.event.sender.type != 'Bot' && !github.event.pull_request.draft }}
+    needs: build-check
+    if: |
+      (github.event_name == 'pull_request' && github.event.sender.type != 'Bot' && !github.event.pull_request.draft) ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '/review'))
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
       contents: read
-    name: Run PR Agent (GPT-4o-mini)
+    name: Run PR Agent
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Add build context
+        if: ${{ needs.build-check.outputs.build-success != 'true' }}
+        run: echo "BUILD_FAILED=true" >> $GITHUB_ENV
+
       - name: PR Agent action
-        id: pragent
         uses: Codium-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_AGENT.CONFIG.LANGUAGE: 'ko'
-          PR_AGENT.PR_REVIEWER.EXTRA_INSTRUCTIONS: '모든 리뷰 코멘트는 반드시 한국어로 작성해주세요.'
