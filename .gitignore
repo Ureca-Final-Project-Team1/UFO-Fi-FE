@@ -48,6 +48,3 @@ storybook-static
 # Deploy
 .env*
 *.key
-
-# prisma
-/prisma
