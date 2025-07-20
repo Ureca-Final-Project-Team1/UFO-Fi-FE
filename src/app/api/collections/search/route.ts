@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       neighbors,
-      message: neighbors.length > 0 ? '✅ 추천 결과 반환 성공' : '⚠️ 추천 결과가 없습니다',
+      message: neighbors.length > 0 ? '추천 결과 반환 성공' : '추천 결과가 없습니다',
     });
   } catch (err) {
     console.error('Recommend failed:', err);

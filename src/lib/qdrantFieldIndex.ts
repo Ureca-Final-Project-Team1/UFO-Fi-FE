@@ -18,8 +18,8 @@ export async function createQdrantFieldIndex(
 
   if (!res.ok) {
     const msg = await res.text();
-    throw new Error(`❌ ${fieldName} 필드 인덱싱 실패: ${res.status} - ${msg}`);
+    throw new Error(`${fieldName} 필드 인덱싱 실패: ${res.status} - ${msg}`);
   }
 
-  console.log(`✅ ${fieldName} 필드 인덱스 생성 완료`);
+  console.log(`${fieldName} 필드 인덱스 생성 완료`);
 }

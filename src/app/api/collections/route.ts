@@ -30,7 +30,7 @@ export async function POST() {
       createQdrantFieldIndex('carrier', 'keyword'),
       createQdrantFieldIndex('mobile_data_type', 'keyword'),
     ]);
-    console.log('✅ 필드 인덱스 설정 완료');
+    console.log('필드 인덱스 설정 완료');
 
     const users = await prisma.users.findMany({
       where: {
