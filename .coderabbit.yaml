@@ -1,12 +1,10 @@
-# .coderabbit.yaml
 language: ko
 early_access: false
+
 reviews:
   profile: chill
   request_changes_workflow: false
   high_level_summary: true
-  poem: true
-  review_status: true
   sequence_diagrams: true
   auto_review:
     enabled: true
@@ -21,47 +19,28 @@ reviews:
     - path: '**/*.{ts,tsx}'
       instructions: |
         Review based on UFO-Fi conventions in .github/code_rabbit_rule.md
-
-        Focus on:
-        - TypeScript type safety and proper interface definitions
-        - React component structure and performance (useCallback/useMemo)
-        - Next.js 13+ App Router patterns and 'use client' usage
-        - FSD architecture compliance (features vs shared separation)
-        - Naming conventions (kebab-case files, PascalCase components)
-        - Props interface definition and destructuring assignment
-        - Performance optimization patterns
-
-        Provide feedback in Korean language.
-
+        ...
     - path: '**/api/**/*.ts'
       instructions: |
-        Review API-related code based on UFO-Fi API patterns:
-        - {domain}API.{method} pattern compliance
-        - Type definition accuracy in types/[domain].ts
-        - Error handling logic and HTTP status codes
-        - Proper use of axios instance from client/axios.ts
-        - Security considerations
-
-        Provide feedback in Korean language.
-
+        ...
     - path: '**/features/**/*.{ts,tsx}'
       instructions: |
-        Review feature-specific code:
-        - Proper domain separation and component placement
-        - Barrel exports in index.ts files
-        - No shared/ui usage unless used by 3+ domains
-        - Domain-specific type definitions
-
-        Provide feedback in Korean language.
-
+        ...
     - path: '**/shared/**/*.{ts,tsx}'
       instructions: |
-        Review shared components:
-        - Ensure true reusability across domains
-        - Generic prop interfaces without domain-specific logic
-        - Proper component composition patterns
+        ...
 
-        Provide feedback in Korean language.
+commit_status: true
+changed_files_summary: true
+suggested_labels: true
+auto_apply_labels: true
+suggested_reviewers: true
+auto_assign_reviewers: true
+pre_merge_checks: true
+related_issues: true
+related_prs: true
+assess_linked_issues: true
+finishing_touches: true
 
 chat:
   auto_reply: true
