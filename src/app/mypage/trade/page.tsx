@@ -4,12 +4,9 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 
-import {
-  purchaseHistoryAPI,
-  purchaseHistoryResponse,
-  sellHistoryAPI,
-  sellHistoryResponse,
-} from '@/api/history';
+import { purchaseHistory } from '@/api/services/history/purchaseHistory';
+import { sellHistory } from '@/api/services/history/sellHistory';
+import { PurchaseHistoryResponse, SellHistoryResponse } from '@/api/types/history';
 import { TradeHistoryCard, TradeHistoryCardProps } from '@/features/mypage/components';
 import { useTradeHistory } from '@/hooks/useTradeHistory';
 import { BadgeState } from '@/shared';
@@ -30,7 +27,7 @@ const convertStatusToBadgeState = (status: string): BadgeState => {
 };
 
 const convertToCardProps = (
-  items: sellHistoryResponse[] | purchaseHistoryResponse[],
+  items: SellHistoryResponse[] | PurchaseHistoryResponse[],
   isSell: boolean,
 ): TradeCardItem[] =>
   items.map((item) => ({
@@ -58,12 +55,12 @@ const MyTradeHistoryPage = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       if (activeTab === 'sell' && !fetchedTabs.sell) {
-        const response = await sellHistoryAPI();
+        const response = await sellHistory();
         setSellTrade(response ?? []);
         setFetchedTabs((prev) => ({ ...prev, sell: true }));
       }
       if (activeTab === 'purchase' && !fetchedTabs.purchase) {
-        const response = await purchaseHistoryAPI();
+        const response = await purchaseHistory();
         setPurchaseTrade(response ?? []);
         setFetchedTabs((prev) => ({ ...prev, purchase: true }));
       }

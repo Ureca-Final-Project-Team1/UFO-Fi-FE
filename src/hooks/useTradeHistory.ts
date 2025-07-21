@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 
-import { purchaseHistoryResponse, sellHistoryResponse } from '@/api/history';
+import { PurchaseHistoryResponse, SellHistoryResponse } from '@/api/types/history';
 
 export function useTradeHistory() {
-  const [sellTrade, setSellTrade] = useState<sellHistoryResponse[]>([]);
-  const [purchaseTrade, setPurchaseTrade] = useState<purchaseHistoryResponse[]>([]);
+  const [sellTrade, setSellTrade] = useState<SellHistoryResponse[]>([]);
+  const [purchaseTrade, setPurchaseTrade] = useState<PurchaseHistoryResponse[]>([]);
 
   return {
     sellTrade,

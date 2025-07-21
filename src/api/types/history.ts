@@ -1,4 +1,4 @@
-export interface purchaseHistoryResponse {
+export interface PurchaseHistoryResponse {
   postId: number;
   purchaseHistoryId: number;
   createdAt: Date;
@@ -8,7 +8,7 @@ export interface purchaseHistoryResponse {
   mobileDataType: string;
 }
 
-export interface sellHistoryResponse {
+export interface SellHistoryResponse {
   postId: number;
   status: string;
   createdAt: Date;
