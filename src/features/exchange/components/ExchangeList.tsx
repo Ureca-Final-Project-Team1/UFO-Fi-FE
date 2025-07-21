@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
+import { Button } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
@@ -18,7 +19,7 @@ interface ExchangeListProps {
 
 export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: ExchangeListProps) => {
   // 무한스크롤 데이터 조회
-  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteExchangePosts();
 
   // 무한스크롤 트리거 (화면 하단 감지)
@@ -64,9 +65,9 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="text-red-400 mb-2">데이터를 불러오는데 실패했습니다</div>
-          <button onClick={() => window.location.reload()} className="text-white text-sm underline">
+          <Button onClick={() => refetch()} className="text-white text-sm underline">
             다시 시도
-          </button>
+          </Button>
         </div>
       </div>
     );
