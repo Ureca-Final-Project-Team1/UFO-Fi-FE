@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import { create } from 'zustand';
 
 interface ModalData {
@@ -46,6 +47,7 @@ interface ModalStore {
     imageSrc: string,
     options?: Partial<ModalData>,
   ) => void;
+  showLoginModal: (onLogin?: () => void, options?: Partial<ModalData>) => void;
 }
 
 export const useModalStore = create<ModalStore>((set, get) => ({
@@ -128,6 +130,25 @@ export const useModalStore = create<ModalStore>((set, get) => ({
       imagePosition: { x: -25, y: -10 },
       imageSize: { width: 100, height: 100 },
       primaryButtonText: '확인',
+      ...options,
+    });
+  },
+
+  showLoginModal: (onLogin?: () => void, options: Partial<ModalData> = {}) => {
+    get().openModal('login', {
+      title: '로그인이 필요합니다',
+      description: '이 기능을 이용하려면 로그인이 필요합니다.',
+      type: 'single',
+      size: 'md',
+      rounded: 'sm',
+      headerAlign: 'center',
+      primaryButtonText: '로그인 하러가기',
+      onPrimaryClick:
+        onLogin ??
+        (() => {
+          Router.push('/login');
+        }),
+      hasCloseButton: true,
       ...options,
     });
   },

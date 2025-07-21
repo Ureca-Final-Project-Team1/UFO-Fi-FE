@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
+import { withProtectedRoute } from '@/hoc/withProtectedRoute';
 import { Icon } from '@/shared/ui/Icons';
 
-export default function MyPage() {
+function MyPage() {
   const router = useRouter();
   const { data: mypageInfo, error, isLoading } = useMyInfo();
 
@@ -71,3 +72,5 @@ export default function MyPage() {
     </div>
   );
 }
+
+export default withProtectedRoute(MyPage);
