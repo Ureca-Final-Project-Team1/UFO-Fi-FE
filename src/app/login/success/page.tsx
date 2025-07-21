@@ -22,10 +22,13 @@ const Page = () => {
         switch (response.content.role) {
           case 'ROLE_NO_INFO':
             router.push('/signup/privacy');
+            break;
           case 'ROLE_REPORTED':
             router.push('/blackhole');
+            break;
           default:
             router.push('/');
+            break;
         }
       } catch (error) {
         console.error('Login success handling failed:', error);
