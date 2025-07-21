@@ -23,9 +23,22 @@ const axiosInstance = axios.create({
 });
 
 // 요청 인터셉터
-axiosInstance.interceptors.request.use((config) => config);
+axiosInstance.interceptors.request.use((config) => {
+  // 로그인, 회원가입 등 인증이 필요없는 API는 제외
+  const publicAPIs = ['/v1/auth/login', '/v1/auth/signup', '/v1/auth/refresh'];
+  const isPublicAPI = publicAPIs.some((api) => config.url?.includes(api));
 
-// 응답 인터셉터 - 에러 처리 및 토스트
+  if (!isPublicAPI) {
+    const accessToken = sessionStorage.getItem('accessToken');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+  }
+
+  return config;
+});
+
+// 응답 인터셉터
 let isRefreshing = false;
 let queue: ((token: string) => void)[] = [];
 
@@ -40,6 +53,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
     const statusCode = error.response?.status || 500;
 
+    // 401 에러 시 토큰 갱신 시도
     if (statusCode === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -56,7 +70,7 @@ axiosInstance.interceptors.response.use(
         if (!refreshToken) throw new Error('RefreshToken 없음');
 
         const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/refresh`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/v1/auth/refresh`,
           {},
           {
             headers: {
@@ -66,11 +80,22 @@ axiosInstance.interceptors.response.use(
           },
         );
 
-        const newAccessToken = res.data.accessToken;
-        processQueue(newAccessToken);
+        const newAccessToken = res.data.content?.accessToken;
+        if (newAccessToken) {
+          sessionStorage.setItem('accessToken', newAccessToken);
 
-        return axiosInstance(originalRequest);
+          // 새 토큰으로 헤더 업데이트
+          if (originalRequest.headers) {
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          }
+
+          processQueue(newAccessToken);
+          return axiosInstance(originalRequest);
+        }
       } catch (err) {
+        // 토큰 갱신 실패 시 로그아웃 처리
+        sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('refreshToken');
         toast.error('로그인이 만료되었습니다.');
         window.location.href = '/login';
         return Promise.reject(err);
@@ -78,15 +103,18 @@ axiosInstance.interceptors.response.use(
         isRefreshing = false;
       }
     }
+
     const message =
-      (error.response?.data as { content?: string })?.content ||
+      (error.response?.data as { message?: string })?.message ||
       '요청 처리 중 오류가 발생했습니다.';
 
     // 상태코드별 토스트 처리
     switch (statusCode) {
       case 401:
-        toast.error('인증이 필요합니다.');
-        window.location.href = '/login';
+        if (!originalRequest._retry) {
+          toast.error('인증이 필요합니다.');
+          window.location.href = '/login';
+        }
         break;
       case 403:
         toast.error('접근 권한이 없습니다.');
