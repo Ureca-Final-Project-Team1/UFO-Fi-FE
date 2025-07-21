@@ -111,11 +111,10 @@ axiosInstance.interceptors.response.use(
     // 상태코드별 토스트 처리
     switch (statusCode) {
       case 401:
-        if (!originalRequest._retry) {
+        if (!originalRequest._retry && !isRefreshing) {
           toast.error('인증이 필요합니다.');
           window.location.href = '/login';
         }
-        break;
       case 403:
         toast.error('접근 권한이 없습니다.');
         break;
