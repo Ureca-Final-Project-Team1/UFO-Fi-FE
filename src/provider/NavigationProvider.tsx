@@ -17,6 +17,11 @@ const BOTTOM_NAV_HEIGHT = 64; // BottomNav 높이
 export function NavigationProvider({ children }: NavigationProviderProps) {
   const pathname = usePathname();
 
+  // admin 경로는 네비게이션/배경 등 일체 적용하지 않고 children만 반환
+  if (pathname.startsWith('/admin')) {
+    return <>{children}</>;
+  }
+
   const isNavigationHidden =
     pathname.startsWith('/login') ||
     pathname.startsWith('/onboarding') ||
