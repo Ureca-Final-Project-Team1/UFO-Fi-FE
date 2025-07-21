@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -15,6 +16,7 @@ import '@/styles/globals.css';
 const FilterNotificationPage = () => {
   const { data, range, minData, maxData, minValue, maxValue, setData, setRange } = useFilterState();
   useFilteredItemCount();
+  const router = useRouter();
   const [selectedCarriers, setSelectedCarriers] = useState<Carrier[]>([Carrier.SKT]);
   const [selectedReputations, setSelectedReputations] = useState<string[]>(['첫 출발']);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,14 +65,14 @@ const FilterNotificationPage = () => {
       const isLoggedIn = await checkAuthStatus();
       if (!isLoggedIn) {
         toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
-        window.location.href = '/login';
+        router.push('/login');
         return;
       }
 
       await fcmAPI.setInterestedPostFilter({
         carriers: selectedCarriers,
         interestedMaxCapacity: data[0],
-        interestedMinCapacity: 0,
+        interestedMinCapacity: minData,
         interestedMaxPrice: range[1],
         interestedMinPrice: range[0],
       });
@@ -81,7 +83,7 @@ const FilterNotificationPage = () => {
 
       if (error instanceof Error && error.message.includes('401')) {
         toast.error('로그인이 만료되었습니다. 다시 로그인해주세요.');
-        window.location.href = '/login';
+        router.push('/login');
       } else {
         toast.error('알림 조건 저장에 실패했습니다. 다시 시도해주세요.');
       }
