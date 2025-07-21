@@ -9,9 +9,10 @@ import { Button } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
+import { PostData } from '../types';
 
 interface ExchangeListProps {
-  onEdit: (id: number) => void;
+  onEdit: (id: number, postData: PostData) => void;
   onDelete: (id: number) => void;
   onReport: (id: number) => void;
   onPurchase: (id: number) => void;
@@ -47,6 +48,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         timeLeft: formatTimeAgo(post.createdAt),
         isOwner: false, // TODO: 현재 사용자 ID와 비교 필요
         status: post.status,
+        originalPost: post,
       }));
   }, [data?.pages]);
 
@@ -90,7 +92,14 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
             price={item.price}
             timeLeft={item.timeLeft}
             isOwner={item.isOwner}
-            onEdit={() => onEdit(item.id)}
+            onEdit={() =>
+              onEdit(item.id, {
+                title: item.originalPost.title || '제목 없음',
+                zetPerUnit: item.originalPost.pricePerUnit || 0,
+                capacity: item.originalPost.sellMobileDataCapacityGb || 0,
+                carrier: item.originalPost.carrier || 'LGU',
+              })
+            }
             onDelete={() => onDelete(item.id)}
             onReport={() => onReport(item.id)}
             onPurchase={() => onPurchase(item.id)}
