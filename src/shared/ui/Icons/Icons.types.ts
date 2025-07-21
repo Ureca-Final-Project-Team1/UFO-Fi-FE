@@ -40,6 +40,7 @@ export type LucideIconType =
   | 'ChevronUp'
   | 'Heart'
   | 'Star'
+  | 'Package'
   | 'TriangleAlert' // 경고
   | 'Siren' // 신고 버튼
   | 'Download'
