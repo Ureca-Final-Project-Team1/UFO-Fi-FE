@@ -17,7 +17,7 @@ export interface BulkResultItem {
   sellMobileDataCapacityGb: number;
   carrier: 'KT' | 'SKT' | 'LGU';
   status: string;
-  createdAt: string;
+  createdAt: Date;
   pricePerUnit: number;
   mobileDataType: string;
 }
