@@ -20,4 +20,6 @@ export interface BulkResultItem {
   createdAt: Date;
   pricePerUnit: number;
   mobileDataType: string;
+  sellerNickname: string;
+  sellerId: number;
 }
