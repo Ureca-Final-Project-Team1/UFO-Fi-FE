@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 
+import { IMAGE_PATHS } from '@/constants/images';
 import { Avatar } from '@/shared/ui';
 import { Button } from '@/shared/ui';
 import { Progress } from '@/shared/ui/Progress';
-
 interface SignalCardProps {
   userId: string;
   profileImageUrl?: string;
@@ -13,10 +13,6 @@ interface SignalCardProps {
   availableData: number; // GB
   maxData: number; // GB
 }
-
-const PROFILE_DEFAULT = '/images/avatar.svg';
-const QR_IMAGE = '/images/QR.png';
-const IC_IMAGE = '/images/IC.png';
 
 export default function SignalCard({
   userId,
@@ -54,7 +50,7 @@ export default function SignalCard({
         <div className="flex flex-col items-center shrink-0">
           <Avatar size="md" className="border sm:w-[80px] sm:h-[80px]" variant="default">
             <img
-              src={profileImageUrl || PROFILE_DEFAULT}
+              src={profileImageUrl || IMAGE_PATHS.AVATAR}
               alt="지구인"
               width={64}
               height={64}
@@ -106,14 +102,14 @@ export default function SignalCard({
             ✏️ 프로필 수정
           </Button>
           <Image
-            src={QR_IMAGE}
+            src={IMAGE_PATHS.QR}
             alt="QR 코드"
             width={64}
             height={64}
             className="sm:w-[80px] sm:h-[80px]"
           />
           <Image
-            src={IC_IMAGE}
+            src={IMAGE_PATHS.IC}
             alt="칩"
             width={40}
             height={40}
