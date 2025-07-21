@@ -2,11 +2,12 @@
 
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { Title } from '@/shared/ui';
 
-export default function BlackholePage() {
+function BlackholePageInner() {
   const searchParams = useSearchParams();
   const mode = searchParams.get('mode') || 'self';
 
@@ -23,5 +24,13 @@ export default function BlackholePage() {
         <Image src={IMAGE_PATHS['BLACKHOLE_REAL']} alt="Blackhole" width={390} height={390} />
       </div>
     </div>
+  );
+}
+
+export default function BlackholePage() {
+  return (
+    <Suspense>
+      <BlackholePageInner />
+    </Suspense>
   );
 }
