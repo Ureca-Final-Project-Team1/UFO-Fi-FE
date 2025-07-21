@@ -36,4 +36,7 @@ export const IMAGE_PATHS = {
   KAKAO_LOGIN_BUTTON: '/images/kakao-login-button.png',
   UFO_LOGIN: '/images/ufo-login.png',
   PAYMENT_CHECK: '/images/check-primary.svg',
+  AVATAR: '/images/avatar.svg',
+  QR: '/images/QR.png',
+  IC: '/images/IC.png',
 } as const;
