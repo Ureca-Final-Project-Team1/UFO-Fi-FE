@@ -3,12 +3,8 @@ import type { FCMTokenRequest, FCMTokenResponse, NotificationFilterRequest } fro
 
 export const fcmAPI = {
   async saveToken(data: FCMTokenRequest): Promise<FCMTokenResponse> {
-    const response = await apiRequest.post<{
-      statusCode: number;
-      message: string;
-      content: { id: number };
-    }>('/v1/fcm/token', data);
-    return response.data as FCMTokenResponse;
+    const response = await apiRequest.post<FCMTokenResponse>('/v1/fcm/token', data);
+    return response.data;
   },
 
   async setInterestedPostFilter(data: NotificationFilterRequest): Promise<void> {
