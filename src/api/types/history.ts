@@ -1,19 +1,16 @@
-export interface PurchaseHistoryResponse {
+interface BaseHistoryResponse {
   postId: number;
-  purchaseHistoryId: number;
-  createdAt: Date;
+  createdAt: string;
   carrier: string;
   title: string;
   totalZet: number;
   mobileDataType: string;
 }
 
-export interface SellHistoryResponse {
-  postId: number;
+export interface PurchaseHistoryResponse extends BaseHistoryResponse {
+  purchaseHistoryId: number;
+}
+
+export interface SellHistoryResponse extends BaseHistoryResponse {
   status: string;
-  createdAt: Date;
-  carrier: string;
-  title: string;
-  totalZet: number;
-  mobileDataType: string;
 }

@@ -54,20 +54,24 @@ const MyTradeHistoryPage = () => {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      if (activeTab === 'sell' && !fetchedTabs.sell) {
-        const response = await sellHistory();
-        setSellTrade(response ?? []);
-        setFetchedTabs((prev) => ({ ...prev, sell: true }));
-      }
-      if (activeTab === 'purchase' && !fetchedTabs.purchase) {
-        const response = await purchaseHistory();
-        setPurchaseTrade(response ?? []);
-        setFetchedTabs((prev) => ({ ...prev, purchase: true }));
+      try {
+        if (activeTab === 'sell' && !fetchedTabs.sell) {
+          const response = await sellHistory();
+          setSellTrade(response ?? []);
+          setFetchedTabs((prev) => ({ ...prev, sell: true }));
+        }
+        if (activeTab === 'purchase' && !fetchedTabs.purchase) {
+          const response = await purchaseHistory();
+          setPurchaseTrade(response ?? []);
+          setFetchedTabs((prev) => ({ ...prev, purchase: true }));
+        }
+      } catch (error) {
+        console.error('Failed to fetch history:', error);
       }
     };
 
     fetchHistory();
-  }, [activeTab]);
+  }, [activeTab, fetchedTabs, setSellTrade, setPurchaseTrade]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value as 'sell' | 'purchase');
