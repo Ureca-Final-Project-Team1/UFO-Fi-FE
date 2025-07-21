@@ -20,7 +20,6 @@ export default function BulkPurchasePage() {
     isValidCapacity,
     isValidPrice,
     isSubmitting,
-    importantValue,
     setImportantValue,
   } = useBulkPurchase();
 
@@ -97,7 +96,6 @@ export default function BulkPurchasePage() {
               options={['용량', '예산']}
               defaultValue="용량"
               onValueChange={setImportantValue}
-              value={importantValue}
             />
           </div>
 
