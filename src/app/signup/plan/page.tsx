@@ -8,6 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Plan, plansAPI, signupAPI } from '@/api';
+import { PlanCombo } from '@/features/signup/components';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import {
   Button,
@@ -202,46 +203,20 @@ const PlanPage = () => {
               name="planName"
               control={control}
               render={({ field }) => (
-                <Select
-                  value={field.value || ''}
-                  onValueChange={(value) => {
+                <PlanCombo
+                  planNames={plans.map((plan) => plan.planName)}
+                  onSelect={(value) => {
                     field.onChange(value);
                     setForm({ planName: value });
 
                     const selected = plans.find((plan) => plan.planName === value);
                     if (selected) {
                       setMaxData(selected.sellMobileDataCapacityGB);
-                      setNetworkType(selected.mobileDataType);
+                      const newNetworkType = selected.mobileDataType.replace(/^_/, '');
+                      setNetworkType(newNetworkType);
                     }
                   }}
-                  disabled={!watchedCarrier || isLoading}
-                >
-                  <SelectTrigger
-                    size="default"
-                    className="w-full bg-white text-black caption-14-regular"
-                  >
-                    <SelectValue
-                      placeholder={
-                        !watchedCarrier
-                          ? '먼저 통신사를 선택해주세요'
-                          : isLoading
-                            ? '요금제 조회 중...'
-                            : apiError
-                              ? '요금제 조회 실패'
-                              : plans.length === 0
-                                ? '요금제가 없습니다'
-                                : '요금제 선택'
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {plans.map((plan) => (
-                      <SelectItem key={plan.planId} value={plan.planName}>
-                        {plan.planName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               )}
             />
           </div>
