@@ -3,6 +3,7 @@ export { notificationAPI } from './services/notification/settings';
 export { signupAPI } from './services/auth/signup';
 export { plansAPI } from './services/auth/plans';
 export { sellAPI } from './services/sell/posts';
+export { fcmAPI } from './services/fcm/token';
 export { exchangeAPI } from './services/exchange/posts';
 export { followersAPI } from './services/follow/followers';
 export { followingAPI } from './services/follow/following';

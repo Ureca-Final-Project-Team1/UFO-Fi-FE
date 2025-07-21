@@ -13,6 +13,7 @@ import {
 } from '@/provider';
 import FCMProvider from '@/shared/components/FCMProvider';
 import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
+import { Toaster } from '@/shared/ui';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -61,6 +62,7 @@ export default function RootLayout({
             <ModalProvider />
           </ViewportObserverProvider>
         </QueryProvider>
+        <Toaster position="top-center" expand={true} richColors={true} closeButton={true} />
       </body>
     </html>
   );
