@@ -43,7 +43,7 @@ export const registerFCMToken = async (): Promise<boolean> => {
 
     // 서버에 저장
     const response = await fcmAPI.saveToken({ token });
-    if (response.statusCode === 200) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       localStorage.setItem('fcm_token', token);
 
       return true;
