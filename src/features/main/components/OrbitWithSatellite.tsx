@@ -11,8 +11,8 @@ const ORBIT_COUNT = 5;
 const orbitConfigs = [
   { color: '#FFD230', speed: 'spin-reverse-slow', image: '/images/main/satellite1.svg' },
   { color: '#70C3BB', speed: 'spin-mid', image: '/images/main/satellite2.svg' },
-  { color: '#67CBDC', speed: 'spin-reverse-fast', image: '/images/main/satellite3.svg' },
-  { color: '#735AB1', speed: 'spin-mid', image: '/images/main/satellite4.svg' },
+  { color: '#67CBDC', speed: 'spin-slow', image: '/images/main/satellite3.svg' },
+  { color: '#735AB1', speed: 'spin-reverse-mid', image: '/images/main/satellite4.svg' },
   { color: '#D24D9B', speed: 'spin-reverse-fast', image: '/images/main/satellite5.svg' },
 ];
 
