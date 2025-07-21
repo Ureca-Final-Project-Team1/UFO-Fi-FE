@@ -13,7 +13,7 @@ export interface ExchangePost {
   title: string;
   totalPrice: number;
   sellMobileDataCapacityGb: number;
-  carrier: Carrier[];
+  carrier: Carrier;
   status: ExchangeStatus;
   createdAt: string;
   pricePerUnit: number;

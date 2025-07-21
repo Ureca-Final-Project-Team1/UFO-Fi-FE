@@ -84,7 +84,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         {sellingItems.map((item) => (
           <SellingItem
             key={item.id}
-            carrier={item.carrier.toString()}
+            carrier={item.carrier}
             networkType={item.networkType}
             capacity={item.capacity}
             price={item.price}
