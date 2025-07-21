@@ -32,7 +32,7 @@ export default function SellEditPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const maxCapacity = 10;
-  const averagePrice = 250;
+  const averagePrice = 250; // TODO: 추후 진짜 평균 가격으로 변경해야 함
   const sellCapacity = value[0];
   const totalPrice = sellCapacity * pricePerGB;
 
