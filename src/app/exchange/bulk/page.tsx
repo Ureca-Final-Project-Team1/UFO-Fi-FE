@@ -7,7 +7,7 @@ import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { BulkCapacitySlider } from '@/features/bulk/components/BulkCapacitySlider';
 import { useBulkPurchase } from '@/features/bulk/hooks/useBulkPurchase';
-import { Icon, Title, Button, PriceInput } from '@/shared';
+import { Icon, Title, Button, PriceInput, RadioGroup } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function BulkPurchasePage() {
@@ -20,10 +20,15 @@ export default function BulkPurchasePage() {
     isValidCapacity,
     isValidPrice,
     isSubmitting,
+    setImportantValue,
   } = useBulkPurchase();
 
   const isMobile = useViewportStore((state) => state.isMobile);
   const isFormValid = isValidCapacity && isValidPrice;
+
+  const setNewCapacityValue = (value: React.SetStateAction<number[]>) => {
+    setCapacityValue(value);
+  };
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center">
@@ -58,7 +63,7 @@ export default function BulkPurchasePage() {
           <div className="text-center">
             <BulkCapacitySlider
               value={capacityValue}
-              setValue={setCapacityValue}
+              setValue={setNewCapacityValue}
               maxCapacity={100}
             />
           </div>
@@ -82,6 +87,16 @@ export default function BulkPurchasePage() {
             </div>
 
             <div className="text-yellow-400 caption-14-bold">ZET</div>
+          </div>
+
+          {/* 중요도 체크 부분 */}
+          <div className="flex flex-col gap-2">
+            <p className="caption-14-bold">뭐가 더 중요해?</p>
+            <RadioGroup
+              options={['용량', '예산']}
+              defaultValue="용량"
+              onValueChange={setImportantValue}
+            />
           </div>
 
           {/* 외계인 캐릭터 */}

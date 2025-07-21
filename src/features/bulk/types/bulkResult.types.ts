@@ -1,19 +1,25 @@
 export interface BulkResultData {
-  searchId: string;
-  capacity: number;
-  budget: number;
-  matchedData: number;
-  expectedAmount: number;
-  shortfall: number;
-  dataList: BulkResultItem[];
-  expiresAt: number;
+  statusCode: number;
+  message: string;
+  content: BulkResultContentItem;
+}
+
+export interface BulkResultContentItem {
+  totalGb: number;
+  totalPrice: number;
+  posts: BulkResultItem[];
 }
 
 export interface BulkResultItem {
+  postId: number;
+  title: string;
+  totalPrice: number;
+  sellMobileDataCapacityGb: number;
   carrier: 'KT' | 'SKT' | 'LGU';
-  message: string;
-  dataAmount: number;
-  price: number;
-  seller: string;
-  timeAgo: string;
+  status: string;
+  createdAt: Date;
+  pricePerUnit: number;
+  mobileDataType: string;
+  sellerNickname: string;
+  sellerId: number;
 }
