@@ -1,8 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { plansAPI } from '@/api';
+import { plansAPI, editProfileAPI } from '@/api';
 import {
   Title,
   Input,
@@ -13,6 +14,7 @@ import {
   SelectContent,
   SelectItem,
 } from '@/shared';
+import { ConfirmModal } from '@/shared/ui';
 
 interface RawPlan {
   planId: number;
@@ -26,13 +28,15 @@ export default function EditProfilePage() {
   const [carrier, setCarrier] = useState('');
   const [plan, setPlan] = useState('');
   const [plans, setPlans] = useState<
-    { label: string; value: string; maxData: number; networkType: string }[]
+    { id: number; label: string; value: string; maxData: number; networkType: string }[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [maxData, setMaxData] = useState<number | null>(null);
   const [networkType, setNetworkType] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const prevCarrier = useRef('');
+  const router = useRouter();
 
   // 통신사 변경 시 요금제 목록 fetch
   useEffect(() => {
@@ -45,6 +49,7 @@ export default function EditProfilePage() {
         const response: RawPlan[] = await plansAPI.getByCarrier(carrier);
         setPlans(
           response.map((plan) => ({
+            id: plan.planId,
             label: plan.planName,
             value: plan.planName,
             maxData: plan.sellMobileDataCapacityGB,
@@ -89,10 +94,36 @@ export default function EditProfilePage() {
   const isCarrierSelected = !!carrier;
   const isPlanSelected = !!plan;
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!isNicknameValid || !isCarrierSelected || !isPlanSelected) return;
-    // TODO: 저장 API 호출
-    alert('수정한 정보가 저장되었습니다!');
+
+    try {
+      setIsLoading(true);
+      setApiError(null);
+
+      // 닉네임 변경
+      await editProfileAPI.updateNickname(nickname);
+
+      // 요금제 변경
+      const selectedPlan = plans.find((p) => p.value === plan);
+      if (!selectedPlan) throw new Error('선택한 요금제를 찾을 수 없습니다.');
+
+      await editProfileAPI.updatePlan(selectedPlan.id, selectedPlan.label);
+
+      setShowModal(true); // 모달 오픈
+    } catch (error) {
+      console.error(error);
+      setApiError('정보 저장에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleModalConfirm = () => {
+    setShowModal(false);
+    setTimeout(() => {
+      router.push('/mypage');
+    }, 200);
   };
 
   return (
@@ -191,6 +222,16 @@ export default function EditProfilePage() {
           수정한 정보 저장하기
         </Button>
       </div>
+      {showModal && (
+        <ConfirmModal
+          isOpen={showModal}
+          onClose={handleModalConfirm}
+          title="수정 성공"
+          description="수정한 정보가 저장되었습니다!"
+          primaryButtonText="확인"
+          onPrimaryClick={handleModalConfirm}
+        />
+      )}
     </div>
   );
 }
