@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-import axiosInstance from '@/api/client/axios';
+import { bulkPurchaseAPI } from '@/api/services/bulk/bulkPurchase';
 import { ICON_PATHS } from '@/constants/icons';
 // import { IMAGE_PATHS } from '@/constants/images';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
@@ -12,7 +12,7 @@ import { Icon, Title, Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 import { useBulkPurchase } from '../hooks/useBulkPurchase';
-import { BulkResultContentItem, BulkResultData, BulkResultItem } from '../types/bulkResult.types';
+import { BulkResultContentItem, BulkResultItem } from '../types/bulkResult.types';
 
 interface BulkResultContentProps {
   initialData?: BulkResultContentItem;
@@ -35,18 +35,16 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axiosInstance.get<BulkResultData>('v1/posts/lump-sum-purchase', {
-          params: {
-            desiredGb: capacityValue[0],
-            maxPrice: Number(pricePerGB),
-          },
+
+        const data = await bulkPurchaseAPI({
+          desiredGb: capacityValue[0],
+          maxPrice: Number(pricePerGB),
         });
-        const data = response.data;
 
         if (data.message !== 'OK') {
           if (data.statusCode === 404) {
             throw new Error('검색 결과를 찾을 수 없습니다.');
-          } else if (response.status === 410) {
+          } else if (data.statusCode === 410) {
             throw new Error('검색 결과가 만료되었습니다.');
           } else {
             throw new Error('결과를 불러오는 중 오류가 발생했습니다.');
