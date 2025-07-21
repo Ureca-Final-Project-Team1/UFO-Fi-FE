@@ -1,12 +1,11 @@
 'use client';
 
-// import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
+import { purchaseAPI } from '@/api/services/exchange/purchase';
 import { ICON_PATHS } from '@/constants/icons';
-// import { IMAGE_PATHS } from '@/constants/images';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { Icon, Title, Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
@@ -68,8 +67,24 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
     setIsPurchasing(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // TODO: 구매 처리 필요
+      const fetchPurchase = async () => {
+        for (const item of resultData.posts) {
+          const response = await purchaseAPI({
+            postId: item.postId,
+            // TODO: BE 수정 후 변경
+            sellerId: 10,
+            // sellerId: item.sellerId,
+            totalZet: item.totalPrice,
+            sellMobileDataAmountGB: item.sellMobileDataCapacityGb,
+          });
+          if (response.statusCode !== 200) {
+            break;
+          }
+        }
+      };
+
+      fetchPurchase();
+
       alert('구매가 완료되었습니다!');
       router.push('/exchange');
     } catch {
@@ -210,7 +225,7 @@ function BulkResultDisplay({
               key={index}
               message={item.title}
               dataAmount={item.sellMobileDataCapacityGb}
-              price={totalPrice}
+              price={item.totalPrice}
               carrier={item.carrier}
               // TODO: seller 필요
               seller="누구세요?"
