@@ -42,7 +42,7 @@ export default function SellEditPage() {
   const isValidCapacity = sellCapacity > 0 && sellCapacity <= maxCapacity;
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPrice = parseInt(e.target.value) || 0;
+    const newPrice = Math.max(0, parseInt(e.target.value) || 0);
     setPricePerGB(newPrice);
   };
 
