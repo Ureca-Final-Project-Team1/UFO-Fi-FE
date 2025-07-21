@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-import { bulkPurchaseAPI } from '@/api/services/bulk/bulkPurchase';
+import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
 import { ICON_PATHS } from '@/constants/icons';
 // import { IMAGE_PATHS } from '@/constants/images';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
