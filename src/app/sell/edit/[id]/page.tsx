@@ -5,7 +5,7 @@ import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI } from '@/api';
+import { ApiResponse, sellAPI } from '@/api';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
@@ -13,6 +13,7 @@ import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
+import { handleApiAction } from '@/utils/handleApiAction';
 
 export default function SellEditPage() {
   const router = useRouter();
@@ -53,28 +54,22 @@ export default function SellEditPage() {
       return;
     }
 
-    try {
-      setIsSubmitting(true);
+    setIsSubmitting(true);
 
-      const updateData = {
-        title: titleInput.trim(),
-        zetPerUnit: pricePerGB,
-        sellMobileDataCapacityGb: sellCapacity,
-      };
+    await handleApiAction({
+      apiCall: () =>
+        sellAPI.updatePost(postId, {
+          title: titleInput.trim(),
+          zetPerUnit: pricePerGB,
+          sellMobileDataCapacityGb: sellCapacity,
+        }) as Promise<ApiResponse>,
+      successMessage: '게시물이 수정되었습니다!',
+      errorMessage: '게시물 수정 중 오류가 발생했습니다.',
+      onSuccess: () => router.push(`/sell/${postId}`),
+      onError: () => setIsSubmitting(false),
+    });
 
-      const response = await sellAPI.updatePost(postId, updateData);
-
-      if (response.statusCode === 200) {
-        toast.success('게시물이 수정되었습니다!');
-        router.push('/exchange');
-      } else {
-        toast.error('게시물 수정에 실패했습니다.');
-      }
-    } catch {
-      toast.error('게시물 수정 중 오류가 발생했습니다.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    setIsSubmitting(false);
   };
 
   const isMobile = useViewportStore((state) => state.isMobile);
