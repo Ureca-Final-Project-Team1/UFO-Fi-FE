@@ -1,89 +1,50 @@
 'use client';
 
 // import Image from 'next/image';
-import { useRouter, useParams } from 'next/navigation';
-import { useMemo, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
+import axiosInstance from '@/api/client/axios';
 import { ICON_PATHS } from '@/constants/icons';
 // import { IMAGE_PATHS } from '@/constants/images';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { Icon, Title, Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
-import { BulkResultData, BulkResultItem } from '../types/bulkResult.types';
+import { useBulkPurchase } from '../hooks/useBulkPurchase';
+import { BulkResultContentItem, BulkResultData, BulkResultItem } from '../types/bulkResult.types';
 
 interface BulkResultContentProps {
-  initialData?: BulkResultData;
+  initialData?: BulkResultContentItem;
 }
 
 export function BulkResultContent({ initialData }: BulkResultContentProps) {
-  const params = useParams();
   const router = useRouter();
   const isMobile = useViewportStore((state) => state.isMobile);
 
-  // URL에서 searchId 추출
-  const searchId = params.searchId as string;
+  const { capacityValue, pricePerGB } = useBulkPurchase();
 
-  const [resultData, setResultData] = useState<BulkResultData | null>(initialData || null);
+  const [resultData, setResultData] = useState<BulkResultContentItem | null>(initialData || null);
   const [isLoading, setIsLoading] = useState(!initialData);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 폴백 더미데이터
-  const fallbackData: BulkResultData = useMemo(() => {
-    return {
-      searchId: searchId || 'fallback',
-      capacity: 50,
-      budget: 1650,
-      matchedData: 8,
-      expectedAmount: 1650,
-      shortfall: 42,
-      dataList: [
-        {
-          carrier: 'KT',
-          message: '데이터 급처분합니다.',
-          dataAmount: 1,
-          price: 250,
-          seller: '우주상인',
-          timeAgo: '30분전',
-        },
-        {
-          carrier: 'SKT',
-          message: '5GB 데이터 판매',
-          dataAmount: 5,
-          price: 1200,
-          seller: '은하상인',
-          timeAgo: '1시간전',
-        },
-        {
-          carrier: 'LGU',
-          message: '대용량 데이터 특가',
-          dataAmount: 3,
-          price: 750,
-          seller: '성간상인',
-          timeAgo: '2시간전',
-        },
-      ],
-      expiresAt: Date.now() + 3600 * 1000,
-    };
-  }, [searchId]);
-
   // API에서 결과 데이터 가져오기
   useEffect(() => {
-    if (initialData || !searchId) {
-      setIsLoading(false);
-      return;
-    }
-
     const fetchResultData = async () => {
       try {
         setIsLoading(true);
         setError(null);
+        const response = await axiosInstance.get<BulkResultData>('v1/posts/lump-sum-purchase', {
+          params: {
+            desiredGb: capacityValue[0],
+            maxPrice: Number(pricePerGB),
+          },
+        });
+        const data = response.data;
 
-        const response = await fetch(`/api/bulk/search/${searchId}`);
-
-        if (!response.ok) {
-          if (response.status === 404) {
+        if (data.message !== 'OK') {
+          if (data.statusCode === 404) {
             throw new Error('검색 결과를 찾을 수 없습니다.');
           } else if (response.status === 410) {
             throw new Error('검색 결과가 만료되었습니다.');
@@ -92,32 +53,17 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           }
         }
 
-        const data = await response.json();
-
-        const transformedData: BulkResultData = {
-          searchId: data.searchId,
-          capacity: 50, // 더미데이터
-          budget: 1650, // 더미데이터
-          matchedData: data.matchedData,
-          expectedAmount: data.expectedAmount,
-          shortfall: data.shortfall,
-          dataList: data.dataList,
-          expiresAt: new Date(data.expiresAt).getTime(),
-        };
-
-        setResultData(transformedData);
+        setResultData(data.content);
       } catch (err) {
         console.error('Failed to fetch result data:', err);
         setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
-        // 오류 발생 시 폴백 데이터 사용
-        setResultData(fallbackData);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchResultData();
-  }, [searchId, initialData, fallbackData]);
+  }, [capacityValue, pricePerGB]);
 
   const handlePurchase = async () => {
     if (!resultData) return;
@@ -125,6 +71,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     setIsPurchasing(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
+      // TODO: 구매 처리 필요
       alert('구매가 완료되었습니다!');
       router.push('/exchange');
     } catch {
@@ -143,36 +90,18 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     );
   }
 
-  // 폴백 데이터가 있는 경우에만 표시)
-  if (error && resultData) {
+  if (error || !resultData) {
     return (
-      <div className="flex flex-col min-h-full w-full">
+      <div className="flex flex-col min-h-screen">
         <Title title="매칭된 데이터" iconVariant="back" />
-        <div className="p-4">
-          <div className="bg-yellow-600/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
-            <p className="text-yellow-200 text-sm">{error}</p>
-            <p className="text-yellow-200 text-xs mt-1">임시 데이터를 표시합니다.</p>
-          </div>
-          <BulkResultDisplay
-            data={resultData}
-            onPurchase={handlePurchase}
-            isPurchasing={isPurchasing}
-            isMobile={isMobile}
-          />
+        <div className="w-full h-full flex items-center justify-center text-white">
+          검색 결과를 찾을 수 없습니다.
         </div>
       </div>
     );
   }
 
   // 정상 상태
-  if (!resultData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-white">검색 결과를 찾을 수 없습니다.</div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col min-h-full w-full">
       <Title title="매칭된 데이터" iconVariant="back" />
@@ -188,6 +117,19 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   );
 }
 
+function getTimeAgo(createdAt: number): string {
+  const diffMs = Date.now() - createdAt;
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+
+  if (diffSec < 60) return `${diffSec}초 전`;
+  if (diffMin < 60) return `${diffMin}분 전`;
+  if (diffHour < 24) return `${diffHour}시간 전`;
+  return `${diffDay}일 전`;
+}
+
 // 결과 표시 컴포넌트
 function BulkResultDisplay({
   data,
@@ -195,12 +137,14 @@ function BulkResultDisplay({
   isPurchasing,
   isMobile,
 }: {
-  data: BulkResultData;
+  data: BulkResultContentItem;
   onPurchase: () => void;
   isPurchasing: boolean;
   isMobile: boolean;
 }) {
-  const { matchedData, expectedAmount, shortfall, dataList } = data;
+  const { totalGb, totalPrice, posts } = data;
+  const { capacityValue } = useBulkPurchase();
+  const shortfall = capacityValue[0] - totalGb;
 
   return (
     <div className="relative rounded-[20px] space-y-6 pb-12">
@@ -208,7 +152,7 @@ function BulkResultDisplay({
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <span className="text-white font-bold text-lg">매칭된 데이터</span>
-          <span className="text-cyan-400 heading-24-bold">{matchedData}GB</span>
+          <span className="text-cyan-400 heading-24-bold">{totalGb}GB</span>
         </div>
 
         <div className="space-y-2">
@@ -217,7 +161,7 @@ function BulkResultDisplay({
               <Icon src={ICON_PATHS['COIN']} className="w-4 h-4" />
               <span className="text-white body-16-medium">예상 결제 금액</span>
             </div>
-            <span className="text-cyan-400 heading-24-bold">{expectedAmount}ZET</span>
+            <span className="text-cyan-400 heading-24-bold">{totalPrice}ZET</span>
           </div>
         </div>
 
@@ -227,11 +171,11 @@ function BulkResultDisplay({
             <Icon name="Calculator" className="w-5 h-5 text-cyan-400" />
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-300 body-14-medium">총 {dataList.length}개 상품</span>
+            <span className="text-gray-300 body-14-medium">총 {posts.length}개 상품</span>
             <div className="flex items-center gap-1">
-              <span className="text-cyan-400 heading-20-bold">{matchedData}GB</span>
+              <span className="text-cyan-400 heading-20-bold">{totalGb}GB</span>
               <span className="text-gray-300">•</span>
-              <span className="text-yellow-400 heading-20-bold">{expectedAmount}ZET</span>
+              <span className="text-yellow-400 heading-20-bold">{totalPrice}ZET</span>
             </div>
           </div>
         </div>
@@ -263,8 +207,17 @@ function BulkResultDisplay({
         <h3 className="text-white font-bold text-lg flex items-center gap-2">매칭된 데이터 목록</h3>
 
         <div className={`gap-3 ${isMobile ? 'grid grid-cols-2' : 'flex flex-col'}`}>
-          {dataList.map((item: BulkResultItem, index: number) => (
-            <BulkResultCard key={index} {...item} />
+          {posts.map((item: BulkResultItem, index: number) => (
+            <BulkResultCard
+              key={index}
+              message={item.title}
+              dataAmount={item.sellMobileDataCapacityGb}
+              price={totalPrice}
+              carrier={item.carrier}
+              // TODO: seller 필요
+              seller="누구세요?"
+              timeAgo={getTimeAgo(new Date(item.createdAt).getTime())}
+            />
           ))}
         </div>
       </div>
