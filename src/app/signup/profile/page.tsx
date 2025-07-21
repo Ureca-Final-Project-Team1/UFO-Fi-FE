@@ -35,7 +35,7 @@ const ProfilePage = () => {
     <div className="w-full min-h-screen flex flex-col">
       <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col">
         <div className="flex-1 flex flex-col justify-start items-start">
-          <Title title="회원가입" />
+          <Title title="회원가입" className="body-20-bold w-fit pl-0 mb-6" />
 
           <div className="flex flex-col gap-6 w-full">
             <div className="flex flex-col gap-3 w-full text-left">

@@ -25,7 +25,7 @@ const axiosInstance = axios.create({
 // 요청 인터셉터
 axiosInstance.interceptors.request.use((config) => config);
 
-// 응답 인터셉터 - 에러 처리 및 토스트
+// 응답 인터셉터
 let isRefreshing = false;
 let queue: ((token: string) => void)[] = [];
 
@@ -82,31 +82,6 @@ axiosInstance.interceptors.response.use(
       (error.response?.data as { content?: string })?.content ||
       '요청 처리 중 오류가 발생했습니다.';
 
-    // 상태코드별 토스트 처리
-    switch (statusCode) {
-      case 401:
-        toast.error('인증이 필요합니다.');
-        window.location.href = '/login';
-        break;
-      case 403:
-        toast.error('접근 권한이 없습니다.');
-        break;
-      case 404:
-        toast.error('요청한 리소스를 찾을 수 없습니다.');
-        break;
-      case 422:
-        toast.error('입력 데이터를 확인해주세요.');
-        break;
-      case 500:
-        toast.error('서버 오류가 발생했습니다.');
-        break;
-      default:
-        if (statusCode >= 400) {
-          toast.error(message);
-        }
-    }
-
-    // 커스텀 에러로 변환
     const apiError = new ApiError(message, statusCode);
     return Promise.reject(apiError);
   },
