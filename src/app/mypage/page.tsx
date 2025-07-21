@@ -1,33 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
-import { myInfoAPI } from '@/api';
-import { MyInfoResponse } from '@/api/types/myInfo';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
+import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon } from '@/shared/ui/Icons';
 
 export default function MyPage() {
   const router = useRouter();
-  // content 객체 타입으로 수정 (닉네임, email, zetAsset 등 실제 프로필 정보)
-  const [mypageInfo, setMypageInfo] = useState<MyInfoResponse['content'] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await myInfoAPI.get();
-        if (data) {
-          setMypageInfo(data);
-        }
-      } catch (err) {
-        console.error('mypage 정보를 가져오는 데 실패했습니다:', err);
-        setError('프로필 정보를 불러오는 데 실패했습니다. 나중에 다시 시도해 주세요.');
-      }
-    };
-    fetchData();
-  }, []);
+  const { data: mypageInfo, error, isLoading } = useMyInfo();
 
   const navigateToSalesHistory = () => router.push('/mypage/sales');
   const navigateToPurchaseHistory = () => router.push('/mypage/receipt');
@@ -44,18 +26,22 @@ export default function MyPage() {
     { label: '이용 약관', onClick: navigateToTerms },
   ];
 
+  if (isLoading) {
+    return <div className="text-center text-white py-10">로딩 중...</div>;
+  }
+
   return (
     <div className="w-full text-white py-6 ">
       {/* Signal Card */}
       <SignalCard
-        userId={mypageInfo ? mypageInfo.nickname : ''}
+        userId={mypageInfo?.nickname ?? ''}
         profileImageUrl={mypageInfo?.profileImageUrl}
         zetAmount={mypageInfo?.zetAsset ?? 0}
         availableData={mypageInfo?.sellableDataAmount ?? 0}
         maxData={mypageInfo?.sellMobileDataCapacityGb ?? 0}
       />
 
-      {error && <div className="text-red-500 text-sm text-center my-4">{error}</div>}
+      {error && <div className="text-red-500 text-sm text-center my-4">{error.message}</div>}
       <hr className="my-6 border-white/20" />
 
       {/* 메뉴 */}
