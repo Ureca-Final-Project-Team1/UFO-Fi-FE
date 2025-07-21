@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { Carrier } from '@/api/types/carrier';
 import { TradeHistoryCardProps } from '@/features/mypage/components';
 
 export interface TradeHistory extends TradeHistoryCardProps {
@@ -15,7 +16,7 @@ export function useTradeHistory() {
   useEffect(() => {
     setSellTrade([
       {
-        carrier: 'KT',
+        carrier: Carrier.KT,
         message: '데이터 급처분합니다.',
         dataAmount: 1,
         price: 10,
@@ -23,7 +24,7 @@ export function useTradeHistory() {
         createdAt: new Date('2025-07-01'),
       },
       {
-        carrier: 'KT',
+        carrier: Carrier.KT,
         message: '디그닥닥디그닥두둑둑',
         dataAmount: 1,
         price: 10,
@@ -31,7 +32,7 @@ export function useTradeHistory() {
         createdAt: new Date('2025-07-01'),
       },
       {
-        carrier: 'SKT',
+        carrier: Carrier.SKT,
         message: '5GB 판매합니다',
         dataAmount: 5,
         price: 30,
@@ -42,7 +43,7 @@ export function useTradeHistory() {
 
     setPurchaseTrade([
       {
-        carrier: 'SKT',
+        carrier: Carrier.SKT,
         message: '5GB 구매 완료',
         dataAmount: 5,
         price: 30,
@@ -50,7 +51,7 @@ export function useTradeHistory() {
         createdAt: new Date('2025-07-02'),
       },
       {
-        carrier: 'KT',
+        carrier: Carrier.KT,
         message: '기간만료',
         dataAmount: 2,
         price: 12,
@@ -58,7 +59,7 @@ export function useTradeHistory() {
         createdAt: new Date('2025-07-02'),
       },
       {
-        carrier: 'LGU',
+        carrier: Carrier.LGU,
         message: '6GB 판매자와 거래 중',
         dataAmount: 6,
         price: 36,

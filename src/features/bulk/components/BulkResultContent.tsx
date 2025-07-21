@@ -4,6 +4,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useMemo, useState, useEffect } from 'react';
 
+import { Carrier } from '@/api/types/carrier';
 import { ICON_PATHS } from '@/constants/icons';
 // import { IMAGE_PATHS } from '@/constants/images';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
@@ -40,7 +41,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
       shortfall: 42,
       dataList: [
         {
-          carrier: 'KT',
+          carrier: Carrier.KT,
           message: '데이터 급처분합니다.',
           dataAmount: 1,
           price: 250,
@@ -48,7 +49,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           timeAgo: '30분전',
         },
         {
-          carrier: 'SKT',
+          carrier: Carrier.SKT,
           message: '5GB 데이터 판매',
           dataAmount: 5,
           price: 1200,
@@ -56,7 +57,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           timeAgo: '1시간전',
         },
         {
-          carrier: 'LGU',
+          carrier: Carrier.LGU,
           message: '대용량 데이터 특가',
           dataAmount: 3,
           price: 750,

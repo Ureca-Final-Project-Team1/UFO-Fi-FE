@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { Carrier } from '@/api/types/carrier';
+
 interface BulkResultItem {
-  carrier: 'KT' | 'SKT' | 'LGU';
+  carrier: Carrier;
   message: string;
   dataAmount: number;
   price: number;

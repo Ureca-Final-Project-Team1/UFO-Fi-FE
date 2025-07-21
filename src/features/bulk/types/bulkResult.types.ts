@@ -1,3 +1,5 @@
+import { Carrier } from '@/api/types/carrier';
+
 export interface BulkResultData {
   searchId: string;
   capacity: number;
@@ -10,7 +12,7 @@ export interface BulkResultData {
 }
 
 export interface BulkResultItem {
-  carrier: 'KT' | 'SKT' | 'LGU';
+  carrier: Carrier;
   message: string;
   dataAmount: number;
   price: number;

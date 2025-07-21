@@ -2,8 +2,10 @@ import { randomUUID } from 'crypto';
 
 import { NextRequest, NextResponse } from 'next/server';
 
+import { Carrier } from '@/api/types/carrier';
+
 interface BulkResultItem {
-  carrier: 'KT' | 'SKT' | 'LGU';
+  carrier: Carrier;
   message: string;
   dataAmount: number;
   price: number;
@@ -55,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     const dataList: BulkResultItem[] = [
       {
-        carrier: 'KT',
+        carrier: Carrier.KT,
         message: '데이터 급처분합니다.',
         dataAmount: 1,
         price: 250,
@@ -63,7 +65,7 @@ export async function POST(request: NextRequest) {
         timeAgo: '30분전',
       },
       {
-        carrier: 'SKT',
+        carrier: Carrier.SKT,
         message: '5GB 데이터 판매',
         dataAmount: 5,
         price: 1200,
@@ -71,7 +73,7 @@ export async function POST(request: NextRequest) {
         timeAgo: '1시간전',
       },
       {
-        carrier: 'LGU',
+        carrier: Carrier.LGU,
         message: '대용량 데이터 특가',
         dataAmount: 3,
         price: 750,
