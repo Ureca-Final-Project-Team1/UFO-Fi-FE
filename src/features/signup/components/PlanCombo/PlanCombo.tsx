@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Command,
@@ -13,49 +13,61 @@ import {
 } from '@/shared';
 
 import type { PlanComboProps } from './PlanCombo.types';
-import { planComboHeaderClass, planComboItemClass } from './planComboVariants';
+import { planComboItemClass } from './planComboVariants';
 
 export function PlanCombo({ planNames = [], onSelect }: PlanComboProps) {
   const [input, setInput] = useState('');
   const [selected, setSelected] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [hasUserSelected, setHasUserSelected] = useState(false);
+
+  useEffect(() => {
+    if (planNames.length > 0 && !hasUserSelected) {
+      setIsOpen(true);
+    }
+    setHasUserSelected(false);
+  }, [planNames]);
 
   const handlePlanSelect = (value: string) => {
     const newValue = value === selected ? '' : value;
     setSelected(newValue);
     setInput(newValue);
+    setIsOpen(false);
+    setHasUserSelected(true);
     onSelect?.(newValue);
   };
 
-  const showList = input !== selected || input === '';
-
   return (
-    <div>
-      <p className={planComboHeaderClass}>요금제 선택</p>
-      <Command className="w-[260px]">
+    <div className="relative w-full">
+      <Command className="w-full">
         <CommandInput
           placeholder="요금제를 선택해 주세요."
           value={input}
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 100)}
           onInput={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.currentTarget.value)}
           className="h-[50px] justify-between text-[16px]"
         />
 
-        {showList && (
-          <CommandList>
-            <CommandEmpty>해당 요금제가 없습니다.</CommandEmpty>
-            <CommandGroup>
-              {planNames.map((name) => (
-                <CommandItem
-                  key={name}
-                  value={name}
-                  onSelect={() => handlePlanSelect(name)}
-                  className={planComboItemClass}
-                >
-                  {name}
-                  {selected === name && <Icon name="Check" className="ml-auto opacity-100" />}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
+        {isOpen && (
+          <div className="absolute top-full left-0 z-10 mt-1 w-full rounded-md bg-white shadow-lg border">
+            <CommandList>
+              <CommandEmpty>해당 요금제가 없습니다.</CommandEmpty>
+              <CommandGroup>
+                {planNames.map((name) => (
+                  <CommandItem
+                    key={name}
+                    value={name}
+                    onSelect={() => handlePlanSelect(name)}
+                    className={planComboItemClass}
+                  >
+                    {name}
+                    {selected === name && <Icon name="Check" className="ml-auto opacity-100" />}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </div>
         )}
       </Command>
     </div>
