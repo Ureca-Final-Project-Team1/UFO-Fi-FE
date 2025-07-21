@@ -9,10 +9,10 @@ const SATELLITE_HEIGHT = 60;
 const ORBIT_COUNT = 5;
 
 const orbitConfigs = [
-  { color: '#FFD230', speed: 'spin-slow', image: '/images/main/satellite1.svg' },
+  { color: '#FFD230', speed: 'spin-reverse-slow', image: '/images/main/satellite1.svg' },
   { color: '#70C3BB', speed: 'spin-mid', image: '/images/main/satellite2.svg' },
-  { color: '#67CBDC', speed: 'spin-fast', image: '/images/main/satellite3.svg' },
-  { color: '#735AB1', speed: 'spin-reverse-mid', image: '/images/main/satellite4.svg' },
+  { color: '#67CBDC', speed: 'spin-reverse-fast', image: '/images/main/satellite3.svg' },
+  { color: '#735AB1', speed: 'spin-mid', image: '/images/main/satellite4.svg' },
   { color: '#D24D9B', speed: 'spin-reverse-fast', image: '/images/main/satellite5.svg' },
 ];
 
@@ -70,11 +70,11 @@ export default function OrbitWithSatellite() {
         <Image
           src="/images/main/alien.svg"
           alt="Alien"
-          width={100} // 행성이 커졌으니 외계인도 살짝 키움
+          width={100}
           height={100}
           className="absolute left-1/2 -translate-x-1/2"
           style={{
-            top: '-15px', // 행성 위에 살짝 걸터앉은 느낌
+            top: '-15px',
             zIndex: 1,
           }}
         />
@@ -116,8 +116,11 @@ export default function OrbitWithSatellite() {
         .spin-fast {
           animation: spin 10s linear infinite;
         }
+        .spin-reverse-slow {
+          animation: spin-reverse 18s linear infinite;
+        }
         .spin-reverse-mid {
-          animation: spin-reverse 16s linear infinite;
+          animation: spin-reverse 14s linear infinite;
         }
         .spin-reverse-fast {
           animation: spin-reverse 10s linear infinite;
