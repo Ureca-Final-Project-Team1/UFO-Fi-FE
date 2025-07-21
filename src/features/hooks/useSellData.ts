@@ -29,8 +29,7 @@ export const useSellData = () => {
 
   const sellMutation = useMutation({
     mutationFn: async (data: Parameters<typeof sellAPI.createPost>[0]) => {
-      // TODO: userId 더미데이터라 변경 필요
-      return await sellAPI.createPost(data, '2');
+      return await sellAPI.createPost(data);
     },
     onSuccess: () => {
       toast.success(`판매 등록이 완료되었습니다!`);
@@ -67,6 +66,8 @@ export const useSellData = () => {
       title: titleInput.trim(),
       price: Math.max(totalPrice, 1),
       sellMobileDataCapacityGb: sellCapacity,
+      zetPerUnit: pricePerGB,
+      sellDataAmount: sellCapacity,
     };
 
     await sellMutation.mutateAsync(requestData);
