@@ -2,12 +2,20 @@
 
 import Image from 'next/image';
 import '@/styles/globals.css';
+// import { useRouter } from 'next/navigation';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { Button } from '@/shared/ui';
 
 const Page = () => {
+  // const router = useRouter();
   const handleKakaoLogin = async () => {
+    // const cookies = document.cookie;
+    // const hasAccessToken = cookies.includes('Authorization');
+
+    // if (hasAccessToken) {
+    //   router.push('/login/success');
+    // }
     window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao`;
   };
 

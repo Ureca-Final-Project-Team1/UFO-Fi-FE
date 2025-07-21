@@ -40,3 +40,24 @@ export interface GetExchangePostsResponse {
   posts: ExchangePost[];
   nextCursor: ExchangeCursor;
 }
+
+export interface PurchaseRequest {
+  postId: number;
+  sellerId: number;
+  totalZet: number;
+  sellMobileDataAmountGB: number;
+}
+
+export interface PurchaseResponse {
+  statusCode: number;
+  message: string;
+  content: {
+    zetAsset: number;
+  };
+}
+
+export interface BulkPurchaseParams {
+  desiredGb: number;
+  maxPrice: number;
+  purchaseType: 'CAPACITY' | 'BUDGET';
+}

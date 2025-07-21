@@ -20,6 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, CustomInputProps>(
             'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
             'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
             className,
+            variant === 'whiteBorder' ? 'bg-white text-black placeholder:text-gray-400' : '',
           )}
           {...props}
         />
