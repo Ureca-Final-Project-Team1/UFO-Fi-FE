@@ -9,7 +9,7 @@ export interface ExchangeItemAction {
 
 export interface TransformedExchangeItem {
   id: number;
-  carrier: Carrier[];
+  carrier: Carrier;
   networkType: string;
   capacity: string;
   price: string;
