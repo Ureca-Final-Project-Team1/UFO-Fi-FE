@@ -1,0 +1,46 @@
+language: ko
+early_access: false
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  sequence_diagrams: true
+  auto_review:
+    enabled: true
+    drafts: false
+  commit_status: true
+  changed_files_summary: true
+  suggested_labels: true
+  auto_apply_labels: true
+  suggested_reviewers: true
+  auto_assign_reviewers: true
+  pre_merge_checks:
+    docstrings:
+      mode: warning
+  finishing_touches:
+    docstrings:
+      enabled: true
+  path_filters:
+    - '!**/*.md'
+    - '!**/*.txt'
+    - '!**/package-lock.json'
+    - '!**/yarn.lock'
+    - '!**/*.log'
+  path_instructions:
+    - path: '**/*.{ts,tsx}'
+      instructions: |
+        Review based on UFO-Fi conventions in .github/code_rabbit_rule.md
+        ...
+    - path: '**/api/**/*.ts'
+      instructions: |
+        ...
+    - path: '**/features/**/*.{ts,tsx}'
+      instructions: |
+        ...
+    - path: '**/shared/**/*.{ts,tsx}'
+      instructions: |
+        ...
+
+chat:
+  auto_reply: true
