@@ -38,6 +38,6 @@ export const sellAPI = {
       message: string;
       content: ExchangeItem[];
     }>('/v1/posts', { params });
-    return response.data.content;
+    return response.data.content || [];
   },
 };
