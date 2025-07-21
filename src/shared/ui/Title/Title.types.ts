@@ -9,5 +9,5 @@ export interface TitleProps
     VariantProps<typeof titleVariants> {
   title: string;
   iconVariant?: TitleIconVariant;
-  onClick?: () => void;
+  onIconClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }

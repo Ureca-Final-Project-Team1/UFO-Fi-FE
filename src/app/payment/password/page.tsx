@@ -39,11 +39,7 @@ export default function PaymentPasswordPage() {
 
   return (
     <div className="w-full  text-white px-4 py-6 space-y-8">
-      <Title
-        title="간편비밀번호 등록"
-        iconVariant="back"
-        onClick={() => setShowCancelModal(true)}
-      />
+      <Title title="비밀번호 입력" iconVariant="back" />
       <div className="flex-1 flex items-center justify-center">
         <PasswordPad
           key={step === 'register' ? 'register' : `confirm-${errorCount}`}

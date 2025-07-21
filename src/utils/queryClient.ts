@@ -30,10 +30,11 @@ interface QueryKeys {
 }
 
 export const queryKeys: QueryKeys = {
-  notifications: (userId: number) => ['notifications', userId] as const,
-  plans: (carrier: string) => ['plans', carrier] as const,
-  user: (userId: string) => ['user', userId] as const,
-  exchangePostsInfinite: (params?: unknown) => ['exchange-posts-infinite', params],
+  notifications: (userId: number) => ['notifications', userId],
+  plans: (carrier: string) => ['plans', carrier],
+  user: (userId: string) => ['user', userId],
+  followers: () => ['followers'],
+  following: () => ['following'],
 } as const;
 
 export default queryClient;
