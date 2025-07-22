@@ -35,6 +35,7 @@ const UserManagementPage: React.FC = () => {
     open: false,
     message: '',
   });
+  const [search, setSearch] = useState('');
 
   const handleActivate = (row: UserRow) => {
     if (row.status === '활성화') {
@@ -59,12 +60,17 @@ const UserManagementPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full">
-      <h2 className="text-2xl font-bold mb-6">사용자 관리</h2>
-      <UserCommand />
+    <div>
+      <h2 className="text-2xl font-bold mb-6 text-black">사용자 관리</h2>
+      <UserCommand search={search} setSearch={setSearch} />
       <div className="mt-6">
         <UserTable
-          data={data}
+          data={data.filter(
+            (user) =>
+              user.nickname.includes(search) ||
+              user.name.includes(search) ||
+              user.email.includes(search),
+          )}
           onActivateClick={handleActivate}
           onDeactivateClick={handleDeactivate}
         />

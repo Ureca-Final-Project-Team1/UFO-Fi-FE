@@ -6,10 +6,10 @@ export default function AdminUserPage() {
   return (
     <>
       <Header userName="Admin" />
-      <div className="flex min-h-screen w-full bg-gray-100">
+      <div className="flex min-h-screen w-full">
         <Sidebar />
         <main className="flex-1 flex flex-col">
-          <section className="flex-1 p-8">
+          <section className="flex-1 p-8 min-h-screen w-full bg-white">
             <UserManagementPage />
           </section>
         </main>
