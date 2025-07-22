@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
-import { AuthModal } from '@/features/exchange/components/AuthModal';
 import { ExchangeFilters } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
@@ -15,11 +14,7 @@ import queryClient from '@/utils/queryClient';
 
 export default function ExchangePage() {
   const router = useRouter();
-  const [authModal, setAuthModal] = useState({
-    isOpen: false,
-    title: '',
-    description: '',
-  });
+
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     postId: 0,
@@ -109,14 +104,6 @@ export default function ExchangePage() {
           onPurchase={handlePurchase}
         />
       </div>
-
-      {/* 인증 모달 */}
-      <AuthModal
-        isOpen={authModal.isOpen}
-        onClose={() => setAuthModal({ isOpen: false, title: '', description: '' })}
-        title={authModal.title}
-        description={authModal.description}
-      />
 
       {/* 삭제 확인 모달 */}
       <Modal
