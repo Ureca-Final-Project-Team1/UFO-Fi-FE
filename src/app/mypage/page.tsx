@@ -15,6 +15,8 @@ export default function MyPage() {
   const navigateToPurchaseHistory = () => router.push('/mypage/trade?tab=purchase');
   const navigateToLogout = () => router.push('/logout');
   const navigateToTerms = () => router.push('/terms');
+  const navigateToFollow = () => router.push('/mypage/follow');
+  const navigateToNotification = () => router.push('/mypage/notification');
 
   const transactionItems = [
     { label: '판매 내역', onClick: navigateToSalesHistory },
@@ -46,7 +48,7 @@ export default function MyPage() {
 
       {/* 메뉴 */}
       <div className="grid grid-cols-3 gap-4 text-center text-sm mb-4">
-        <div>
+        <div className="hover:cursor-pointer" onClick={navigateToFollow}>
           <Icon name="Heart" size={24} className="mx-auto text-white" />
           <p className="mt-2 caption-12-regular">팔로우 목록</p>
         </div>
@@ -54,7 +56,7 @@ export default function MyPage() {
           <Icon name="Eye" size={24} className="mx-auto text-white" />
           <p className="mt-2 caption-12-regular">최근 본 글</p>
         </div>
-        <div>
+        <div className="hover:cursor-pointer" onClick={navigateToNotification}>
           <Icon name="Bell" size={24} className="mx-auto text-white" />
           <p className="mt-2 caption-12-regular">알림 설정</p>
         </div>

@@ -1,7 +1,3 @@
-export interface GetNotificationSettingsRequest {
-  userId: number;
-}
-
 export interface NotificationSettings {
   benefit: boolean;
   sell: boolean;
@@ -12,7 +8,6 @@ export interface NotificationSettings {
 }
 
 export interface UpdateNotificationSettingRequest {
-  userId: number;
-  type: keyof NotificationSettings;
+  type: 'BENEFIT' | 'SELL' | 'INTERESTED_POST' | 'REPORTED' | 'FOLLOWER_POST' | 'TRADE';
   enable: boolean;
 }
