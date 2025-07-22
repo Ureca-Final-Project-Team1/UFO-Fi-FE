@@ -57,5 +57,4 @@ export interface PurchaseResponse {
 export interface BulkPurchaseParams {
   desiredGb: number;
   maxPrice: number;
-  purchaseType: 'CAPACITY' | 'BUDGET';
 }
