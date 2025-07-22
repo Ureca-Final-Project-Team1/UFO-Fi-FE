@@ -78,7 +78,7 @@ const Table = <T extends TableRowBase>({
                         <button
                           type="button"
                           aria-label="비활성화"
-                          className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-red-100 transition-colors"
+                          className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-red-100 transition-colors text-red-500"
                           onClick={() => handleDeactivate(row)}
                         >
                           {row.actions?.deactivateIcon ?? <CircleMinusIcon className="w-5 h-5" />}
