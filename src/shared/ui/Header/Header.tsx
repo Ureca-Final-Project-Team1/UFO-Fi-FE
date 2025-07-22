@@ -8,9 +8,10 @@ import { Icon } from '../Icons/Icon';
 
 interface HeaderProps {
   userName?: string;
+  onLogout?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ userName = '김명령' }) => {
+const Header: React.FC<HeaderProps> = ({ userName = '김명령', onLogout }) => {
   return (
     <header className="w-full h-12 flex items-center justify-between px-6 bg-white border-b">
       {/* 좌측: 로고 + 네비게이션 */}
@@ -44,6 +45,7 @@ const Header: React.FC<HeaderProps> = ({ userName = '김명령' }) => {
         <button
           type="button"
           className="p-1 rounded hover:bg-gray-100 transition-colors flex items-center align-baseline"
+          onClick={onLogout}
         >
           <Icon name="LogOut" className="w-5 h-50" color="black" />
         </button>
