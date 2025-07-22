@@ -21,7 +21,7 @@ export const useSignupStore = create<Store>((set, get) => ({
   // 초기값
   name: '',
   phoneNumber: '',
-  carrier: Carrier.LGU,
+  carrier: '',
   planName: '',
 
   // 데이터 업데이트
@@ -32,7 +32,7 @@ export const useSignupStore = create<Store>((set, get) => ({
     set({
       name: '',
       phoneNumber: '',
-      carrier: Carrier.LGU,
+      carrier: '',
       planName: '',
     }),
 
