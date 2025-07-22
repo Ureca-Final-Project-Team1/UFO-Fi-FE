@@ -10,10 +10,12 @@ type Letter = {
 export default function VoyageLetters() {
   const [letters, setLetters] = useState<Letter[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchLetters() {
       setLoading(true);
+      setError(null);
       try {
         // TODO: userId 수정 필요
         await fetch(`/api/story/letters/${10}`, { method: 'POST' });
@@ -22,6 +24,7 @@ export default function VoyageLetters() {
         setLetters(data);
       } catch (e) {
         console.error('편지 불러오기 실패:', e);
+        setError('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');
       } finally {
         setLoading(false);
       }
@@ -32,6 +35,10 @@ export default function VoyageLetters() {
 
   if (loading) {
     return <p className="p-4 text-gray-400">항해 중 편지를 불러오는 중입니다...</p>;
+  }
+
+  if (error) {
+    return <p className="p-4 text-red-400">{error}</p>;
   }
 
   if (letters.length === 0) {
