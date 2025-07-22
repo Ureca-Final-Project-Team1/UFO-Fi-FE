@@ -79,6 +79,7 @@ axiosInstance.interceptors.response.use(
       }
     }
     const message =
+      (error.response?.data as { message?: string })?.message ||
       (error.response?.data as { content?: string })?.content ||
       '요청 처리 중 오류가 발생했습니다.';
 
