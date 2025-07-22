@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
@@ -11,6 +13,7 @@ import { TradeHistoryCard, TradeHistoryCardProps } from '@/features/mypage/compo
 import { useTradeHistory } from '@/hooks/useTradeHistory';
 import { BadgeState } from '@/shared';
 import { Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
+import { useTradeTabStore } from '@/stores/useTradeTabStore';
 import { groupByDate } from '@/utils/groupByDate';
 
 type TradeCardItem = TradeHistoryCardProps & { createdAt: Date };
@@ -40,7 +43,7 @@ const convertToCardProps = (
   }));
 
 const MyTradeHistoryPage = () => {
-  const [activeTab, setActiveTab] = useState<'sell' | 'purchase'>('sell');
+  const { tab, setTab } = useTradeTabStore();
   const { sellTrade, purchaseTrade, setSellTrade, setPurchaseTrade } = useTradeHistory();
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -54,12 +57,12 @@ const MyTradeHistoryPage = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        if (activeTab === 'sell' && !fetchedTabs.sell) {
+        if (tab === 'sell' && !fetchedTabs.sell) {
           const response = await sellHistory();
           setSellTrade(response ?? []);
           setFetchedTabs((prev) => ({ ...prev, sell: true }));
         }
-        if (activeTab === 'purchase' && !fetchedTabs.purchase) {
+        if (tab === 'purchase' && !fetchedTabs.purchase) {
           const response = await purchaseHistory();
           setPurchaseTrade(response ?? []);
           setFetchedTabs((prev) => ({ ...prev, purchase: true }));
@@ -70,10 +73,10 @@ const MyTradeHistoryPage = () => {
     };
 
     fetchHistory();
-  }, [activeTab, fetchedTabs, setSellTrade, setPurchaseTrade]);
+  }, [tab, fetchedTabs, setSellTrade, setPurchaseTrade]);
 
   const handleTabChange = (value: string) => {
-    setActiveTab(value as 'sell' | 'purchase');
+    setTab(value as 'sell' | 'purchase');
     requestAnimationFrame(() => {
       contentRef.current?.scrollTo(0, 0);
     });
@@ -116,13 +119,13 @@ const MyTradeHistoryPage = () => {
     <div className="flex flex-col justify-start items-center w-full h-[calc(100vh-112px)]">
       <Tabs
         defaultValue="sell"
-        value={activeTab}
+        value={tab}
         onValueChange={handleTabChange}
         className="w-full h-full"
       >
         <TabsList className="bg-transparent w-full py-6 sm:py-8">
           <TabsTrigger
-            className="flex body-20-bold items-center py-6 sm:py-8"
+            className="flex body-16-bold items-center py-6 sm:py-8"
             value="sell"
             variant="darkTab"
             size="full"
@@ -130,7 +133,7 @@ const MyTradeHistoryPage = () => {
             판매 내역
           </TabsTrigger>
           <TabsTrigger
-            className="flex body-20-bold items-center py-6 sm:py-8"
+            className="flex body-16-bold items-center py-6 sm:py-8"
             value="purchase"
             variant="darkTab"
             size="full"
