@@ -35,11 +35,6 @@ export default function SellEditPage() {
     }
   }, [postData]);
 
-  // 변경사항 감지
-  useEffect(() => {
-    if (!postData) return;
-  }, [titleInput, pricePerGB, value, postData]);
-
   // postData가 없으면 로딩 상태
   if (!postData) {
     return (
