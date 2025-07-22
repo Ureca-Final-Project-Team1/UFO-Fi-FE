@@ -1,7 +1,9 @@
+import { Carrier } from './carrier';
+
 export interface Plan {
   planId: number;
   planName: string;
-  carrier: 'SKT' | 'KT' | 'LGU';
+  carrier: Carrier;
   mobileDataAmount: number;
   isUltimatedAmount: boolean;
   sellMobileDataCapacityGB: number;

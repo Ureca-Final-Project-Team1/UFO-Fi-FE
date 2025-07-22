@@ -1,3 +1,5 @@
+import { Carrier } from '@/api/types/carrier';
+
 export interface ExchangeItemAction {
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
@@ -7,7 +9,7 @@ export interface ExchangeItemAction {
 
 export interface TransformedExchangeItem {
   id: number;
-  carrier: string;
+  carrier: Carrier;
   networkType: string;
   capacity: string;
   price: string;

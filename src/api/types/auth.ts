@@ -1,3 +1,6 @@
+import { Carrier } from './carrier';
+import type { Plan } from './plan';
+
 export interface SignupRequest {
   userInfoReq: {
     name: string;
@@ -19,7 +22,7 @@ export interface SignupResponse {
 }
 
 export interface GetPlansRequest {
-  carrier: string;
+  carrier: Carrier;
 }
 
 export interface GetPlansResponse {
@@ -29,5 +32,3 @@ export interface GetPlansResponse {
     plansReadRes: Plan[];
   };
 }
-
-import type { Plan } from './plan';
