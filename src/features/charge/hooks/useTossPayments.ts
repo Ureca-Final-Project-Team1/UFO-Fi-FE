@@ -44,7 +44,7 @@ export function useTossPayments(clientKey: string) {
       return;
     }
 
-    if (window.TossPayments(clientKey)) {
+    if (window.TossPayments && typeof window.TossPayments === 'function') {
       setIsLoaded(true);
       return;
     }
