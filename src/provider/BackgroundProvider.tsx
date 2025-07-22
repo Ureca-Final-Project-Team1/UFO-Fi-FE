@@ -12,9 +12,7 @@ export function BackgroundProvider({ children }: BackgroundProviderProps) {
   const isNavigationHidden =
     pathname.startsWith('/login') ||
     pathname.startsWith('/onboarding') ||
-    pathname.startsWith('/signup') ||
-    pathname.startsWith('/blackhole');
-
+    pathname.startsWith('/signup');
   return (
     <div
       className={`

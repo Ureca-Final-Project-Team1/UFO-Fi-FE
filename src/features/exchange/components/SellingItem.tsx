@@ -1,8 +1,9 @@
+import { Carrier } from '@/api/types/carrier';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
 
 interface SellingItemProps {
-  carrier: string;
+  carrier: Carrier;
   networkType: string;
   capacity: string;
   price: string;

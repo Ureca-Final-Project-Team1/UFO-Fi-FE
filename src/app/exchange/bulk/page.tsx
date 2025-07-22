@@ -25,6 +25,10 @@ export default function BulkPurchasePage() {
   const isMobile = useViewportStore((state) => state.isMobile);
   const isFormValid = isValidCapacity && isValidPrice;
 
+  const setNewCapacityValue = (value: React.SetStateAction<number[]>) => {
+    setCapacityValue(value);
+  };
+
   return (
     <div className="flex flex-col min-h-full w-full justify-center">
       <Title title="일괄구매" iconVariant="back" />
@@ -58,7 +62,7 @@ export default function BulkPurchasePage() {
           <div className="text-center">
             <BulkCapacitySlider
               value={capacityValue}
-              setValue={setCapacityValue}
+              setValue={setNewCapacityValue}
               maxCapacity={100}
             />
           </div>
