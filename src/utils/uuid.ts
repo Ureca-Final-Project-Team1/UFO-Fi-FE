@@ -1,0 +1,39 @@
+// UUID v4 생성 함수
+export function generateUUID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+// 주문번호 생성
+export function generateOrderId(): string {
+  const timestamp = Date.now().toString();
+  const random = Math.random().toString(36).substring(2, 8);
+  return `UFO-${timestamp}-${random}`.toUpperCase();
+}
+
+// 토스페이먼츠 고객키 생성 (2-50자, 영문 대소문자, 숫자, -, _, =, ., @ 만 허용)
+export function generateCustomerKey(userId?: string): string {
+  if (userId) {
+    // 사용자 ID가 있는 경우, 안전한 형태로 변환
+    const sanitized = userId
+      .replace(/[^a-zA-Z0-9\-_.@]/g, '') // 허용된 문자만 남기기
+      .substring(0, 20); // 최대 20자로 제한
+
+    if (sanitized.length >= 2) {
+      return `user_${sanitized}`;
+    }
+  }
+
+  // 기본값: 랜덤 고객키 생성
+  const timestamp = Date.now().toString();
+  const random = Math.random().toString(36).substring(2, 8);
+  return `customer_${timestamp}_${random}`;
+}
+
+// 사용 예시
+// const orderId = generateOrderId(); // "UFO-1703123456789-A1B2C3"
+// const customerKey = generateCustomerKey(); // "customer_1703123456789_a1b2c3"
+// const customerKey = generateCustomerKey('user123'); // "user_user123"
