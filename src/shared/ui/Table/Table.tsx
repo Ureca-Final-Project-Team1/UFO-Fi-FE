@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useState } from 'react';
 
 import { CircleMinusIcon, VectorIcon } from '../Icons/CustomIcons';
-import { Modal } from '../Modal/Modal';
 
 interface Column<T = unknown> {
   Header: string;
@@ -29,18 +27,11 @@ const Table = <T extends TableRowBase>({
   onActivateClick,
   onDeactivateClick,
 }: TableProps<T>) => {
-  const [modal, setModal] = useState<{ open: boolean; message: string }>({
-    open: false,
-    message: '',
-  });
-
   const handleActivate = (row: T) => {
     onActivateClick?.(row);
-    setModal({ open: true, message: '사용자가 활성화 되었습니다.' });
   };
   const handleDeactivate = (row: T) => {
     onDeactivateClick?.(row);
-    setModal({ open: true, message: '사용자가 비활성화 되었습니다.' });
   };
 
   return (
@@ -111,14 +102,6 @@ const Table = <T extends TableRowBase>({
           )}
         </tbody>
       </table>
-      <Modal
-        isOpen={modal.open}
-        onClose={() => setModal({ open: false, message: '' })}
-        title={modal.message}
-        hasCloseButton
-        type="single"
-        primaryButtonText="확인"
-      />
     </div>
   );
 };
