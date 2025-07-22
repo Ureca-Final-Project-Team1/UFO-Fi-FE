@@ -9,6 +9,7 @@ export { exchangeAPI } from './services/exchange/posts';
 export { followersAPI } from './services/follow/followers';
 export { followingAPI } from './services/follow/following';
 export { followActionsAPI } from './services/follow/actions';
+export { paymentAPI } from './services/payment/charge';
 
 // 타입들 re-export
 export type * from './types';
