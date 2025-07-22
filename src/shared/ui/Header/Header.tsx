@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 
@@ -42,7 +44,7 @@ const Header: React.FC<HeaderProps> = ({ userName = '김명령' }) => {
           type="button"
           className="p-1 rounded hover:bg-gray-100 transition-colors flex items-center align-baseline"
         >
-          <Icon name="LogOut" className="w-5 h-5 text-gray-700" />
+          <Icon name="LogOut" className="w-5 h-50" color="black" />
         </button>
       </div>
     </header>
