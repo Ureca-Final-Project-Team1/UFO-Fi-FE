@@ -8,6 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Plan, plansAPI, signupAPI } from '@/api';
+import { Carrier } from '@/api/types/carrier';
 import { PlanCombo } from '@/features/signup/components';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import {
@@ -118,7 +119,7 @@ const PlanPage = () => {
       return;
     }
 
-    setForm({ carrier: data.carrier, planName: data.planName });
+    setForm({ carrier: data.carrier as Carrier, planName: data.planName });
 
     const selectedPlan = plans.find((p) => p.planName === data.planName);
     if (!selectedPlan) {
@@ -172,7 +173,7 @@ const PlanPage = () => {
                   value={field.value}
                   onValueChange={(value) => {
                     field.onChange(value);
-                    setForm({ carrier: value });
+                    setForm({ carrier: value as Carrier });
                   }}
                 >
                   <SelectTrigger

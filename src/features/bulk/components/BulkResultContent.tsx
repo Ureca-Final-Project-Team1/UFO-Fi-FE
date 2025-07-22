@@ -21,7 +21,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   const router = useRouter();
   const isMobile = useViewportStore((state) => state.isMobile);
 
-  const { capacityValue, pricePerGB, importantValue } = useBulkPurchase();
+  const { capacityValue, pricePerGB } = useBulkPurchase();
 
   const [resultData, setResultData] = useState<BulkResultContentItem | null>(initialData || null);
   const [isLoading, setIsLoading] = useState(!initialData);
@@ -35,17 +35,9 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
         setIsLoading(true);
         setError(null);
 
-        const typeMap = {
-          용량: 'CAPACITY',
-          예산: 'BUDGET',
-        } as const;
-
-        const mappedType = typeMap[importantValue as keyof typeof typeMap];
-
         const data = await bulkPurchaseAPI({
           desiredGb: capacityValue[0],
           maxPrice: Number(pricePerGB),
-          purchaseType: mappedType,
         });
 
         if (data.message !== 'OK') {
@@ -68,7 +60,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     };
 
     fetchResultData();
-  }, [capacityValue, pricePerGB, importantValue]);
+  }, [capacityValue, pricePerGB]);
 
   const handlePurchase = async () => {
     if (!resultData) return;
@@ -233,7 +225,6 @@ function BulkResultDisplay({
               dataAmount={item.sellMobileDataCapacityGb}
               price={item.totalPrice}
               carrier={item.carrier}
-              // TODO: seller 필요
               seller={item.sellerNickname}
               timeAgo={getTimeAgo(new Date(item.createdAt).getTime())}
             />
