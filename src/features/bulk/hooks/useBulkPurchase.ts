@@ -5,14 +5,7 @@ import { useBulkStore } from '@/stores/useBulkStore';
 
 export function useBulkPurchase() {
   const router = useRouter();
-  const {
-    capacityValue,
-    setCapacityValue,
-    pricePerGB,
-    setPricePerGB,
-    importantValue,
-    setImportantValue,
-  } = useBulkStore();
+  const { capacityValue, setCapacityValue, pricePerGB, setPricePerGB } = useBulkStore();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,7 +50,5 @@ export function useBulkPurchase() {
     isValidCapacity,
     isValidPrice,
     isSubmitting,
-    importantValue,
-    setImportantValue,
   };
 }
