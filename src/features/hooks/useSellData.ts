@@ -29,18 +29,13 @@ export const useSellData = () => {
 
   const sellMutation = useMutation({
     mutationFn: async (data: Parameters<typeof sellAPI.createPost>[0]) => {
-      // TODO: userId 더미데이터라 변경 필요
-      return await sellAPI.createPost(data, '2');
+      return await sellAPI.createPost(data);
     },
     onSuccess: () => {
-      toast.success(`판매 등록이 완료되었습니다!`);
+      toast.success('판매 등록이 완료되었습니다!');
       setTitleInput('');
       setValue([5]);
       setPricePerGB(120);
-    },
-    onError: (error) => {
-      toast.error('판매 등록에 실패했습니다.');
-      console.error('판매 등록 실패:', error);
     },
   });
 
@@ -65,8 +60,8 @@ export const useSellData = () => {
 
     const requestData = {
       title: titleInput.trim(),
-      price: Math.max(totalPrice, 1),
-      sellMobileDataCapacityGb: sellCapacity,
+      zetPerUnit: pricePerGB,
+      sellDataAmount: sellCapacity,
     };
 
     await sellMutation.mutateAsync(requestData);

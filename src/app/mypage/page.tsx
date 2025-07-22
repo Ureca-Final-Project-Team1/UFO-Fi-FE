@@ -4,10 +4,12 @@ import { useRouter } from 'next/navigation';
 
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
+import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon } from '@/shared/ui/Icons';
 
 export default function MyPage() {
   const router = useRouter();
+  const { data: mypageInfo, error, isLoading } = useMyInfo();
 
   const navigateToSalesHistory = () => router.push('/mypage/sales');
   const navigateToPurchaseHistory = () => router.push('/mypage/receipt');
@@ -24,17 +26,22 @@ export default function MyPage() {
     { label: '이용 약관', onClick: navigateToTerms },
   ];
 
+  if (isLoading) {
+    return <div className="text-center text-white py-10">로딩 중...</div>;
+  }
+
   return (
     <div className="w-full text-white py-6 ">
       {/* Signal Card */}
       <SignalCard
-        userId="#308"
-        profileImageUrl="/assets/user-308.png"
-        zetAmount={250}
-        availableData={3}
-        maxData={5}
+        userId={mypageInfo?.nickname ?? ''}
+        profileImageUrl={mypageInfo?.profileImageUrl}
+        zetAmount={mypageInfo?.zetAsset ?? 0}
+        availableData={mypageInfo?.sellableDataAmount ?? 0}
+        maxData={mypageInfo?.sellMobileDataCapacityGb ?? 0}
       />
 
+      {error && <div className="text-red-500 text-sm text-center my-4">{error.message}</div>}
       <hr className="my-6 border-white/20" />
 
       {/* 메뉴 */}

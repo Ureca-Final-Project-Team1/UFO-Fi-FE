@@ -25,8 +25,7 @@ export function Progress({
       {showCurrentUsage && (
         <div className="flex items-center gap-2">
           {/* 신호 아이콘 */}
-          <Icon name="Signal" size={20} className="text-status-positive" />
-
+          <Icon name="Signal" size={20} color="positive" />
           {/* 사용량 텍스트 (chart-4 색상 적용) */}
           <span className="body-18-bold font-bold leading-none text-chart-4">{usedStorage}GB</span>
         </div>

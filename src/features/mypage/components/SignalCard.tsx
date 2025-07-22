@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 
+import { IMAGE_PATHS } from '@/constants/images';
+import { Avatar } from '@/shared/ui';
 import { Button } from '@/shared/ui';
 import { Progress } from '@/shared/ui/Progress';
-
 interface SignalCardProps {
   userId: string;
   profileImageUrl?: string;
@@ -12,10 +13,6 @@ interface SignalCardProps {
   availableData: number; // GB
   maxData: number; // GB
 }
-
-const PROFILE_DEFAULT = '/images/avatar.png';
-const QR_IMAGE = '/images/QR.png';
-const IC_IMAGE = '/images/IC.png';
 
 export default function SignalCard({
   userId,
@@ -51,14 +48,16 @@ export default function SignalCard({
       <div className="flex justify-between items-start px-4 sm:px-6 pb-3 gap-3 sm:gap-5">
         {/* 왼쪽 캐릭터 */}
         <div className="flex flex-col items-center shrink-0">
-          <Image
-            src={profileImageUrl || PROFILE_DEFAULT}
-            alt="지구인"
-            width={64}
-            height={64}
-            className="rounded-md border sm:w-[80px] sm:h-[80px]"
-            style={{ borderColor: 'var(--chart-4)' }}
-          />
+          <Avatar size="md" className="border sm:w-[80px] sm:h-[80px]" variant="default">
+            <img
+              src={profileImageUrl || IMAGE_PATHS.AVATAR}
+              alt="지구인"
+              width={64}
+              height={64}
+              className="rounded-md w-full h-full object-cover"
+              style={{ borderColor: 'var(--chart-4)' }}
+            />
+          </Avatar>
           <button
             className="w-[5rem] mt-2 rounded-md text-xs text-white py-0.5"
             style={{ backgroundColor: 'var(--chart-4)' }}
@@ -71,7 +70,7 @@ export default function SignalCard({
         <div className="flex-1 space-y-1">
           <div className="flex justify-between items-center">
             <span className="body-20-bold text-black">
-              지구인 <span className="font-bold">{userId}</span>
+              <span className="font-bold">{userId ? userId : '지구인'}</span>
             </span>
           </div>
 
@@ -103,14 +102,14 @@ export default function SignalCard({
             ✏️ 프로필 수정
           </Button>
           <Image
-            src={QR_IMAGE}
+            src={IMAGE_PATHS.QR}
             alt="QR 코드"
             width={64}
             height={64}
             className="sm:w-[80px] sm:h-[80px]"
           />
           <Image
-            src={IC_IMAGE}
+            src={IMAGE_PATHS.IC}
             alt="칩"
             width={40}
             height={40}
