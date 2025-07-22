@@ -9,7 +9,8 @@ import { AuthModal } from '@/features/exchange/components/AuthModal';
 import { ExchangeFilters } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
-import { Title } from '@/shared';
+import { Title, Modal } from '@/shared';
+import { handleApiAction } from '@/utils/handleApiAction';
 
 export default function ExchangePage() {
   const router = useRouter();
@@ -18,59 +19,71 @@ export default function ExchangePage() {
     title: '',
     description: '',
   });
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    postId: 0,
+  });
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleEdit = (id: number) => {
     router.push(`/sell/edit/${id}`);
   };
 
-  // 삭제 액션
-  const handleDelete = async (id: number) => {
-    const confirmed = confirm('정말로 게시물을 삭제하시겠습니까?');
-
-    if (!confirmed) return;
-
-    try {
-      const response = await sellAPI.deletePost(id);
-
-      if (response.statusCode === 200) {
-        toast.success('게시물이 삭제되었습니다.');
-        // React Query 사용 시 여기서 invalidateQueries 호출
-        window.location.reload();
-      } else {
-        toast.error('게시물 삭제에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('게시물 삭제 실패:', error);
-
-      // API 에러 타입 확인
-      if (error instanceof Error) {
-        if (error.message.includes('410') || error.message.includes('Gone')) {
-          toast.error('이미 삭제되었거나 만료된 게시물입니다.');
-        } else if (error.message.includes('403') || error.message.includes('Forbidden')) {
-          toast.error('삭제 권한이 없습니다.');
-        } else {
-          toast.error('게시물 삭제 중 오류가 발생했습니다.');
-        }
-      } else {
-        toast.error('게시물 삭제 중 오류가 발생했습니다.');
-      }
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-    }
+  // 삭제 모달 열기
+  const handleDelete = (id: number) => {
+    setDeleteModal({ isOpen: true, postId: id });
   };
 
-  // TODO: 신고 액션
+  // 실제 삭제 실행
+  const handleConfirmDelete = async () => {
+    setIsDeleting(true);
+
+    await handleApiAction({
+      apiCall: () => sellAPI.deletePost(deleteModal.postId),
+      successMessage: '게시물이 삭제되었습니다.',
+      errorMessage: '게시물 삭제 중 오류가 발생했습니다.',
+      onSuccess: () => {
+        setDeleteModal({ isOpen: false, postId: 0 });
+        window.location.reload();
+      },
+      onError: (error) => {
+        // 특정 에러 케이스 처리
+        if (error instanceof Error) {
+          if (error.message.includes('410') || error.message.includes('Gone')) {
+            toast.error('이미 삭제되었거나 만료된 게시물입니다.');
+          } else if (error.message.includes('403') || error.message.includes('Forbidden')) {
+            toast.error('삭제 권한이 없습니다.');
+          }
+        }
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      },
+    });
+
+    setIsDeleting(false);
+  };
+
+  // 삭제 모달 닫기
+  const handleCancelDelete = () => {
+    setDeleteModal({ isOpen: false, postId: 0 });
+  };
+
+  // 신고 액션
   const handleReport = (id: number) => {
     // eslint-disable-next-line no-console
     console.log('게시물 신고:', id);
+    // TODO: 신고 API 연동
+    toast.info('신고가 접수되었습니다.');
   };
 
-  // TODO: 구매 API 연동
+  // 구매 액션
   const handlePurchase = (id: number) => {
     // eslint-disable-next-line no-console
     console.log('데이터 구매:', id);
+    // TODO: 구매 API 연동
+    toast.info('구매 기능은 준비 중입니다.');
   };
 
   return (
@@ -102,6 +115,20 @@ export default function ExchangePage() {
         onClose={() => setAuthModal({ isOpen: false, title: '', description: '' })}
         title={authModal.title}
         description={authModal.description}
+      />
+
+      {/* 삭제 확인 모달 */}
+      <Modal
+        isOpen={deleteModal.isOpen}
+        onClose={handleCancelDelete}
+        title="게시물을 삭제하시겠습니까?"
+        description="삭제된 게시물은 복구할 수 없습니다."
+        type="double"
+        primaryButtonText={isDeleting ? '삭제 중...' : '삭제하기'}
+        secondaryButtonText="취소"
+        onPrimaryClick={handleConfirmDelete}
+        onSecondaryClick={handleCancelDelete}
+        primaryButtonDisabled={isDeleting}
       />
     </div>
   );
