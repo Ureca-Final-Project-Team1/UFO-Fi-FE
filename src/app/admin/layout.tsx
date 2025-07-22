@@ -1,7 +1,5 @@
+import React from 'react';
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ko">
-      <body className="bg-white">{children}</body>
-    </html>
-  );
+  return <div className="min-h-screen bg-white">{children}</div>;
 }
