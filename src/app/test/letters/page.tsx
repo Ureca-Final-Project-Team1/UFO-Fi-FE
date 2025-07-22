@@ -16,8 +16,8 @@ export default function VoyageLetters() {
       setLoading(true);
       try {
         // TODO: userId 수정 필요
-        await fetch(`/api/story/letters/${11}`, { method: 'POST' });
-        const res = await fetch(`/api/story/letters/${11}`);
+        await fetch(`/api/story/letters/${10}`, { method: 'POST' });
+        const res = await fetch(`/api/story/letters/${10}`);
         const data = await res.json();
         setLetters(data);
       } catch (e) {

@@ -27,8 +27,13 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(serialized);
 }
 
-export async function POST(_: NextRequest, context: { params: { userId: string } }) {
-  const userId = BigInt(context.params?.userId ?? '0');
+export async function POST(req: NextRequest) {
+  const userIdParam = req.nextUrl.pathname.split('/').pop();
+  if (!userIdParam) {
+    return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
+  }
+
+  const userId = BigInt(userIdParam);
   const maxDepth = 5;
   const visited = new Set<bigint>();
   const path: bigint[] = [];
@@ -58,6 +63,8 @@ export async function POST(_: NextRequest, context: { params: { userId: string }
     select: { id: true, name: true },
   });
 
+  const responses = [];
+
   for (let i = 1; i < Math.min(path.length, 6); i++) {
     const fromId = path[i - 1];
     const toId = path[i];
@@ -71,13 +78,15 @@ export async function POST(_: NextRequest, context: { params: { userId: string }
       },
     });
 
-    if (existing) continue;
+    if (existing) {
+      responses.push({ step: i, content: existing.content, status: 'existing' });
+      continue;
+    }
 
     const fromName = users.find((u) => u.id === fromId)?.name ?? '어느 항해자';
     const toName = users.find((u) => u.id === toId)?.name ?? '다른 별';
 
-    const prompt = `당신은 은하계 항해 AI입니다. ${fromName}의 데이터가 ${toName}에게 도달했습니다.
-이 사실을 짧고 감성적인 편지를 한 줄로 요약해주세요.`;
+    const prompt = `당신은 은하계 항해 AI입니다. ${fromName}의 데이터가 ${toName}에게 도달했습니다.\n이 사실을 짧고 감성적인 편지를 한 줄로 요약해주세요.`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4.1-mini',
@@ -86,7 +95,7 @@ export async function POST(_: NextRequest, context: { params: { userId: string }
 
     const content = completion.choices[0].message.content ?? '[편지 없음]';
 
-    await prisma.voyage_letters.create({
+    const saved = await prisma.voyage_letters.create({
       data: {
         user_id: userId,
         step: i,
@@ -94,7 +103,9 @@ export async function POST(_: NextRequest, context: { params: { userId: string }
         content,
       },
     });
+
+    responses.push({ step: i, content: saved.content, status: 'created' });
   }
 
-  return NextResponse.json({ status: 'ok' });
+  return NextResponse.json(responses);
 }
