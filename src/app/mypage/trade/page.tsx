@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 
@@ -13,6 +13,7 @@ import { TradeHistoryCard, TradeHistoryCardProps } from '@/features/mypage/compo
 import { useTradeHistory } from '@/hooks/useTradeHistory';
 import { BadgeState } from '@/shared';
 import { Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
+import { useTradeTabStore } from '@/stores/useTradeTabStore';
 import { groupByDate } from '@/utils/groupByDate';
 
 type TradeCardItem = TradeHistoryCardProps & { createdAt: Date };
@@ -42,9 +43,8 @@ const convertToCardProps = (
   }));
 
 const MyTradeHistoryPage = () => {
-  const searchParams = useSearchParams();
-  const initialTab = (searchParams.get('tab') as 'sell' | 'purchase') ?? 'sell';
-  const [activeTab, setActiveTab] = useState<'sell' | 'purchase'>(initialTab);
+  const { tab } = useTradeTabStore();
+  const [activeTab, setActiveTab] = useState(tab);
   const { sellTrade, purchaseTrade, setSellTrade, setPurchaseTrade } = useTradeHistory();
 
   const contentRef = useRef<HTMLDivElement>(null);
