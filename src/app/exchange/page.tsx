@@ -11,6 +11,7 @@ import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Title, Modal } from '@/shared';
 import { handleApiAction } from '@/utils/handleApiAction';
+import queryClient from '@/utils/queryClient';
 
 export default function ExchangePage() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function ExchangePage() {
       errorMessage: '게시물 삭제 중 오류가 발생했습니다.',
       onSuccess: () => {
         setDeleteModal({ isOpen: false, postId: 0 });
-        window.location.reload();
+        queryClient.invalidateQueries({ queryKey: ['exchangePosts'] });
       },
       onError: (error) => {
         // 특정 에러 케이스 처리
@@ -57,7 +58,7 @@ export default function ExchangePage() {
         }
 
         setTimeout(() => {
-          window.location.reload();
+          queryClient.invalidateQueries({ queryKey: ['exchangePosts'] });
         }, 1500);
       },
     });
