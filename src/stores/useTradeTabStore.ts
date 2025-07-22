@@ -1,13 +1,19 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-type TabType = 'sell' | 'purchase';
+type TabState = {
+  tab: 'sell' | 'purchase';
+  setTab: (tab: 'sell' | 'purchase') => void;
+};
 
-interface TradeTabStore {
-  tab: TabType;
-  setTab: (tab: TabType) => void;
-}
-
-export const useTradeTabStore = create<TradeTabStore>((set) => ({
-  tab: 'sell',
-  setTab: (tab) => set({ tab }),
-}));
+export const useTradeTabStore = create<TabState>()(
+  persist(
+    (set) => ({
+      tab: 'sell',
+      setTab: (tab) => set({ tab }),
+    }),
+    {
+      name: 'trade-tab',
+    },
+  ),
+);

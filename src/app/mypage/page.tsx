@@ -56,16 +56,28 @@ export default function MyPage() {
 
       {/* 메뉴 */}
       <div className="grid grid-cols-3 gap-4 text-center text-sm mb-4">
-        <div className="hover:cursor-pointer" onClick={navigateToFollow}>
-          <Icon name="Heart" size={24} className="mx-auto text-white" />
+        <div className="group hover:cursor-pointer" onClick={navigateToFollow}>
+          <Icon
+            name="Heart"
+            size={24}
+            className="mx-auto transition-all duration-300 group-hover:scale-110 text-white"
+          />
           <p className="mt-2 caption-12-regular">팔로우 목록</p>
         </div>
-        <div>
-          <Icon name="Eye" size={24} className="mx-auto text-white" />
+        <div className="group hover:cursor-pointer">
+          <Icon
+            name="Eye"
+            size={24}
+            className="mx-auto transition-all duration-300 group-hover:scale-110 text-white"
+          />
           <p className="mt-2 caption-12-regular">최근 본 글</p>
         </div>
-        <div className="hover:cursor-pointer" onClick={navigateToNotification}>
-          <Icon name="Bell" size={24} className="mx-auto text-white" />
+        <div className="group hover:cursor-pointer" onClick={navigateToNotification}>
+          <Icon
+            name="Bell"
+            size={24}
+            className="mx-autotransition-all duration-300 group-hover:scale-110 text-white"
+          />
           <p className="mt-2 caption-12-regular">알림 설정</p>
         </div>
       </div>
