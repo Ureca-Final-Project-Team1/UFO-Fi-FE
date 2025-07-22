@@ -35,8 +35,7 @@ const convertToCardProps = (
     carrier: item.carrier ?? '',
     message: item.title ?? '',
     price: item.totalZet ?? 0,
-    // TODO: 임시 고정
-    dataAmount: 1,
+    dataAmount: item.totalZet ?? 0,
     state: isSell && 'status' in item ? convertStatusToBadgeState(item.status) : 'sold',
   }));
 

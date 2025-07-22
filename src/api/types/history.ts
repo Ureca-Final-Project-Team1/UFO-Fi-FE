@@ -5,6 +5,7 @@ interface BaseHistoryResponse {
   title: string;
   totalZet: number;
   mobileDataType: string;
+  totalGB: number;
 }
 
 export interface PurchaseHistoryResponse extends BaseHistoryResponse {
