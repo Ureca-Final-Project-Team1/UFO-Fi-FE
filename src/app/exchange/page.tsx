@@ -41,6 +41,7 @@ export default function ExchangePage() {
       onSuccess: () => {
         setDeleteModal({ isOpen: false, postId: 0 });
         queryClient.invalidateQueries({ queryKey: ['exchangePosts'] });
+        setIsDeleting(false);
       },
       onError: (error) => {
         // 특정 에러 케이스 처리
@@ -57,8 +58,6 @@ export default function ExchangePage() {
         }, 1500);
       },
     });
-
-    setIsDeleting(false);
   };
 
   // 삭제 모달 닫기
