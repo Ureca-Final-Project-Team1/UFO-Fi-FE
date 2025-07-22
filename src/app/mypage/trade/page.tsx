@@ -35,7 +35,7 @@ const convertToCardProps = (
     carrier: item.carrier ?? '',
     message: item.title ?? '',
     price: item.totalZet ?? 0,
-    dataAmount: item.totalZet ?? 0,
+    dataAmount: item.totalGB ?? 0,
     state: isSell && 'status' in item ? convertStatusToBadgeState(item.status) : 'sold',
   }));
 
