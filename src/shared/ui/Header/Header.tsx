@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 import { Icon } from '../Icons/Icon';
@@ -21,12 +22,12 @@ const Header: React.FC<HeaderProps> = ({ userName = '김명령' }) => {
           </span>
         </div>
         <nav className="flex items-center gap-6 ml-6">
-          <a href="#" className="text-primary font-semibold text-sm hover:underline">
+          <Link href="/admin" className="text-primary font-semibold text-sm hover:underline">
             대시보드
-          </a>
-          <a href="#" className="text-gray-500 text-sm hover:text-primary">
+          </Link>
+          <Link href="/admin/users" className="text-gray-500 text-sm hover:text-primary">
             사용자
-          </a>
+          </Link>
           <a href="#" className="text-gray-500 text-sm hover:text-primary">
             게시물
           </a>
