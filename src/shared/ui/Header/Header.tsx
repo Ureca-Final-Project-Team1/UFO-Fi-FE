@@ -47,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({ userName = '김명령', onLogout }) => 
           className="p-1 rounded hover:bg-gray-100 transition-colors flex items-center align-baseline"
           onClick={onLogout}
         >
-          <Icon name="LogOut" className="w-5 h-50" color="black" />
+          <Icon name="LogOut" className="w-5 h-5" color="black" />
         </button>
       </div>
     </header>
