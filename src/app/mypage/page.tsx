@@ -11,8 +11,8 @@ export default function MyPage() {
   const router = useRouter();
   const { data: mypageInfo, error, isLoading } = useMyInfo();
 
-  const navigateToSalesHistory = () => router.push('/mypage/sales');
-  const navigateToPurchaseHistory = () => router.push('/mypage/receipt');
+  const navigateToSalesHistory = () => router.push('/mypage/trade?tab=sell');
+  const navigateToPurchaseHistory = () => router.push('/mypage/trade?tab=purchase');
   const navigateToLogout = () => router.push('/logout');
   const navigateToTerms = () => router.push('/terms');
 

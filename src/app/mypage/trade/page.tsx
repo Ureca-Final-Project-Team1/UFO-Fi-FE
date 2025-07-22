@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 
@@ -40,7 +40,9 @@ const convertToCardProps = (
   }));
 
 const MyTradeHistoryPage = () => {
-  const [activeTab, setActiveTab] = useState<'sell' | 'purchase'>('sell');
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get('tab') as 'sell' | 'purchase') ?? 'sell';
+  const [activeTab, setActiveTab] = useState<'sell' | 'purchase'>(initialTab);
   const { sellTrade, purchaseTrade, setSellTrade, setPurchaseTrade } = useTradeHistory();
 
   const contentRef = useRef<HTMLDivElement>(null);
