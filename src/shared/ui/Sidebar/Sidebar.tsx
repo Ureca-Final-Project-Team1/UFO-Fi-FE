@@ -1,11 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
 import { Icon } from '../Icons/Icon';
 
 const Sidebar: React.FC = () => {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === '/admin/user') {
+      setOpenMenu('user');
+    }
+  }, [pathname]);
 
   const handleToggle = (menu: string) => {
     setOpenMenu(openMenu === menu ? null : menu);
@@ -43,7 +52,7 @@ const Sidebar: React.FC = () => {
         {/* 사용자 관리 */}
         <div>
           <button
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors ${openMenu === 'user' ? 'bg-gray-100' : ''}`}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors ${openMenu === 'user' || pathname === '/admin/user' ? 'bg-gray-100' : ''}`}
             type="button"
             onClick={() => handleToggle('user')}
           >
@@ -58,7 +67,15 @@ const Sidebar: React.FC = () => {
           {openMenu === 'user' && (
             <div className="ml-8 mt-1 flex flex-col gap-1">
               <button className="text-left px-2 py-1 rounded text-gray-900 hover:bg-gray-50">
-                전체 사용자
+                <Link
+                  href="/admin/user"
+                  className={
+                    `block w-full h-full rounded` +
+                    (pathname === '/admin/user' ? ' bg-gray-200 text-primary font-semibold' : '')
+                  }
+                >
+                  전체 사용자
+                </Link>
               </button>
               <button className="text-left px-2 py-1 rounded text-gray-900 hover:bg-gray-50">
                 비활성화된 사용자
