@@ -32,8 +32,7 @@ export function PlanCombo({ planNames = [], onSelect, value }: PlanComboProps) {
     if (planNames.length > 0 && !hasUserSelected) {
       setIsOpen(true);
     }
-    setHasUserSelected(false);
-  }, [planNames, hasUserSelected]);
+  }, [planNames]);
 
   const handlePlanSelect = (value: string) => {
     const newValue = value === selected ? '' : value;

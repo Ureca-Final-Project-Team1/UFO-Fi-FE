@@ -45,6 +45,18 @@ const PlanPage = () => {
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('이미지 파일만 업로드 가능합니다.');
+      return;
+    }
+
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error('파일 크기는 10MB 이하여야 합니다.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
     setIsLoading(true);
@@ -71,7 +83,17 @@ const PlanPage = () => {
   const watchedPlanName = watch('planName');
 
   useEffect(() => {
-    if (carrierOCR) setValue('carrier', carrierOCR);
+    if (carrierOCR) {
+      const validCarriers = ['SKT', 'LGU', 'KT'];
+      const matchedCarrier = validCarriers.find(
+        (c) => carrierOCR.toUpperCase().includes(c) || (c === 'LGU' && carrierOCR.includes('LG')),
+      );
+      if (matchedCarrier) {
+        setValue('carrier', matchedCarrier);
+      } else {
+        toast.error('인식된 통신사가 유효하지 않습니다.');
+      }
+    }
     if (planNameOCR) setValue('planName', planNameOCR);
   }, [planNameOCR, carrierOCR, setValue]);
 
