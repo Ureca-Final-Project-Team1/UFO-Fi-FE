@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { getRoleAPI } from '@/api/services/auth/role';
 import { registerFCMToken } from '@/lib/fcm';
 
 const Page = () => {
@@ -10,13 +11,30 @@ const Page = () => {
 
   useEffect(() => {
     const handleLoginSuccess = async () => {
-      // FCM 토큰 등록 (백그라운드)
-      registerFCMToken().catch((error) => {
-        console.warn('FCM registration failed, but continuing:', error);
-      });
-      router.push('/signup/privacy');
-    };
+      try {
+        // FCM 토큰 등록 (백그라운드)
+        registerFCMToken().catch((error) => {
+          console.warn('FCM registration failed, but continuing:', error);
+        });
 
+        const response = await getRoleAPI.getRole();
+
+        switch (response.content.role) {
+          case 'ROLE_NO_INFO':
+            router.push('/signup/privacy');
+            break;
+          case 'ROLE_REPORTED':
+            router.push('/blackhole');
+            break;
+          default:
+            router.push('/');
+            break;
+        }
+      } catch (error) {
+        console.error('Login success handling failed:', error);
+        router.push('/login');
+      }
+    };
     handleLoginSuccess();
   }, [router]);
 

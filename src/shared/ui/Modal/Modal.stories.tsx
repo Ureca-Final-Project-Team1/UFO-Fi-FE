@@ -121,7 +121,12 @@ const ReportedModalStory = () => {
         모달 열기
       </button>
 
-      <ReportedModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <ReportedModal
+        postOwnerUserId={5}
+        postId={1}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 };
