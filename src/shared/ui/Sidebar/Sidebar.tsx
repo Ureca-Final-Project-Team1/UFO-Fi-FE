@@ -69,10 +69,9 @@ const Sidebar: React.FC = () => {
               <button className="text-left px-2 py-1 rounded text-gray-900 hover:bg-gray-50">
                 <Link
                   href="/admin/user"
-                  className={
-                    `block w-full h-full rounded` +
-                    (pathname === '/admin/user' ? ' bg-gray-200 text-primary font-semibold' : '')
-                  }
+                  className={`block w-full h-full rounded ${
+                    pathname === '/admin/user' ? 'bg-gray-200 text-primary font-semibold' : ''
+                  }`}
                 >
                   전체 사용자
                 </Link>
