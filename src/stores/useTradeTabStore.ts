@@ -4,7 +4,7 @@ type TabType = 'sell' | 'purchase';
 
 interface TradeTabStore {
   tab: TabType;
-  setTab: (tap: TabType) => void;
+  setTab: (tab: TabType) => void;
 }
 
 export const useTradeTabStore = create<TradeTabStore>((set) => ({
