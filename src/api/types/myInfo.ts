@@ -6,7 +6,7 @@ export interface MyInfoResponse {
     email: string | null;
     sellMobileDataCapacityGb: number;
     sellableDataAmount: number;
-    zetAsset: number | null;
+    zetAsset: number;
     profileImageUrl?: string;
   };
 }
