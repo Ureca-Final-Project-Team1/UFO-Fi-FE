@@ -73,7 +73,9 @@ export type CustomIconType =
   | 'satellite'
   | 'box'
   | 'rotate'
-  | 'graph';
+  | 'graph'
+  | 'circle-minus'
+  | 'vector';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

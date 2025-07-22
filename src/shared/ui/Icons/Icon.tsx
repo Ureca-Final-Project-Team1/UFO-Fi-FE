@@ -51,6 +51,8 @@ export const Icon: React.FC<IconComponentProps> = ({
     box: CustomIcons.BoxIcon,
     rotate: CustomIcons.RotateIcon,
     graph: CustomIcons.GraphIcon,
+    'circle-minus': CustomIcons.CircleMinusIcon,
+    vector: CustomIcons.VectorIcon,
   };
 
   if (name in customIconComponents) {
