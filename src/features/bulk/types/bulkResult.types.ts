@@ -1,3 +1,5 @@
+import { Carrier } from '@/api/types/carrier';
+
 export interface BulkResultData {
   statusCode: number;
   message: string;
@@ -15,7 +17,7 @@ export interface BulkResultItem {
   title: string;
   totalPrice: number;
   sellMobileDataCapacityGb: number;
-  carrier: 'KT' | 'SKT' | 'LGU';
+  carrier: Carrier;
   status: string;
   createdAt: Date;
   pricePerUnit: number;

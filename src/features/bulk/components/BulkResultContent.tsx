@@ -225,7 +225,6 @@ function BulkResultDisplay({
               dataAmount={item.sellMobileDataCapacityGb}
               price={item.totalPrice}
               carrier={item.carrier}
-              // TODO: seller 필요
               seller={item.sellerNickname}
               timeAgo={getTimeAgo(new Date(item.createdAt).getTime())}
             />

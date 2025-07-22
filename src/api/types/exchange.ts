@@ -1,8 +1,10 @@
-export const CARRIERS = ['SKT', 'KT', 'LGU'] as const;
+import { Carrier } from './carrier';
+
+export const CARRIERS = Object.values(Carrier);
 export const EXCHANGE_STATUSES = ['SELLING', 'SOLD_OUT', 'REPORTED', 'EXPIRED', 'DELETED'] as const;
 export const MOBILE_DATA_TYPES = ['LTE', '_5G'] as const;
 
-export type Carrier = (typeof CARRIERS)[number];
+export type CarrierType = Carrier;
 export type ExchangeStatus = (typeof EXCHANGE_STATUSES)[number];
 export type MobileDataType = (typeof MOBILE_DATA_TYPES)[number];
 
