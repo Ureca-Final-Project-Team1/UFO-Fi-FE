@@ -8,6 +8,9 @@ interface SellingItemProps {
   price: string;
   timeLeft: string;
   isOwner?: boolean;
+  title: string;
+  sellerNickname: string;
+  sellerId: number;
   onEdit?: () => void;
   onDelete?: () => void;
   onReport?: () => void;
@@ -34,8 +37,10 @@ export default function SellingItem({
   networkType,
   capacity,
   price,
+  title,
   timeLeft,
   isOwner = false,
+  sellerNickname,
   onEdit,
   onDelete,
   onReport,
@@ -44,7 +49,7 @@ export default function SellingItem({
   const carrierIcon = getCarrierIcon(carrier);
 
   // 필수 props 유효성 검사만 진행
-  if (!carrier || !capacity || !price || !timeLeft) {
+  if (!title || !carrier || !capacity || !price || !timeLeft) {
     return null;
   }
 
@@ -84,7 +89,7 @@ export default function SellingItem({
       </div>
 
       {/* 콘텐츠 라인 */}
-      <div className="flex gap-4 items-start">
+      <div className="flex gap-4 items-center">
         {/* 아바타 */}
         <Avatar variant="selling" size="md">
           <Icon name="astronaut" className="w-8 h-8 text-purple-200" />
@@ -92,19 +97,26 @@ export default function SellingItem({
 
         {/* 정보 영역 */}
         <div className="flex-1 flex flex-col gap-1">
-          {/* 뱃지 */}
-          <Badge showIcon={false} variant="secondary">
-            <div className="flex items-center gap-1">
-              {carrierIcon && <Icon src={carrierIcon} alt={carrier} className="w-4 h-4" />}
-              <span>{`${carrier} ${networkType}`}</span>
-            </div>
-          </Badge>
+          {/* 뱃지 및 판매자 정보 */}
+          <div className="flex items-center justify-between">
+            <Badge showIcon={false} variant="secondary">
+              <div className="flex items-center gap-1">
+                {carrierIcon && <Icon src={carrierIcon} alt={carrier} className="w-4 h-4" />}
+                <span>{`${carrier} ${networkType}`}</span>
+              </div>
+            </Badge>
+          </div>
+
+          <span className="text-white text-xl font-bold">{title}</span>
 
           {/* 용량 + 가격 */}
           <div className="flex gap-2 items-baseline">
             <span className="text-white text-xl font-bold">{capacity}</span>
             <span className="text-cyan-300 text-xl font-bold">{price}</span>
           </div>
+
+          {/* 판매자 닉네임 표시 */}
+          {sellerNickname && <span className="text-gray-300 text-xs">by {sellerNickname}</span>}
 
           {/* 시간 + 구매 버튼 한 줄 정렬 */}
           <div className="flex justify-between items-center">

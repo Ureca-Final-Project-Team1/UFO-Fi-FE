@@ -13,7 +13,12 @@ export const useInfiniteExchangePosts = (params?: Omit<GetExchangePostsRequest, 
         size: 10,
       }),
     initialPageParam: undefined as number | undefined,
-    getNextPageParam: (lastPage) => lastPage.nextCursor?.cursorId ?? undefined,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.nextCursor || !lastPage.nextCursor.id) {
+        return undefined;
+      }
+      return lastPage.nextCursor.id;
+    },
     staleTime: 0, // 캐시 무효화
     refetchInterval: 10 * 1000, // 10초마다 polling
     refetchOnWindowFocus: true, // 탭 전환 시 자동 refetch

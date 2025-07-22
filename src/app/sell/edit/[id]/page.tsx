@@ -1,13 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter, useParams, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { toast } from 'sonner';
+import { useRouter, useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 import { ApiResponse, sellAPI } from '@/api';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
+import { useEditContext } from '@/features/exchange/components/EditProvider';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
@@ -18,19 +18,36 @@ import { handleApiAction } from '@/utils/handleApiAction';
 export default function SellEditPage() {
   const router = useRouter();
   const params = useParams();
-  const searchParams = useSearchParams();
   const postId = Number(params.id);
-
-  // 기존 게시물 데이터 (URL 파라미터로 받아오기)
-  const existingTitle = searchParams.get('title') || '';
-  const existingZetPerUnit = Number(searchParams.get('zetPerUnit')) || 0;
-  const existingCapacity = Number(searchParams.get('capacity')) || 1;
-  const existingCarrier = searchParams.get('carrier') || 'LGU';
-
-  const [value, setValue] = useState<number[]>([existingCapacity]);
-  const [titleInput, setTitleInput] = useState(existingTitle);
-  const [pricePerGB, setPricePerGB] = useState(existingZetPerUnit);
+  const { postData } = useEditContext();
+  const isMobile = useViewportStore((state) => state.isMobile);
+  const [value, setValue] = useState<number[]>([1]);
+  const [titleInput, setTitleInput] = useState('');
+  const [pricePerGB, setPricePerGB] = useState(90);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // postData가 로드되면 상태 업데이트
+  useEffect(() => {
+    if (postData) {
+      setTitleInput(postData.title);
+      setPricePerGB(postData.zetPerUnit);
+      setValue([postData.capacity]);
+    }
+  }, [postData]);
+
+  // 변경사항 감지
+  useEffect(() => {
+    if (!postData) return;
+  }, [titleInput, pricePerGB, value, postData]);
+
+  // postData가 없으면 로딩 상태
+  if (!postData) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-white">게시글 정보를 불러오는 중...</div>
+      </div>
+    );
+  }
 
   const maxCapacity = 10;
   const averagePrice = 250; // TODO: 추후 진짜 평균 가격으로 변경해야 함
@@ -49,11 +66,6 @@ export default function SellEditPage() {
 
   // 수정 제출
   const handleSubmit = async () => {
-    if (!isValidTitle || !isValidPrice || !isValidCapacity) {
-      toast.error('정보를 모두 작성해주세요!');
-      return;
-    }
-
     setIsSubmitting(true);
 
     await handleApiAction({
@@ -65,14 +77,12 @@ export default function SellEditPage() {
         }) as Promise<ApiResponse>,
       successMessage: '게시물이 수정되었습니다!',
       errorMessage: '게시물 수정 중 오류가 발생했습니다.',
-      onSuccess: () => router.push(`/sell/${postId}`),
+      onSuccess: () => router.push('/exchange'),
       onError: () => setIsSubmitting(false),
     });
 
     setIsSubmitting(false);
   };
-
-  const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center">
@@ -89,7 +99,7 @@ export default function SellEditPage() {
           <div className="flex items-center space-x-2 w-full">
             <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1">
               <Icon
-                src={ICON_PATHS[existingCarrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
+                src={ICON_PATHS[postData.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
               />
             </div>
 

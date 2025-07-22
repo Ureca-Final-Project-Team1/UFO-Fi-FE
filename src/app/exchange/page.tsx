@@ -1,27 +1,26 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
+import { AuthModal } from '@/features/exchange/components/AuthModal';
 import { ExchangeFilters } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
-import { PostData } from '@/features/exchange/types';
 import { Title } from '@/shared';
 
 export default function ExchangePage() {
   const router = useRouter();
+  const [authModal, setAuthModal] = useState({
+    isOpen: false,
+    title: '',
+    description: '',
+  });
 
-  const handleEdit = (id: number, postData: PostData) => {
-    const queryParams = new URLSearchParams({
-      title: postData.title,
-      zetPerUnit: postData.zetPerUnit.toString(),
-      capacity: postData.capacity.toString(),
-      carrier: postData.carrier,
-    });
-
-    router.push(`/sell/edit/${id}?${queryParams.toString()}`);
+  const handleEdit = (id: number) => {
+    router.push(`/sell/edit/${id}`);
   };
 
   // 삭제 액션
@@ -35,16 +34,30 @@ export default function ExchangePage() {
 
       if (response.statusCode === 200) {
         toast.success('게시물이 삭제되었습니다.');
-
-        // ExchangeList의 refetch를 트리거하기 위해 페이지 새로고침
-        // 실제로는 React Query의 invalidateQueries를 사용하는 것이 좋음
+        // React Query 사용 시 여기서 invalidateQueries 호출
         window.location.reload();
       } else {
         toast.error('게시물 삭제에 실패했습니다.');
       }
     } catch (error) {
       console.error('게시물 삭제 실패:', error);
-      toast.error('게시물 삭제 중 오류가 발생했습니다.');
+
+      // API 에러 타입 확인
+      if (error instanceof Error) {
+        if (error.message.includes('410') || error.message.includes('Gone')) {
+          toast.error('이미 삭제되었거나 만료된 게시물입니다.');
+        } else if (error.message.includes('403') || error.message.includes('Forbidden')) {
+          toast.error('삭제 권한이 없습니다.');
+        } else {
+          toast.error('게시물 삭제 중 오류가 발생했습니다.');
+        }
+      } else {
+        toast.error('게시물 삭제 중 오류가 발생했습니다.');
+      }
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     }
   };
 
@@ -76,12 +89,20 @@ export default function ExchangePage() {
 
         {/* 게시글 목록 */}
         <ExchangeList
-          onEdit={handleEdit} // 함수만 전달
+          onEdit={handleEdit}
           onDelete={handleDelete}
           onReport={handleReport}
           onPurchase={handlePurchase}
         />
       </div>
+
+      {/* 인증 모달 */}
+      <AuthModal
+        isOpen={authModal.isOpen}
+        onClose={() => setAuthModal({ isOpen: false, title: '', description: '' })}
+        title={authModal.title}
+        description={authModal.description}
+      />
     </div>
   );
 }

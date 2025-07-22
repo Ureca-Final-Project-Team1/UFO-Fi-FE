@@ -5,20 +5,23 @@ import { useInView } from 'react-intersection-observer';
 
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
+import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
-import { PostData } from '../types';
 
 interface ExchangeListProps {
-  onEdit: (id: number, postData: PostData) => void;
+  onEdit: (id: number) => void;
   onDelete: (id: number) => void;
   onReport: (id: number) => void;
   onPurchase: (id: number) => void;
 }
 
 export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: ExchangeListProps) => {
+  // 사용자 정보 조회
+  const { data: userInfo } = useMyInfo();
+
   // 무한스크롤 데이터 조회
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteExchangePosts();
@@ -41,16 +44,18 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
       .filter((post) => post.status !== 'DELETED')
       .map((post) => ({
         id: post.postId,
+        title: post.title,
         carrier: post.carrier,
         networkType: post.mobileDataType === '_5G' ? '5G' : 'LTE',
         capacity: `${post.sellMobileDataCapacityGb}GB`,
         price: `${post.totalPrice.toLocaleString()}ZET`,
         timeLeft: formatTimeAgo(post.createdAt),
-        isOwner: false, // TODO: 현재 사용자 ID와 비교 필요
+        isOwner: userInfo?.nickname === post.sellerNickname,
         status: post.status,
-        originalPost: post,
+        sellerNickname: post.sellerNickname,
+        sellerId: post.sellerId,
       }));
-  }, [data?.pages]);
+  }, [data?.pages, userInfo?.nickname]);
 
   // 로딩 상태
   if (isLoading) {
@@ -86,20 +91,16 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         {sellingItems.map((item) => (
           <SellingItem
             key={item.id}
+            title={item.title}
             carrier={item.carrier}
             networkType={item.networkType}
             capacity={item.capacity}
             price={item.price}
             timeLeft={item.timeLeft}
             isOwner={item.isOwner}
-            onEdit={() =>
-              onEdit(item.id, {
-                title: item.originalPost.title || '제목 없음',
-                zetPerUnit: item.originalPost.pricePerUnit || 0,
-                capacity: item.originalPost.sellMobileDataCapacityGb || 0,
-                carrier: item.originalPost.carrier || 'LGU',
-              })
-            }
+            sellerNickname={item.sellerNickname}
+            sellerId={item.sellerId}
+            onEdit={() => onEdit(item.id)}
             onDelete={() => onDelete(item.id)}
             onReport={() => onReport(item.id)}
             onPurchase={() => onPurchase(item.id)}
@@ -113,9 +114,9 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
           <div className="text-white text-sm">더 많은 게시글을 불러오는 중...</div>
         ) : hasNextPage ? (
           <div className="text-gray-400 text-sm">스크롤하여 더 보기</div>
-        ) : (
+        ) : sellingItems.length > 0 ? (
           <div className="text-gray-400 text-sm">모든 게시글을 불러왔습니다!</div>
-        )}
+        ) : null}
       </div>
     </>
   );
