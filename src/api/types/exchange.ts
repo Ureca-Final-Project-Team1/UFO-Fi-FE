@@ -18,11 +18,13 @@ export interface ExchangePost {
   createdAt: string;
   pricePerUnit: number;
   mobileDataType: MobileDataType;
+  sellerNickname: string;
+  sellerId: number;
 }
 
 export interface ExchangeCursor {
   createdAt: string;
-  cursorId: number;
+  id: number;
 }
 
 export interface GetExchangePostsRequest {
