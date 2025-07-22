@@ -5,22 +5,23 @@ import { prisma } from '@/lib/prisma';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-export async function GET(_: NextRequest, context: { params: { userId: string } }) {
-  const userId = BigInt(context.params?.userId ?? '0');
+export async function GET(req: NextRequest) {
+  const userIdParam = req.nextUrl.pathname.split('/').pop();
+  if (!userIdParam) return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
 
+  const userId = BigInt(userIdParam);
   const letters = await prisma.voyage_letters.findMany({
     where: { user_id: userId },
     orderBy: { step: 'asc' },
   });
 
-  // ✅ 모든 BigInt 필드 문자열 처리
   const serialized = letters.map((l) => ({
     id: l.id.toString(),
     user_id: l.user_id.toString(),
     step: l.step,
     recipient_id: l.recipient_id.toString(),
     content: l.content,
-    created_at: l.created_at.toISOString(), // Date → string
+    created_at: l.created_at.toISOString(),
   }));
 
   return NextResponse.json(serialized);
