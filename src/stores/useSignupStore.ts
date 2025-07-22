@@ -5,7 +5,7 @@ import { Carrier } from '@/api/types/carrier';
 type SignupData = {
   name: string;
   phoneNumber: string;
-  carrier: Carrier;
+  carrier: Carrier | '';
   planName: string;
 };
 
