@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 
 import { Icon } from '../Icons/Icon';
@@ -17,7 +19,7 @@ const Sidebar: React.FC = () => {
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-primary font-semibold text-[15px] hover:bg-gray-50 focus:bg-gray-100 transition-colors"
           type="button"
         >
-          <Icon name="planet" className="w-5 h-5 text-blue-500" />
+          <Icon name="planet" className="w-5 h-5" color="black" />
           <span className="text-blue-600">대시보드</span>
         </button>
 
@@ -28,11 +30,12 @@ const Sidebar: React.FC = () => {
             type="button"
             onClick={() => handleToggle('post')}
           >
-            <Icon name="box" className="w-5 h-5 text-gray-900" />
+            <Icon name="box" className="w-5 h-5" color="black" />
             <span className="flex-1 text-left text-gray-900">게시물 관리</span>
             <Icon
               name={openMenu === 'post' ? 'ChevronUp' : 'ChevronDown'}
-              className="w-4 h-4 text-gray-500"
+              className="w-4 h-4"
+              color="black"
             />
           </button>
         </div>
@@ -44,11 +47,12 @@ const Sidebar: React.FC = () => {
             type="button"
             onClick={() => handleToggle('user')}
           >
-            <Icon name="astronaut" className="w-5 h-5 text-gray-900" />
+            <Icon name="astronaut" className="w-5 h-5" color="black" />
             <span className="flex-1 text-left text-gray-900">사용자 관리</span>
             <Icon
               name={openMenu === 'user' ? 'ChevronUp' : 'ChevronDown'}
-              className="w-4 h-4 text-gray-500"
+              className="w-4 h-4"
+              color="black"
             />
           </button>
           {openMenu === 'user' && (
@@ -70,11 +74,12 @@ const Sidebar: React.FC = () => {
             type="button"
             onClick={() => handleToggle('banword')}
           >
-            <Icon name="Package" className="w-5 h-5 text-gray-900" />
+            <Icon name="Package" className="w-5 h-5" color="black" />
             <span className="flex-1 text-left text-gray-900">금칙어 설정</span>
             <Icon
               name={openMenu === 'banword' ? 'ChevronUp' : 'ChevronDown'}
-              className="w-4 h-4 text-gray-500"
+              className="w-4 h-4"
+              color="black"
             />
           </button>
         </div>
@@ -86,7 +91,7 @@ const Sidebar: React.FC = () => {
           className="flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors"
           type="button"
         >
-          <Icon name="box" className="w-5 h-5 text-gray-900" />
+          <Icon name="box" className="w-5 h-5" color="black" />
           <span className="text-gray-900">Docs</span>
         </button>
       </div>
