@@ -86,7 +86,7 @@ const Table = <T extends TableRowBase>({
                         <button
                           type="button"
                           aria-label="활성화"
-                          className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-green-100 transition-colors"
+                          className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-green-100 transition-colors text-green-500"
                           onClick={() => handleActivate(row)}
                         >
                           {row.actions?.activateIcon ?? <VectorIcon className="w-5 h-5" />}
