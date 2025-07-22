@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { Avatar } from '@/shared/ui';
@@ -21,6 +22,8 @@ export default function SignalCard({
   availableData,
   maxData,
 }: SignalCardProps) {
+  const router = useRouter();
+
   return (
     <div
       className="rounded-xl shadow-lg border-[4px] w-full max-w-[620px] mx-auto"
@@ -98,6 +101,7 @@ export default function SignalCard({
             variant="outline"
             size="compact"
             className="text-gray-800 caption-8-medium h-7 px-1 py-1 whitespace-nowrap"
+            onClick={() => router.push('/mypage/edit-profile')}
           >
             ✏️ 프로필 수정
           </Button>
