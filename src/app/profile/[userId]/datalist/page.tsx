@@ -9,7 +9,7 @@ export default function ProfileDataListPage() {
   const params = useParams();
   const userId = Number(params.userId);
 
-  if (!userId || isNaN(userId)) {
+  if (isNaN(userId) || userId <= 0) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-white">잘못된 사용자 ID입니다.</div>
