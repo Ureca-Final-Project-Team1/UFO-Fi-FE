@@ -5,7 +5,7 @@ export const IMAGE_PATHS = {
   AL_SELL: '/images/alien-sell.png',
   AL_REPORTED: '/images/alien-sad-reported.png',
   AL_BULK_PURCHASE: '/images/alien-bulk.png',
-  AL_COMPLETE: '/images/alien-serious-reported.png',
+  AL_COMPLETE: '/images/alien-serious-reported.svg',
   AL_SOWHAT: '/images/alien-sowhat.svg',
   AL_SUCCESS: '/images/alien-success.svg',
   AL_FAIL: '/images/alien-fail.svg',
@@ -39,4 +39,5 @@ export const IMAGE_PATHS = {
   AVATAR: '/images/avatar.svg',
   QR: '/images/QR.png',
   IC: '/images/IC.png',
+  UFO_LOGO: '/images/ufo-logo.svg',
 } as const;
