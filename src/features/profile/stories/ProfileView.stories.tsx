@@ -2,13 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Carrier } from '@/api/types/carrier';
 import type { ProfileUser } from '@/api/types/profile';
+import { IMAGE_PATHS } from '@/constants/images';
 
-// Mock 데이터
-const mockProfile: ProfileUser = {
+const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
   userId: 308,
   nickname: '신나는 지구인 #308',
-  profileImageUrl:
-    'https://ufo-fi-service-bucket.s3.ap-northeast-2.amazonaws.com/profile-image/profile-8.png',
+  profileImageUrl: IMAGE_PATHS.AVATAR,
   followerCount: 21,
   followingCount: 6,
   tradePostsRes: [
@@ -37,55 +36,33 @@ const mockProfile: ProfileUser = {
       createdAt: '2025-07-14T10:15:30',
     },
   ],
-};
+  ...overrides,
+});
 
-const myProfile: ProfileUser = {
-  ...mockProfile,
-  userId: 1,
-  nickname: '내 프로필',
-};
-
-const followingProfile: ProfileUser = {
-  ...mockProfile,
-  userId: 999,
-  nickname: '팔로우중인 지구인',
-};
-
-const emptyProfile: ProfileUser = {
-  ...mockProfile,
-  userId: 500,
-  nickname: '데이터없는 지구인',
-  tradePostsRes: [],
+const getMockProfileById = (userId: number): ProfileUser => {
+  switch (userId) {
+    case 1:
+      return createMockProfile({ userId: 1, nickname: '내 프로필' });
+    case 999:
+      return createMockProfile({ userId: 999, nickname: '팔로우중인 지구인' });
+    case 500:
+      return createMockProfile({ userId: 500, nickname: '데이터없는 지구인', tradePostsRes: [] });
+    default:
+      return createMockProfile();
+  }
 };
 
 const MockProfileView = ({ userId }: { userId: number }) => {
-  let profile: ProfileUser;
-
-  switch (userId) {
-    case 1:
-      profile = myProfile;
-      break;
-    case 999:
-      profile = followingProfile;
-      break;
-    case 500:
-      profile = emptyProfile;
-      break;
-    default:
-      profile = mockProfile;
-  }
+  const profile = getMockProfileById(userId);
 
   return (
     <div className="flex flex-col min-h-full w-full pb-6">
-      {/* Title 대신 간단한 헤더 */}
       <div className="flex items-center p-4 border-b border-white/10">
         <button className="text-white mr-4">←</button>
         <h1 className="text-white text-lg font-bold">{profile.nickname}의 프로필</h1>
       </div>
 
-      {/* ProfileView의 내용을 직접 렌더링 */}
       <div className="space-y-6 px-4">
-        {/* ProfileHeader Mock */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
@@ -99,7 +76,6 @@ const MockProfileView = ({ userId }: { userId: number }) => {
                 <span>👽</span>
               )}
             </div>
-
             <div className="flex flex-col">
               <h1 className="text-white text-xl font-bold">{profile.nickname}</h1>
               <span className="text-gray-400 text-sm">지구인 #{profile.userId}</span>
@@ -107,7 +83,6 @@ const MockProfileView = ({ userId }: { userId: number }) => {
           </div>
         </div>
 
-        {/* ProfileStats Mock */}
         <div className="flex justify-center gap-8">
           <div className="text-center">
             <div className="text-white text-lg font-bold">팔로워 {profile.followerCount}명</div>
@@ -117,9 +92,7 @@ const MockProfileView = ({ userId }: { userId: number }) => {
           </div>
         </div>
 
-        {/* ProfileContentSections Mock */}
         <div className="space-y-6">
-          {/* 거래 현황 */}
           <div className="space-y-3">
             <h3 className="text-white font-semibold text-lg">거래 현황</h3>
             <div className="space-y-2">
@@ -137,19 +110,15 @@ const MockProfileView = ({ userId }: { userId: number }) => {
             </div>
           </div>
 
-          {/* 구분선 */}
           <div className="w-full h-px bg-white opacity-20"></div>
 
-          {/* 보유 업적 */}
           <div className="space-y-3">
             <h3 className="text-white font-semibold text-lg">보유 업적</h3>
             <div className="text-center text-gray-400 py-4">보유한 업적이 없습니다.</div>
           </div>
 
-          {/* 구분선 */}
           <div className="w-full h-px bg-white opacity-20"></div>
 
-          {/* 판매중인 데이터 */}
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <h3 className="text-white font-semibold text-lg">판매중인 데이터</h3>
@@ -215,46 +184,32 @@ export default meta;
 type Story = StoryObj<typeof MockProfileView>;
 
 export const Default: Story = {
-  args: {
-    userId: 308,
-  },
+  args: { userId: 308 },
 };
 
 export const MyProfile: Story = {
-  args: {
-    userId: 1,
-  },
+  args: { userId: 1 },
   parameters: {
     docs: {
-      description: {
-        story: '내 프로필을 표시할 때는 공유 버튼이 나타납니다.',
-      },
+      description: { story: '내 프로필을 표시할 때는 공유 버튼이 나타납니다.' },
     },
   },
 };
 
 export const FollowingUser: Story = {
-  args: {
-    userId: 999,
-  },
+  args: { userId: 999 },
   parameters: {
     docs: {
-      description: {
-        story: '이미 팔로우한 사용자의 프로필입니다.',
-      },
+      description: { story: '이미 팔로우한 사용자의 프로필입니다.' },
     },
   },
 };
 
 export const EmptyData: Story = {
-  args: {
-    userId: 500,
-  },
+  args: { userId: 500 },
   parameters: {
     docs: {
-      description: {
-        story: '판매 데이터가 없는 사용자의 프로필입니다.',
-      },
+      description: { story: '판매 데이터가 없는 사용자의 프로필입니다.' },
     },
   },
 };

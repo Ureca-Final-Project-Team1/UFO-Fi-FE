@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import type { ProfileUser } from '@/api/types/profile';
+import { IMAGE_PATHS } from '@/constants/images';
 
 import { ShareButtons } from '../components/ProfileShare/ShareButtons';
 
 const mockProfile: ProfileUser = {
   userId: 308,
   nickname: '신나는 지구인 #308',
-  profileImageUrl:
-    'https://ufo-fi-service-bucket.s3.ap-northeast-2.amazonaws.com/profile-image/profile-8.png',
+  profileImageUrl: IMAGE_PATHS.AVATAR,
   followerCount: 21,
   followingCount: 6,
   tradePostsRes: [],
