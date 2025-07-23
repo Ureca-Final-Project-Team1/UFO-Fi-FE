@@ -13,6 +13,8 @@ const Sidebar = () => {
   useEffect(() => {
     if (pathname === '/admin/user') {
       setOpenMenu('user');
+    } else if (pathname === '/admin/profanity') {
+      setOpenMenu('banword');
     }
   }, [pathname]);
 
