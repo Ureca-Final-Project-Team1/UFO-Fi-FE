@@ -73,17 +73,23 @@ const ProfanityManagementPage: React.FC = () => {
 
   // 컴포넌트 마운트 시 localStorage에서 데이터 로드
   useEffect(() => {
-    const savedData = localStorage.getItem(STORAGE_KEY);
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        setData(parsedData);
-      } catch (error) {
-        console.error('Failed to parse saved data:', error);
-        setData(dummyData);
-      }
-    }
+    //더미 데이터 사용
+    localStorage.removeItem(STORAGE_KEY);
+    setData(dummyData);
     setIsLoaded(true);
+
+    // 실제 운영 시
+    // const savedData = localStorage.getItem(STORAGE_KEY);
+    // if (savedData) {
+    //   try {
+    //     const parsedData = JSON.parse(savedData);
+    //     setData(parsedData);
+    //   } catch (error) {
+    //     console.error('Failed to parse saved data:', error);
+    //     setData(dummyData);
+    //   }
+    // }
+    // setIsLoaded(true);
   }, []);
 
   // 데이터가 변경될 때마다 localStorage에 저장 (isLoaded가 true일 때만)
