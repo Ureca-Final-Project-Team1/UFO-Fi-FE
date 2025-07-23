@@ -3,9 +3,9 @@
 import { useParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { ProfileView } from '@/features/profile/components/ProfileView';
+import { DataListView } from '@/features/profile/components/DataListView';
 
-export default function ProfilePage() {
+export default function ProfileDataListPage() {
   const params = useParams();
   const userId = Number(params.userId);
 
@@ -21,11 +21,11 @@ export default function ProfilePage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-white">프로필을 불러오는 중...</div>
+          <div className="text-white">판매 데이터를 불러오는 중...</div>
         </div>
       }
     >
-      <ProfileView userId={userId} />
+      <DataListView userId={userId} />
     </Suspense>
   );
 }
