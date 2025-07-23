@@ -61,6 +61,7 @@ export type LucideIconType =
   | 'Loader2' // 로딩용
   | 'Signal' // 신호 아이콘 추가
   | 'RotateCw'
+  | 'HelpCircle'
   | 'Check'
   | 'LogOut'
   | 'Focus';

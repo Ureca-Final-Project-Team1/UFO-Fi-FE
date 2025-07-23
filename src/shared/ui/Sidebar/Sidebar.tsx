@@ -4,112 +4,181 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import { IconType } from '../Icons';
 import { Icon } from '../Icons/Icon';
 
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: string;
+  href?: string;
+  children?: MenuItem[];
+}
+
+const menuItems: MenuItem[] = [
+  {
+    id: 'dashboard',
+    label: '대시보드',
+    icon: 'Home',
+    href: '/admin',
+  },
+  {
+    id: 'user',
+    label: '사용자 관리',
+    icon: 'User',
+    children: [
+      { id: 'all-users', label: '전체 사용자', icon: 'Users', href: '/admin/user' },
+      {
+        id: 'inactive-users',
+        label: '비활성화된 사용자',
+        icon: 'UserX',
+        href: '/admin/user/inactive',
+      },
+    ],
+  },
+  {
+    id: 'post',
+    label: '게시물 관리',
+    icon: 'FileText',
+    children: [
+      { id: 'all-posts', label: '전체 게시물', icon: 'File', href: '/admin/posts' },
+      {
+        id: 'reported-posts',
+        label: '신고된 게시물',
+        icon: 'AlertTriangle',
+        href: '/admin/posts/reported',
+      },
+    ],
+  },
+  {
+    id: 'banned-words',
+    label: '금칙어 설정',
+    icon: 'Shield',
+    href: '/admin/banned-words',
+  },
+  {
+    id: 'settings',
+    label: '시스템 설정',
+    icon: 'Settings',
+    href: '/admin/settings',
+  },
+];
+
 const Sidebar = () => {
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === '/admin/user') {
-      setOpenMenu('user');
+    // 현재 경로에 따라 해당 메뉴 열기
+    const currentMenuItem = menuItems.find(
+      (item) => item.href === pathname || item.children?.some((child) => child.href === pathname),
+    );
+
+    if (currentMenuItem && currentMenuItem.children) {
+      setOpenMenus(new Set([currentMenuItem.id]));
     }
   }, [pathname]);
 
-  const handleToggle = (menu: string) => {
-    setOpenMenu(openMenu === menu ? null : menu);
+  const toggleMenu = (menuId: string) => {
+    const newOpenMenus = new Set(openMenus);
+    if (newOpenMenus.has(menuId)) {
+      newOpenMenus.delete(menuId);
+    } else {
+      newOpenMenus.add(menuId);
+    }
+    setOpenMenus(newOpenMenus);
+  };
+
+  const isMenuActive = (item: MenuItem): boolean => {
+    if (item.href) {
+      return pathname === item.href;
+    }
+    return item.children?.some((child) => pathname === child.href) || false;
+  };
+
+  const renderMenuItem = (item: MenuItem, level = 0) => {
+    const isOpen = openMenus.has(item.id);
+    const isActive = isMenuActive(item);
+    const hasChildren = item.children && item.children.length > 0;
+
+    return (
+      <div key={item.id} className={level === 0 ? 'mb-1' : ''}>
+        {item.href ? (
+          <Link
+            href={item.href}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group ${
+              isActive
+                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
+                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+            } ${level > 0 ? 'ml-6 py-2' : ''}`}
+          >
+            <Icon
+              name={item.icon as IconType}
+              className={`w-5 h-5 transition-colors ${
+                isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
+              }`}
+            />
+            <span className="flex-1">{item.label}</span>
+          </Link>
+        ) : (
+          <button
+            onClick={() => hasChildren && toggleMenu(item.id)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 w-full group ${
+              isActive
+                ? 'bg-blue-50 text-blue-700'
+                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+            }`}
+          >
+            <Icon
+              name={item.icon as IconType}
+              className={`w-5 h-5 transition-colors ${
+                isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
+              }`}
+            />
+            <span className="flex-1 text-left">{item.label}</span>
+            {hasChildren && (
+              <Icon
+                name={isOpen ? 'ChevronUp' : 'ChevronDown'}
+                className={`w-4 h-4 transition-all duration-200 ${
+                  isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-600'
+                }`}
+              />
+            )}
+          </button>
+        )}
+
+        {/* 하위 메뉴 */}
+        {hasChildren && (
+          <div
+            className={`overflow-hidden transition-all duration-300 ease-in-out ${
+              isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="mt-1 space-y-1">
+              {item.children?.map((child) => renderMenuItem(child, level + 1))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-white border-r flex flex-col justify-between py-6 px-4">
-      <nav className="flex flex-col gap-1">
-        {/* 대시보드 */}
-        <button
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-primary font-semibold text-[15px] hover:bg-gray-50 focus:bg-gray-100 transition-colors"
-          type="button"
-        >
-          <Icon name="planet" className="w-5 h-5" color="black" />
-          <span className="text-blue-600">대시보드</span>
-        </button>
-
-        {/* 게시물 관리 */}
-        <div>
-          <button
-            className="flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors"
-            type="button"
-            onClick={() => handleToggle('post')}
-          >
-            <Icon name="box" className="w-5 h-5" color="black" />
-            <span className="flex-1 text-left text-gray-900">게시물 관리</span>
-            <Icon
-              name={openMenu === 'post' ? 'ChevronUp' : 'ChevronDown'}
-              className="w-4 h-4"
-              color="black"
-            />
-          </button>
-        </div>
-
-        {/* 사용자 관리 */}
-        <div>
-          <button
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors ${openMenu === 'user' || pathname === '/admin/user' ? 'bg-gray-100' : ''}`}
-            type="button"
-            onClick={() => handleToggle('user')}
-          >
-            <Icon name="astronaut" className="w-5 h-5" color="black" />
-            <span className="flex-1 text-left text-gray-900">사용자 관리</span>
-            <Icon
-              name={openMenu === 'user' ? 'ChevronUp' : 'ChevronDown'}
-              className="w-4 h-4"
-              color="black"
-            />
-          </button>
-          {openMenu === 'user' && (
-            <div className="ml-8 mt-1 flex flex-col gap-1">
-              <button className="text-left px-2 py-1 rounded text-gray-900 hover:bg-gray-50">
-                <Link
-                  href="/admin/user"
-                  className={`block w-full h-full rounded ${
-                    pathname === '/admin/user' ? 'bg-gray-200 text-primary font-semibold' : ''
-                  }`}
-                >
-                  전체 사용자
-                </Link>
-              </button>
-              <button className="text-left px-2 py-1 rounded text-gray-900 hover:bg-gray-50">
-                비활성화된 사용자
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* 금칙어 설정 */}
-        <div>
-          <button
-            className="flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors"
-            type="button"
-            onClick={() => handleToggle('banword')}
-          >
-            <Icon name="Package" className="w-5 h-5" color="black" />
-            <span className="flex-1 text-left text-gray-900">금칙어 설정</span>
-            <Icon
-              name={openMenu === 'banword' ? 'ChevronUp' : 'ChevronDown'}
-              className="w-4 h-4"
-              color="black"
-            />
-          </button>
-        </div>
+    <aside className="w-72 h-screen bg-white border-r border-gray-200 flex flex-col">
+      {/* 메뉴 목록 */}
+      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        {menuItems.map((item) => renderMenuItem(item))}
       </nav>
 
-      {/* 하단 Docs */}
-      <div className="border-t pt-6 mt-6">
-        <button
-          className="flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors"
-          type="button"
+      {/* 사이드바 푸터 */}
+      <div className="p-4 border-t border-gray-200">
+        <Link
+          href="/admin/help"
+          className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group"
         >
-          <Icon name="box" className="w-5 h-5" color="black" />
-          <span className="text-gray-900">Docs</span>
-        </button>
+          <Icon name="HelpCircle" className="w-5 h-5 text-gray-500 group-hover:text-gray-700" />
+          <span>도움말</span>
+        </Link>
       </div>
     </aside>
   );
