@@ -1,18 +1,14 @@
 import { apiRequest } from '@/api/client/axios';
 import type {
   NotificationSettings,
-  GetNotificationSettingsRequest,
   UpdateNotificationSettingRequest,
 } from '@/api/types/notification';
 
 export const notificationAPI = {
-  async getSettings(
-    params: GetNotificationSettingsRequest,
-  ): Promise<NotificationSettings | undefined> {
+  async getSettings(): Promise<NotificationSettings | undefined> {
     try {
       const response = await apiRequest.get<{ content: NotificationSettings }>(
         '/v1/mypage/notification-settings',
-        { params },
       );
       return response.data.content;
     } catch (error) {

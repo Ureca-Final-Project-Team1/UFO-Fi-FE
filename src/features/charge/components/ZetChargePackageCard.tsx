@@ -12,11 +12,22 @@ interface ZetChargePackageCardProps {
   id: string;
   zet: number;
   price: number;
-  onBuyClick?: () => void;
+  onBuyClick: (packageId: string, zetAmount: number, price: number) => void;
+  isLoading?: boolean;
 }
 
-export function ZetChargePackageCard({ id, zet, price, onBuyClick }: ZetChargePackageCardProps) {
+export function ZetChargePackageCard({
+  id,
+  zet,
+  price,
+  onBuyClick,
+  isLoading = false,
+}: ZetChargePackageCardProps) {
   const size = PACKAGE_SIZES[id as 'A'] || PACKAGE_SIZES.DEFAULT;
+
+  const handleBuyClick = () => {
+    onBuyClick(id, zet, price);
+  };
 
   return (
     <div className="gradient-card-1 w-[358px] h-[104px] rounded-2xl px-5 py-3 relative">
@@ -36,8 +47,13 @@ export function ZetChargePackageCard({ id, zet, price, onBuyClick }: ZetChargePa
         <div className="body-16-semibold text-white">₩{price.toLocaleString()}</div>
       </div>
       <div className="absolute bottom-3 right-5">
-        <Button variant="exploration-button" size="sm" onClick={onBuyClick}>
-          구매하기
+        <Button
+          variant="exploration-button"
+          size="sm"
+          onClick={handleBuyClick}
+          disabled={isLoading}
+        >
+          {isLoading ? '처리중...' : '구매하기'}
         </Button>
       </div>
     </div>
