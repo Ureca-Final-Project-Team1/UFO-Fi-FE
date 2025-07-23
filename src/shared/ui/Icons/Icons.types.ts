@@ -64,7 +64,9 @@ export type LucideIconType =
   | 'Link'
   | 'Share'
   | 'MoreHorizontal'
-  | 'Check';
+  | 'Check'
+  | 'LogOut'
+  | 'Focus';
 
 // 커스텀 아이콘 타입
 export type CustomIconType =
@@ -75,7 +77,9 @@ export type CustomIconType =
   | 'satellite'
   | 'box'
   | 'rotate'
-  | 'graph';
+  | 'graph'
+  | 'circle-minus'
+  | 'return';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

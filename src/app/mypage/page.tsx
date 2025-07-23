@@ -1,17 +1,21 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
+import { LogoutModal } from '@/features/mypage/components';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Icon } from '@/shared/ui/Icons';
+import { Icon } from '@/shared';
 import { useTradeTabStore } from '@/stores/useTradeTabStore';
 
 export default function MyPage() {
   const router = useRouter();
-  const { data: mypageInfo, error, isLoading } = useMyInfo();
   const { setTab } = useTradeTabStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: mypageInfo, error, isLoading } = useMyInfo();
 
   const navigateToSalesHistory = () => {
     setTab('sell');
@@ -21,8 +25,12 @@ export default function MyPage() {
     setTab('purchase');
     router.push('/mypage/trade');
   };
-  const navigateToLogout = () => router.push('/logout');
-  const navigateToTerms = () => router.push('/terms');
+  const handleLogout = () => {
+    // TODO: 로그아웃 로직 추가 필요
+    router.push('/login');
+    toast.success('로그아웃 되었습니다!');
+  };
+  const navigateToTerms = () => router.push('/mypage/privacy');
   const navigateToFollow = () => router.push('/mypage/follow');
   const navigateToNotification = () => router.push('/mypage/notification');
 
@@ -32,7 +40,7 @@ export default function MyPage() {
   ];
 
   const supportItems = [
-    { label: '로그아웃', onClick: navigateToLogout },
+    { label: '로그아웃', onClick: () => setIsOpen(true) },
     { label: '이용 약관', onClick: navigateToTerms },
   ];
 
@@ -90,6 +98,8 @@ export default function MyPage() {
         <hr className="border-white/20" />
         <MenuSection title="고객 지원" items={supportItems} />
       </div>
+
+      <LogoutModal onPrimaryClick={handleLogout} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }

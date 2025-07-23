@@ -2,7 +2,7 @@ import { OCR_PROMPT } from '@/utils/OCRPrompt';
 
 import { gptService } from './gptService';
 
-export const ocrToGptService = async (formData: FormData): Promise<string> => {
+export const ocrToGptService = async (formData: FormData): Promise<string[]> => {
   const response = await fetch('/api/ocr', {
     method: 'POST',
     body: formData,
