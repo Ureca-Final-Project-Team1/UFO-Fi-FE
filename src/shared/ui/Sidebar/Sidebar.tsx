@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Icon } from '../Icons/Icon';
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
 

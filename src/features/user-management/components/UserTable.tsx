@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Table } from '@/shared';
+import { Table } from '@/shared/ui/Table/Table';
 
 import { UserRow } from '../types/user';
 
