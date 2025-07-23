@@ -106,4 +106,4 @@ const Table = <T extends TableRowBase>({
   );
 };
 
-export default Table;
+export { Table };

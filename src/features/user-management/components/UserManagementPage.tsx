@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-import { Modal } from '@/shared/ui/Modal/Modal';
+import { Modal } from '@/shared';
 
 import UserCommand from './UserCommand';
 import UserTable from './UserTable';
