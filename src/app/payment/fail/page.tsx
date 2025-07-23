@@ -59,7 +59,7 @@ function PaymentFailContent() {
       </div>
 
       <div className="flex-shrink-0 p-6 pb-8 space-y-3">
-        <Button size="full-width" variant="outline" onClick={() => router.push('/charge')}>
+        <Button size="full-width" variant="secondary" onClick={() => router.push('/charge')}>
           다시 시도
         </Button>
 
