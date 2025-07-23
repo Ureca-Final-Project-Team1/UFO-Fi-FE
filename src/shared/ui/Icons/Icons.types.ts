@@ -61,7 +61,8 @@ export type LucideIconType =
   | 'Loader2' // 로딩용
   | 'Signal' // 신호 아이콘 추가
   | 'RotateCw'
-  | 'Check';
+  | 'Check'
+  | 'Focus';
 
 // 커스텀 아이콘 타입
 export type CustomIconType =

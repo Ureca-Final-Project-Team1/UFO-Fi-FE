@@ -224,6 +224,10 @@
   --color-login-description: #6ef4d7;
   --color-kakao-button: #fee500;
 
+  --color-stepper-chosen: #7246d9;
+  --color-stepper-prev: #b3a7f8;
+  --color-stepper-check: #7444dd;
+
   --font-family-sans: var(--font-pretendard), Pretendard, sans-serif;
 
   --width-mobile-min: 375px;

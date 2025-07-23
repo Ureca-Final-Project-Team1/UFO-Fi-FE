@@ -6,6 +6,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import '@/styles/globals.css';
 
+import { Stepper } from '@/features/signup/components';
 import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
 import { Button, PhoneInput, Input, Title } from '@/shared/ui';
 import { useSignupStore } from '@/stores/useSignupStore';
@@ -35,9 +36,15 @@ const ProfilePage = () => {
     <div className="w-full min-h-screen flex flex-col">
       <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col">
         <div className="flex-1 flex flex-col justify-start items-start">
-          <Title title="회원가입" className="body-20-bold w-fit pl-0 mb-6" />
+          <Title title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
 
           <div className="flex flex-col gap-6 w-full">
+            <Stepper step={1} content="정보 입력" className="mb-5" />
+            <p className="heading-24-bold ml-2">
+              가입을 위한 정보를
+              <br />
+              입력해주세요
+            </p>
             <div className="flex flex-col gap-3 w-full text-left">
               <label className="flex items-center gap-5 body-16-bold">
                 이름
