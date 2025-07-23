@@ -117,6 +117,15 @@ const ProfanityManagementPage: React.FC = () => {
       return;
     }
 
+    // 중복 체크
+    const isDuplicate = data.some(
+      (item) => item.word.trim().toLowerCase() === newWord.trim().toLowerCase(),
+    );
+    if (isDuplicate) {
+      setModal({ open: true, message: '이미 등록된 금칙어입니다.' });
+      return;
+    }
+
     const newId = data.length > 0 ? Math.max(...data.map((item) => item.id)) + 1 : 1;
     const newProfanity: ProfanityRow = {
       id: newId,
