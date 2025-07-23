@@ -11,52 +11,52 @@ const dummyData: ProfanityRow[] = [
   {
     id: 1,
     word: '쉬뿔',
-    createdAt: '',
+    createdAt: '2024-01-15T09:30:00',
   },
   {
     id: 2,
     word: '쉬이발',
-    createdAt: '',
+    createdAt: '2024-01-16T14:15:00',
   },
   {
     id: 3,
     word: '쉬이방',
-    createdAt: '',
+    createdAt: '2024-01-17T11:45:00',
   },
   {
     id: 4,
     word: '쉬이벌',
-    createdAt: '',
+    createdAt: '2024-01-18T16:20:00',
   },
   {
     id: 5,
     word: '쉬이불',
-    createdAt: '',
+    createdAt: '2024-01-19T13:10:00',
   },
   {
     id: 6,
     word: '쉬이붕',
-    createdAt: '',
+    createdAt: '2024-01-20T10:25:00',
   },
   {
     id: 7,
     word: '쉬이빨',
-    createdAt: '',
+    createdAt: '2024-01-21T15:40:00',
   },
   {
     id: 8,
     word: '쉬이팔',
-    createdAt: '',
+    createdAt: '2024-01-22T12:55:00',
   },
   {
     id: 9,
     word: '쉬이펄',
-    createdAt: '',
+    createdAt: '2024-01-23T08:35:00',
   },
   {
     id: 10,
     word: '쉬이풀',
-    createdAt: '',
+    createdAt: '2024-01-24T17:05:00',
   },
 ];
 
@@ -73,7 +73,7 @@ const ProfanityManagementPage: React.FC = () => {
 
   // 컴포넌트 마운트 시 localStorage에서 데이터 로드
   useEffect(() => {
-    //더미 데이터 사용
+    // 개발 중에는 localStorage를 강제로 초기화
     localStorage.removeItem(STORAGE_KEY);
     setData(dummyData);
     setIsLoaded(true);

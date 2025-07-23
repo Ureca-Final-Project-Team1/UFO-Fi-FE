@@ -115,6 +115,15 @@ const Table = <T extends TableRowBase>({
                           </button>
                         )}
                       </div>
+                    ) : col.accessor === 'createdAt' && row[col.accessor as keyof T] ? (
+                      new Date(row[col.accessor as keyof T] as string).toLocaleString('ko-KR', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })
                     ) : (
                       String(row[col.accessor as keyof T] ?? '')
                     )}
