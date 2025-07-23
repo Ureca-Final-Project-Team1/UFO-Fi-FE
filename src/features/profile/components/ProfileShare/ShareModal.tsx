@@ -14,7 +14,7 @@ interface ShareModalProps {
 }
 
 export function ShareModal({ profile, isOpen, onClose }: ShareModalProps) {
-  const { profileUrl, handleCopyLink, handleKakaoShare } = useProfileShare(profile);
+  const { profileUrl, handleCopyLink } = useProfileShare(profile);
 
   return (
     <Modal
@@ -23,6 +23,10 @@ export function ShareModal({ profile, isOpen, onClose }: ShareModalProps) {
       title="공유하기"
       description="SNS를 통해서 프로필을 공유해보세요!"
       type="none"
+      size="lg"
+      hasCloseButton={true}
+      closeButtonPosition="top-right"
+      headerAlign="center"
       className="max-w-md"
     >
       <div className="space-y-6">
@@ -31,10 +35,11 @@ export function ShareModal({ profile, isOpen, onClose }: ShareModalProps) {
           <QRCodeGenerator url={profileUrl} />
         </div>
 
-        {/* 공유 버튼들 */}
+        {/* 스와이퍼 기반 공유 버튼들 */}
         <ShareButtons
+          profile={profile}
+          profileUrl={profileUrl}
           onCopyLink={handleCopyLink}
-          onKakaoShare={handleKakaoShare}
           onClose={onClose}
         />
       </div>

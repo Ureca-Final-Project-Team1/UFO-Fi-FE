@@ -1,21 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import Image from 'next/image';
 
 import type { ProfileUser } from '@/api/types/profile';
 import { Avatar, Button, Icon } from '@/shared';
+import { useModalStore } from '@/stores/useModalStore';
 
-import { ProfileShare } from '../ProfileShare';
+import { ProfileShareContent } from '../ProfileShare/ProfileShareContent';
 
 interface ProfileHeaderProps {
   profile: ProfileUser;
 }
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
-  const [showShareModal, setShowShareModal] = useState(false);
+  const { openModal } = useModalStore();
 
   const handleShareClick = () => {
-    setShowShareModal(true);
+    openModal('profileShare', {
+      title: '공유하기',
+      description: 'SNS를 통해서 프로필을 공유해보세요!',
+      type: 'none',
+      size: 'lg',
+      hasCloseButton: true,
+      closeButtonPosition: 'top-right',
+      headerAlign: 'center',
+      children: <ProfileShareContent profile={profile} />,
+    });
   };
 
   return (
@@ -23,11 +33,12 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
       <div className="flex items-center gap-4">
         <Avatar variant="default" size="lg">
           {profile.profileImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={profile.profileImageUrl}
               alt={profile.nickname}
-              className="w-full h-full object-cover rounded-full"
+              width={64}
+              height={64}
+              className="w-full h-full object-cover"
             />
           ) : (
             <Icon name="astronaut" className="w-12 h-12 text-purple-200" />
@@ -46,12 +57,6 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
           공유
         </Button>
       </div>
-
-      <ProfileShare
-        profile={profile}
-        isOpen={showShareModal}
-        onClose={() => setShowShareModal(false)}
-      />
     </div>
   );
 }
