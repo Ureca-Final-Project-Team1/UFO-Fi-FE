@@ -14,6 +14,7 @@ import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import {
   Button,
+  Icon,
   Select,
   SelectContent,
   SelectItem,
@@ -243,6 +244,28 @@ const PlanPage = () => {
               )}
             />
           </div>
+
+          <div className="w-full">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <Button
+              type="button"
+              onClick={handleClick}
+              className="w-fit flex"
+              variant="primary"
+              disabled={isLoading}
+            >
+              <div className="flex justify-center items-center gap-2">
+                <Icon name="Focus" />
+                <p>캡처 이미지로 요금제 자동 입력</p>
+              </div>
+            </Button>
+          </div>
         </div>
 
         {watchedCarrier && watchedPlanName && maxData !== null && networkType && (
@@ -265,22 +288,6 @@ const PlanPage = () => {
             </div>
           </div>
         )}
-
-        <div className="w-full mt-8">
-          <label className="flex items-center gap-3 body-16-bold text-white mb-3">
-            캡처 이미지로 요금제 자동 입력
-          </label>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            accept="image/*"
-            className="hidden"
-          />
-          <Button type="button" onClick={handleClick} variant="primary" disabled={isLoading}>
-            이미지 선택하기
-          </Button>
-        </div>
       </div>
 
       <div className="sticky bottom-0 bg-inherit pb-4">
