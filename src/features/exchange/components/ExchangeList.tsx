@@ -72,7 +72,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="text-red-400 mb-2">데이터를 불러오는데 실패했습니다</div>
-          <Button onClick={() => refetch()} className="text-white text-sm underline">
+          <Button onClick={() => refetch()} className="text-sm underline">
             다시 시도
           </Button>
         </div>
