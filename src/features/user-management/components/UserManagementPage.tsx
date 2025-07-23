@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Modal } from '@/shared';
 
@@ -56,14 +56,40 @@ const dummyData: UserRow[] = [
   },
 ];
 
+const STORAGE_KEY = 'user-management-data';
+
 const UserManagementPage: React.FC = () => {
   const [data, setData] = useState<UserRow[]>(dummyData);
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const [modal, setModal] = useState<{ open: boolean; message: string }>({
     open: false,
     message: '',
   });
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('nickname');
+
+  // 컴포넌트 마운트 시 localStorage에서 데이터 로드
+  useEffect(() => {
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        setData(parsedData);
+      } catch (error) {
+        console.error('Failed to parse saved data:', error);
+        setData(dummyData);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // 데이터가 변경될 때마다 localStorage에 저장 (isLoaded가 true일 때만)
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+  }, [data, isLoaded]);
 
   // 필터링된 데이터 계산
   const filteredData = data.filter((user) => {
@@ -105,9 +131,23 @@ const UserManagementPage: React.FC = () => {
     setModal({ open: true, message: '사용자가 비활성화 되었습니다.' });
   };
 
+  // 데이터 초기화 함수 (개발용)
+  const handleResetData = () => {
+    setData(dummyData);
+    setModal({ open: true, message: '데이터가 초기화되었습니다.' });
+  };
+
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6 text-black">사용자 관리</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-black">사용자 관리</h2>
+        <button
+          onClick={handleResetData}
+          className="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+        >
+          데이터 초기화
+        </button>
+      </div>
       <div className="flex justify-end mb-6">
         <UserCommand
           search={search}
