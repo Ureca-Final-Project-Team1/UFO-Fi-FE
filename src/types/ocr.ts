@@ -3,6 +3,6 @@ export interface OCRItem {
 }
 
 export interface ChatResult {
-  item: string;
+  item: string[];
   message: string;
 }

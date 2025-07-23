@@ -15,17 +15,23 @@ import {
 import type { PlanComboProps } from './PlanCombo.types';
 import { planComboItemClass } from './planComboVariants';
 
-export function PlanCombo({ planNames = [], onSelect }: PlanComboProps) {
+export function PlanCombo({ planNames = [], onSelect, value }: PlanComboProps) {
   const [input, setInput] = useState('');
   const [selected, setSelected] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [hasUserSelected, setHasUserSelected] = useState(false);
 
   useEffect(() => {
+    if (value && !hasUserSelected) {
+      setInput(value);
+      setSelected(value);
+    }
+  }, [value, hasUserSelected]);
+
+  useEffect(() => {
     if (planNames.length > 0 && !hasUserSelected) {
       setIsOpen(true);
     }
-    setHasUserSelected(false);
   }, [planNames]);
 
   const handlePlanSelect = (value: string) => {
