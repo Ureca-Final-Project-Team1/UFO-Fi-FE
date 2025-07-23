@@ -8,13 +8,14 @@ interface ProfileStatsProps {
 
 export function ProfileStats({ profile }: ProfileStatsProps) {
   return (
-    <div className="flex justify-center gap-8">
-      <div className="text-center">
-        <div className="text-white text-lg font-bold">팔로워 {profile.followerCount}명</div>
+    <div className="flex flex-2 justify-center gap-16 text-center">
+      <div className="flex flex-col items-center">
+        <span className="text-white text-2xl font-bold">{profile.followerCount}</span>
+        <span className="text-sm text-gray-400">팔로워</span>
       </div>
-
-      <div className="text-center">
-        <div className="text-white text-lg font-bold">팔로잉 {profile.followingCount}명</div>
+      <div className="flex flex-col items-center">
+        <span className="text-white text-2xl font-bold">{profile.followingCount}</span>
+        <span className="text-sm text-gray-400">팔로잉</span>
       </div>
     </div>
   );

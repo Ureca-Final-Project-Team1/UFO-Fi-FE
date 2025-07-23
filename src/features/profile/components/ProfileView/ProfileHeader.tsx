@@ -38,7 +38,7 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
               alt={profile.nickname}
               width={64}
               height={64}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-full"
             />
           ) : (
             <Icon name="astronaut" className="w-12 h-12 text-purple-200" />
@@ -47,7 +47,7 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
 
         <div className="flex flex-col">
           <h1 className="text-white text-xl font-bold">{profile.nickname}</h1>
-          <span className="text-gray-400 text-sm">지구인 #{profile.userId}</span>
+          <span className="text-gray-400 text-sm">네임태그 #{profile.userId}</span>
         </div>
       </div>
 
