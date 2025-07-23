@@ -75,7 +75,7 @@ export type CustomIconType =
   | 'rotate'
   | 'graph'
   | 'circle-minus'
-  | 'vector';
+  | 'return';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

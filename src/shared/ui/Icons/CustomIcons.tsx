@@ -248,7 +248,7 @@ export const CircleMinusIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const VectorIcon: React.FC<IconProps> = (props) => (
+export const ReturnIcon: React.FC<IconProps> = (props) => (
   <IconWrapper {...props}>
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

@@ -28,7 +28,7 @@ const columns = [
 
 const defaultActions = {
   deactivateIcon: <Icon name="circle-minus" className="w-5 h-5" />,
-  activateIcon: <Icon name="vector" className="w-5 h-5" />,
+  activateIcon: <Icon name="return" className="w-5 h-5" />,
 };
 
 const data = [

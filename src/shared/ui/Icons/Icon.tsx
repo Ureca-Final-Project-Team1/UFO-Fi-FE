@@ -52,7 +52,7 @@ export const Icon: React.FC<IconComponentProps> = ({
     rotate: CustomIcons.RotateIcon,
     graph: CustomIcons.GraphIcon,
     'circle-minus': CustomIcons.CircleMinusIcon,
-    vector: CustomIcons.VectorIcon,
+    return: CustomIcons.ReturnIcon,
   };
 
   if (name in customIconComponents) {

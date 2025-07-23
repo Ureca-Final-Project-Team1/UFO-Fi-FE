@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { CircleMinusIcon, VectorIcon } from '../Icons/CustomIcons';
+import { CircleMinusIcon, ReturnIcon } from '../Icons/CustomIcons';
 
 interface Column<T = unknown> {
   Header: string;
@@ -89,7 +89,7 @@ const Table = <T extends TableRowBase>({
                           className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-green-100 transition-colors text-green-500"
                           onClick={() => handleActivate(row)}
                         >
-                          {row.actions?.activateIcon ?? <VectorIcon className="w-5 h-5" />}
+                          {row.actions?.activateIcon ?? <ReturnIcon className="w-5 h-5" />}
                         </button>
                       </div>
                     ) : (
