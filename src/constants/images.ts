@@ -40,4 +40,7 @@ export const IMAGE_PATHS = {
   QR: '/images/QR.png',
   IC: '/images/IC.png',
   UFO_LOGO: '/images/ufo-logo.svg',
+  PURCHASE_COIN: '/images/purchase-coin.svg',
+  DATA_CUBE: '/images/data-cube.svg',
+  PURCHASE_COMPLETED: '/images/purchase-completed.svg',
 } as const;
