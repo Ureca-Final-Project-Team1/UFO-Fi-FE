@@ -1,13 +1,7 @@
 import React from 'react';
 
-import { Command, CommandInput } from '@/shared/ui/Command/Command';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/Select/Select';
+import { Command, CommandInput } from '@/shared';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared';
 
 interface UserCommandProps {
   search: string;
@@ -26,7 +20,7 @@ const UserCommand: React.FC<UserCommandProps> = ({
     <div className="flex gap-2 items-center">
       <Select value={filterType} onValueChange={setFilterType}>
         <SelectTrigger className="w-32 text-black">
-          <SelectValue placeholder="필터" className="text-black" />
+          <SelectValue placeholder="필터" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="nickname">닉네임</SelectItem>
