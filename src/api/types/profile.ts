@@ -1,25 +1,26 @@
 import { SuccessApiResponse } from './api';
+import { Carrier } from './carrier';
+
+export interface TradePost {
+  postId: number;
+  mobileDataType: 'LTE' | '_5G';
+  carrier: Carrier;
+  sellMobileDataAmountGB: number;
+  title: string;
+  createdAt: string;
+}
 
 export interface ProfileUser {
-  id: number;
+  userId: number;
   nickname: string;
-  email: string | null;
   profileImageUrl?: string;
-  sellMobileDataCapacityGb: number;
-  sellableDataAmount: number;
-  zetAsset: number | null;
-  followersCount?: number;
-  followingCount?: number;
-  bio?: string;
-  isFollowing?: boolean;
+  followerCount: number;
+  followingCount: number;
+  tradePostsRes: TradePost[];
 }
 
 export interface GetProfileRequest {
   anotherUserId: number;
 }
 
-export interface GetProfileResponse extends SuccessApiResponse<ProfileUser> {
-  statusCode: number;
-  message: string;
-  content: ProfileUser;
-}
+export type GetProfileResponse = SuccessApiResponse<ProfileUser>;
