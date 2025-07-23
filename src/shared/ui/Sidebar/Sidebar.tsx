@@ -86,7 +86,7 @@ const Sidebar = () => {
         {/* 금칙어 설정 */}
         <div>
           <button
-            className="flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors"
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full hover:bg-gray-50 focus:bg-gray-100 transition-colors ${openMenu === 'banword' || pathname === '/admin/profanity' ? 'bg-gray-100' : ''}`}
             type="button"
             onClick={() => handleToggle('banword')}
           >
@@ -98,6 +98,20 @@ const Sidebar = () => {
               color="black"
             />
           </button>
+          {openMenu === 'banword' && (
+            <div className="ml-8 mt-1 flex flex-col gap-1">
+              <button className="text-left px-2 py-1 rounded text-gray-900 hover:bg-gray-50">
+                <Link
+                  href="/admin/profanity"
+                  className={`block w-full h-full rounded ${
+                    pathname === '/admin/profanity' ? 'bg-gray-200 text-primary font-semibold' : ''
+                  }`}
+                >
+                  금칙어 관리
+                </Link>
+              </button>
+            </div>
+          )}
         </div>
       </nav>
 

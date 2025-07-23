@@ -11,7 +11,11 @@ interface Column<T = unknown> {
 
 interface TableRowBase {
   id?: string | number;
-  actions?: { deactivateIcon?: React.ReactNode; activateIcon?: React.ReactNode };
+  actions?: {
+    deactivateIcon?: React.ReactNode;
+    activateIcon?: React.ReactNode;
+    deleteIcon?: React.ReactNode;
+  };
 }
 
 interface TableProps<T extends TableRowBase> {
@@ -19,6 +23,7 @@ interface TableProps<T extends TableRowBase> {
   data: T[];
   onActivateClick?: (row: T) => void;
   onDeactivateClick?: (row: T) => void;
+  onDeleteClick?: (row: T) => void;
 }
 
 const Table = <T extends TableRowBase>({
@@ -26,12 +31,16 @@ const Table = <T extends TableRowBase>({
   data,
   onActivateClick,
   onDeactivateClick,
+  onDeleteClick,
 }: TableProps<T>) => {
   const handleActivate = (row: T) => {
     onActivateClick?.(row);
   };
   const handleDeactivate = (row: T) => {
     onDeactivateClick?.(row);
+  };
+  const handleDelete = (row: T) => {
+    onDeleteClick?.(row);
   };
 
   return (
@@ -75,22 +84,36 @@ const Table = <T extends TableRowBase>({
                   >
                     {col.accessor === 'actions' ? (
                       <div className="flex justify-center items-center gap-3 min-h-[40px]">
-                        <button
-                          type="button"
-                          aria-label="비활성화"
-                          className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-red-100 transition-colors text-red-500"
-                          onClick={() => handleDeactivate(row)}
-                        >
-                          {row.actions?.deactivateIcon ?? <CircleMinusIcon className="w-5 h-5" />}
-                        </button>
-                        <button
-                          type="button"
-                          aria-label="활성화"
-                          className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-green-100 transition-colors text-green-500"
-                          onClick={() => handleActivate(row)}
-                        >
-                          {row.actions?.activateIcon ?? <ReturnIcon className="w-5 h-5" />}
-                        </button>
+                        {onDeleteClick && (
+                          <button
+                            type="button"
+                            aria-label="삭제"
+                            className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-red-100 transition-colors text-red-500"
+                            onClick={() => handleDelete(row)}
+                          >
+                            {row.actions?.deleteIcon ?? <CircleMinusIcon className="w-5 h-5" />}
+                          </button>
+                        )}
+                        {onDeactivateClick && (
+                          <button
+                            type="button"
+                            aria-label="비활성화"
+                            className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-red-100 transition-colors text-red-500"
+                            onClick={() => handleDeactivate(row)}
+                          >
+                            {row.actions?.deactivateIcon ?? <CircleMinusIcon className="w-5 h-5" />}
+                          </button>
+                        )}
+                        {onActivateClick && (
+                          <button
+                            type="button"
+                            aria-label="활성화"
+                            className="w-7 h-7 flex items-center justify-center rounded-full p-0 hover:bg-green-100 transition-colors text-green-500"
+                            onClick={() => handleActivate(row)}
+                          >
+                            {row.actions?.activateIcon ?? <ReturnIcon className="w-5 h-5" />}
+                          </button>
+                        )}
                       </div>
                     ) : (
                       String(row[col.accessor as keyof T] ?? '')
