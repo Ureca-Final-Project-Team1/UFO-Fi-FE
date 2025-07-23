@@ -177,6 +177,7 @@ model users {
   user_accounts                            user_accounts?         @relation(fields: [user_account_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKbcurcu3ke5e0bq4ld5ym9va34")
   profile_photo                            profile_photo?         @relation(fields: [profile_photo_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKjkh0ielp5opkdbqmdmq4x5g75")
   refreshs                                 refreshs?              @relation(fields: [refresh_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKt80anxmture0i6gt74feisyb1")
+  voyage_letters                           voyage_letters[]
 
   @@index([profile_photo_id], map: "FKjkh0ielp5opkdbqmdmq4x5g75")
 }
@@ -225,4 +226,18 @@ enum users_role {
   ROLE_NO_INFO
   ROLE_REPORTED
   ROLE_USER
+}
+
+model voyage_letters {
+  id           BigInt   @id @default(autoincrement())
+  user_id      BigInt
+  step         Int      // 1~5단계
+  recipient_id BigInt
+  content      String   @db.VarChar(1024)
+  created_at   DateTime @default(now())
+
+  users        users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@unique([user_id, step]) // 사용자별 최대 5단계만 작성 가능
 }
