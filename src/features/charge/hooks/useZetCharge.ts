@@ -19,6 +19,10 @@ export function useZetCharge() {
   const { data: userInfo } = useMyInfo();
 
   const handleChargePackage = async (packageId: string, zetAmount: number, price: number) => {
+    if (isProcessing) {
+      return;
+    }
+
     if (!userInfo) {
       toast.error('사용자 정보를 불러올 수 없습니다.');
       return;
