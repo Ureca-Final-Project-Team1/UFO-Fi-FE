@@ -58,41 +58,6 @@ const dummyData: ProfanityRow[] = [
     word: '쉬이풀',
     createdAt: '',
   },
-  {
-    id: 11,
-    word: '쉬파',
-    createdAt: '',
-  },
-  {
-    id: 12,
-    word: '쉬팍',
-    createdAt: '',
-  },
-  {
-    id: 13,
-    word: '쉬팍아',
-    createdAt: '',
-  },
-  {
-    id: 14,
-    word: '쉬팔',
-    createdAt: '',
-  },
-  {
-    id: 15,
-    word: '쉬팡',
-    createdAt: '',
-  },
-  {
-    id: 16,
-    word: '쉬퍼얼',
-    createdAt: '',
-  },
-  {
-    id: 17,
-    word: '쉬펄',
-    createdAt: '',
-  },
 ];
 
 const STORAGE_KEY = 'profanity-management-data';
@@ -129,7 +94,14 @@ const ProfanityManagementPage: React.FC = () => {
   }, [data, isLoaded]);
 
   const handleDelete = (row: ProfanityRow) => {
-    setData((prev) => prev.filter((item) => item.id !== row.id));
+    setData((prev) => {
+      const filteredData = prev.filter((item) => item.id !== row.id);
+      // ID를 1부터 순차적으로 재할당
+      return filteredData.map((item, index) => ({
+        ...item,
+        id: index + 1,
+      }));
+    });
     setModal({ open: true, message: '금칙어가 삭제되었습니다.' });
   };
 
@@ -139,7 +111,7 @@ const ProfanityManagementPage: React.FC = () => {
       return;
     }
 
-    const newId = Math.max(...data.map((item) => item.id)) + 1;
+    const newId = data.length > 0 ? Math.max(...data.map((item) => item.id)) + 1 : 1;
     const newProfanity: ProfanityRow = {
       id: newId,
       word: newWord.trim(),
@@ -157,9 +129,23 @@ const ProfanityManagementPage: React.FC = () => {
     }
   };
 
+  // 데이터 초기화 함수 (개발용)
+  const handleResetData = () => {
+    setData(dummyData);
+    setModal({ open: true, message: '데이터가 초기화되었습니다.' });
+  };
+
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6 text-black">금칙어 설정</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-black">금칙어 설정</h2>
+        <button
+          onClick={handleResetData}
+          className="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+        >
+          데이터 초기화
+        </button>
+      </div>
 
       {/* 금칙어 목록 테이블 */}
       <div className="mb-8">
