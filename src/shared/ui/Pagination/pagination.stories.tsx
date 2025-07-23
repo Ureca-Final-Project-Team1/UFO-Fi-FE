@@ -6,6 +6,11 @@ import Pagination from './Pagination';
 const meta: Meta<typeof Pagination> = {
   title: 'UPagination',
   component: Pagination,
+  argTypes: {
+    currentPage: { control: 'number' },
+    totalPages: { control: 'number' },
+    siblingCount: { control: 'number' },
+  },
 };
 export default meta;
 
