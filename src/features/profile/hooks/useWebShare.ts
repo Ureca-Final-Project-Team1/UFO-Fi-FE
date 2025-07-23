@@ -12,8 +12,19 @@ export function useWebShare() {
 
   const canShare = typeof navigator !== 'undefined' && navigator.share;
 
+  const isClipboardAvailable = () => {
+    return (
+      typeof navigator !== 'undefined' &&
+      'clipboard' in navigator &&
+      'writeText' in navigator.clipboard
+    );
+  };
+
   const share = async (data: ShareData) => {
     if (!canShare) {
+      if (!isClipboardAvailable()) {
+        throw new Error('Clipboard not supported');
+      }
       try {
         await navigator.clipboard.writeText(data.url);
         toast.success('링크가 복사되었습니다!');
