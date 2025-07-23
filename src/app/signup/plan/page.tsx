@@ -2,15 +2,19 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Plan, plansAPI, signupAPI } from '@/api';
+import { Carrier } from '@/api/types/carrier';
+import { PlanCombo, Stepper } from '@/features/signup/components';
+import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import {
   Button,
+  Icon,
   Select,
   SelectContent,
   SelectItem,
@@ -27,9 +31,40 @@ const PlanPage = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-
-  const [maxData, setMaxData] = useState<number | null>();
+  const [maxData, setMaxData] = useState<number | null>(null);
   const [networkType, setNetworkType] = useState('');
+  const [planNameOCR, setPlanNameOCR] = useState('');
+  const [carrierOCR, setCarrierOCR] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { mutate: runOCRAndGPT } = useOCRToGptMutation((result) => {
+    setPlanNameOCR(result[0]);
+    setCarrierOCR(result[1]);
+    setIsLoading(false);
+  });
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('이미지 파일만 업로드 가능합니다.');
+      return;
+    }
+
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error('파일 크기는 10MB 이하여야 합니다.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    setIsLoading(true);
+    runOCRAndGPT(formData);
+  };
+
+  const handleClick = () => fileInputRef.current?.click();
 
   const {
     control,
@@ -49,97 +84,86 @@ const PlanPage = () => {
   const watchedPlanName = watch('planName');
 
   useEffect(() => {
-    const fetchPlans = async () => {
-      if (!watchedCarrier) {
-        return;
+    if (carrierOCR) {
+      const validCarriers = ['SKT', 'LGU', 'KT'];
+      const matchedCarrier = validCarriers.find(
+        (c) => carrierOCR.toUpperCase().includes(c) || (c === 'LGU' && carrierOCR.includes('LG')),
+      );
+      if (matchedCarrier) {
+        setValue('carrier', matchedCarrier);
+      } else {
+        toast.error('인식된 통신사가 유효하지 않습니다.');
       }
+    }
+    if (planNameOCR) setValue('planName', planNameOCR);
+  }, [planNameOCR, carrierOCR, setValue]);
 
+  const handleApiError = (error: unknown) => {
+    console.error('API 오류:', error);
+    const isAxiosError = (
+      err: unknown,
+    ): err is { response: { data: { message: string }; status: number } } =>
+      typeof err === 'object' && err !== null && 'response' in err;
+
+    const errorMessage = isAxiosError(error)
+      ? error.response.data.message
+      : error instanceof Error
+        ? error.message
+        : '요금제 조회에 실패했습니다.';
+
+    setApiError(errorMessage);
+    toast.error(errorMessage);
+    setPlans([]);
+    if (isAxiosError(error) && error.response.status === 401) router.push('/login');
+  };
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      if (!watchedCarrier || watchedCarrier === prevTelecom.current) return;
       setIsLoading(true);
-      setApiError(null);
-
       try {
         const response = await plansAPI.getByCarrier(watchedCarrier);
         setPlans(response);
-
-        // 통신사 변경 시 요금제 선택 초기화
         setValue('planName', '');
         setMaxData(null);
         setNetworkType('');
-
         if (!response || response.length === 0) {
-          setApiError('해당 통신사의 요금제를 찾을 수 없습니다.');
-          toast.error('해당 통신사의 요금제를 찾을 수 없습니다.');
+          const msg = '해당 통신사의 요금제를 찾을 수 없습니다.';
+          setApiError(msg);
+          toast.error(msg);
         }
-      } catch (error: unknown) {
-        console.error('=== useEffect: 요금제 조회 실패 ===');
-        console.error('에러:', error);
-        const isAxiosError = (
-          err: unknown,
-        ): err is { response: { data: { message: string }; status: number } } => {
-          return typeof err === 'object' && err !== null && 'response' in err;
-        };
-        const errorMessage = isAxiosError(error)
-          ? error.response.data.message
-          : error instanceof Error
-            ? error.message
-            : '요금제 조회에 실패했습니다.';
-
-        setApiError(errorMessage);
-        toast.error(errorMessage);
-        setPlans([]);
-
-        // 401 에러인 경우 로그인 페이지로 리다이렉트
-        if (isAxiosError(error) && error.response.status === 401) {
-          router.push('/login');
-          return;
-        }
+      } catch (error) {
+        handleApiError(error);
       } finally {
         setIsLoading(false);
       }
-    };
-
-    if (watchedCarrier && watchedCarrier !== prevTelecom.current) {
-      fetchPlans();
       prevTelecom.current = watchedCarrier;
-    }
+    };
+    fetchPlans();
   }, [watchedCarrier, setValue, router]);
 
   const onSubmit = async (data: SignupPlanSchema) => {
-    // 프로필 정보 완료 여부 확인
     if (!isProfileComplete()) {
       toast.error('이름과 전화번호가 필요합니다.');
       return;
     }
-
-    // planName이 비어있지 않음을 확인
     if (!data.planName?.trim()) {
       toast.error('요금제를 선택해주세요.');
       return;
     }
-
-    setForm({ carrier: data.carrier, planName: data.planName });
-
+    setForm({ carrier: data.carrier as Carrier, planName: data.planName });
     const selectedPlan = plans.find((p) => p.planName === data.planName);
     if (!selectedPlan) {
       toast.error('선택된 요금제를 찾을 수 없습니다.');
       return;
     }
-
     setIsLoading(true);
     try {
-      const requestData = {
-        userInfoReq: {
-          name,
-          phoneNumber,
-        },
-        userPlanReq: {
-          planId: selectedPlan.planId,
-          planName: selectedPlan.planName,
-        },
-      };
-
-      await signupAPI.signup(requestData);
-      toast.success(`회원가입이 완료되었습니다!`);
+      await signupAPI.signup({
+        userInfoReq: { name, phoneNumber },
+        userPlanReq: { planId: selectedPlan.planId, planName: selectedPlan.planName },
+      });
+      toast.success('회원가입이 완료되었습니다!');
       useSignupStore.getState().reset();
       router.push('/');
     } catch (error) {
@@ -153,9 +177,14 @@ const PlanPage = () => {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col justify-start items-start">
-        <Title title="회원가입" className="body-20-bold w-fit pl-0 mb-6" />
-
+        <Title title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
         <div className="flex flex-col items-start gap-6 w-full">
+          <Stepper step={2} content="가입 신청" className="mb-5" />
+          <p className="heading-24-bold ml-2">
+            가입을 위한 정보를
+            <br />
+            입력해주세요
+          </p>
           <div className="w-full">
             <label className="flex items-center gap-5 body-16-bold mb-3">
               통신사 정보
@@ -171,13 +200,10 @@ const PlanPage = () => {
                   value={field.value}
                   onValueChange={(value) => {
                     field.onChange(value);
-                    setForm({ carrier: value });
+                    setForm({ carrier: value as Carrier });
                   }}
                 >
-                  <SelectTrigger
-                    size="default"
-                    className="w-full bg-white text-black caption-14-regular"
-                  >
+                  <SelectTrigger className="w-full bg-white text-black caption-14-regular">
                     <SelectValue placeholder="통신사 선택" />
                   </SelectTrigger>
                   <SelectContent>
@@ -202,48 +228,43 @@ const PlanPage = () => {
               name="planName"
               control={control}
               render={({ field }) => (
-                <Select
-                  value={field.value || ''}
-                  onValueChange={(value) => {
+                <PlanCombo
+                  value={field.value}
+                  planNames={plans.map((p) => p.planName)}
+                  onSelect={(value) => {
                     field.onChange(value);
                     setForm({ planName: value });
-
-                    const selected = plans.find((plan) => plan.planName === value);
+                    const selected = plans.find((p) => p.planName === value);
                     if (selected) {
                       setMaxData(selected.sellMobileDataCapacityGB);
-                      setNetworkType(selected.mobileDataType);
+                      setNetworkType(selected.mobileDataType.replace(/^_/, ''));
                     }
                   }}
-                  disabled={!watchedCarrier || isLoading}
-                >
-                  <SelectTrigger
-                    size="default"
-                    className="w-full bg-white text-black caption-14-regular"
-                  >
-                    <SelectValue
-                      placeholder={
-                        !watchedCarrier
-                          ? '먼저 통신사를 선택해주세요'
-                          : isLoading
-                            ? '요금제 조회 중...'
-                            : apiError
-                              ? '요금제 조회 실패'
-                              : plans.length === 0
-                                ? '요금제가 없습니다'
-                                : '요금제 선택'
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {plans.map((plan) => (
-                      <SelectItem key={plan.planId} value={plan.planName}>
-                        {plan.planName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                />
               )}
             />
+          </div>
+
+          <div className="w-full">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <Button
+              type="button"
+              onClick={handleClick}
+              className="w-fit flex"
+              variant="primary"
+              disabled={isLoading}
+            >
+              <div className="flex justify-center items-center gap-2">
+                <Icon name="Focus" />
+                <p>캡처 이미지로 요금제 자동 입력</p>
+              </div>
+            </Button>
           </div>
         </div>
 
@@ -254,13 +275,12 @@ const PlanPage = () => {
               <p className="text-start w-full text-white body-20-bold">
                 다음 정보가 맞는지 확인해주세요.
               </p>
-
               <div className="flex flex-col gap-3">
-                <div className="flex items-start justify-between text-white body-16-bold">
-                  <p className="text-white body-16-bold">판매할 수 있는 최대 데이터</p>
+                <div className="flex justify-between text-white body-16-bold">
+                  <p>판매할 수 있는 최대 데이터</p>
                   <p className="caption-14-regular">{maxData}GB</p>
                 </div>
-                <div className="flex items-start justify-between text-white body-16-bold">
+                <div className="flex justify-between text-white body-16-bold">
                   <p>네트워크 타입</p>
                   <p className="caption-14-regular">{networkType}</p>
                 </div>
@@ -270,7 +290,6 @@ const PlanPage = () => {
         )}
       </div>
 
-      {/* 고정된 하단 버튼 */}
       <div className="sticky bottom-0 bg-inherit pb-4">
         <Button
           onClick={handleSubmit(onSubmit)}

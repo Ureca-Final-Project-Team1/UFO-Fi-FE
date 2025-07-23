@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
+import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
@@ -18,6 +19,9 @@ interface ExchangeListProps {
 }
 
 export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: ExchangeListProps) => {
+  // 사용자 정보 조회
+  const { data: userInfo } = useMyInfo();
+
   // 무한스크롤 데이터 조회
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteExchangePosts();
@@ -40,15 +44,18 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
       .filter((post) => post.status !== 'DELETED')
       .map((post) => ({
         id: post.postId,
+        title: post.title,
         carrier: post.carrier,
         networkType: post.mobileDataType === '_5G' ? '5G' : 'LTE',
         capacity: `${post.sellMobileDataCapacityGb}GB`,
         price: `${post.totalPrice.toLocaleString()}ZET`,
         timeLeft: formatTimeAgo(post.createdAt),
-        isOwner: false, // TODO: 현재 사용자 ID와 비교 필요
+        isOwner: userInfo?.nickname === post.sellerNickname,
         status: post.status,
+        sellerNickname: post.sellerNickname,
+        sellerId: post.sellerId,
       }));
-  }, [data?.pages]);
+  }, [data?.pages, userInfo?.nickname]);
 
   // 로딩 상태
   if (isLoading) {
@@ -65,7 +72,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="text-red-400 mb-2">데이터를 불러오는데 실패했습니다</div>
-          <Button onClick={() => refetch()} className="text-white text-sm underline">
+          <Button onClick={() => refetch()} className="text-sm underline">
             다시 시도
           </Button>
         </div>
@@ -84,12 +91,15 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         {sellingItems.map((item) => (
           <SellingItem
             key={item.id}
+            title={item.title}
             carrier={item.carrier}
             networkType={item.networkType}
             capacity={item.capacity}
             price={item.price}
             timeLeft={item.timeLeft}
             isOwner={item.isOwner}
+            sellerNickname={item.sellerNickname}
+            sellerId={item.sellerId}
             onEdit={() => onEdit(item.id)}
             onDelete={() => onDelete(item.id)}
             onReport={() => onReport(item.id)}
@@ -104,9 +114,9 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
           <div className="text-white text-sm">더 많은 게시글을 불러오는 중...</div>
         ) : hasNextPage ? (
           <div className="text-gray-400 text-sm">스크롤하여 더 보기</div>
-        ) : (
+        ) : sellingItems.length > 0 ? (
           <div className="text-gray-400 text-sm">모든 게시글을 불러왔습니다!</div>
-        )}
+        ) : null}
       </div>
     </>
   );

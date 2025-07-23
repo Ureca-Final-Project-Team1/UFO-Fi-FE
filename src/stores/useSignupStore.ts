@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 
+import { Carrier } from '@/api/types/carrier';
+
 type SignupData = {
   name: string;
   phoneNumber: string;
-  carrier: string;
+  carrier: Carrier | '';
   planName: string;
 };
 

@@ -1,7 +1,8 @@
+import { Carrier } from '@/api/types/carrier';
 import { Icon, Avatar } from '@/shared';
 
 interface BulkResultCardProps {
-  carrier: 'KT' | 'SKT' | 'LGU';
+  carrier: Carrier;
   message: string;
   dataAmount: number;
   price: number;

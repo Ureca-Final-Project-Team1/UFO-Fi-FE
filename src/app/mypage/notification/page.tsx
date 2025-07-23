@@ -30,8 +30,7 @@ const MypageNotificationPage = () => {
   useEffect(() => {
     const fetchNotificationSettings = async () => {
       try {
-        // TODO: 인증 도입 시 변경할 것
-        const response = await notificationAPI.getSettings({ userId: 1 });
+        const response = await notificationAPI.getSettings();
 
         if (!response) return;
 
@@ -57,11 +56,9 @@ const MypageNotificationPage = () => {
   const handleToggle = async (type: NotificationKey, value: boolean) => {
     const newNotificationState = { ...notificationState, [type]: value };
 
-    // TODO: 인증 도입 시 변경할 것
     await notificationAPI.updateSetting({
-      userId: 1,
-      type: 'sell',
-      enable: false,
+      type,
+      enable: value,
     });
 
     if (type === 'TRADE') {
