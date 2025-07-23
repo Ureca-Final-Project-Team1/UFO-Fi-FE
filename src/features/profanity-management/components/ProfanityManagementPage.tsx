@@ -166,8 +166,8 @@ const ProfanityManagementPage: React.FC = () => {
           value={newWord}
           onChange={(e) => setNewWord(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="등록을 원하시는 금칙어를 입력하세요."
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          placeholder="등록할할 금칙어를 입력하세요."
+          className="w-80 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-black placeholder-gray-500"
         />
         <button
           onClick={handleAdd}
