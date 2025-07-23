@@ -121,7 +121,7 @@ const ProfanityManagementPage: React.FC = () => {
     const newProfanity: ProfanityRow = {
       id: newId,
       word: newWord.trim(),
-      createdAt: new Date().toISOString().split('T')[0], // YYYY-MM-DD 형식
+      createdAt: new Date().toISOString(),
     };
 
     setData((prev) => [...prev, newProfanity]);
