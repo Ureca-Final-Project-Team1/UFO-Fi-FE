@@ -4,7 +4,7 @@ import Table from './Table';
 import { Icon } from '../Icons/Icon';
 
 const meta: Meta<typeof Table> = {
-  title: 'Shared/Table',
+  title: 'UI/Table',
   component: Table,
   parameters: {
     layout: 'fullscreen',
