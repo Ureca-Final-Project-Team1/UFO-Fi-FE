@@ -17,3 +17,4 @@ export * from './Chip';
 export * from './Avatar';
 export * from './Dialog';
 export * from './Command';
+export * from './Pagination/index';
