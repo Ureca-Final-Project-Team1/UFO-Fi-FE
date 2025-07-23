@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Pagination from './Pagination';
 
 const meta: Meta<typeof Pagination> = {
-  title: 'shared/ui/Pagination',
+  title: 'UPagination',
   component: Pagination,
 };
 export default meta;
