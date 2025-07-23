@@ -11,7 +11,7 @@ export function useProfileShare(profile: ProfileUser) {
   const profileUrl =
     typeof window !== 'undefined'
       ? `${window.location.origin}/profile/${profile.userId}`
-      : `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${profile.userId}`;
+      : `${process.env.NEXT_PUBLIC_BASE_URL || 'https://ufo-fi.com'}/profile/${profile.userId}`;
 
   const shareData = {
     title: `${profile.nickname}의 프로필`,
