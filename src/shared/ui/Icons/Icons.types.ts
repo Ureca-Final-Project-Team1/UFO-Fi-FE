@@ -62,6 +62,7 @@ export type LucideIconType =
   | 'Signal' // 신호 아이콘 추가
   | 'RotateCw'
   | 'Check'
+  | 'LogOut'
   | 'Focus';
 
 // 커스텀 아이콘 타입
@@ -73,7 +74,9 @@ export type CustomIconType =
   | 'satellite'
   | 'box'
   | 'rotate'
-  | 'graph';
+  | 'graph'
+  | 'circle-minus'
+  | 'return';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;
