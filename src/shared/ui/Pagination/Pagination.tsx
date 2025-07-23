@@ -85,7 +85,7 @@ const Pagination: React.FC<PaginationProps> = ({
           </span>
         ) : (
           <button
-            key={`page-${page}-${idx}`}
+            key={`page-${page}`}
             className={`px-2 py-1 rounded ${
               page === currentPage ? 'bg-gray-200 text-gray-600 font-bold' : 'hover:bg-gray-100'
             }`}
