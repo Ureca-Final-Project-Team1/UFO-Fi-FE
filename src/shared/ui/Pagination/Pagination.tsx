@@ -80,14 +80,14 @@ const Pagination: React.FC<PaginationProps> = ({
       </button>
       {pageNumbers?.map((page, idx) =>
         page === DOTS ? (
-          <span key={idx} className="px-2 py-1 text-gray-400">
+          <span key={`dots-${idx}`} className="px-2 py-1 text-gray-400">
             {DOTS}
           </span>
         ) : (
           <button
-            key={page}
+            key={`page-${page}-${idx}`}
             className={`px-2 py-1 rounded ${
-              page === currentPage ? 'bg-purple-600 text-white font-bold' : 'hover:bg-gray-100'
+              page === currentPage ? 'bg-gray-200 text-gray-600 font-bold' : 'hover:bg-gray-100'
             }`}
             onClick={() => onPageChange(Number(page))}
             aria-current={page === currentPage ? 'page' : undefined}
