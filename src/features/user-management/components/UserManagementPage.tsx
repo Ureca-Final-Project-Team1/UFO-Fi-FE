@@ -141,12 +141,14 @@ const UserManagementPage: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-black">사용자 관리</h2>
-        <button
-          onClick={handleResetData}
-          className="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
-        >
-          데이터 초기화
-        </button>
+        {process.env.NODE_ENV === 'development' && (
+          <button
+            onClick={handleResetData}
+            className="px-3 py-1 text-sm bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+          >
+            데이터 초기화
+          </button>
+        )}
       </div>
       <div className="flex justify-end mb-6">
         <UserCommand
