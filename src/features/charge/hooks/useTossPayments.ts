@@ -49,6 +49,19 @@ export function useTossPayments(clientKey: string) {
       return;
     }
 
+    const existingScript = document.querySelector(
+      'script[src="https://js.tosspayments.com/v2/standard"]',
+    );
+    if (existingScript) {
+      const checkLoaded = setInterval(() => {
+        if (window.TossPayments && typeof window.TossPayments === 'function') {
+          setIsLoaded(true);
+          clearInterval(checkLoaded);
+        }
+      }, 100);
+      return () => clearInterval(checkLoaded);
+    }
+
     const script = document.createElement('script');
     script.src = 'https://js.tosspayments.com/v2/standard';
     script.async = true;
