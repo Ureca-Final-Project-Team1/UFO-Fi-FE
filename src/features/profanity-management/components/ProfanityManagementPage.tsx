@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Modal } from '@/shared';
+import { Button } from '@/shared/ui/Button/Button';
 
 import ProfanityTable from './ProfanityTable';
 import { ProfanityRow } from '../types/profanity';
@@ -178,12 +179,9 @@ const ProfanityManagementPage: React.FC = () => {
           placeholder="등록할할 금칙어를 입력하세요."
           className="w-80 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-black placeholder-gray-500"
         />
-        <button
-          onClick={handleAdd}
-          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-        >
+        <Button onClick={handleAdd} className="w-20">
           추가
-        </button>
+        </Button>
       </div>
 
       <Modal
