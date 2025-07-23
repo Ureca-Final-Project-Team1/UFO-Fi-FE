@@ -11,7 +11,13 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { userId } = await params;
-    const profile = await profileAPI.getProfile(Number(userId));
+    const userIdNumber = Number(userId);
+
+    if (isNaN(userIdNumber) || userIdNumber <= 0) {
+      throw new Error('Invalid userId');
+    }
+
+    const profile = await profileAPI.getProfile(userIdNumber);
 
     const title = `${profile.content.nickname}의 프로필`;
     const description = `${profile.content.nickname}님의 UFO-Fi 프로필을 확인해보세요.`;
@@ -39,7 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         canonical: profileUrl,
       },
     };
-  } catch {
+  } catch (error) {
+    console.error('generateMetadata error:', error);
     return {
       title: '사용자 프로필 - UFO-Fi',
       description: 'UFO-Fi 사용자 프로필을 확인해보세요.',
