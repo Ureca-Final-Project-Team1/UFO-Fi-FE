@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { IMAGE_PATHS } from '@/constants/images';
+import { LogoutModal } from '@/features/mypage/components';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Modal, Icon } from '@/shared';
+import { Icon } from '@/shared';
 import { useTradeTabStore } from '@/stores/useTradeTabStore';
 
 export default function MyPage() {
@@ -99,20 +99,7 @@ export default function MyPage() {
         <MenuSection title="고객 지원" items={supportItems} />
       </div>
 
-      <Modal
-        headerAlign="left"
-        title="로그아웃"
-        description="정말 로그아웃하시겠습니까?"
-        onPrimaryClick={handleLogout}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        imageSrc={IMAGE_PATHS['AL_REPORTED']}
-        imageAlt="신고"
-        imagePosition={{ x: 90, y: 50 }}
-        imageSize={{ width: 150, height: 150 }}
-        type="double"
-        hasCloseButton={false}
-      />
+      <LogoutModal onPrimaryClick={handleLogout} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 }
