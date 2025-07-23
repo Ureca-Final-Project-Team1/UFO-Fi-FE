@@ -59,6 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   const pageNumbers = getPageNumbers();
+  if (!pageNumbers) return null;
 
   return (
     <nav className={`flex items-center justify-center gap-1 select-none ${className}`}>
