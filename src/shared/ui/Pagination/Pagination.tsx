@@ -23,7 +23,7 @@ const Pagination: React.FC<PaginationProps> = ({
     siblingCount,
   });
 
-  if (total <= 1 || !pageNumbers.length) return null;
+  if (!pageNumbers.length) return null;
 
   const DOTS = '...';
 
