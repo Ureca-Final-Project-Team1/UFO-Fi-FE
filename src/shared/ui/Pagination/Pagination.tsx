@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { usePagination } from '../../hooks/usePagination';
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -15,58 +17,22 @@ const Pagination: React.FC<PaginationProps> = ({
   siblingCount = 1,
   className = '',
 }) => {
-  if (totalPages <= 1) return null;
+  const { pageNumbers, canGoPrevious, canGoNext } = usePagination({
+    currentPage,
+    totalPages,
+    siblingCount,
+  });
 
-  // 페이지 번호 배열 생성 로직
-  const range = (start: number, end: number) => {
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  };
+  if (totalPages <= 1 || !pageNumbers.length) return null;
 
   const DOTS = '...';
-
-  const getPageNumbers = () => {
-    const totalPageNumbers = siblingCount * 2 + 5;
-    if (totalPageNumbers >= totalPages) {
-      return range(1, totalPages);
-    }
-
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
-    const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
-
-    const showLeftDots = leftSiblingIndex > 2;
-    const showRightDots = rightSiblingIndex < totalPages - 1;
-
-    const firstPageIndex = 1;
-    const lastPageIndex = totalPages;
-
-    if (!showLeftDots && showRightDots) {
-      const leftItemCount = 3 + 2 * siblingCount;
-      const leftRange = range(1, leftItemCount);
-
-      return [...leftRange, DOTS, totalPages];
-    }
-
-    if (showLeftDots && !showRightDots) {
-      const rightItemCount = 3 + 2 * siblingCount;
-      const rightRange = range(totalPages - rightItemCount + 1, totalPages);
-      return [firstPageIndex, DOTS, ...rightRange];
-    }
-
-    if (showLeftDots && showRightDots) {
-      const middleRange = range(leftSiblingIndex, rightSiblingIndex);
-      return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
-    }
-  };
-
-  const pageNumbers = getPageNumbers();
-  if (!pageNumbers) return null;
 
   return (
     <nav className={`flex items-center justify-center gap-1 select-none ${className}`}>
       <button
         className="px-2 py-1 rounded disabled:opacity-50"
         onClick={() => onPageChange(1)}
-        disabled={currentPage === 1}
+        disabled={!canGoPrevious}
         aria-label="첫 페이지"
       >
         {'<<'}
@@ -74,7 +40,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         className="px-2 py-1 rounded disabled:opacity-50"
         onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
+        disabled={!canGoPrevious}
         aria-label="이전 페이지"
       >
         {'<'}
@@ -100,7 +66,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         className="px-2 py-1 rounded disabled:opacity-50"
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={!canGoNext}
         aria-label="다음 페이지"
       >
         {'>'}
@@ -108,7 +74,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         className="px-2 py-1 rounded disabled:opacity-50"
         onClick={() => onPageChange(totalPages)}
-        disabled={currentPage === totalPages}
+        disabled={!canGoNext}
         aria-label="마지막 페이지"
       >
         {'>>'}

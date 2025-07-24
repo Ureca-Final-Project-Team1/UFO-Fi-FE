@@ -6,6 +6,14 @@ import Pagination from './Pagination';
 const meta: Meta<typeof Pagination> = {
   title: 'UPagination',
   component: Pagination,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          '페이지네이션 컴포넌트입니다. usePagination 훅을 사용하여 페이지 번호 배열을 생성합니다.',
+      },
+    },
+  },
   argTypes: {
     currentPage: { control: 'number' },
     totalPages: { control: 'number' },
