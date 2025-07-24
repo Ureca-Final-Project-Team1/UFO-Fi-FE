@@ -1,20 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 
 import { prisma } from '@/lib/prisma';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-export async function GET(req: NextRequest) {
-  const userIdParam = req.nextUrl.pathname.split('/').pop();
-  if (!userIdParam) return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
+export async function GET() {
+  const token = (await cookies()).get('Authorization')?.value;
+  if (!token) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
   try {
-    if (!/^\d+$/.test(userIdParam)) {
-      return NextResponse.json({ error: 'Invalid userId format' }, { status: 400 });
-    }
+    const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
+    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
 
-    const userId = BigInt(userIdParam);
+    const userId = decoded.id ?? decoded.sub;
+
     const letters = await prisma.voyage_letters.findMany({
       where: { user_id: userId },
       orderBy: { step: 'asc' },
@@ -36,18 +40,18 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
-  const userIdParam = req.nextUrl.pathname.split('/').pop();
-  if (!userIdParam) {
-    return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
-  }
-
-  if (!/^\d+$/.test(userIdParam)) {
-    return NextResponse.json({ error: 'Invalid userId format' }, { status: 400 });
+export async function POST() {
+  const token = (await cookies()).get('Authorization')?.value;
+  if (!token) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
-    const userId = BigInt(userIdParam);
+    const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
+    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
+
+    const userId = decoded.id ?? decoded.sub;
+
     const maxDepth = 5;
     const visited = new Set<bigint>();
     const path: bigint[] = [];

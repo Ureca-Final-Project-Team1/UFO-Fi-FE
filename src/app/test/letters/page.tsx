@@ -17,10 +17,19 @@ export default function VoyageLetters() {
       setLoading(true);
       setError(null);
       try {
-        // TODO: userId 수정 필요
-        await fetch(`/api/story/letters/${10}`, { method: 'POST' });
-        const res = await fetch(`/api/story/letters/${10}`);
-        const data = await res.json();
+        const postRes = await fetch('/api/story/letters', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!postRes.ok) {
+          throw new Error('편지 전송 실패');
+        }
+
+        const getRes = await fetch('/api/story/letters');
+        const data = await getRes.json();
         setLetters(data);
       } catch (e) {
         console.error('편지 불러오기 실패:', e);
