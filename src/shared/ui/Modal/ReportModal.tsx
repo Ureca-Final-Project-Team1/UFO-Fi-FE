@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { reportAPI } from '@/api/services/exchange/report';
 import { IMAGE_PATHS } from '@/constants/images';
@@ -26,10 +27,17 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
   const [completeOpen, setCompleteOpen] = useState(false);
   const [faultOpen, setFaultOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) setSelectedOption('');
   }, [isOpen]);
+
+  useEffect(() => {
+    if (error) {
+      setFaultOpen(true);
+    }
+  }, [error]);
 
   const handleClick = useCallback(() => {
     if (selectedOption !== '') {
@@ -44,7 +52,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
           if (response.statusCode === 200) {
             setCompleteOpen(true);
           } else {
-            setFaultOpen(true);
+            setError(response.message);
           }
         } catch (e) {
           setFaultOpen(true);
@@ -53,6 +61,8 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
       };
 
       fetchReport();
+    } else {
+      toast.error('신고 사유를 선택해주세요.');
     }
   }, [selectedOption, postId, postOwnerUserId]);
 
@@ -87,7 +97,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
         onClose={() => setCompleteOpen(false)}
       />
       <CompleteModal
-        title="에러가 발생했습니다."
+        title={error ?? '에러가 발생했습니다.'}
         description={`잠시 후 다시\n이용해주시길 바랍니다.`}
         isOpen={faultOpen}
         onClose={() => setFaultOpen(false)}

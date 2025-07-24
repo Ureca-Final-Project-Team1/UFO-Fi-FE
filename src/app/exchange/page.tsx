@@ -9,6 +9,7 @@ import { ExchangeFilters } from '@/features/exchange/components/ExchangeFilters'
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Title, Modal } from '@/shared';
+import { ReportedModal } from '@/shared/ui/Modal/ReportModal';
 import { handleApiAction } from '@/utils/handleApiAction';
 import queryClient from '@/utils/queryClient';
 
@@ -21,6 +22,12 @@ export default function ExchangePage() {
   });
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const [reportModal, setReportModal] = useState({
+    isOpen: false,
+    postId: 0,
+    sellerId: 0,
+  });
+
   const handleEdit = (id: number) => {
     router.push(`/sell/edit/${id}`);
   };
@@ -28,6 +35,11 @@ export default function ExchangePage() {
   // 삭제 모달 열기
   const handleDelete = (id: number) => {
     setDeleteModal({ isOpen: true, postId: id });
+  };
+
+  // 신고 모달 열기
+  const handleReport = (id: number, sellerId: number) => {
+    setReportModal({ isOpen: true, postId: id, sellerId });
   };
 
   // 실제 삭제 실행
@@ -65,12 +77,9 @@ export default function ExchangePage() {
     setDeleteModal({ isOpen: false, postId: 0 });
   };
 
-  // 신고 액션
-  const handleReport = (id: number) => {
-    // eslint-disable-next-line no-console
-    console.log('게시물 신고:', id);
-    // TODO: 신고 API 연동
-    toast.info('신고가 접수되었습니다.');
+  // 신고 모달 닫기
+  const handleCancelReport = () => {
+    setReportModal({ isOpen: false, postId: 0, sellerId: 0 });
   };
 
   // 구매 액션
@@ -116,6 +125,15 @@ export default function ExchangePage() {
         onPrimaryClick={handleConfirmDelete}
         onSecondaryClick={handleCancelDelete}
         primaryButtonDisabled={isDeleting}
+      />
+
+      {/* 신고 모달 */}
+      <ReportedModal
+        isOpen={reportModal.isOpen}
+        onClose={handleCancelReport}
+        postId={reportModal.postId}
+        postOwnerUserId={reportModal.sellerId}
+        key={reportModal.postId}
       />
     </div>
   );

@@ -14,7 +14,7 @@ import { ExchangeEmpty } from './ExchangeEmpty';
 interface ExchangeListProps {
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
-  onReport: (id: number) => void;
+  onReport: (id: number, sellerId: number) => void;
   onPurchase: (id: number) => void;
 }
 
@@ -102,7 +102,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
             sellerId={item.sellerId}
             onEdit={() => onEdit(item.id)}
             onDelete={() => onDelete(item.id)}
-            onReport={() => onReport(item.id)}
+            onReport={() => onReport(item.id, item.sellerId)}
             onPurchase={() => onPurchase(item.id)}
           />
         ))}
