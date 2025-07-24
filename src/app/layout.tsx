@@ -13,6 +13,7 @@ import {
 } from '@/provider';
 import FCMProvider from '@/shared/components/FCMProvider';
 import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
+import MSClarity from '@/shared/components/MSClarity';
 import { Toaster } from '@/shared/ui';
 
 const pretendard = localFont({
@@ -55,6 +56,7 @@ export default function RootLayout({
                   <FCMProvider>
                     {children}
                     <Analytics />
+                    <MSClarity />
                   </FCMProvider>
                 </OnboardingGuardProvider>
               </BackgroundProvider>
