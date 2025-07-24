@@ -62,6 +62,9 @@ export type LucideIconType =
   | 'Signal' // 신호 아이콘 추가
   | 'RotateCw'
   | 'HelpCircle'
+  | 'Link'
+  | 'Share'
+  | 'MoreHorizontal'
   | 'Check'
   | 'LogOut'
   | 'Shield'

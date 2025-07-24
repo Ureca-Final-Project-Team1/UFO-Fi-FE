@@ -7,15 +7,8 @@ import '@/styles/globals.css';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button } from '@/shared/ui';
 
-const Page = () => {
-  // const router = useRouter();
+const LoginPage = () => {
   const handleKakaoLogin = async () => {
-    // const cookies = document.cookie;
-    // const hasAccessToken = cookies.includes('Authorization');
-
-    // if (hasAccessToken) {
-    //   router.push('/login/success');
-    // }
     window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao`;
   };
 
@@ -31,7 +24,7 @@ const Page = () => {
         </div>
       </div>
       <Button
-        className="bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-cover h-10 sm:h-14 max-w-[300px] sm:max-w-[360px]"
+        className="hover:cursor-pointer bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-cover h-10 sm:h-14 max-w-[300px] sm:max-w-[360px]"
         size="full-width"
         onClick={handleKakaoLogin}
       />
@@ -39,4 +32,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default LoginPage;
