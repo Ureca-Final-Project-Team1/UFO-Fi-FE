@@ -6,9 +6,12 @@ import React from 'react';
 import { Title } from '../../../shared/ui/Title/Title';
 import type { TitleProps } from '../../../shared/ui/Title/Title.types';
 
-export const TitleWithRouter: React.FC<TitleProps> = (props) => {
+export const TitleWithRouter: React.FC<TitleProps> = ({
+  onIconClick,
+  iconVariant,
+  ...restProps
+}) => {
   const router = useRouter();
-  const { onIconClick, iconVariant } = props;
 
   const handleIconClick = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,5 +24,5 @@ export const TitleWithRouter: React.FC<TitleProps> = (props) => {
     [onIconClick, iconVariant, router],
   );
 
-  return <Title {...props} onIconClick={handleIconClick} />;
+  return <Title {...restProps} iconVariant={iconVariant} onIconClick={handleIconClick} />;
 };
