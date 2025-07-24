@@ -37,7 +37,10 @@ const TestPage = () => {
         const searchRes = await fetch('/api/collections/search', { method: 'GET' });
 
         if (!searchRes.ok) {
-          throw new Error('유사 사용자 검색 실패');
+          const errorData = await searchRes.json().catch(() => ({}));
+          throw new Error(
+            `유사 사용자 검색 실패: ${searchRes.status} ${errorData.error || searchRes.statusText}`,
+          );
         }
 
         const data = await searchRes.json();
@@ -80,7 +83,7 @@ const TestPage = () => {
                 className="min-w-[130px] flex flex-col gap-2 justify-between items-center rounded-xl p-3 shadow-md bg-white/10 backdrop-blur-md border border-white/20"
               >
                 <Image
-                  src={n.profile || '/default-profile.png'}
+                  src={n.profile}
                   alt={`사용자-${i}`}
                   width={80}
                   height={80}
