@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { Title } from './Title';
-import type { TitleProps } from './Title.types';
+import { Title } from '../../../shared/ui/Title/Title';
+import type { TitleProps } from '../../../shared/ui/Title/Title.types';
 
 export const TitleWithRouter: React.FC<TitleProps> = (props) => {
   const router = useRouter();
