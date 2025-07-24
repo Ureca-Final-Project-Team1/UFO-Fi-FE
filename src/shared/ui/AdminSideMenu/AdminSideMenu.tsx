@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FiMenu, FiX } from 'react-icons/fi';
+
+import { Icon } from '@/shared';
 
 const menuItems = [
   { label: '대시보드', href: '/admin' },
@@ -20,7 +21,7 @@ export const AdminSideMenu: React.FC = () => {
         onClick={() => setOpen(true)}
         aria-label="메뉴 열기"
       >
-        <FiMenu size={24} />
+        <Icon name="Menu" className="w-6 h-6" />
       </button>
 
       {/* 오버레이 메뉴 (모바일) */}
@@ -32,7 +33,7 @@ export const AdminSideMenu: React.FC = () => {
               onClick={() => setOpen(false)}
               aria-label="메뉴 닫기"
             >
-              <FiX size={24} />
+              <Icon name="X" className="w-6 h-6" />
             </button>
             {menuItems.map((item) => (
               <a
