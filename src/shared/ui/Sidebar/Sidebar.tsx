@@ -10,7 +10,7 @@ import { Icon } from '../Icons/Icon';
 interface MenuItem {
   id: string;
   label: string;
-  icon: string;
+  icon: IconType;
   href?: string;
   children?: MenuItem[];
 }
@@ -45,7 +45,7 @@ const menuItems: MenuItem[] = [
       {
         id: 'reported-posts',
         label: '신고된 게시물',
-        icon: 'AlertTriangle',
+        icon: 'TriangleAlert',
         href: '/admin/posts/reported',
       },
     ],

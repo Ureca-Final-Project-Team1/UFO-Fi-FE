@@ -64,6 +64,11 @@ export type LucideIconType =
   | 'HelpCircle'
   | 'Check'
   | 'LogOut'
+  | 'Shield'
+  | 'File'
+  | 'FileText'
+  | 'UserX'
+  | 'Users'
   | 'Focus';
 
 // 커스텀 아이콘 타입
