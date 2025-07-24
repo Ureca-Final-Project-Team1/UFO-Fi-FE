@@ -19,7 +19,7 @@ const menuItems: MenuItem[] = [
   {
     id: 'dashboard',
     label: '대시보드',
-    icon: 'Home',
+    icon: 'Home' as IconType,
     href: '/admin',
   },
   {
@@ -137,7 +137,7 @@ export const AdminSideMenu: React.FC = () => {
               onClick={handleClose}
             >
               <Icon
-                name={item.icon as IconType}
+                name={item.icon}
                 className={`w-5 h-5 transition-colors ${
                   isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
                 }`}
