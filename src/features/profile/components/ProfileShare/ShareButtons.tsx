@@ -1,6 +1,5 @@
 'use client';
 
-import { FreeMode } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { ProfileUser } from '@/api/types/profile';
@@ -14,7 +13,6 @@ import {
 import { Button, Icon } from '@/shared';
 
 import 'swiper/css';
-import 'swiper/css/free-mode';
 
 interface ShareButtonsProps {
   profile: ProfileUser;
@@ -114,13 +112,7 @@ export function ShareButtons({ profile, profileUrl, onCopyLink, onClose }: Share
     <div className="space-y-6">
       {/* 스와이퍼로 가로 스크롤 */}
       <div className="w-full">
-        <Swiper
-          modules={[FreeMode]}
-          spaceBetween={16}
-          slidesPerView="auto"
-          freeMode={true}
-          className="!px-4"
-        >
+        <Swiper spaceBetween={16} slidesPerView="auto" freeMode={true} className="!px-4">
           {shareOptions.map((option) => (
             <SwiperSlide key={option.id} className="!w-auto">
               <button
