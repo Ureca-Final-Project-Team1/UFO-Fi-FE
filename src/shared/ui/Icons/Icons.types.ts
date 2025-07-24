@@ -85,7 +85,9 @@ export type CustomIconType =
   | 'rotate'
   | 'graph'
   | 'circle-minus'
-  | 'return';
+  | 'return'
+  | 'emblaprev'
+  | 'emblanext';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;
