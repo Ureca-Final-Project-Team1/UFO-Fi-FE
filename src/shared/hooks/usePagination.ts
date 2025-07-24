@@ -18,7 +18,7 @@ export const usePagination = ({
   siblingCount = 1,
 }: UsePaginationProps): UsePaginationReturn => {
   const pageNumbers = useMemo(() => {
-    if (totalPages <= 1) return [];
+    if (totalPages <= 1) return [1];
 
     // 페이지 번호 배열 생성 로직
     const range = (start: number, end: number) => {
