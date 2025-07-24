@@ -19,10 +19,10 @@ const Header: React.FC<HeaderProps> = ({ userName = '김명령', onLogout }) => 
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/admin', label: '대시보드', icon: 'Home' },
-    { href: '/admin/user', label: '사용자', icon: 'Users' },
-    { href: '/admin/posts', label: '게시물', icon: 'FileText' },
-    { href: '/admin/settings', label: '설정', icon: 'Settings' },
+    { href: '/admin', label: '대시보드', icon: 'Home' as IconType },
+    { href: '/admin/user', label: '사용자', icon: 'Users' as IconType },
+    { href: '/admin/posts', label: '게시물', icon: 'FileText' as IconType },
+    { href: '/admin/settings', label: '설정', icon: 'Settings' as IconType },
   ];
 
   return (

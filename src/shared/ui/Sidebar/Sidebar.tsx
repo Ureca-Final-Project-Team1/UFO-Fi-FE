@@ -10,7 +10,7 @@ import { Icon } from '../Icons/Icon';
 interface MenuItem {
   id: string;
   label: string;
-  icon: string;
+  icon: IconType;
   href?: string;
   children?: MenuItem[];
 }
