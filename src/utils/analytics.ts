@@ -76,11 +76,12 @@ export const analytics = {
       value: number,
       items: EcommerceItem[],
       userId?: string,
+      currency = 'KRW',
     ): void => {
       analytics.event('purchase', {
         transaction_id: transactionId,
         value: value,
-        currency: 'KRW',
+        currency: currency,
         items: items,
       });
 

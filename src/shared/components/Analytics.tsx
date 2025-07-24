@@ -11,7 +11,11 @@ export default function Analytics() {
   // Clarity 초기화
   useEffect(() => {
     if (CLARITY_ID) {
-      clarity.init(CLARITY_ID);
+      try {
+        clarity.init(CLARITY_ID);
+      } catch (error) {
+        console.warn('Clarity 초기화 실패:', error);
+      }
     }
   }, []);
 
