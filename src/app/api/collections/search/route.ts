@@ -28,6 +28,10 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not configured');
+  }
+
   try {
     // JWT 검증 및 유저 ID 추출
     const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
@@ -109,8 +113,10 @@ export async function GET() {
             { key: 'mobile_data_type', match: { value: mobile_data_type } },
           ],
           must_not: [
-            // 자기 자신, 이미 팔로우 되있는 사용자 및 정지된 사용자 제외
-            { key: 'id', match: { value: Number(userId) || followedIds } },
+            // 자기 자신 제외
+            { key: 'id', match: { value: Number(userId) } },
+            // 이미 팔로우한 사용자들 제외
+            ...followedIds.map((id) => ({ key: 'id', match: { value: id } })),
           ],
         },
       }),

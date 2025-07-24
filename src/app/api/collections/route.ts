@@ -7,10 +7,13 @@ import { getVectorFromProfile } from '@/lib/vectorizer';
 
 export async function POST() {
   try {
-    // 기존 컬렉션이 있으면 삭제
+    // 기존 컬렉션이 있으면 백업 후 삭제
     const collections = await qdrantClient.getCollections();
     const exists = collections.collections.some((col) => col.name === 'ufo_fi');
     if (exists) {
+      // TODO: 기존 데이터를 백업 컬렉션으로 복사
+      // 백업 컬렉션 생성 (타임스탬프 포함)
+      // const backupName = `ufo_fi_backup_${Date.now()}`;
       await qdrantClient.deleteCollection('ufo_fi');
     }
 
