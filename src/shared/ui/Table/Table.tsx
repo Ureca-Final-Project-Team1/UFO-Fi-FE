@@ -21,10 +21,7 @@ interface TableProps<T extends TableRowBase> {
   onActivateClick?: (row: T) => void;
   onDeactivateClick?: (row: T) => void;
   // 페이지네이션 관련 props
-  page?: number;
   pageSize?: number;
-  onPageChange?: (page: number) => void;
-  onPageSizeChange?: (size: number) => void;
   showPagination?: boolean;
 }
 
@@ -33,12 +30,12 @@ const Table = <T extends TableRowBase>({
   data,
   onActivateClick,
   onDeactivateClick,
-  page = 1,
   pageSize = 10,
-  onPageChange,
-  onPageSizeChange,
   showPagination = false,
 }: TableProps<T>) => {
+  const [page, setPage] = React.useState(1);
+  const [currentPageSize, setCurrentPageSize] = React.useState(pageSize);
+
   const handleActivate = (row: T) => {
     onActivateClick?.(row);
   };
@@ -47,9 +44,9 @@ const Table = <T extends TableRowBase>({
   };
 
   // 페이지네이션을 위한 데이터 슬라이싱
-  const totalPages = Math.ceil(data.length / pageSize);
-  const startIndex = (page - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
+  const totalPages = Math.ceil(data.length / currentPageSize);
+  const startIndex = (page - 1) * currentPageSize;
+  const endIndex = startIndex + currentPageSize;
   const paginatedData = data.slice(startIndex, endIndex);
 
   return (
@@ -124,26 +121,27 @@ const Table = <T extends TableRowBase>({
       </div>
 
       {/* 페이지네이션 */}
-      {showPagination && data.length > 0 && onPageChange && (
+      {showPagination && data.length > 0 && (
         <div className="flex items-center justify-between">
           {/* 페이지 크기 선택 */}
-          {onPageSizeChange && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">페이지당 행 수:</span>
-              <select
-                value={pageSize}
-                onChange={(e) => onPageSizeChange(Number(e.target.value))}
-                className="px-2 py-1 border border-gray-300 rounded text-sm"
-              >
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={50}>50</option>
-              </select>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">페이지당 행 수:</span>
+            <select
+              value={currentPageSize}
+              onChange={(e) => {
+                setCurrentPageSize(Number(e.target.value));
+                setPage(1); // 페이지 크기 변경 시 첫 페이지로 이동
+              }}
+              className="px-2 py-1 border border-gray-300 rounded text-sm"
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
 
           {/* 페이지네이션 컴포넌트 */}
-          <Pagination page={page} total={totalPages} onChange={onPageChange} className="flex-1" />
+          <Pagination page={page} total={totalPages} onChange={setPage} className="flex-1" />
 
           {/* 데이터 정보 */}
           <div className="text-sm text-gray-600">
