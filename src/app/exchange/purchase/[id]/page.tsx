@@ -19,7 +19,7 @@ export default function PurchasePage() {
   };
 
   return (
-    <div className="flex flex-col items-center px-4 pb-6">
+    <div className="flex flex-col items-center h-full px-4">
       <Title title="데이터 구매하기" iconVariant="back" />
 
       {/* 안내 텍스트 */}
@@ -30,14 +30,14 @@ export default function PurchasePage() {
       </div>
 
       {/* UFO-Fi 카드 */}
-      <div className="relative flex justify-center mb-8">
+      <div className="relative flex justify-center mb-2">
         <div className="relative">
-          <div className="w-80 bg-white rounded-lg p-4 shadow-lg">
+          <div className="w-80 bg-white rounded-lg p-3 shadow-lg">
             <div className="flex items-center gap-2 mb-2">
               <Image src={ICON_PATHS['UFO_LOGO']} width={30} height={30} alt="ufo" />
               <p className="text-black font-semibold">UFO-Fi</p>
             </div>
-            <h3 className="text-black text-center text-lg font-medium">
+            <h3 className="text-black text-center text-md font-medium">
               유포파이에게 데이터 중개 맡기세요!
             </h3>
           </div>
@@ -46,16 +46,10 @@ export default function PurchasePage() {
       </div>
 
       {/* 캐릭터 이미지 */}
-      <Image
-        src={IMAGE_PATHS['AL_COMPLETE']}
-        width={150}
-        height={150}
-        alt="alien-complete"
-        className="mb-6"
-      />
+      <Image src={IMAGE_PATHS['AL_COMPLETE']} width={150} height={150} alt="alien-complete" />
 
       {/* 설명 목록 */}
-      <div className="w-full text-white mb-8">
+      <div className="w-full text-white">
         <div className="space-y-3 mb-6">
           <div className="flex items-start gap-3">
             <Icon name="FilePenLine" className="text-green-500 flex-shrink-0 mt-1" alt="check" />
@@ -83,7 +77,7 @@ export default function PurchasePage() {
       </div>
 
       {/* 확인 버튼 */}
-      <Button size="full-width" variant="primary" onClick={handleContinue} className="mt-auto">
+      <Button size="full-width" variant="primary" onClick={handleContinue} className="mt-auto mb-8">
         이해했어요
       </Button>
     </div>
