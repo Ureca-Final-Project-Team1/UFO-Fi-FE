@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
 
 import { Table } from './Table';
 import { Icon } from '../Icons/Icon';
@@ -31,52 +32,90 @@ const defaultActions = {
   activateIcon: <Icon name="return" className="w-5 h-5" />,
 };
 
-const data = [
-  {
-    id: 1,
-    nickname: 'caddibo4',
-    name: '김도건',
-    email: 'caddibo4@naver.com',
-    reportedCount: 9999,
-    disabledCount: 9999,
-    status: '활성화',
+//테스트 데이터
+const generateTestData = (count: number) => {
+  return Array.from({ length: count }, (_, index) => ({
+    id: index + 1,
+    nickname: `user${index + 1}`,
+    name: `사용자${index + 1}`,
+    email: `user${index + 1}@example.com`,
+    reportedCount: Math.floor(Math.random() * 100),
+    disabledCount: Math.floor(Math.random() * 50),
+    status: index % 3 === 0 ? '비활성화' : '활성화',
     actions: defaultActions,
-  },
-  {
-    id: 2,
-    nickname: 'yj.Jee',
-    name: '이영주',
-    email: 'caddibo4@naver.com',
-    reportedCount: 99999,
-    disabledCount: 99999,
-    status: '비활성화',
-    actions: defaultActions,
-  },
-  {
-    id: 3,
-    nickname: 'jy.Ho',
-    name: '진영호',
-    email: 'caddibo4@naver.com',
-    reportedCount: 99999,
-    disabledCount: 99999,
-    status: '비활성화',
-    actions: defaultActions,
-  },
-  {
-    id: 4,
-    nickname: 'mj.An',
-    name: '안민지',
-    email: 'caddibo4@naver.com',
-    reportedCount: 99999,
-    disabledCount: 99999,
-    status: '비활성화',
-    actions: defaultActions,
-  },
-];
+  }));
+};
+
+const data = generateTestData(25); // 25개의 테스트 데이터
 
 export const Default: Story = {
   args: {
     columns,
     data,
+  },
+};
+
+export const WithPagination: Story = {
+  render: function WithPaginationStory() {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+
+    return (
+      <div className="p-6">
+        <Table
+          columns={columns}
+          data={data}
+          page={page}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          showPagination={true}
+        />
+      </div>
+    );
+  },
+};
+
+export const LargeDataset: Story = {
+  render: function LargeDatasetStory() {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(20);
+    const largeData = generateTestData(100); // 100개의 테스트 데이터
+
+    return (
+      <div className="p-6">
+        <Table
+          columns={columns}
+          data={largeData}
+          page={page}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          showPagination={true}
+        />
+      </div>
+    );
+  },
+};
+
+export const SmallDataset: Story = {
+  render: function SmallDatasetStory() {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const smallData = generateTestData(5); // 5개의 테스트 데이터 (1페이지)
+
+    return (
+      <div className="p-6">
+        <Table
+          columns={columns}
+          data={smallData}
+          page={page}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          showPagination={true}
+        />
+      </div>
+    );
   },
 };
