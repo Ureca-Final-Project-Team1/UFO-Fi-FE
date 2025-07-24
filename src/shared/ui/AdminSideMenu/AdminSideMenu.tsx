@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 import { Icon } from '@/shared';
 import type { IconType } from '@/shared/ui/Icons/Icons.types';
@@ -69,6 +69,8 @@ export const AdminSideMenu: React.FC = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
   const pathname = usePathname();
+  const menuRef = useRef<HTMLElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   // 현재 활성 메뉴 계산을 메모이제이션
   const currentMenuItem = useMemo(() => {
@@ -83,6 +85,27 @@ export const AdminSideMenu: React.FC = () => {
       setOpenMenus(new Set([currentMenuItem.id]));
     }
   }, [currentMenuItem]);
+
+  // ESC 키로 메뉴 닫기
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && open) {
+        handleClose();
+      }
+    };
+
+    if (open) {
+      document.addEventListener('keydown', handleEscape);
+      // 포커스 트랩: 메뉴가 열릴 때 닫기 버튼에 포커스
+      setTimeout(() => {
+        closeButtonRef.current?.focus();
+      }, 100);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [open]);
 
   const handleOpen = useCallback(() => {
     setOpen(true);
@@ -137,7 +160,7 @@ export const AdminSideMenu: React.FC = () => {
               onClick={handleClose}
             >
               <Icon
-                name={item.icon}
+                name={item.icon as IconType}
                 className={`w-5 h-5 transition-colors ${
                   isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
                 }`}
@@ -211,11 +234,17 @@ export const AdminSideMenu: React.FC = () => {
           className={`fixed inset-0 z-[9998] flex transition-opacity duration-200 ${
             isClosing ? 'bg-black/0' : 'bg-black/40'
           }`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="관리자 메뉴"
         >
           <nav
+            ref={menuRef}
             className={`w-72 bg-white h-full flex flex-col shadow-lg transition-transform duration-200 ease-out ${
               isClosing ? 'transform -translate-x-full' : 'transform translate-x-0'
             } ${open && !isClosing ? 'animate-slide-in' : ''}`}
+            role="navigation"
+            aria-label="관리자 메뉴"
           >
             {/* 헤더 */}
             <div className="p-4 border-b border-gray-200">
@@ -225,7 +254,8 @@ export const AdminSideMenu: React.FC = () => {
                   <span className="font-bold text-lg text-gray-900">관리자</span>
                 </div>
                 <button
-                  className="p-1 rounded hover:bg-gray-100"
+                  ref={closeButtonRef}
+                  className="p-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   onClick={handleClose}
                   aria-label="메뉴 닫기"
                 >
@@ -241,7 +271,7 @@ export const AdminSideMenu: React.FC = () => {
             <div className="p-4 border-t border-gray-200">
               <Link
                 href="/admin/help"
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 onClick={handleClose}
               >
                 <Icon
