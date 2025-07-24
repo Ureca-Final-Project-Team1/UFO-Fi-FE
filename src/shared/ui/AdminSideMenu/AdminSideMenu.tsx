@@ -1,72 +1,263 @@
 'use client';
 
-import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 import { Icon } from '@/shared';
+import type { IconType } from '@/shared/ui/Icons/Icons.types';
 
-const menuItems = [
-  { label: '대시보드', href: '/admin' },
-  { label: '사용자 관리', href: '/admin/user' },
-  { label: '게시물 관리', href: '/admin/posts' },
-  { label: '금칙어 설정', href: '/admin/banned-words' },
-  { label: '시스템 설정', href: '/admin/settings' },
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: IconType;
+  href?: string;
+  children?: MenuItem[];
+}
+
+const menuItems: MenuItem[] = [
+  {
+    id: 'dashboard',
+    label: '대시보드',
+    icon: 'Home',
+    href: '/admin',
+  },
+  {
+    id: 'user',
+    label: '사용자 관리',
+    icon: 'User',
+    children: [
+      { id: 'all-users', label: '전체 사용자', icon: 'Users', href: '/admin/user' },
+      {
+        id: 'inactive-users',
+        label: '비활성화된 사용자',
+        icon: 'UserX',
+        href: '/admin/user/inactive',
+      },
+    ],
+  },
+  {
+    id: 'post',
+    label: '게시물 관리',
+    icon: 'FileText',
+    children: [
+      { id: 'all-posts', label: '전체 게시물', icon: 'File', href: '/admin/posts' },
+      {
+        id: 'reported-posts',
+        label: '신고된 게시물',
+        icon: 'TriangleAlert',
+        href: '/admin/posts/reported',
+      },
+    ],
+  },
+  {
+    id: 'banned-words',
+    label: '금칙어 설정',
+    icon: 'Shield',
+    href: '/admin/banned-words',
+  },
+  {
+    id: 'settings',
+    label: '시스템 설정',
+    icon: 'Settings',
+    href: '/admin/settings',
+  },
 ];
 
 export const AdminSideMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
+  const pathname = usePathname();
+
+  // 현재 활성 메뉴 계산을 메모이제이션
+  const currentMenuItem = useMemo(() => {
+    return menuItems.find(
+      (item) => item.href === pathname || item.children?.some((child) => child.href === pathname),
+    );
+  }, [pathname]);
+
+  useEffect(() => {
+    // 현재 경로에 따라 해당 메뉴 열기
+    if (currentMenuItem && currentMenuItem.children) {
+      setOpenMenus(new Set([currentMenuItem.id]));
+    }
+  }, [currentMenuItem]);
+
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setOpen(false);
+      setIsClosing(false);
+    }, 200);
+  }, []);
+
+  const toggleMenu = useCallback((menuId: string) => {
+    setOpenMenus((prev) => {
+      const newOpenMenus = new Set(prev);
+      if (newOpenMenus.has(menuId)) {
+        newOpenMenus.delete(menuId);
+      } else {
+        newOpenMenus.add(menuId);
+      }
+      return newOpenMenus;
+    });
+  }, []);
+
+  const isMenuActive = useCallback(
+    (item: MenuItem): boolean => {
+      if (item.href) {
+        return pathname === item.href;
+      }
+      return item.children?.some((child) => pathname === child.href) || false;
+    },
+    [pathname],
+  );
+
+  const renderMenuItem = useCallback(
+    (item: MenuItem, level = 0) => {
+      const isOpen = openMenus.has(item.id);
+      const isActive = isMenuActive(item);
+      const hasChildren = item.children && item.children.length > 0;
+
+      return (
+        <div key={item.id} className={level === 0 ? 'mb-1' : ''}>
+          {item.href ? (
+            <Link
+              href={item.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group ${
+                isActive
+                  ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+              } ${level > 0 ? 'ml-6 py-2' : ''}`}
+              onClick={handleClose}
+            >
+              <Icon
+                name={item.icon as IconType}
+                className={`w-5 h-5 transition-colors ${
+                  isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
+                }`}
+              />
+              <span className="flex-1">{item.label}</span>
+            </Link>
+          ) : (
+            <button
+              onClick={() => hasChildren && toggleMenu(item.id)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 w-full group ${
+                isActive
+                  ? 'bg-blue-50 text-blue-700'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+              }`}
+            >
+              <Icon
+                name={item.icon as IconType}
+                className={`w-5 h-5 transition-colors ${
+                  isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
+                }`}
+              />
+              <span className="flex-1 text-left">{item.label}</span>
+              {hasChildren && (
+                <Icon
+                  name={isOpen ? 'ChevronUp' : 'ChevronDown'}
+                  className={`w-4 h-4 transition-all duration-200 ${
+                    isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-600'
+                  }`}
+                />
+              )}
+            </button>
+          )}
+
+          {/* 하위 메뉴 */}
+          {hasChildren && (
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="mt-1 space-y-1">
+                {item.children?.map((child) => renderMenuItem(child, level + 1))}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    },
+    [openMenus, isMenuActive, handleClose, toggleMenu],
+  );
+
+  // 메뉴 아이템 렌더링을 메모이제이션
+  const menuItemsRendered = useMemo(() => {
+    return menuItems.map((item) => renderMenuItem(item));
+  }, [renderMenuItem]);
 
   return (
     <>
-      {/* 모바일 햄버거 버튼 */}
+      {/* 햄버거 버튼 - 테블릿 이하에서 표시 */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded bg-white shadow"
-        onClick={() => setOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-[9999] p-3 rounded-lg bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        onClick={handleOpen}
         aria-label="메뉴 열기"
       >
-        <Icon name="Menu" className="w-6 h-6" />
+        <Icon name="Menu" className="w-6 h-6 text-gray-700" />
       </button>
 
-      {/* 오버레이 메뉴 (모바일) */}
-      {open && (
-        <div className="fixed inset-0 z-40 bg-black/40 flex">
-          <nav className="w-64 bg-white h-full p-6 flex flex-col gap-4 shadow-lg animate-slide-in-left">
-            <button
-              className="self-end mb-4 p-1 rounded hover:bg-gray-100"
-              onClick={() => setOpen(false)}
-              aria-label="메뉴 닫기"
-            >
-              <Icon name="X" className="w-6 h-6" />
-            </button>
-            {menuItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-gray-800 text-lg font-medium py-2 px-3 rounded hover:bg-gray-100 transition-colors"
-                onClick={() => setOpen(false)}
+      {/* 오버레이 메뉴 (모바일/테블릿) */}
+      {(open || isClosing) && (
+        <div
+          className={`fixed inset-0 z-[9998] flex transition-opacity duration-200 ${
+            isClosing ? 'bg-black/0' : 'bg-black/40'
+          }`}
+        >
+          <nav
+            className={`w-72 bg-white h-full flex flex-col shadow-lg transition-transform duration-200 ease-out ${
+              isClosing ? 'transform -translate-x-full' : 'transform translate-x-0'
+            } ${open && !isClosing ? 'animate-slide-in' : ''}`}
+          >
+            {/* 헤더 */}
+            <div className="p-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Icon name="Shield" className="w-6 h-6 text-blue-600" />
+                  <span className="font-bold text-lg text-gray-900">관리자</span>
+                </div>
+                <button
+                  className="p-1 rounded hover:bg-gray-100"
+                  onClick={handleClose}
+                  aria-label="메뉴 닫기"
+                >
+                  <Icon name="X" className="w-6 h-6 text-gray-500" />
+                </button>
+              </div>
+            </div>
+
+            {/* 메뉴 목록 */}
+            <div className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">{menuItemsRendered}</div>
+
+            {/* 푸터 */}
+            <div className="p-4 border-t border-gray-200">
+              <Link
+                href="/admin/help"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group"
+                onClick={handleClose}
               >
-                {item.label}
-              </a>
-            ))}
+                <Icon
+                  name="HelpCircle"
+                  className="w-5 h-5 text-gray-500 group-hover:text-gray-700"
+                />
+                <span>도움말</span>
+              </Link>
+            </div>
           </nav>
           {/* 오버레이 클릭 시 닫기 */}
-          <div className="flex-1" onClick={() => setOpen(false)} />
+          <div className="flex-1" onClick={handleClose} />
         </div>
       )}
-
-      {/* 데스크탑 사이드 메뉴 */}
-      <nav className="hidden md:flex flex-col gap-4 w-56 min-h-screen bg-white border-r px-6 py-8 shadow-sm">
-        {menuItems.map((item) => (
-          <a
-            key={item.href}
-            href={item.href}
-            className="text-gray-800 text-base font-medium py-2 px-3 rounded hover:bg-gray-100 transition-colors"
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
       <style jsx>{`
-        @keyframes slide-in-left {
+        @keyframes slide-in {
           from {
             transform: translateX(-100%);
           }
@@ -74,8 +265,8 @@ export const AdminSideMenu: React.FC = () => {
             transform: translateX(0);
           }
         }
-        .animate-slide-in-left {
-          animation: slide-in-left 0.2s ease;
+        .animate-slide-in {
+          animation: slide-in 0.2s ease-out;
         }
       `}</style>
     </>
