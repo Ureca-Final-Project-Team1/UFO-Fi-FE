@@ -11,6 +11,7 @@ export { followingAPI } from './services/follow/following';
 export { followActionsAPI } from './services/follow/actions';
 export { paymentAPI } from './services/payment/charge';
 export { editProfileAPI } from './services/mypage/editProfile';
+export { profileAPI } from './services/profile/profile';
 
 // 타입들 re-export
 export type * from './types';
