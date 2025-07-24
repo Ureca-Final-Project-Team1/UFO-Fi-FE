@@ -13,6 +13,7 @@ import {
 import { Button, Icon } from '@/shared';
 
 import 'swiper/css';
+import 'swiper/css/free-mode';
 
 interface ShareButtonsProps {
   profile: ProfileUser;
