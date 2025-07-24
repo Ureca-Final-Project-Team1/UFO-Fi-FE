@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Table } from './Table';
 import { Icon } from '../Icons/Icon';
@@ -57,20 +57,9 @@ export const Default: Story = {
 
 export const WithPagination: Story = {
   render: function WithPaginationStory() {
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-
     return (
       <div className="p-6">
-        <Table
-          columns={columns}
-          data={data}
-          page={page}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-          showPagination={true}
-        />
+        <Table columns={columns} data={data} showPagination={true} />
       </div>
     );
   },
@@ -78,21 +67,11 @@ export const WithPagination: Story = {
 
 export const LargeDataset: Story = {
   render: function LargeDatasetStory() {
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(20);
     const largeData = generateTestData(100); // 100개의 테스트 데이터
 
     return (
       <div className="p-6">
-        <Table
-          columns={columns}
-          data={largeData}
-          page={page}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-          showPagination={true}
-        />
+        <Table columns={columns} data={largeData} showPagination={true} />
       </div>
     );
   },
@@ -100,21 +79,11 @@ export const LargeDataset: Story = {
 
 export const SmallDataset: Story = {
   render: function SmallDatasetStory() {
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
     const smallData = generateTestData(5); // 5개의 테스트 데이터 (1페이지)
 
     return (
       <div className="p-6">
-        <Table
-          columns={columns}
-          data={smallData}
-          page={page}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-          showPagination={true}
-        />
+        <Table columns={columns} data={smallData} showPagination={true} />
       </div>
     );
   },
