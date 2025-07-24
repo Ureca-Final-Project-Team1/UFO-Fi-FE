@@ -15,8 +15,8 @@ const meta: Meta<typeof Pagination> = {
     },
   },
   argTypes: {
-    currentPage: { control: 'number' },
-    totalPages: { control: 'number' },
+    page: { control: 'number' },
+    total: { control: 'number' },
     siblingCount: { control: 'number' },
   },
 };
@@ -28,7 +28,7 @@ export const Default: Story = {
   render: () => {
     function DefaultPaginationStory() {
       const [page, setPage] = useState(1);
-      return <Pagination currentPage={page} totalPages={10} onPageChange={setPage} />;
+      return <Pagination page={page} total={10} onChange={setPage} />;
     }
     return <DefaultPaginationStory />;
   },
@@ -38,7 +38,7 @@ export const FewPages: Story = {
   render: () => {
     function FewPagesStory() {
       const [page, setPage] = useState(1);
-      return <Pagination currentPage={page} totalPages={3} onPageChange={setPage} />;
+      return <Pagination page={page} total={3} onChange={setPage} />;
     }
     return <FewPagesStory />;
   },
@@ -48,9 +48,7 @@ export const ManyPages: Story = {
   render: () => {
     function ManyPagesStory() {
       const [page, setPage] = useState(15);
-      return (
-        <Pagination currentPage={page} totalPages={30} onPageChange={setPage} siblingCount={2} />
-      );
+      return <Pagination page={page} total={30} onChange={setPage} siblingCount={2} />;
     }
     return <ManyPagesStory />;
   },
