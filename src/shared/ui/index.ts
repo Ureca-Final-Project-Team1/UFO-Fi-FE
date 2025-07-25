@@ -18,3 +18,4 @@ export * from './Avatar';
 export * from './Dialog';
 export * from './Command';
 export * from './Pagination';
+export * from './Table';

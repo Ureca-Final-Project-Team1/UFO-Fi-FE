@@ -69,6 +69,8 @@ export type LucideIconType =
   | 'LogOut'
   | 'Shield'
   | 'File'
+  | 'RotateCcw'
+  | 'CircleMinus'
   | 'FileText'
   | 'UserX'
   | 'Users'

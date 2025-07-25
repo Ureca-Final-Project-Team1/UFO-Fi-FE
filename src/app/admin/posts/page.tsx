@@ -1,8 +1,8 @@
 'use client';
 
+import { Table } from '@/shared';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
-import { Table } from '@/shared/ui/Table/Table';
 
 export default function AdminPostsPage() {
   const postsData = [

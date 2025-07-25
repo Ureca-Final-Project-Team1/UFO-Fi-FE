@@ -28,7 +28,6 @@ const UserTable: React.FC<UserTableProps> = ({ data, onActivateClick, onDeactiva
       data={data}
       onActivateClick={onActivateClick}
       onDeactivateClick={onDeactivateClick}
-      showPagination={true}
     />
   );
 };
