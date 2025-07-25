@@ -1,10 +1,9 @@
-// src/app/admin/banned-words/page.tsx
 'use client';
 
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
-import type { BannedWord } from '@/api/services/admin/bannedWords';
+import type { BannedWord } from '@/api/types/bannedWords';
 import { useBannedWords } from '@/features/admin/hooks/useBannedWords';
 import { Button } from '@/shared/ui/Button/Button';
 import Header from '@/shared/ui/Header/Header';
