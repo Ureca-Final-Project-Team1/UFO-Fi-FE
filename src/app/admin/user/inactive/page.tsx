@@ -1,3 +1,5 @@
+'use client';
+
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
 import { Table } from '@/shared/ui/Table/Table';
