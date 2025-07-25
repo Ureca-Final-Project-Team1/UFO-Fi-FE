@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import '../styles/globals.css';
+import { TOAST_CONFIG } from '@/constants';
 import {
   ModalProvider,
   QueryProvider,
@@ -65,13 +66,7 @@ export default function RootLayout({
             </ViewportObserverProvider>
           </QueryProvider>
         </ThemeProvider>
-        <Toaster
-          position="bottom-center"
-          expand={true}
-          richColors={true}
-          closeButton={true}
-          style={{ bottom: '80px' }}
-        />
+        <Toaster style={{ bottom: TOAST_CONFIG.BOTTOM_OFFSET }} />
       </body>
     </html>
   );
