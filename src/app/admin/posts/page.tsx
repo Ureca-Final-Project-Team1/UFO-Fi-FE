@@ -1,7 +1,44 @@
+'use client';
+
+import { Table } from '@/shared';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
 
 export default function AdminPostsPage() {
+  const postsData = [
+    { id: 1, title: '게시물 제목 1', author: '사용자1', date: '2024-01-01', status: '활성' },
+    { id: 2, title: '게시물 제목 2', author: '사용자2', date: '2024-01-02', status: '활성' },
+    { id: 3, title: '게시물 제목 3', author: '사용자3', date: '2024-01-03', status: '활성' },
+    { id: 4, title: '게시물 제목 4', author: '사용자4', date: '2024-01-04', status: '활성' },
+    { id: 5, title: '게시물 제목 5', author: '사용자5', date: '2024-01-05', status: '활성' },
+  ];
+
+  const columns = [
+    { Header: 'ID', accessor: 'id' as const },
+    { Header: '제목', accessor: 'title' as const },
+    { Header: '작성자', accessor: 'author' as const },
+    { Header: '작성일', accessor: 'date' as const },
+    {
+      Header: '상태',
+      accessor: 'status' as const,
+      render: (value: unknown) => (
+        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+          {String(value)}
+        </span>
+      ),
+    },
+    {
+      Header: '관리',
+      accessor: 'actions' as const,
+      render: () => (
+        <div className="flex gap-2">
+          <button className="text-blue-600 hover:text-blue-900 mr-3">수정</button>
+          <button className="text-red-600 hover:text-red-900">삭제</button>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="flex h-screen bg-gray-50">
       <div className="hidden lg:block">
@@ -34,55 +71,7 @@ export default function AdminPostsPage() {
 
             {/* 게시물 목록 */}
             <div className="bg-white rounded-lg shadow overflow-hidden">
-              <table className="min-w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      ID
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      제목
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      작성자
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      작성일
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      상태
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      관리
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <tr key={i}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{i}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        게시물 제목 {i}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        사용자{i}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        2024-01-{i.toString().padStart(2, '0')}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                          활성
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <button className="text-blue-600 hover:text-blue-900 mr-3">수정</button>
-                        <button className="text-red-600 hover:text-red-900">삭제</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <Table columns={columns} data={postsData} />
             </div>
           </div>
         </main>

@@ -69,6 +69,8 @@ export type LucideIconType =
   | 'LogOut'
   | 'Shield'
   | 'File'
+  | 'RotateCcw'
+  | 'CircleMinus'
   | 'FileText'
   | 'UserX'
   | 'Users'
@@ -85,7 +87,9 @@ export type CustomIconType =
   | 'rotate'
   | 'graph'
   | 'circle-minus'
-  | 'return';
+  | 'return'
+  | 'emblaprev'
+  | 'emblanext';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

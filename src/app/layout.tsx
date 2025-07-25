@@ -11,8 +11,8 @@ import {
   OnboardingGuardProvider,
   BackgroundProvider,
 } from '@/provider';
+import AnalyticsProvider from '@/shared/components/Analytics';
 import FCMProvider from '@/shared/components/FCMProvider';
-import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
 import { Toaster } from '@/shared/ui';
 
 const pretendard = localFont({
@@ -46,7 +46,7 @@ export default function RootLayout({
           } as React.CSSProperties
         }
       >
-        <GoogleAnalytics />
+        <AnalyticsProvider />
         <QueryProvider>
           <ViewportObserverProvider>
             <NavigationProvider>

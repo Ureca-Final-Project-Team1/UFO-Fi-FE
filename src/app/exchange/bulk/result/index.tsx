@@ -6,7 +6,8 @@ import { Suspense } from 'react';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { useBulkResult } from '@/features/bulk/hooks/useBulkResult';
-import { Icon, Title, Button } from '@/shared';
+import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
+import { Icon, Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 function BulkResultContent() {
@@ -21,7 +22,7 @@ function BulkResultContent() {
 
   return (
     <div className="flex flex-col min-h-full w-full">
-      <Title title="매칭된 데이터" iconVariant="back" />
+      <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
 
       <div className="relative rounded-[20px] space-y-6 pb-12 px-4">
         {/* 매칭 결과 */}
