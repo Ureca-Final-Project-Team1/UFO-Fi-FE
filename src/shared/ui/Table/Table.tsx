@@ -70,6 +70,7 @@ export function Table<T extends BaseTableRow>({
             <div className="flex items-center justify-center">
               <TableCheckbox
                 checked={selectionHooks.isAllSelected}
+                indeterminate={selectionHooks.isPartiallySelected}
                 onChange={selectionHooks.handleSelectAll}
                 disabled={isLoading || data.length === 0}
               />

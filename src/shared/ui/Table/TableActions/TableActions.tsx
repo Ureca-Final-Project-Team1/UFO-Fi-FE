@@ -87,7 +87,7 @@ export function TableActions<T extends BaseTableRow>({
 
       {actions.custom?.map((action, index) => (
         <button
-          key={index}
+          key={`${action.tooltip}-${index}`}
           type="button"
           title={action.tooltip}
           className={cn(

@@ -16,7 +16,7 @@ export function TableCheckbox({
       <input
         type="checkbox"
         checked={checked}
-        onChange={onChange}
+        onChange={() => {}}
         disabled={disabled}
         className="sr-only"
         aria-label={label}
@@ -38,7 +38,7 @@ export function TableCheckbox({
           'flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
           {
             'bg-blue-600 border-blue-600': checked && !indeterminate,
-            // 'bg-blue-600 border-blue-600': indeterminate,
+            'bg-blue-600 border-blue-700': indeterminate,
             'bg-white border-gray-400 hover:border-blue-400': !checked && !indeterminate,
             'opacity-50 cursor-not-allowed': disabled,
           },
