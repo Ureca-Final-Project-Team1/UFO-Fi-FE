@@ -46,10 +46,14 @@ export const IMAGE_PATHS = {
   BADGES_LOCKED: '/icons/badges/locked.svg',
 } as const;
 
-export const BADGE_ICONS: Record<string, string> = {};
+type BadgeKey = `lv${1 | 2 | 3 | 4}-${1 | 2 | 3}`;
 
-[1, 2, 3, 4].forEach((lv) => {
-  [1, 2, 3].forEach((i) => {
-    BADGE_ICONS[`lv${lv}-${i}`] = `/icons/badges/lv${lv}-${i}.svg`;
+export const BADGE_ICONS: Record<BadgeKey, string> = (() => {
+  const icons = {} as Record<BadgeKey, string>;
+  [1, 2, 3, 4].forEach((lv) => {
+    [1, 2, 3].forEach((i) => {
+      icons[`lv${lv}-${i}` as BadgeKey] = `/icons/badges/lv${lv}-${i}.svg`;
+    });
   });
-});
+  return icons;
+})();
