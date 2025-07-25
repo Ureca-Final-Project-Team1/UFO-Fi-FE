@@ -1,7 +1,31 @@
+'use client';
+
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
+import { Table } from '@/shared/ui/Table/Table';
 
 export default function AdminBannedWordsPage() {
+  const bannedWordsData = [
+    { id: 1, word: '욕설1', date: '2024-01-01' },
+    { id: 2, word: '욕설2', date: '2024-01-02' },
+    { id: 3, word: '스팸', date: '2024-01-03' },
+  ];
+
+  const columns = [
+    { Header: '금칙어', accessor: 'word' as const },
+    { Header: '등록일', accessor: 'date' as const },
+    {
+      Header: '관리',
+      accessor: 'actions' as const,
+      render: () => (
+        <div className="flex gap-2">
+          <button className="text-blue-600 hover:text-blue-900 mr-3">수정</button>
+          <button className="text-red-600 hover:text-red-900">삭제</button>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="flex h-screen bg-gray-50">
       <div className="hidden lg:block">
@@ -32,35 +56,7 @@ export default function AdminBannedWordsPage() {
 
             {/* 금칙어 목록 */}
             <div className="bg-white rounded-lg shadow overflow-hidden">
-              <table className="min-w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      금칙어
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      등록일
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      관리
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {['욕설1', '욕설2', '스팸'].map((word, i) => (
-                    <tr key={i}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{word}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        2024-01-{(i + 1).toString().padStart(2, '0')}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <button className="text-blue-600 hover:text-blue-900 mr-3">수정</button>
-                        <button className="text-red-600 hover:text-red-900">삭제</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <Table columns={columns} data={bannedWordsData} />
             </div>
           </div>
         </main>
