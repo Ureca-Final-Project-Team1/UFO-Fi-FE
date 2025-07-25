@@ -27,10 +27,16 @@ export default function AchievementPage() {
 
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="flex flex-col gap-4 w-full">
-          <hr className="border-t border-(--color-hr-border) w-full" />
+          <hr className="border-t border-[color:var(--color-hr-border)] w-full" />
           <p className="body-16-bold text-white">Lv.{i}</p>
           <div className="relative w-full flex items-end justify-evenly">
-            <Image src="/images/cloud.svg" alt="cloud" fill className="z-0" />
+            <Image
+              src="/images/cloud.svg"
+              alt="cloud"
+              fill
+              className="z-0 object-contain"
+              aria-hidden="true"
+            />
             {[1, 2, 3].map((j) => (
               <div key={`${i}-${j}`} className="relative z-10 flex flex-col items-center gap-1">
                 <AchievementBadge i={i} j={j} isAchieve={false} />
