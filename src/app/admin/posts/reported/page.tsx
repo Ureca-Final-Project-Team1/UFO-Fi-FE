@@ -23,7 +23,7 @@ interface ReportedPostTableRow extends BaseTableRow {
 
 export default function AdminReportedPostsPage() {
   const { reportedPosts, isLoading, error, rollBackReport, refreshData } = useReportedPosts();
-  const { openModal } = useModal();
+  const { openModal, showConfirm } = useModal();
 
   const columns: TableColumn<ReportedPostTableRow>[] = [
     {
@@ -107,11 +107,9 @@ export default function AdminReportedPostsPage() {
   };
 
   async function handleRollBackReport(row: ReportedPostTableRow) {
-    if (!confirm(`게시물 ID ${row.postId}의 신고를 해지하시겠습니까?`)) {
-      return;
-    }
-
-    await rollBackReport(row.postId);
+    showConfirm('신고 해지', `게시물 ID ${row.postId}의 신고를 해지하시겠습니까?`, () =>
+      rollBackReport(row.postId),
+    );
   }
 
   function handleViewDetails(row: ReportedPostTableRow) {
