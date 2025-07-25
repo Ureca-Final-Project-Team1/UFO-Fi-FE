@@ -11,7 +11,6 @@ import {
   NavigationProvider,
   OnboardingGuardProvider,
   BackgroundProvider,
-  ThemeProvider,
 } from '@/provider';
 import FCMProvider from '@/shared/components/FCMProvider';
 import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
@@ -49,23 +48,21 @@ export default function RootLayout({
         }
       >
         <GoogleAnalytics />
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <QueryProvider>
-            <ViewportObserverProvider>
-              <NavigationProvider>
-                <BackgroundProvider>
-                  <OnboardingGuardProvider>
-                    <FCMProvider>
-                      {children}
-                      <Analytics />
-                    </FCMProvider>
-                  </OnboardingGuardProvider>
-                </BackgroundProvider>
-              </NavigationProvider>
-              <ModalProvider />
-            </ViewportObserverProvider>
-          </QueryProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <ViewportObserverProvider>
+            <NavigationProvider>
+              <BackgroundProvider>
+                <OnboardingGuardProvider>
+                  <FCMProvider>
+                    {children}
+                    <Analytics />
+                  </FCMProvider>
+                </OnboardingGuardProvider>
+              </BackgroundProvider>
+            </NavigationProvider>
+            <ModalProvider />
+          </ViewportObserverProvider>
+        </QueryProvider>
         <Toaster style={{ bottom: TOAST_CONFIG.BOTTOM_OFFSET }} />
       </body>
     </html>

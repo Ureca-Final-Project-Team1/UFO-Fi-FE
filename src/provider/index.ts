@@ -4,4 +4,3 @@ export { ViewportObserverProvider } from './ViewportObserverProvider';
 export { NavigationProvider } from './NavigationProvider';
 export { BackgroundProvider } from './BackgroundProvider';
 export { OnboardingGuardProvider } from './OnboardingGuardProvider';
-export { ThemeProvider } from './ThemeProvider';
