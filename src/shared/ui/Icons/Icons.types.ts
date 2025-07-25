@@ -73,6 +73,8 @@ export type LucideIconType =
   | 'CircleMinus'
   | 'FileText'
   | 'UserX'
+  | 'RefreshCw'
+  | 'UserCheck'
   | 'Users'
   | 'Focus';
 
