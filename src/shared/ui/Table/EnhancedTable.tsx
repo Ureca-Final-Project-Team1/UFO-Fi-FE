@@ -78,7 +78,10 @@ export function EnhancedTable<T extends TableRowBase>({
     if (selectedIds.length === data.length && data.length > 0) {
       onSelectionChange([]);
     } else {
-      onSelectionChange(data.map((row) => row.id!).filter((id) => id !== undefined));
+      const validIds = data
+        .map((row) => row.id)
+        .filter((id): id is string | number => id !== undefined);
+      onSelectionChange(validIds);
     }
   };
 
