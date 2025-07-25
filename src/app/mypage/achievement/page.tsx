@@ -6,6 +6,8 @@ import { AchievementBadge } from '@/features/mypage/components/AchievementBadge'
 import { Title } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
+const titleName = ['우주 여행 입문자', '전파 항해자', '우주 개척자', '전설의 항해자'];
+
 export default function AchievementPage() {
   const { isDesktop, isTablet } = useViewportStore();
 
@@ -28,7 +30,9 @@ export default function AchievementPage() {
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="flex flex-col gap-4 w-full">
           <hr className="border-t border-[color:var(--color-hr-border)] w-full" />
-          <p className="body-16-bold text-white">Lv.{i}</p>
+          <p className="body-16-bold text-white">
+            Lv.{i} {titleName[i - 1]}
+          </p>
           <div className="relative w-full flex items-end justify-evenly">
             <Image
               src="/images/cloud.svg"
