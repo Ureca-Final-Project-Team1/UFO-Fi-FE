@@ -242,11 +242,13 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
           aria-modal="true"
           aria-label="관리자 메뉴"
         >
+          {/* 오버레이 클릭 시 닫기 */}
+          <div className="flex-1" onClick={handleClose} />
           <nav
             ref={menuRef}
             className={`w-72 bg-white h-full flex flex-col shadow-lg transition-transform duration-200 ease-out ${
-              isClosing ? 'transform -translate-x-full' : 'transform translate-x-0'
-            } ${open && !isClosing ? 'animate-slide-in' : ''}`}
+              isClosing ? 'transform translate-x-full' : 'transform translate-x-0'
+            } ${open && !isClosing ? 'animate-slide-in-right' : ''}`}
             role="navigation"
             aria-label="관리자 메뉴"
           >
@@ -286,21 +288,19 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
               </Link>
             </div>
           </nav>
-          {/* 오버레이 클릭 시 닫기 */}
-          <div className="flex-1" onClick={handleClose} />
         </div>
       )}
       <style jsx>{`
-        @keyframes slide-in {
+        @keyframes slide-in-right {
           from {
-            transform: translateX(-100%);
+            transform: translateX(100%);
           }
           to {
             transform: translateX(0);
           }
         }
-        .animate-slide-in {
-          animation: slide-in 0.2s ease-out;
+        .animate-slide-in-right {
+          animation: slide-in-right 0.2s ease-out;
         }
       `}</style>
     </>
