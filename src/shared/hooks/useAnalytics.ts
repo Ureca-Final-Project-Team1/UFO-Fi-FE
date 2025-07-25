@@ -30,7 +30,7 @@ export function useAnalytics() {
 
     // Clarity 특화 이벤트
     trackFormInteraction: (formName: string, action: 'start' | 'complete' | 'abandon') =>
-      analytics.track.formInteraction(formName, action),
+      analytics.track.trackFormInteraction(formName, action),
     trackError: (errorType: string, errorMessage: string) =>
       analytics.track.errorOccurred(errorType, errorMessage),
     trackFeatureUsage: (featureName: string, context?: string) =>

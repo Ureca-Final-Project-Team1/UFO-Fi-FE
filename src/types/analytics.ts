@@ -36,10 +36,12 @@ export interface UserProperties {
   [key: string]: string | number | boolean | undefined;
 }
 
-export type ClarityUserProperties = Record<string, string | number | boolean>;
+export const FORM_ACTION = {
+  START: 'start',
+  COMPLETE: 'complete',
+  ABANDON: 'abandon',
+} as const;
 
-declare global {
-  interface Window {
-    clarity?: ClarityInstance;
-  }
-}
+export type FormAction = (typeof FORM_ACTION)[keyof typeof FORM_ACTION];
+
+export type ClarityUserProperties = Record<string, string | number | boolean>;

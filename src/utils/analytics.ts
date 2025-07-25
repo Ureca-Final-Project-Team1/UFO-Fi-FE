@@ -3,6 +3,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import type {
   AnalyticsEventParams,
   EcommerceItem,
+  FormAction,
   GTMEventData,
   UserProperties,
 } from '@/types/analytics';
@@ -106,7 +107,7 @@ export const analytics = {
       });
     },
 
-    formInteraction: (formName: string, action: 'start' | 'complete' | 'abandon'): void => {
+    trackFormInteraction: (formName: string, action: FormAction): void => {
       analytics.event('form_interaction', {
         form_name: formName,
         form_action: action,
