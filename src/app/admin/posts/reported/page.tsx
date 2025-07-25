@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { useReportedPosts } from '@/features/admin/hooks/useReportedPosts';
+import { useModal } from '@/shared/hooks/useModal';
 import { Button } from '@/shared/ui/Button/Button';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
@@ -22,6 +23,7 @@ interface ReportedPostTableRow extends BaseTableRow {
 
 export default function AdminReportedPostsPage() {
   const { reportedPosts, isLoading, error, rollBackReport, refreshData } = useReportedPosts();
+  const { openModal } = useModal();
 
   const columns: TableColumn<ReportedPostTableRow>[] = [
     {
@@ -113,23 +115,90 @@ export default function AdminReportedPostsPage() {
   }
 
   function handleViewDetails(row: ReportedPostTableRow) {
-    // TODO: 모달 컴포넌트로 개선 필요
-    const reportContentsText =
-      row.reportContents && row.reportContents.length > 0
-        ? row.reportContents.map((content, index) => `${index + 1}. ${content}`).join('\n')
-        : '신고 사유가 없습니다.';
+    const statusColor =
+      row.tradePostStatus === 'DELETED'
+        ? 'text-red-600'
+        : row.tradePostStatus === 'REPORTED'
+          ? 'text-orange-600'
+          : row.tradePostStatus === 'SOLD_OUT'
+            ? 'text-gray-600'
+            : row.tradePostStatus === 'EXPIRED'
+              ? 'text-yellow-600'
+              : 'text-green-600';
 
-    const details = `
-      게시물 ID: ${row.postId}
-      사용자 ID: ${row.userId}
-      신고 횟수: ${row.reportCount}회
-      상태: ${row.tradePostStatus}
-      신고 사유들:
-      ${reportContentsText}
-      신고일: ${new Date(row.createdAt).toLocaleString('ko-KR')}
-    `;
+    const reportCountColor =
+      Number(row.reportCount) >= 10
+        ? 'text-red-600'
+        : Number(row.reportCount) >= 5
+          ? 'text-orange-600'
+          : 'text-gray-600';
 
-    alert(details);
+    openModal('reportedPostDetails', {
+      title: '신고된 게시물 상세 정보',
+      size: 'lg',
+      type: 'single',
+      headerAlign: 'left',
+      hasCloseButton: true,
+      primaryButtonText: '확인',
+      children: (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-sm font-medium text-gray-500">게시물 ID</span>
+                <span className="text-sm font-semibold text-gray-900">{row.postId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm font-medium text-gray-500">사용자 ID</span>
+                <span className="text-sm font-semibold text-gray-900">{row.userId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm font-medium text-gray-500">신고 횟수</span>
+                <span className={`text-sm font-semibold ${reportCountColor}`}>
+                  {row.reportCount}회
+                </span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-sm font-medium text-gray-500">상태</span>
+                <span className={`text-sm font-semibold ${statusColor}`}>
+                  {row.tradePostStatus}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm font-medium text-gray-500">신고일</span>
+                <span className="text-sm font-semibold text-gray-900">
+                  {new Date(row.createdAt).toLocaleDateString('ko-KR')}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm font-medium text-gray-500">신고 시간</span>
+                <span className="text-sm font-semibold text-gray-900">
+                  {new Date(row.createdAt).toLocaleTimeString('ko-KR')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t pt-4">
+            <h4 className="text-sm font-medium text-gray-700 mb-3">신고 사유</h4>
+            {row.reportContents && row.reportContents.length > 0 ? (
+              <div className="space-y-2">
+                {row.reportContents.map((content, index) => (
+                  <div key={index} className="flex items-start space-x-2">
+                    <span className="text-xs text-gray-400 mt-1">{index + 1}.</span>
+                    <span className="text-sm text-gray-900 flex-1">{content}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <span className="text-sm text-gray-500">신고 사유가 없습니다.</span>
+            )}
+          </div>
+        </div>
+      ),
+    });
   }
 
   return (
