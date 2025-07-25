@@ -1,6 +1,6 @@
 'use client';
 
-import { DataTable } from '@/shared';
+import { Table } from '@/shared';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
 
@@ -71,7 +71,7 @@ export default function AdminPostsPage() {
 
             {/* 게시물 목록 */}
             <div className="bg-white rounded-lg shadow overflow-hidden">
-              <DataTable columns={columns} data={postsData} />
+              <Table columns={columns} data={postsData} />
             </div>
           </div>
         </main>

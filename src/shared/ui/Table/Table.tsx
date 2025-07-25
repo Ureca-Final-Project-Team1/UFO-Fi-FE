@@ -11,7 +11,7 @@ import { TableCheckbox } from './TableCheckbox/TableCheckbox';
 import { TableSkeleton } from './TableSkeleton';
 import Pagination from '../Pagination/Pagination';
 
-export function DataTable<T extends BaseTableRow>({
+export function Table<T extends BaseTableRow>({
   columns,
   data,
   actions,

@@ -3,8 +3,8 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { Table } from '@/shared';
 
-import { DataTable } from './DataTable';
 import { AdminTableProps, BaseTableRow } from './Table.types';
 import { Button } from '../Button/Button';
 
@@ -59,7 +59,7 @@ export function AdminTable<T extends BaseTableRow>({
       )}
 
       {/* 데이터 테이블 */}
-      <DataTable {...tableProps} />
+      <Table {...tableProps} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-export { DataTable } from './DataTable';
+export { Table } from './Table';
 export { AdminTable } from './AdminTable';
 
 export type {

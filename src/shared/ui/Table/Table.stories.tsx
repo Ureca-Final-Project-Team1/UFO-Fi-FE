@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { DataTable } from '@/shared';
+import { Table } from '@/shared';
 
 import { Icon } from '../Icons/Icon';
 
@@ -57,9 +57,9 @@ const generateTestData = (count: number): TestRow[] => {
 
 const data = generateTestData(25);
 
-const meta: Meta<typeof DataTable<TestRow>> = {
+const meta: Meta<typeof Table<TestRow>> = {
   title: 'UI/Table',
-  component: DataTable,
+  component: Table,
   parameters: {
     layout: 'fullscreen',
   },
@@ -67,7 +67,7 @@ const meta: Meta<typeof DataTable<TestRow>> = {
 
 export default meta;
 
-type Story = StoryObj<typeof DataTable<TestRow>>;
+type Story = StoryObj<typeof Table<TestRow>>;
 
 export const Default: Story = {
   args: {
@@ -80,7 +80,7 @@ export const WithPagination: Story = {
   render: function WithPaginationStory() {
     return (
       <div className="p-6">
-        <DataTable columns={columns} data={data} />
+        <Table columns={columns} data={data} />
       </div>
     );
   },
@@ -91,7 +91,7 @@ export const LargeDataset: Story = {
     const largeData = generateTestData(100);
     return (
       <div className="p-6">
-        <DataTable columns={columns} data={largeData} />
+        <Table columns={columns} data={largeData} />
       </div>
     );
   },
@@ -102,7 +102,7 @@ export const SmallDataset: Story = {
     const smallData = generateTestData(5);
     return (
       <div className="p-6">
-        <DataTable columns={columns} data={smallData} />
+        <Table columns={columns} data={smallData} />
       </div>
     );
   },
