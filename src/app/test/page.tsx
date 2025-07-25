@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import EmblaCarousel from '@/features/profile/components/Carousel/EmblaCarousel';
 import { Button } from '@/shared';
+import { useViewportStore } from '@/stores/useViewportStore';
 
 type Neighbor = {
   id: number;
@@ -18,6 +19,7 @@ const TestPage = () => {
   const [neighbors, setNeighbors] = useState<Neighbor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isDesktop } = useViewportStore();
 
   const handleClick = (id: number) => {
     router.push(`/profile/${id}`);
@@ -56,7 +58,7 @@ const TestPage = () => {
   }, []);
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
+    <div className="p-6 max-w-full mx-auto">
       <h1 className="text-2xl font-bold mb-4">🔄 초기화 후 유사한 사용자 Top 20</h1>
 
       {loading && <p className="text-blue-500">로딩 중...</p>}
@@ -76,6 +78,7 @@ const TestPage = () => {
               containScroll: 'trimSnaps',
             }}
             className="flex gap-4 px-2"
+            isDesktop={isDesktop}
           >
             {neighbors.map((n, i) => (
               <div
