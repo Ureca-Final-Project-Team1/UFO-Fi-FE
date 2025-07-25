@@ -1,8 +1,8 @@
 'use client';
 
+import { DataTable } from '@/shared';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
-import { Table } from '@/shared/ui/Table/Table';
 
 export default function AdminReportedPostsPage() {
   const reportedPostsData = [
@@ -72,7 +72,7 @@ export default function AdminReportedPostsPage() {
             <h1 className="text-2xl font-bold text-gray-900 mb-6">신고된 게시물</h1>
 
             <div className="bg-white rounded-lg shadow overflow-hidden">
-              <Table columns={columns} data={reportedPostsData} />
+              <DataTable columns={columns} data={reportedPostsData} />
             </div>
           </div>
         </main>

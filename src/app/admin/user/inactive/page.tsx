@@ -1,8 +1,8 @@
 'use client';
 
+import { DataTable } from '@/shared';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
-import { Table } from '@/shared/ui/Table/Table';
 
 export default function AdminInactiveUsersPage() {
   const inactiveUsersData = [
@@ -172,7 +172,7 @@ export default function AdminInactiveUsersPage() {
               <div className="px-6 py-4 border-b border-gray-200">
                 <h3 className="text-lg font-medium text-gray-900">비활성화 사용자 목록</h3>
               </div>
-              <Table columns={columns} data={inactiveUsersData} />
+              <DataTable columns={columns} data={inactiveUsersData} />
             </div>
 
             {/* 페이지네이션 */}

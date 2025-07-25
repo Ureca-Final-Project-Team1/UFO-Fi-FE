@@ -1,5 +1,3 @@
-export { Table } from './Table';
-export { EnhancedTable } from './EnhancedTable';
 export { DataTable } from './DataTable';
 export { AdminTable } from './AdminTable';
 
