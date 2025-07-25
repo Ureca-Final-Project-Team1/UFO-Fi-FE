@@ -65,7 +65,13 @@ export default function RootLayout({
             </ViewportObserverProvider>
           </QueryProvider>
         </ThemeProvider>
-        <Toaster position="top-center" expand={true} richColors={true} closeButton={true} />
+        <Toaster
+          position="bottom-center"
+          expand={true}
+          richColors={true}
+          closeButton={true}
+          style={{ bottom: '80px' }}
+        />
       </body>
     </html>
   );
