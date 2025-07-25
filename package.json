@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "is-ci || husky install",
+    "prepare": "node -e \"if (!process.env.CI) { try { require('husky').install() } catch (e) { } }\"",
     "test": "echo \"No tests yet\" && exit 0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
