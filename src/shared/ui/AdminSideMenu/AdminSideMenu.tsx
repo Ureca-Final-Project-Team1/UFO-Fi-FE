@@ -221,7 +221,7 @@ export const AdminSideMenu: React.FC = () => {
     <>
       {/* 햄버거 버튼 - 테블릿 이하에서 표시 */}
       <button
-        className="lg:hidden fixed top-4 left-4 z-[9999] p-3 rounded-lg bg-white shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        className="lg:hidden fixed top-4 left-4 z-[9999] p-2 hover:bg-gray-100 transition-colors rounded"
         onClick={handleOpen}
         aria-label="메뉴 열기"
       >
