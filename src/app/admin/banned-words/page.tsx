@@ -12,8 +12,6 @@ import Sidebar from '@/shared/ui/Sidebar/Sidebar';
 import { EnhancedTable } from '@/shared/ui/Table/EnhancedTable';
 
 interface BannedWordTableRow extends BannedWord {
-  id: number;
-  word: string;
   createdAt: string;
   actions: {
     hideActivate: boolean;
