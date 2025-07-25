@@ -237,6 +237,9 @@
   --color-password-bg: #070d24;
   --width-mobile-min: 375px;
   --width-mobile-max: 620px;
+
+  --color-hr-border: #777777;
+  --color-badge-border: #d9d9d9;
 }
 
 @layer base {
