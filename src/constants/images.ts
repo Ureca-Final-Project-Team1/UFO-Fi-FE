@@ -43,4 +43,13 @@ export const IMAGE_PATHS = {
   PURCHASE_COIN: '/images/purchase-coin.svg',
   DATA_CUBE: '/images/data-cube.svg',
   PURCHASE_COMPLETED: '/images/purchase-completed.svg',
+  BADGES_LOCKED: '/icons/badges/locked.svg',
 } as const;
+
+export const BADGE_ICONS: Record<string, string> = {};
+
+[1, 2, 3, 4].forEach((lv) => {
+  [1, 2, 3].forEach((i) => {
+    BADGE_ICONS[`lv${lv}-${i}`] = `/icons/badges/lv${lv}-${i}.svg`;
+  });
+});

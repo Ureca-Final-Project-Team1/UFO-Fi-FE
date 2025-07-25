@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { BADGE_ICONS, IMAGE_PATHS } from '@/constants/images';
+
 export interface AchievementBadgeProps {
   className?: string;
   i: number;
@@ -20,7 +22,7 @@ export const AchievementBadge = ({
       <div className="relative w-[70px] h-[70px] border-2 border-(--color-badge-border) rounded-[14px] object-cover overflow-hidden">
         <Image
           key={`lv${i}-${j}`}
-          src={`/icons/badges/lv${i}-${j}.svg`}
+          src={BADGE_ICONS[`lv${i}-${j}`]}
           alt={`${i}-${j}`}
           fill
           className={`${!isAchieve ? 'blur-xs' : ''}`}
@@ -28,7 +30,7 @@ export const AchievementBadge = ({
         {!isAchieve && (
           <div className="w-[70px] h-[70px] flex justify-center items-center">
             <Image
-              src="/icons/badges/locked.svg"
+              src={IMAGE_PATHS.BADGES_LOCKED}
               alt="locked"
               width={35}
               height={35}

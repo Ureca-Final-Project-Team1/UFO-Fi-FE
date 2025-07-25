@@ -22,7 +22,7 @@ export default function AchievementPage() {
         alt="pointer"
         width={isDesktop ? 100 : isTablet ? 80 : 60}
         height={isDesktop ? 100 : isTablet ? 80 : 60}
-        className="absolute top-[20px] right-[16px] z-20"
+        className="absolute top-5 right-4 z-20"
       />
 
       {[1, 2, 3, 4].map((i) => (
