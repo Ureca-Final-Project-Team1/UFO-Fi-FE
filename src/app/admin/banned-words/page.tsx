@@ -39,7 +39,6 @@ export default function AdminBannedWordsPage() {
     setSelectedIds,
   } = useBannedWords();
 
-  // EnhancedTable용 컬럼 정의 (반응형 설정 포함)
   const columns = [
     {
       Header: 'ID',
