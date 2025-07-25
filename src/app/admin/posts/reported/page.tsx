@@ -16,7 +16,7 @@ interface ReportedPostTableRow extends BaseTableRow {
   reportCount: number;
   tradePostStatus: 'SELLING' | 'SOLD_OUT' | 'REPORTED' | 'EXPIRED' | 'DELETED';
   createdAt: string;
-  reportContents: string[] | null;
+  reportContents: string[];
   reportReason: string;
 }
 
@@ -113,6 +113,7 @@ export default function AdminReportedPostsPage() {
   }
 
   function handleViewDetails(row: ReportedPostTableRow) {
+    // TODO: 모달 컴포넌트로 개선 필요
     const reportContentsText =
       row.reportContents && row.reportContents.length > 0
         ? row.reportContents.map((content, index) => `${index + 1}. ${content}`).join('\n')

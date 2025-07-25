@@ -24,7 +24,7 @@ export const useReportedPosts = (): UseReportedPostsReturn => {
       setError(null);
 
       const response = await reportAPI.getReportedPosts();
-      setReportedPosts(response.content.rollBackReportsReadRes);
+      setReportedPosts(response.content.rollBackReportsReadRes || []);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : '신고된 게시물을 불러오는 중 오류가 발생했습니다.';
