@@ -1,3 +1,4 @@
+// src/shared/ui/Table/EnhancedTable.tsx
 'use client';
 
 import React from 'react';
@@ -37,7 +38,7 @@ interface EnhancedTableProps<T extends TableRowBase> {
   selectedIds?: (string | number)[];
   onSelectionChange?: (selectedIds: (string | number)[]) => void;
 
-  // 페이지네이션 기능
+  // 페이지네이션 (외부 제어)
   showPagination?: boolean;
   currentPage?: number;
   totalPages?: number;
@@ -123,17 +124,38 @@ export function EnhancedTable<T extends TableRowBase>({
         >
           {enableSelection && (
             <div className="flex items-center justify-center">
-              <input
-                type="checkbox"
-                checked={data.length > 0 && selectedIds.length === data.length}
-                onChange={handleSelectAll}
-                disabled={isLoading || data.length === 0}
-                className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-400 rounded-sm 
-                          focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                          checked:bg-blue-600 checked:border-blue-600
-                          disabled:opacity-50 disabled:cursor-not-allowed
-                          hover:border-blue-400 transition-colors"
-              />
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={data.length > 0 && selectedIds.length === data.length}
+                  onChange={handleSelectAll}
+                  disabled={isLoading || data.length === 0}
+                  className="sr-only" // 기본 체크박스 숨기기
+                />
+                <div
+                  onClick={() => !(isLoading || data.length === 0) && handleSelectAll()}
+                  className={`
+                    w-5 h-5 border-2 rounded-sm cursor-pointer transition-all duration-200
+                    flex items-center justify-center
+                    ${
+                      data.length > 0 && selectedIds.length === data.length
+                        ? 'bg-blue-600 border-blue-600'
+                        : 'bg-white border-gray-400 hover:border-blue-400'
+                    }
+                    ${isLoading || data.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                >
+                  {data.length > 0 && selectedIds.length === data.length && (
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
@@ -214,17 +236,42 @@ export function EnhancedTable<T extends TableRowBase>({
                 >
                   {enableSelection && (
                     <div className="flex items-center justify-center">
-                      <input
-                        type="checkbox"
-                        checked={selectedIds.includes(row.id!)}
-                        onChange={() => handleSelectRow(row.id!)}
-                        disabled={isLoading}
-                        className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-400 rounded-sm 
-                                  focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                                  checked:bg-blue-600 checked:border-blue-600
-                                  disabled:opacity-50 disabled:cursor-not-allowed
-                                  hover:border-blue-400 transition-colors"
-                      />
+                      <div className="relative">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(row.id!)}
+                          onChange={() => handleSelectRow(row.id!)}
+                          disabled={isLoading}
+                          className="sr-only" // 기본 체크박스 숨기기
+                        />
+                        <div
+                          onClick={() => !isLoading && handleSelectRow(row.id!)}
+                          className={`
+                            w-5 h-5 border-2 rounded-sm cursor-pointer transition-all duration-200
+                            flex items-center justify-center
+                            ${
+                              selectedIds.includes(row.id!)
+                                ? 'bg-blue-600 border-blue-600'
+                                : 'bg-white border-gray-400 hover:border-blue-400'
+                            }
+                            ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+                          `}
+                        >
+                          {selectedIds.includes(row.id!) && (
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
 
