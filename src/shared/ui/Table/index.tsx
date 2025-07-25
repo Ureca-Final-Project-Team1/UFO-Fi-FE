@@ -1,1 +1,0 @@
-export { EnhancedTable } from './EnhancedTable';
