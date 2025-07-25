@@ -53,6 +53,8 @@ export const Icon: React.FC<IconComponentProps> = ({
     graph: CustomIcons.GraphIcon,
     'circle-minus': CustomIcons.CircleMinusIcon,
     return: CustomIcons.ReturnIcon,
+    emblaprev: CustomIcons.EmblaPrevIcon,
+    emblanext: CustomIcons.EmblaNextIcon,
   };
 
   if (name in customIconComponents) {
