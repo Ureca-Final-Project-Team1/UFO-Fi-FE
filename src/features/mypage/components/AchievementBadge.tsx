@@ -5,9 +5,16 @@ export interface AchievementBadgeProps {
   i: number;
   j: number;
   isAchieve: boolean;
+  achievementName?: string;
 }
 
-export const AchievementBadge = ({ className, i, j, isAchieve }: AchievementBadgeProps) => {
+export const AchievementBadge = ({
+  className,
+  i,
+  j,
+  isAchieve,
+  achievementName,
+}: AchievementBadgeProps) => {
   return (
     <div key={j} className={`${className} flex flex-col mb-5`}>
       <div className="relative w-[70px] h-[70px] border-2 border-(--color-badge-border) rounded-[14px] object-cover overflow-hidden">
@@ -30,7 +37,7 @@ export const AchievementBadge = ({ className, i, j, isAchieve }: AchievementBadg
           </div>
         )}
       </div>
-      <p className="text-center pt-12 caption-14-regular">업적 이름</p>
+      <p className="text-center pt-12 caption-14-regular">{achievementName ?? '업적 이름'}</p>
     </div>
   );
 };
