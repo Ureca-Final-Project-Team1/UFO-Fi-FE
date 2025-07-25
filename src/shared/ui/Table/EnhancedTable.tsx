@@ -137,9 +137,18 @@ export function EnhancedTable<T extends TableRowBase>({
                 />
                 <div
                   onClick={() => !(isLoading || data.length === 0) && handleSelectAll()}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                    }
+                  }}
+                  tabIndex={0}
+                  role="checkbox"
+                  aria-checked={data.length > 0 && selectedIds.length === data.length}
+                  aria-label="모두 선택"
                   className={`
                     w-5 h-5 border-2 rounded-sm cursor-pointer transition-all duration-200
-                    flex items-center justify-center
+                    flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                     ${
                       data.length > 0 && selectedIds.length === data.length
                         ? 'bg-blue-600 border-blue-600'
