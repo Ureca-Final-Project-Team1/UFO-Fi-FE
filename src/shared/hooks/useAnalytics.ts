@@ -10,6 +10,7 @@ export function useAnalytics() {
 
   // 페이지 변경 시 자동 트래킹
   useEffect(() => {
+    if (!pathname) return;
     analytics.pageview(pathname);
   }, [pathname]);
 
