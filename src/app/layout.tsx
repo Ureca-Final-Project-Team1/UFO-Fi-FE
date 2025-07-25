@@ -10,6 +10,7 @@ import {
   NavigationProvider,
   OnboardingGuardProvider,
   BackgroundProvider,
+  ThemeProvider,
 } from '@/provider';
 import FCMProvider from '@/shared/components/FCMProvider';
 import GoogleAnalytics from '@/shared/components/GoogleAnalytics';
@@ -47,21 +48,23 @@ export default function RootLayout({
         }
       >
         <GoogleAnalytics />
-        <QueryProvider>
-          <ViewportObserverProvider>
-            <NavigationProvider>
-              <BackgroundProvider>
-                <OnboardingGuardProvider>
-                  <FCMProvider>
-                    {children}
-                    <Analytics />
-                  </FCMProvider>
-                </OnboardingGuardProvider>
-              </BackgroundProvider>
-            </NavigationProvider>
-            <ModalProvider />
-          </ViewportObserverProvider>
-        </QueryProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <QueryProvider>
+            <ViewportObserverProvider>
+              <NavigationProvider>
+                <BackgroundProvider>
+                  <OnboardingGuardProvider>
+                    <FCMProvider>
+                      {children}
+                      <Analytics />
+                    </FCMProvider>
+                  </OnboardingGuardProvider>
+                </BackgroundProvider>
+              </NavigationProvider>
+              <ModalProvider />
+            </ViewportObserverProvider>
+          </QueryProvider>
+        </ThemeProvider>
         <Toaster position="top-center" expand={true} richColors={true} closeButton={true} />
       </body>
     </html>
