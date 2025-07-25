@@ -9,7 +9,7 @@ import { useToastStore } from '@/hooks/useToastStore';
 import { registerFCMToken } from '@/lib/fcm';
 import { useUserInfoStore } from '@/stores/useUserInfoStore';
 
-const Page = () => {
+const SuccessPage = () => {
   const router = useRouter();
   const { setPhoneNumber } = useUserInfoStore();
   const { setMessage } = useToastStore();
@@ -43,6 +43,7 @@ const Page = () => {
         const error = err as AxiosError<{ message: string }>;
         const errorMessage =
           error?.response?.data?.message || error?.message || '알 수 없는 오류가 발생했습니다.';
+        console.log(errorMessage);
         setMessage(errorMessage);
         router.push('/login');
       }
@@ -57,4 +58,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default SuccessPage;
