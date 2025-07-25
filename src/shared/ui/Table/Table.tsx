@@ -8,6 +8,7 @@ import Pagination from '../Pagination/Pagination';
 interface Column<T = unknown> {
   Header: string;
   accessor: keyof T | string;
+  render?: (value: unknown, row: T) => React.ReactNode;
 }
 
 interface TableRowBase {
@@ -108,6 +109,8 @@ const Table = <T extends TableRowBase>({
                             {row.actions?.activateIcon ?? <ReturnIcon className="w-5 h-5" />}
                           </button>
                         </div>
+                      ) : col.render ? (
+                        col.render(row[col.accessor as keyof T], row)
                       ) : (
                         String(row[col.accessor as keyof T] ?? '')
                       )}
