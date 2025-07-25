@@ -59,6 +59,8 @@ export interface BaseTableProps<T extends BaseTableRow = BaseTableRow> {
   isLoading?: boolean;
   emptyMessage?: string;
   className?: string;
+  onActivateClick?: (row: T) => void;
+  onDeactivateClick?: (row: T) => void;
 }
 
 export interface AdminTableProps<T extends BaseTableRow = BaseTableRow> extends BaseTableProps<T> {
