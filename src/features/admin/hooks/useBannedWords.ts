@@ -11,16 +11,16 @@ interface UseBannedWordsReturn {
   pageSize: number;
   isLoading: boolean;
   error: string | null;
-  selectedIds: number[];
+  selectedIds: (string | number)[];
   // Actions
   fetchBannedWords: (page?: number, size?: number) => Promise<void>;
   createBannedWord: (word: string) => Promise<void>;
-  deleteBannedWords: (ids: number[]) => Promise<void>;
-  deleteSingleBannedWord: (id: number) => Promise<void>;
+  deleteBannedWords: (ids: (string | number)[]) => Promise<void>;
+  deleteSingleBannedWord: (id: string | number) => Promise<void>;
   setCurrentPage: (page: number) => void;
   setPageSize: (size: number) => void;
-  setSelectedIds: (ids: number[]) => void;
-  toggleSelectId: (id: number) => void;
+  setSelectedIds: (ids: (string | number)[]) => void;
+  toggleSelectId: (id: string | number) => void;
   selectAll: () => void;
   clearSelection: () => void;
 }
@@ -33,7 +33,7 @@ export function useBannedWords(): UseBannedWordsReturn {
   const [pageSize, setPageSize] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
 
   // 금칙어 목록 조회
   const fetchBannedWords = useCallback(
@@ -94,12 +94,14 @@ export function useBannedWords(): UseBannedWordsReturn {
 
   // 금칙어 일괄 삭제
   const deleteBannedWords = useCallback(
-    async (ids: number[]) => {
+    async (ids: (string | number)[]) => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const response = await bannedWordsAPI.deleteMany({ ids });
+        // string | number 배열을 number 배열로 변환
+        const numberIds = ids.map((id) => (typeof id === 'string' ? parseInt(id, 10) : id));
+        const response = await bannedWordsAPI.deleteMany({ ids: numberIds });
 
         if (response.statusCode === 200) {
           toast.success(`${response.content.deletedCount}개의 금칙어가 삭제되었습니다.`);
@@ -123,15 +125,17 @@ export function useBannedWords(): UseBannedWordsReturn {
 
   // 금칙어 단일 삭제
   const deleteSingleBannedWord = useCallback(
-    async (id: number) => {
+    async (id: string | number) => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const response = await bannedWordsAPI.deleteOne(id);
+        const numberId = typeof id === 'string' ? parseInt(id, 10) : id;
+        const response = await bannedWordsAPI.deleteOne(numberId);
 
         if (response.statusCode === 200) {
           toast.success('금칙어가 삭제되었습니다.');
+          // 선택된 ID에서 제거
           setSelectedIds((prev) => prev.filter((selectedId) => selectedId !== id));
           // 현재 페이지 새로고침
           await fetchBannedWords(currentPage, pageSize);
@@ -150,7 +154,8 @@ export function useBannedWords(): UseBannedWordsReturn {
     [currentPage, pageSize, fetchBannedWords],
   );
 
-  const toggleSelectId = useCallback((id: number) => {
+  // 선택 관련 함수들
+  const toggleSelectId = useCallback((id: string | number) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((selectedId) => selectedId !== id) : [...prev, id],
     );
