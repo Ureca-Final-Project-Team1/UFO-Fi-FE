@@ -64,7 +64,11 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export const AdminSideMenu: React.FC = () => {
+interface AdminSideMenuProps {
+  className?: string;
+}
+
+export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
@@ -221,11 +225,11 @@ export const AdminSideMenu: React.FC = () => {
     <>
       {/* 햄버거 버튼 - 테블릿 이하에서 표시 */}
       <button
-        className="lg:hidden fixed top-4 left-4 z-[9999] p-2 hover:bg-gray-100 transition-colors rounded"
+        className={`lg:hidden p-2 hover:bg-gray-100 transition-colors rounded flex items-center justify-center ${className || ''}`}
         onClick={handleOpen}
         aria-label="메뉴 열기"
       >
-        <Icon name="Menu" className="w-6 h-6 text-gray-700" />
+        <Icon name="Menu" className="w-5 h-5 text-gray-700" />
       </button>
 
       {/* 오버레이 메뉴 (모바일/테블릿) */}

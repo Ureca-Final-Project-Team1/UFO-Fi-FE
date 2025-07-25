@@ -7,6 +7,7 @@ import React from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
 
+import { AdminSideMenu } from '../AdminSideMenu/AdminSideMenu';
 import { IconType } from '../Icons';
 import { Icon } from '../Icons/Icon';
 
@@ -74,6 +75,9 @@ const Header: React.FC<HeaderProps> = ({ userName = '김명령', onLogout }) => 
         >
           <Icon name="LogOut" className="w-5 h-5" color="black" />
         </button>
+        <div className="flex items-center">
+          <AdminSideMenu />
+        </div>
       </div>
     </header>
   );
