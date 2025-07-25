@@ -100,58 +100,29 @@ export function Table<T extends BaseTableRow>({
           ) : data.length === 0 ? (
             <div className="px-4 py-8 text-center text-gray-500">{emptyMessage}</div>
           ) : (
-            data.map((row, rowIndex) => (
-              <React.Fragment key={row.id ?? rowIndex}>
-                {/* 데스크톱 행 */}
-                <div
-                  className={cn(
-                    'hidden md:grid gap-4 px-4 py-3 hover:bg-gray-50 transition-colors text-sm',
-                    selection?.selectedIds.includes(row.id) && 'bg-blue-50',
-                  )}
-                  style={{ gridTemplateColumns: gridTemplate }}
-                >
-                  {selection?.enabled && (
-                    <div className="flex items-center justify-center">
-                      <TableCheckbox
-                        checked={selection.selectedIds.includes(row.id)}
-                        onChange={() => selectionHooks.handleSelectRow(row.id)}
-                        disabled={isLoading}
-                      />
-                    </div>
-                  )}
+            data
+              .filter((row) => row.id != null)
+              .map((row) => (
+                <React.Fragment key={row.id}>
+                  {/* 데스크톱 행 */}
+                  <div
+                    className={cn(
+                      'hidden md:grid gap-4 px-4 py-3 hover:bg-gray-50 transition-colors text-sm',
+                      selection?.selectedIds.includes(row.id) && 'bg-blue-50',
+                    )}
+                    style={{ gridTemplateColumns: gridTemplate }}
+                  >
+                    {selection?.enabled && (
+                      <div className="flex items-center justify-center">
+                        <TableCheckbox
+                          checked={selection.selectedIds.includes(row.id)}
+                          onChange={() => selectionHooks.handleSelectRow(row.id)}
+                          disabled={isLoading}
+                        />
+                      </div>
+                    )}
 
-                  {columns.map((col) => (
-                    <div key={String(col.accessor)} className="flex items-center text-gray-900">
-                      {col.render
-                        ? col.render(row[col.accessor as keyof T], row)
-                        : String(row[col.accessor as keyof T] ?? '')}
-                    </div>
-                  ))}
-
-                  {actions && <TableActions row={row} actions={actions} isLoading={isLoading} />}
-                </div>
-
-                {/* 모바일 행 */}
-                <div
-                  className={cn(
-                    'md:hidden grid gap-4 px-4 py-3 hover:bg-gray-50 transition-colors text-sm',
-                    selection?.selectedIds.includes(row.id) && 'bg-blue-50',
-                  )}
-                  style={{ gridTemplateColumns: mobileGridTemplate }}
-                >
-                  {selection?.enabled && (
-                    <div className="flex items-center justify-center">
-                      <TableCheckbox
-                        checked={selection.selectedIds.includes(row.id)}
-                        onChange={() => selectionHooks.handleSelectRow(row.id)}
-                        disabled={isLoading}
-                      />
-                    </div>
-                  )}
-
-                  {columns
-                    .filter((col) => !col.mobileHidden)
-                    .map((col) => (
+                    {columns.map((col) => (
                       <div key={String(col.accessor)} className="flex items-center text-gray-900">
                         {col.render
                           ? col.render(row[col.accessor as keyof T], row)
@@ -159,12 +130,43 @@ export function Table<T extends BaseTableRow>({
                       </div>
                     ))}
 
-                  {actions && (
-                    <TableActions row={row} actions={actions} isLoading={isLoading} size="sm" />
-                  )}
-                </div>
-              </React.Fragment>
-            ))
+                    {actions && <TableActions row={row} actions={actions} isLoading={isLoading} />}
+                  </div>
+
+                  {/* 모바일 행 */}
+                  <div
+                    className={cn(
+                      'md:hidden grid gap-4 px-4 py-3 hover:bg-gray-50 transition-colors text-sm',
+                      selection?.selectedIds.includes(row.id) && 'bg-blue-50',
+                    )}
+                    style={{ gridTemplateColumns: mobileGridTemplate }}
+                  >
+                    {selection?.enabled && (
+                      <div className="flex items-center justify-center">
+                        <TableCheckbox
+                          checked={selection.selectedIds.includes(row.id)}
+                          onChange={() => selectionHooks.handleSelectRow(row.id)}
+                          disabled={isLoading}
+                        />
+                      </div>
+                    )}
+
+                    {columns
+                      .filter((col) => !col.mobileHidden)
+                      .map((col) => (
+                        <div key={String(col.accessor)} className="flex items-center text-gray-900">
+                          {col.render
+                            ? col.render(row[col.accessor as keyof T], row)
+                            : String(row[col.accessor as keyof T] ?? '')}
+                        </div>
+                      ))}
+
+                    {actions && (
+                      <TableActions row={row} actions={actions} isLoading={isLoading} size="sm" />
+                    )}
+                  </div>
+                </React.Fragment>
+              ))
           )}
         </div>
 
