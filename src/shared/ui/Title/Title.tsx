@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -28,7 +27,6 @@ export const Title: React.FC<TitleProps> = ({
   className,
   ...props
 }) => {
-  const router = useRouter();
   const iconName = getIconName(iconVariant);
   const hasIcon = iconName !== null;
 
@@ -37,11 +35,11 @@ export const Title: React.FC<TitleProps> = ({
     (e: React.MouseEvent<HTMLButtonElement>): void => {
       if (onIconClick) {
         onIconClick(e);
-      } else if (iconVariant === 'back') {
-        router.back();
       }
+      // iconVariant === 'back'이고 onIconClick이 없으면 아무 동작하지 않음
+      // 실제 앱에서는 TitleWithRouter를 사용하여 router.back() 호출
     },
-    [onIconClick, iconVariant, router],
+    [onIconClick],
   );
 
   return (
