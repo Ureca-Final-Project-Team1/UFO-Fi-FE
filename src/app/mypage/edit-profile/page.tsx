@@ -2,9 +2,9 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { ConfirmModal, NicknameEditor, PlanEditor } from '@/features/mypage/components';
 import { useEditProfile } from '@/features/mypage/hooks/useEditProfile';
-import { Title } from '@/shared';
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function EditProfilePage() {
 
   return (
     <div className="flex flex-col min-h-screen w-full">
-      <Title title="프로필 수정" iconVariant="back" />
+      <TitleWithRouter title="프로필 수정" iconVariant="back" />
       <div className="mx-4 mt-6 flex flex-col gap-8">
         <NicknameEditor
           nickname={nickname}
