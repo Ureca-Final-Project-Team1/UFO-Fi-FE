@@ -103,6 +103,8 @@ export default function AdminBannedWordsPage() {
   const handleAddWord = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (isAddingWord) return;
+
     if (!newWord.trim()) {
       toast.error('금칙어를 입력해주세요.');
       return;
