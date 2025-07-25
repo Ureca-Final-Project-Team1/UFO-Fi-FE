@@ -7,7 +7,7 @@ import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
 import { purchaseAPI } from '@/api/services/exchange/purchase';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
-import { Icon, Title, Button } from '@/shared';
+import { Icon, TitleWithRouter, Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 import { useBulkPurchase } from '../hooks/useBulkPurchase';
@@ -104,7 +104,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   if (error || !resultData) {
     return (
       <div className="flex flex-col min-h-screen">
-        <Title title="매칭된 데이터" iconVariant="back" />
+        <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
         <div className="w-full h-full flex items-center justify-center text-white">
           검색 결과를 찾을 수 없습니다.
         </div>
@@ -115,7 +115,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   // 정상 상태
   return (
     <div className="flex flex-col min-h-full w-full">
-      <Title title="매칭된 데이터" iconVariant="back" />
+      <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
       <div className="px-4">
         <BulkResultDisplay
           data={resultData}
