@@ -77,7 +77,7 @@ jobs:
           cp -R .next/ output/
           cp -R public/ output/
           cp package*.json output/
-          cp next.config.ts output/
+          cp next.config.ts output/ 2>/dev/null || echo "next.config.ts not found, skipping"
           cp vercel.json output/ 2>/dev/null || echo "vercel.json not found, skipping"
 
           # README 생성
@@ -92,8 +92,8 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.UFOFI_GITHUB_KEY }}
         with:
           source-directory: 'output'
-          destination-github-username: 'abyss-s'
-          destination-repository-name: 'UFO-Fi-FE'
+          destination-github-username: ${{ secrets.DEPLOY_GH_USERNAME }}
+          destination-repository-name: ${{ secrets.DEPLOY_GH_REPO }}
           user-email: ${{ secrets.UFOFI_ACCOUNT_EMAIL }}
           commit-message: '🚀 Deploy: ${{ github.event.head_commit.message }}'
           target-branch: main
