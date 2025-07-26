@@ -21,7 +21,7 @@ export const useToastStore = create<ToastStore>()(
       clearToast: () => set({ message: null, status: 'success', hasShown: true }),
     }),
     {
-      name: 'trade-tab',
+      name: 'toast-store',
     },
   ),
 );

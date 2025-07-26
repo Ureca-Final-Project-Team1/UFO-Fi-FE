@@ -32,6 +32,7 @@ const SuccessPage = () => {
             break;
           case 'ROLE_ADMIN':
             router.push('/admin');
+            break;
           default:
             router.push('/');
             break;
