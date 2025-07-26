@@ -2,12 +2,23 @@
 
 import Image from 'next/image';
 import '@/styles/globals.css';
-// import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { Button } from '@/shared/ui';
+import { useToastStore } from '@/stores/useToastStore';
 
 const LoginPage = () => {
+  const { message, status, clearToast, hasShown } = useToastStore();
+
+  useEffect(() => {
+    if (message && status && !hasShown) {
+      toast[status](message);
+      clearToast();
+    }
+  }, [message, status, hasShown, clearToast]);
+
   const handleKakaoLogin = async () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao`;
   };

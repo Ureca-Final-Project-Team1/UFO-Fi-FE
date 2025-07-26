@@ -60,5 +60,5 @@ export interface PurchaseResponse {
 
 export interface BulkPurchaseParams {
   desiredGb: number;
-  maxPrice: number;
+  unitPerZet: number;
 }
