@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
 import { purchaseAPI } from '@/api/services/exchange/purchase';
@@ -83,10 +84,10 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
       fetchPurchase();
 
-      alert('구매가 완료되었습니다!');
+      toast.success('구매가 완료되었습니다!');
       router.push('/exchange');
     } catch {
-      alert('구매 중 오류가 발생했습니다.');
+      toast.error('구매 중 오류가 발생했습니다.');
     } finally {
       setIsPurchasing(false);
     }
