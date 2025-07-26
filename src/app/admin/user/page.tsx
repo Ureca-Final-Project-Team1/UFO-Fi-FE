@@ -4,16 +4,19 @@ import Sidebar from '@/shared/ui/Sidebar/Sidebar';
 
 export default function AdminUserPage() {
   return (
-    <>
-      <Header userName="Admin" />
-      <div className="flex min-h-screen w-full">
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar - 데스크탑에서만 표시 */}
+      <div className="hidden lg:block">
         <Sidebar />
-        <main className="flex-1 flex flex-col">
-          <section className="flex-1 p-8 min-h-screen w-full bg-white">
+      </div>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header userName="Admin" />
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
             <UserManagementPage />
-          </section>
+          </div>
         </main>
       </div>
-    </>
+    </div>
   );
 }

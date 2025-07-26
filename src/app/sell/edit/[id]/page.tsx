@@ -11,7 +11,7 @@ import { useEditContext } from '@/features/exchange/components/EditProvider';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
-import { Icon, Input, Title, Button, PriceInput } from '@/shared';
+import { Icon, Input, TitleWithRouter, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 import { handleApiAction } from '@/utils/handleApiAction';
 
@@ -81,7 +81,7 @@ export default function SellEditPage() {
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center">
-      <Title title="데이터 판매 수정" iconVariant="back" />
+      <TitleWithRouter title="데이터 판매 수정" iconVariant="back" />
       <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">

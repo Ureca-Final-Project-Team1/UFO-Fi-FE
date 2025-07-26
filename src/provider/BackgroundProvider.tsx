@@ -1,4 +1,5 @@
 'use client';
+
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
@@ -13,6 +14,13 @@ export function BackgroundProvider({ children }: BackgroundProviderProps) {
     pathname.startsWith('/login') ||
     pathname.startsWith('/onboarding') ||
     pathname.startsWith('/signup');
+
+  const isAdminRoute = pathname.startsWith('/admin');
+
+  if (isAdminRoute) {
+    return <>{children}</>;
+  }
+
   return (
     <div
       className={`

@@ -4,7 +4,8 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { PACKAGES } from '@/constants/packages';
 import { ZetChargePackageCard } from '@/features/charge/components/ZetChargePackageCard';
 import { useZetCharge } from '@/features/charge/hooks/useZetCharge';
-import { Icon, Title } from '@/shared';
+import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
+import { Icon } from '@/shared';
 import '@/styles/globals.css';
 
 export default function ZetChargePage() {
@@ -14,7 +15,7 @@ export default function ZetChargePage() {
     <div className="relative min-h-full flex flex-col">
       <div className="px-4 pt-4">
         <div className="flex items-center justify-between mb-2">
-          <Title title="ZET 코인 충전소" iconVariant="back" />
+          <TitleWithRouter title="ZET 코인 충전소" iconVariant="back" />
         </div>
         <div className="flex items-center justify-between mb-4">
           <p className="body-16-medium text-white m-0">외계 전파 코인을 구매하세요!</p>

@@ -61,11 +61,21 @@ export type LucideIconType =
   | 'Loader2' // 로딩용
   | 'Signal' // 신호 아이콘 추가
   | 'RotateCw'
+  | 'HelpCircle'
   | 'Link'
   | 'Share'
   | 'MoreHorizontal'
   | 'Check'
   | 'LogOut'
+  | 'Shield'
+  | 'File'
+  | 'RotateCcw'
+  | 'CircleMinus'
+  | 'FileText'
+  | 'UserX'
+  | 'RefreshCw'
+  | 'UserCheck'
+  | 'Users'
   | 'Focus';
 
 // 커스텀 아이콘 타입
@@ -79,7 +89,9 @@ export type CustomIconType =
   | 'rotate'
   | 'graph'
   | 'circle-minus'
-  | 'return';
+  | 'return'
+  | 'emblaprev'
+  | 'emblanext';
 
 // 전체 아이콘 타입
 export type IconType = LucideIconType | CustomIconType;

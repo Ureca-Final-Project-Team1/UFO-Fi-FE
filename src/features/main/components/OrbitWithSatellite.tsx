@@ -1,12 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
+import { Modal } from '@/shared';
 
 const ORBIT_BASE_SIZE = 600;
 const SATELLITE_WIDTH = 30;
 const SATELLITE_HEIGHT = 60;
 const ORBIT_COUNT = 5;
+
+type Letter = {
+  step: number;
+  content: string;
+};
 
 const orbitConfigs = [
   { color: '#FFD230', speed: 'spin-slow', image: '/images/main/satellite1.svg' },
@@ -17,6 +25,30 @@ const orbitConfigs = [
 ];
 
 export default function OrbitWithSatellite() {
+  const [letters, setLetters] = useState<Letter[]>([]);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const handleOpenMessage = (index: number) => {
+    setOpenIndex(index);
+  };
+
+  useEffect(() => {
+    async function fetchLetters() {
+      try {
+        // TODO: userId 수정 필요
+        await fetch(`/api/story/letters/${10}`, { method: 'POST' });
+        const res = await fetch(`/api/story/letters/${10}`);
+        const data = await res.json();
+        setLetters(data);
+      } catch (e) {
+        console.error('편지 불러오기 실패:', e);
+        toast.error('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');
+      }
+    }
+
+    fetchLetters();
+  }, []);
+
   return (
     <div
       className="absolute"
@@ -33,35 +65,48 @@ export default function OrbitWithSatellite() {
         const offset = (ORBIT_BASE_SIZE - orbitSize) / 2;
         const satelliteTransform = `translate(-50%, -${orbitSize / 2 + SATELLITE_HEIGHT / 2}px)`;
 
-        return (
-          <div
-            key={i}
-            className={`absolute rounded-full border-2 border-dashed ${speed}`}
-            style={{
-              width: orbitSize,
-              height: orbitSize,
-              top: offset,
-              left: offset,
-              borderColor: `${color}50`,
-            }}
-          >
-            <div
-              className="absolute"
-              style={{
-                top: '50%',
-                left: '50%',
-                transform: satelliteTransform,
-              }}
-            >
-              <Image
-                src={image}
-                alt={`Satellite ${i + 1}`}
-                width={SATELLITE_WIDTH}
-                height={SATELLITE_HEIGHT}
+        if (letters.length > i) {
+          return (
+            <div key={i}>
+              <div
+                className={`absolute rounded-full border-2 border-dashed ${speed} hover:cursor-pointer`}
+                style={{
+                  width: orbitSize,
+                  height: orbitSize,
+                  top: offset,
+                  left: offset,
+                  borderColor: `${color}50`,
+                  zIndex: 5 - i,
+                }}
+                onClick={() => handleOpenMessage(i)}
+              >
+                <div
+                  className="absolute"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                    transform: satelliteTransform,
+                  }}
+                >
+                  <Image
+                    src={image}
+                    alt={`Satellite ${i + 1}`}
+                    width={SATELLITE_WIDTH}
+                    height={SATELLITE_HEIGHT}
+                  />
+                </div>
+              </div>
+              <Modal
+                headerAlign="left"
+                title="은하계 메세지"
+                description={letters.find(({ step }) => step === i + 1)?.content}
+                isOpen={openIndex === i}
+                onClose={() => setOpenIndex(null)}
+                hasCloseButton={false}
               />
             </div>
-          </div>
-        );
+          );
+        }
       })}
 
       {/* 중앙 행성 + 외계인 */}

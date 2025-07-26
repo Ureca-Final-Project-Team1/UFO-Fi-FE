@@ -2,12 +2,13 @@
 
 import { useMemo } from 'react';
 
+import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import FollowTabContent from '@/features/mypage/follow/components/FollowTabContent';
 import { useFollowActions } from '@/features/mypage/follow/hooks/useFollowActions';
 import { useFollowers } from '@/features/mypage/follow/hooks/useFollowers';
 import { useFollowing } from '@/features/mypage/follow/hooks/useFollowing';
 import { FOLLOW_TYPE } from '@/features/mypage/follow/types/FollowType.types';
-import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui';
 
 export default function Page() {
   const { data: followersData, isLoading: followersLoading } = useFollowers();
@@ -60,7 +61,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen w-full text-white">
-      <Title title="팔로우 목록" iconVariant="back" />
+      <TitleWithRouter title="팔로우 목록" iconVariant="back" />
 
       <div className="mx-4 mb-6">
         <Tabs defaultValue="followers">
