@@ -48,7 +48,7 @@ jobs:
     name: Deploy to Personal Repo
     runs-on: ubuntu-latest
     needs: build-check
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') && github.event_name == 'push'
 
     steps:
       - name: Checkout
@@ -72,31 +72,33 @@ jobs:
 
       - name: Create deployment package
         run: |
-          mkdir -p deploy-output
-          cp -R .next/ deploy-output/
-          cp -R public/ deploy-output/
-          cp package*.json deploy-output/
-          cp next.config.ts deploy-output/
-          cp vercel.json deploy-output/ 2>/dev/null || echo "vercel.json not found, skipping"
+          mkdir -p output
+          # Next.js 빌드 결과물 복사
+          cp -R .next/ output/
+          cp -R public/ output/
+          cp package*.json output/
+          cp next.config.ts output/
+          cp vercel.json output/ 2>/dev/null || echo "vercel.json not found, skipping"
 
-          echo "# UFO-Fi Frontend" > deploy-output/README.md
-          echo "Deployed from: ${{ github.repository }}" >> deploy-output/README.md
-          echo "Commit: ${{ github.sha }}" >> deploy-output/README.md
-          echo "Build Date: $(date)" >> deploy-output/README.md
+          # README 생성
+          echo "# UFO-Fi Frontend" > output/README.md
+          echo "Deployed from: ${{ github.repository }}" >> output/README.md
+          echo "Commit: ${{ github.sha }}" >> output/README.md
+          echo "Build Date: $(date)" >> output/README.md
 
       - name: Push to personal deployment repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.UFOFI_GITHUB_KEY }}
         with:
-          source-directory: 'deploy-output'
-          destination-github-username: ${{ secrets.UFOFI_USERNAME }}
-          destination-repository-name: 'UFO-Fi-FE-Deploy'
+          source-directory: 'output'
+          destination-github-username: 'abyss-s'
+          destination-repository-name: 'UFO-Fi-FE'
           user-email: ${{ secrets.UFOFI_ACCOUNT_EMAIL }}
           commit-message: '🚀 Deploy: ${{ github.event.head_commit.message }}'
           target-branch: main
 
-      - name: Comment on PR with deployment info
+      - name: Comment on commit with deployment info
         if: github.event_name == 'push'
         uses: actions/github-script@v7
         with:
@@ -109,7 +111,8 @@ jobs:
 
             Build successful
             Deployed to: https://github.com/${{ secrets.UFOFI_USERNAME }}/UFO-Fi-FE
-            Vercel URL: https://ufo-fi-fe.vercel.app (if connected)
+            Vercel URL: https://www.ufo-fi.store
 
-            Commit: \`${context.sha.substring(0, 7)}\``
+            Commit: \`${context.sha.substring(0, 7)}\`
+            Build Date: ${new Date().toISOString()}`
             })
