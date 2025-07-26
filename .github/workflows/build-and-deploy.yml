@@ -94,7 +94,7 @@ jobs:
           destination-repository-name: 'UFO-Fi-FE'
           user-email: ${{ secrets.UFOFI_ACCOUNT_EMAIL }}
           commit-message: '🚀 Deploy: ${{ github.event.head_commit.message }}'
-          target-branch: main
+          target-branch: develop
 
       - name: Comment on commit with deployment info
         if: github.event_name == 'push'
