@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import privacyRaw from '@/assets/terms/privacy.md?raw';
+import privacyRaw from '@/constants/terms/privacy.md?raw';
+import { renderTermsWithHeadingsAndLinks } from '@/constants/terms/termsRenderer';
 import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
-import { renderTermsWithHeadingsAndLinks } from '@/shared/utils/termsRenderer';
 
 export default function TermsPage() {
   return (

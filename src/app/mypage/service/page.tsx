@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import serviceRaw from '@/assets/terms/service.md?raw';
+import serviceRaw from '@/constants/terms/service.md?raw';
+import { renderTermsWithHeadingsAndLinks } from '@/constants/terms/termsRenderer';
 import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
-import { renderTermsWithHeadingsAndLinks } from '@/shared/utils/termsRenderer';
 
 export default function TermsPage() {
   return (
