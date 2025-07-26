@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import '@/styles/globals.css';
 
+import { toast } from 'sonner';
+
 import { purchaseHistory } from '@/api/services/history/purchaseHistory';
 import { sellHistory } from '@/api/services/history/sellHistory';
 import { PurchaseHistoryResponse, SellHistoryResponse } from '@/api/types/history';
@@ -69,6 +71,7 @@ const MyTradeHistoryPage = () => {
         }
       } catch (error) {
         console.error('Failed to fetch history:', error);
+        toast.error('내역 불러오기에 실패했습니다.');
       }
     };
 

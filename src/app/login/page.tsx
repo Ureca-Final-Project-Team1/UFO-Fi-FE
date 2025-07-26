@@ -10,14 +10,14 @@ import { Button } from '@/shared/ui';
 import { useToastStore } from '@/stores/useToastStore';
 
 const LoginPage = () => {
-  const { message, clearMessage } = useToastStore();
+  const { message, status, clearToast, hasShown } = useToastStore();
 
   useEffect(() => {
-    if (message) {
-      toast.error(message);
-      clearMessage();
+    if (message && status && !hasShown) {
+      toast[status](message);
+      clearToast();
     }
-  }, [message, clearMessage]);
+  }, [message, status, hasShown, clearToast]);
 
   const handleKakaoLogin = async () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao`;

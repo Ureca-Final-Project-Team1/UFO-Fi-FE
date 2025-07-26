@@ -1,6 +1,5 @@
 'use client';
 
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -12,7 +11,7 @@ import { useUserInfoStore } from '@/stores/useUserInfoStore';
 const SuccessPage = () => {
   const router = useRouter();
   const { setPhoneNumber } = useUserInfoStore();
-  const { setMessage } = useToastStore();
+  const { setToast } = useToastStore();
 
   useEffect(() => {
     const handleLoginSuccess = async () => {
@@ -40,15 +39,13 @@ const SuccessPage = () => {
 
         setPhoneNumber(response.content.phoneNumber);
       } catch (err) {
-        const error = err as AxiosError<{ message: string }>;
-        const errorMessage =
-          error?.response?.data?.message || error?.message || '알 수 없는 오류가 발생했습니다.';
-        setMessage(errorMessage);
+        console.log('회원 정보 요청 실패: ', err);
+        setToast('회원 정보를 불러올 수 없습니다.', 'error');
         router.push('/login');
       }
     };
     handleLoginSuccess();
-  }, [router, setPhoneNumber, setMessage]);
+  }, [router, setPhoneNumber, setToast]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
