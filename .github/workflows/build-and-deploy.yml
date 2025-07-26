@@ -73,14 +73,12 @@ jobs:
       - name: Create deployment package
         run: |
           mkdir -p output
-          # Next.js 빌드 결과물 복사
           cp -R .next/ output/
           cp -R public/ output/
           cp package*.json output/
           cp next.config.ts output/ 2>/dev/null || echo "next.config.ts not found, skipping"
           cp vercel.json output/ 2>/dev/null || echo "vercel.json not found, skipping"
 
-          # README 생성
           echo "# UFO-Fi Frontend" > output/README.md
           echo "Deployed from: ${{ github.repository }}" >> output/README.md
           echo "Commit: ${{ github.sha }}" >> output/README.md
@@ -92,8 +90,8 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.UFOFI_GITHUB_KEY }}
         with:
           source-directory: 'output'
-          destination-github-username: ${{ secrets.DEPLOY_GH_USERNAME }}
-          destination-repository-name: ${{ secrets.DEPLOY_GH_REPO }}
+          destination-github-username: 'abyss-s'
+          destination-repository-name: 'UFO-Fi-FE'
           user-email: ${{ secrets.UFOFI_ACCOUNT_EMAIL }}
           commit-message: '🚀 Deploy: ${{ github.event.head_commit.message }}'
           target-branch: main
@@ -110,7 +108,7 @@ jobs:
               body: `**Deployment Complete!**
 
             Build successful
-            Deployed to: https://github.com/${{ secrets.UFOFI_USERNAME }}/UFO-Fi-FE
+            Deployed to: https://github.com/abyss-s/UFO-Fi-FE
             Vercel URL: https://www.ufo-fi.store
 
             Commit: \`${context.sha.substring(0, 7)}\`
