@@ -112,8 +112,15 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
+      - name: Check Vercel Token (masked)
+        run: |
+          echo "VERCEL_TOKEN is set"
+          echo "$VERCEL_TOKEN" | awk '{ print "length:", length($0) }'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
       - name: Deploy to Vercel
-        run: vercel --prod --confirm
+        run: vercel --prod --yes
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
