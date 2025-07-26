@@ -1,3 +1,18 @@
+export interface SortOptions {
+  empty: boolean;
+  unsorted: boolean;
+  sorted: boolean;
+}
+
+export interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+  sort: SortOptions;
+}
+
 export interface BannedWord {
   id: number;
   word: string;
@@ -16,23 +31,8 @@ export interface BannedWordsResponse {
     number: number;
     numberOfElements: number;
     empty: boolean;
-    pageable: {
-      pageNumber: number;
-      pageSize: number;
-      offset: number;
-      paged: boolean;
-      unpaged: boolean;
-      sort: {
-        empty: boolean;
-        unsorted: boolean;
-        sorted: boolean;
-      };
-    };
-    sort: {
-      empty: boolean;
-      unsorted: boolean;
-      sorted: boolean;
-    };
+    pageable: Pageable;
+    sort: SortOptions;
   };
 }
 

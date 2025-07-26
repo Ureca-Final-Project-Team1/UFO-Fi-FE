@@ -4,6 +4,7 @@ import React from 'react';
 
 import { ReportedUser } from '@/api/types/report';
 import { useReportedUsers } from '@/features/admin/hooks/useReportedUsers';
+import { useModal } from '@/shared/hooks/useModal';
 import { Button } from '@/shared/ui/Button/Button';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
@@ -20,6 +21,7 @@ interface ReportedUserTableRow extends ReportedUser, BaseTableRow {
 
 export default function AdminInactiveUsersPage() {
   const { reportedUsers, isLoading, error, grantUser, refreshData } = useReportedUsers();
+  const { showConfirm } = useModal();
 
   const columns: TableColumn<ReportedUserTableRow>[] = [
     {
@@ -62,11 +64,9 @@ export default function AdminInactiveUsersPage() {
 
   // 사용자 활성화
   async function handleActivateUser(row: ReportedUserTableRow) {
-    if (!confirm(`"${row.nickname}" 사용자를 활성화하시겠습니까?`)) {
-      return;
-    }
-
-    await grantUser(row.userid);
+    showConfirm('사용자 활성화', `"${row.nickname}" 사용자를 활성화하시겠습니까?`, () =>
+      grantUser(row.userid),
+    );
   }
 
   return (
