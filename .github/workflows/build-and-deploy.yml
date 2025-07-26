@@ -96,6 +96,7 @@ jobs:
   deploy-to-vercel:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
+    environment: Vercel
     needs: build-check
     if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') && github.event_name == 'push'
 
