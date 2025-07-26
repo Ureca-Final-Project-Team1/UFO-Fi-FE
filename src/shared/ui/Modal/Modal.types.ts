@@ -40,3 +40,10 @@ export interface ModalProps extends VariantProps<typeof modalVariants> {
 
   className?: string;
 }
+
+export interface ReportedModalProps {
+  postOwnerUserId: number;
+  postId: number;
+  isOpen: boolean;
+  onClose: () => void;
+}

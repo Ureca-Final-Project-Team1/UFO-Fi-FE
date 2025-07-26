@@ -1,21 +1,14 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
-import { reportAPI } from '@/api/services/exchange/report';
+import { reportAPI } from '@/api';
 import { IMAGE_PATHS } from '@/constants/images';
 
 import { Modal } from './Modal';
 import { RadioGroup } from '../Radio';
 import { CompleteModal } from './CompleteModal';
-
-interface ReportedModalProps {
-  postOwnerUserId: number;
-  postId: number;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { ReportedModalProps } from './Modal.types';
 
 export const ReportedModal: React.FC<ReportedModalProps> = ({
   postOwnerUserId,
@@ -45,26 +38,28 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
         try {
           const response = await reportAPI.reportPosts({
             content: selectedOption,
-            postOwnerUserId,
-            postId,
+            reportedUserId: postOwnerUserId,
+            tradePostId: postId,
           });
 
-          if (response.statusCode === 200) {
+          if ([200, 201, 204].includes(response.statusCode)) {
             setCompleteOpen(true);
           } else {
-            setError(response.message);
+            setError(response.message ?? '신고 요청에 실패했습니다.');
+            setFaultOpen(true);
           }
         } catch (e) {
+          const errorMessage =
+            e instanceof Error && e.message ? e.message : '알 수 없는 오류가 발생했습니다.';
+          setError(errorMessage);
           setFaultOpen(true);
           throw e;
         }
       };
 
       fetchReport();
-    } else {
-      toast.error('신고 사유를 선택해주세요.');
     }
-  }, [selectedOption, postId, postOwnerUserId]);
+  }, [selectedOption, postOwnerUserId, postId]);
 
   return (
     <>

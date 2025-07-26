@@ -134,7 +134,6 @@ export default function ExchangePage() {
         onClose={handleCancelReport}
         postId={reportModal.postId}
         postOwnerUserId={reportModal.sellerId}
-        key={reportModal.postId}
       />
     </div>
   );
