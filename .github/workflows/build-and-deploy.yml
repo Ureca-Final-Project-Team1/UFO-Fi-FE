@@ -93,40 +93,6 @@ jobs:
           commit-message: 'Deploy: ${{ github.event.head_commit.message }}'
           target-branch: develop
 
-  deploy-to-vercel:
-    name: Deploy to Vercel
-    runs-on: ubuntu-latest
-    environment: Vercel
-    needs: build-check
-    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') && github.event_name == 'push'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Check Vercel Token (masked)
-        run: |
-          echo "VERCEL_TOKEN is set"
-          echo "$VERCEL_TOKEN" | awk '{ print "length:", length($0) }'
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy to Vercel
-        run: vercel --prod --yes
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
   notify-deployment:
     name: Notify Deployment Complete
     runs-on: ubuntu-latest
