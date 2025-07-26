@@ -2,19 +2,13 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { reportAPI } from '@/api/services/exchange/report';
+import { reportAPI } from '@/api';
 import { IMAGE_PATHS } from '@/constants/images';
 
 import { Modal } from './Modal';
 import { RadioGroup } from '../Radio';
 import { CompleteModal } from './CompleteModal';
-
-interface ReportedModalProps {
-  postOwnerUserId: number;
-  postId: number;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { ReportedModalProps } from './Modal.types';
 
 export const ReportedModal: React.FC<ReportedModalProps> = ({
   postOwnerUserId,
@@ -26,10 +20,17 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
   const [completeOpen, setCompleteOpen] = useState(false);
   const [faultOpen, setFaultOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) setSelectedOption('');
   }, [isOpen]);
+
+  useEffect(() => {
+    if (error) {
+      setFaultOpen(true);
+    }
+  }, [error]);
 
   const handleClick = useCallback(() => {
     if (selectedOption !== '') {
@@ -37,16 +38,20 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
         try {
           const response = await reportAPI.reportPosts({
             content: selectedOption,
-            postOwnerUserId,
-            postId,
+            reportedUserId: postOwnerUserId,
+            tradePostId: postId,
           });
 
-          if (response.statusCode === 200) {
+          if ([200, 201, 204].includes(response.statusCode)) {
             setCompleteOpen(true);
           } else {
+            setError(response.message ?? '신고 요청에 실패했습니다.');
             setFaultOpen(true);
           }
         } catch (e) {
+          const errorMessage =
+            e instanceof Error && e.message ? e.message : '알 수 없는 오류가 발생했습니다.';
+          setError(errorMessage);
           setFaultOpen(true);
           throw e;
         }
@@ -54,7 +59,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
 
       fetchReport();
     }
-  }, [selectedOption, postId, postOwnerUserId]);
+  }, [selectedOption, postOwnerUserId, postId]);
 
   return (
     <>
@@ -87,7 +92,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
         onClose={() => setCompleteOpen(false)}
       />
       <CompleteModal
-        title="에러가 발생했습니다."
+        title={error ?? '에러가 발생했습니다.'}
         description={`잠시 후 다시\n이용해주시길 바랍니다.`}
         isOpen={faultOpen}
         onClose={() => setFaultOpen(false)}
