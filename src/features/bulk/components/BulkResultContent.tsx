@@ -37,7 +37,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
         const data = await bulkPurchaseAPI({
           desiredGb: capacityValue[0],
-          maxPrice: Number(pricePerGB),
+          unitPerZet: Number(pricePerGB),
         });
 
         if (data.message !== 'OK') {
