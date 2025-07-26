@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [[ $BRANCH == hotfix/* ]]; then
+  echo "Hotfix branch detected, skipping commitlint"
+  exit 0
+fi
+
 npx --no -- commitlint --edit "$1"
