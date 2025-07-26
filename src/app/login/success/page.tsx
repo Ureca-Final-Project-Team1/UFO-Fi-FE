@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { getUserInfoAPI } from '@/api/services/auth/userInfo';
-import { useToastStore } from '@/hooks/useToastStore';
 import { registerFCMToken } from '@/lib/fcm';
+import { useToastStore } from '@/stores/useToastStore';
 import { useUserInfoStore } from '@/stores/useUserInfoStore';
 
 const SuccessPage = () => {
@@ -43,7 +43,6 @@ const SuccessPage = () => {
         const error = err as AxiosError<{ message: string }>;
         const errorMessage =
           error?.response?.data?.message || error?.message || '알 수 없는 오류가 발생했습니다.';
-        console.log(errorMessage);
         setMessage(errorMessage);
         router.push('/login');
       }
