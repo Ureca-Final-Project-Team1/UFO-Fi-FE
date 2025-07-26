@@ -16,6 +16,13 @@ fi
 
 COMMIT_MSG_FILE="$1"
 BRANCH_NAME=$(git symbolic-ref --short HEAD)
+
+# develop, main 브랜치는 스킵
+if [ "$BRANCH_NAME" = "develop" ] || [ "$BRANCH_NAME" = "main" ]; then
+  echo "Main branch detected ($BRANCH_NAME), skipping ticket ID injection"
+  exit 0
+fi
+
 TICKET_ID=$(echo "$BRANCH_NAME" | grep -oE '[A-Z]+-[0-9]+')
 
 # TICKET_ID가 없으면 스킵 
