@@ -74,19 +74,21 @@ export const resetOnboarding = (): void => {
 };
 
 export const onboardingUtils = {
-  // 온보딩 완료 설정
-  complete: (): void => {
-    localStorage.setItem('ufo_fi_onboarding_completed', 'true');
-  },
-
-  // 온보딩 완료 상태 확인
+  // 온보딩 완료 여부 확인
   isCompleted: (): boolean => {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem('ufo_fi_onboarding_completed') === 'true';
   },
 
-  // 온보딩 초기화 (개발/테스트용)
+  // 온보딩 완료
+  complete: (): void => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('ufo_fi_onboarding_completed', 'true');
+  },
+
+  // 온보딩 초기화
   reset: (): void => {
+    if (typeof window === 'undefined') return;
     localStorage.removeItem('ufo_fi_onboarding_completed');
   },
 };
