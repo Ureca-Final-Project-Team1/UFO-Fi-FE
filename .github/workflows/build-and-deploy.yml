@@ -54,18 +54,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create deployment package
+      - name: Run build.sh to prepare output
         run: |
-          mkdir -p output
-          cp -R UFO-Fi-FE/. output/
-
-          echo "" >> output/README.md
-          echo "## Auto Deploy Info" >> output/README.md
-          echo "- **Deployed from**: ${{ github.repository }}" >> output/README.md
-          echo "- **Commit**: ${{ github.sha }}" >> output/README.md
-          echo "- **Branch**: ${{ github.ref_name }}" >> output/README.md
-          echo "- **Deploy Date**: $(date)" >> output/README.md
-          echo "- **Vercel URL**: https://www.ufo-fi.store" >> output/README.md
+          chmod +x ./build.sh
+          ./build.sh
 
       - name: Push to personal deployment repository
         uses: cpina/github-action-push-to-another-repository@main
@@ -81,7 +73,7 @@ jobs:
 
       - name: Deployment Success Message
         run: |
-          echo "Deployment Complete!"
+          echo "Deployment Complete"
           echo "Personal Repo: https://github.com/abyss-s/UFO-Fi-FE"
           echo "Vercel URL: https://www.ufo-fi.store"
           echo "Commit: ${{ github.sha }}"
