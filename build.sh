@@ -1,8 +1,8 @@
 #!/bin/bash
 mkdir -p output
 
-# .git 디렉토리 제외하고 전체 복사
-rsync -av --progress ./ output --exclude .git
+# .git, .github 디렉토리 제외하고 전체 복사
+rsync -av --progress ./ output --exclude .git --exclude .github
 
 cat <<EOF >> output/README.md
 
