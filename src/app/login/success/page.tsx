@@ -39,8 +39,7 @@ const SuccessPage = () => {
         }
 
         setPhoneNumber(response.content.phoneNumber);
-      } catch (err) {
-        console.log('회원 정보 요청 실패: ', err);
+      } catch {
         setToast('회원 정보를 불러올 수 없습니다.', 'error');
         router.push('/login');
       }
@@ -49,7 +48,7 @@ const SuccessPage = () => {
   }, [router, setPhoneNumber, setToast]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-full">
       <div className="animate-spin rounded-full h-8 w-8 "></div>
     </div>
   );

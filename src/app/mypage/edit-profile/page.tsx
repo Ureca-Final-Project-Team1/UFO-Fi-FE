@@ -37,9 +37,9 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full">
+    <div className="flex flex-col min-h-full w-full">
       <TitleWithRouter title="프로필 수정" iconVariant="back" />
-      <div className="mx-4 mt-6 flex flex-col gap-8">
+      <div className="mt-6 flex flex-col gap-8">
         <NicknameEditor
           nickname={nickname}
           setNickname={setNickname}
