@@ -50,7 +50,7 @@ function Planet({ src, active, color }: Planet) {
     <div
       className="relative w-12 h-12 rounded-full flex items-center justify-center"
       style={{
-        backgroundColor: active ? color : 'undefined',
+        backgroundColor: active ? color : 'transparent',
         boxShadow: active
           ? `
             0 0 0 6px ${hexToRgba(color, 0.6)},
