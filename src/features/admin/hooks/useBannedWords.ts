@@ -65,6 +65,19 @@ export function useBannedWords(): UseBannedWordsReturn {
     [currentPage, pageSize],
   );
 
+  // 공통 후처리 핸들러
+  const handleAfterMutation = useCallback(
+    async (successMessage: string, additionalActions?: () => void) => {
+      toast.success(successMessage);
+      if (additionalActions) {
+        additionalActions();
+      }
+      // 현재 페이지 새로고침
+      await fetchBannedWords(currentPage, pageSize);
+    },
+    [currentPage, pageSize, fetchBannedWords],
+  );
+
   // 금칙어 등록
   const createBannedWord = useCallback(
     async (word: string) => {
@@ -75,9 +88,7 @@ export function useBannedWords(): UseBannedWordsReturn {
         const response = await bannedWordsAPI.create({ banWord: word });
 
         if (response.statusCode === 200) {
-          toast.success('금칙어가 등록되었습니다.');
-          // 현재 페이지 새로고침
-          await fetchBannedWords(currentPage, pageSize);
+          await handleAfterMutation('금칙어가 등록되었습니다.');
         } else {
           throw new Error(response.message || '금칙어 등록에 실패했습니다.');
         }
@@ -90,7 +101,7 @@ export function useBannedWords(): UseBannedWordsReturn {
         setIsLoading(false);
       }
     },
-    [currentPage, pageSize, fetchBannedWords],
+    [handleAfterMutation],
   );
 
   // 금칙어 일괄 삭제
@@ -105,10 +116,10 @@ export function useBannedWords(): UseBannedWordsReturn {
         const response = await bannedWordsAPI.deleteMany({ ids: numberIds });
 
         if (response.statusCode === 200) {
-          toast.success(`${response.content.deletedCount}개의 금칙어가 삭제되었습니다.`);
-          setSelectedIds([]);
-          // 현재 페이지 새로고침
-          await fetchBannedWords(currentPage, pageSize);
+          await handleAfterMutation(
+            `${response.content.deletedCount}개의 금칙어가 삭제되었습니다.`,
+            () => setSelectedIds([]),
+          );
         } else {
           throw new Error(response.message || '금칙어 삭제에 실패했습니다.');
         }
@@ -121,7 +132,7 @@ export function useBannedWords(): UseBannedWordsReturn {
         setIsLoading(false);
       }
     },
-    [currentPage, pageSize, fetchBannedWords],
+    [handleAfterMutation],
   );
 
   // 금칙어 단일 삭제
@@ -135,11 +146,9 @@ export function useBannedWords(): UseBannedWordsReturn {
         const response = await bannedWordsAPI.deleteOne(numberId);
 
         if (response.statusCode === 200) {
-          toast.success('금칙어가 삭제되었습니다.');
-          // 선택된 ID에서 제거
-          setSelectedIds((prev) => prev.filter((selectedId) => selectedId !== id));
-          // 현재 페이지 새로고침
-          await fetchBannedWords(currentPage, pageSize);
+          await handleAfterMutation('금칙어가 삭제되었습니다.', () =>
+            setSelectedIds((prev) => prev.filter((selectedId) => selectedId !== id)),
+          );
         } else {
           throw new Error(response.message || '금칙어 삭제에 실패했습니다.');
         }
@@ -152,7 +161,7 @@ export function useBannedWords(): UseBannedWordsReturn {
         setIsLoading(false);
       }
     },
-    [currentPage, pageSize, fetchBannedWords],
+    [handleAfterMutation],
   );
 
   // 선택 관련 함수들
@@ -181,7 +190,7 @@ export function useBannedWords(): UseBannedWordsReturn {
   const handleSetPageSize = useCallback(
     (size: number) => {
       setPageSize(size);
-      setCurrentPage(1); // 페이지 크기 변경 시 첫 페이지로
+      setCurrentPage(1);
       fetchBannedWords(1, size);
     },
     [fetchBannedWords],
