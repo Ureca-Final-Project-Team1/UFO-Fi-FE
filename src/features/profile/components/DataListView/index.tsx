@@ -17,7 +17,7 @@ export function DataListView({ userId }: DataListViewProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-full">
         <div className="text-white">판매 데이터를 불러오는 중...</div>
       </div>
     );
@@ -25,7 +25,7 @@ export function DataListView({ userId }: DataListViewProps) {
 
   if (error || !profile) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+      <div className="flex flex-col items-center justify-center min-h-full gap-4">
         <div className="text-white">판매 데이터를 불러올 수 없습니다.</div>
         <button onClick={() => router.back()} className="text-cyan-400 underline">
           돌아가기

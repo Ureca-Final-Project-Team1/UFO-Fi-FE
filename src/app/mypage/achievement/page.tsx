@@ -12,7 +12,7 @@ export default function AchievementPage() {
   const { isDesktop, isTablet } = useViewportStore();
 
   return (
-    <div className="relative w-full min-h-screen items-center flex flex-col gap-6">
+    <div className="relative w-full min-h-full items-center flex flex-col gap-6">
       <Title iconVariant="back" className="w-full body-20-bold pb-2" title="업적 도감" />
       <p className="w-full text-center caption-12-medium">
         작지만 즐거운 업적을 모두 달성하고
