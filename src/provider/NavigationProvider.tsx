@@ -63,7 +63,7 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
       >
         {!isNavigationHidden && <TopNav />}
         <main
-          className="overflow-y-auto hide-scrollbar relative z-10"
+          className="overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10"
           style={{
             height: `calc(100dvh - ${isNavigationHidden ? '0px' : `${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px`})`,
             marginTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
