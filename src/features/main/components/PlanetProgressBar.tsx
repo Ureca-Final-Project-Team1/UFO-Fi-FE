@@ -20,24 +20,24 @@ export default function PlanetProgressBar() {
   const completed = planets.filter((p) => p.active).length;
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center w-full gap-2 px-4">
       {/* 진행 텍스트 */}
       <p className="text-white text-sm">{completed}번째 은하까지 탐사 완료...</p>
 
       {/* 행성 + 점선 궤도 */}
-      <div className="relative flex items-center">
+      <div className="relative flex items-center justify-center w-full">
         {/* 점선 궤도 */}
-        <div className="absolute top-1/2 left-0 w-full rounded-full border-1 border-dashed border-gray-400 -translate-y-1/2" />
+        <div className="absolute top-1/2 left-4 right-16 rounded-full border-1 border-dashed border-gray-400 -translate-y-1/2" />
 
         {/* 행성들 */}
-        <div className="flex gap-6 relative z-10">
+        <div className="flex gap-3 relative z-10">
           {planets.map((p) => (
             <Planet key={p.id} {...p} />
           ))}
         </div>
 
         {/* 진행 숫자 원형 */}
-        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#222] text-white text-sm ml-4 relative z-10">
+        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
           {completed}/{planets.length}
         </div>
       </div>
