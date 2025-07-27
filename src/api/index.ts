@@ -14,6 +14,7 @@ export { editProfileAPI } from './services/mypage/editProfile';
 export { profileAPI } from './services/profile/profile';
 export { bannedWordsAPI } from './services/admin/bannedWords';
 export { reportAPI } from './services/report/report';
+export { logoutAPI } from './services/auth/logout';
 
 // 타입들 re-export
 export type * from './types';
