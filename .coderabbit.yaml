@@ -2,6 +2,7 @@ language: ko
 early_access: false
 
 reviews:
+  poem: false
   profile: chill
   request_changes_workflow: false
   high_level_summary: true
