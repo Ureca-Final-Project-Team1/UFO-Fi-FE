@@ -80,12 +80,6 @@ export const onboardingUtils = {
     return localStorage.getItem('ufo_fi_onboarding_completed') === 'true';
   },
 
-  // 온보딩 완료
-  complete: (): void => {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem('ufo_fi_onboarding_completed', 'true');
-  },
-
   // 온보딩 초기화
   reset: (): void => {
     if (typeof window === 'undefined') return;
