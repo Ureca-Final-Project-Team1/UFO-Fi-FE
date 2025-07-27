@@ -15,7 +15,7 @@ export default function FollowTabContent({
   emptyMessage,
 }: FollowTabContentProps) {
   return (
-    <div className="flex items-center flex-col px-4 space-y-4 min-h-[400px]">
+    <div className="flex items-center flex-col space-y-4 min-h-[400px]">
       {users.length === 0 ? (
         <p className="text-gray-400 mt-20">{emptyMessage}</p>
       ) : (

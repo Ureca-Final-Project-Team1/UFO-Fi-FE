@@ -126,7 +126,7 @@ export default function PaymentSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-full">
           <div className="text-white">결제 정보를 확인하는 중...</div>
         </div>
       }
