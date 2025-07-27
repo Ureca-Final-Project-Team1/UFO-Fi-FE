@@ -7,27 +7,22 @@ import { IMAGE_PATHS } from '@/constants/images';
 import BottomNav from '@/shared/layout/BottomNav';
 import TopNav from '@/shared/layout/TopNav';
 
-interface NavigationProviderProps {
+interface AppLayoutProviderProps {
   children: React.ReactNode;
 }
 
-const NAV_HEIGHT = 56; // TopNav 높이
-const BOTTOM_NAV_HEIGHT = 64; // BottomNav 높이
+const NAV_HEIGHT = 56;
+const BOTTOM_NAV_HEIGHT = 64;
 
-export function NavigationProvider({ children }: NavigationProviderProps) {
+export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const pathname = usePathname();
 
-  // admin 경로는 네비게이션/배경 등 일체 적용하지 않고 children만 반환
-  if (pathname.startsWith('/admin')) {
-    return <>{children}</>;
-  }
-
+  const isAdminRoute = pathname.startsWith('/admin');
+  const isPasswordPage = pathname.includes('password');
   const isNavigationHidden =
     pathname.startsWith('/login') ||
     pathname.startsWith('/onboarding') ||
     pathname.startsWith('/signup/privacy');
-
-  const isPasswordPage = pathname.includes('password');
 
   const backgroundImageUrl = (() => {
     if (
@@ -49,21 +44,27 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   const containerStyle = isPasswordPage
     ? { backgroundColor: 'var(--color-password-bg)' }
     : backgroundImageUrl
-      ? { backgroundImage: `url(${backgroundImageUrl})` }
+      ? {
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }
       : {};
+
+  if (isAdminRoute) return <>{children}</>;
 
   return (
     <div className="min-h-screen w-full flex justify-center">
       <div
         className={`
-          relative w-full min-w-[375px] max-w-[620px] overflow-hidden h-screen
+          relative w-full min-w-[375px] max-w-[620px] overflow-hidden
           ${backgroundImageUrl ? 'nav-container-bg' : ''}
         `}
         style={containerStyle}
       >
         {!isNavigationHidden && <TopNav />}
         <main
-          className="overflow-y-auto hide-scrollbar relative z-10"
+          className="overflow-y-auto hide-scrollbar relative z-10 sm:px-10.5 px-4 text-white"
           style={{
             height: `calc(100dvh - ${isNavigationHidden ? '0px' : `${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px`})`,
             marginTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
