@@ -64,7 +64,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
       >
         {!isNavigationHidden && <TopNav />}
         <main
-          className="overflow-y-auto hide-scrollbar relative z-10 sm:px-10.5 px-4 text-white"
+          className="overflow-y-auto hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white"
           style={{
             height: `calc(100dvh - ${isNavigationHidden ? '0px' : `${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px`})`,
             marginTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
