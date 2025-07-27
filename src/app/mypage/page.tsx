@@ -91,7 +91,7 @@ export default function MyPage() {
           <Icon
             name="Bell"
             size={24}
-            className="mx-autotransition-all duration-300 group-hover:scale-110 text-white"
+            className="mx-auto transition-all duration-300 group-hover:scale-110 text-white"
           />
           <p className="mt-2 caption-12-regular">알림 설정</p>
         </div>
