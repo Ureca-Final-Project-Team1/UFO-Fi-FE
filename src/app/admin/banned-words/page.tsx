@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { BannedWord } from '@/api/types/bannedWords';
 import { useBannedWords } from '@/features/admin/hooks/useBannedWords';
+import { useModal } from '@/shared/hooks/useModal';
 import { Button } from '@/shared/ui/Button/Button';
 import Header from '@/shared/ui/Header/Header';
 import { Input } from '@/shared/ui/Input/Input';
@@ -27,6 +28,8 @@ interface BannedWordTableRow extends BannedWord, BaseTableRow {
 export default function AdminBannedWordsPage() {
   const [newWord, setNewWord] = useState('');
   const [isAddingWord, setIsAddingWord] = useState(false);
+
+  const { showConfirm } = useModal();
 
   const {
     bannedWords,
@@ -126,11 +129,9 @@ export default function AdminBannedWordsPage() {
 
   // 단일 금칙어 삭제
   async function handleDeleteSingle(row: BannedWordTableRow) {
-    if (!confirm(`"${row.word}" 금칙어를 삭제하시겠습니까?`)) {
-      return;
-    }
-
-    await deleteSingleBannedWord(row.id);
+    showConfirm('금칙어 삭제', `"${row.word}" 금칙어를 삭제하시겠습니까?`, () =>
+      deleteSingleBannedWord(row.id),
+    );
   }
 
   // 선택된 금칙어 일괄 삭제
@@ -140,11 +141,11 @@ export default function AdminBannedWordsPage() {
       return;
     }
 
-    if (!confirm(`선택된 ${selectedIds.length}개의 금칙어를 삭제하시겠습니까?`)) {
-      return;
-    }
-
-    await deleteBannedWords(selectedIds);
+    showConfirm(
+      '금칙어 일괄 삭제',
+      `선택된 ${selectedIds.length}개의 금칙어를 삭제하시겠습니까?`,
+      () => deleteBannedWords(selectedIds),
+    );
   };
 
   return (
