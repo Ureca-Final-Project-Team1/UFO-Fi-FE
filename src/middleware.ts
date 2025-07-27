@@ -3,8 +3,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { routeUtils } from '@/constants/routes';
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  if (process.env.DISABLE_AUTH_MIDDLEWARE === 'true') {
+    return NextResponse.next();
+  }
 
+  const { pathname } = request.nextUrl;
   const authToken = request.cookies.get('Authorization')?.value;
   const isAuthenticated = !!authToken;
 
