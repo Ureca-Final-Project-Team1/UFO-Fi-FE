@@ -14,3 +14,4 @@ export type * from './myInfo';
 export type * from './payment';
 export type * from './profile';
 export type * from './userInfo';
+export type * from './statistics';
