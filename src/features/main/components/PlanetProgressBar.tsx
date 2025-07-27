@@ -27,7 +27,7 @@ export default function PlanetProgressBar() {
       {/* 행성 + 점선 궤도 */}
       <div className="relative flex items-center justify-center w-full">
         {/* 점선 궤도 */}
-        <div className="absolute top-1/2 left-4 right-16 rounded-full border-1 border-dashed border-gray-400 -translate-y-1/2" />
+        <div className="absolute inset-x-4 top-1/2 rounded-full border border-dashed border-gray-400 -translate-y-1/2" />
 
         {/* 행성들 */}
         <div className="flex gap-3 relative z-10">
