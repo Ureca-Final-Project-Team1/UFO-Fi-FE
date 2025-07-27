@@ -59,6 +59,7 @@ jobs:
           mkdir -p output
           cp -R src/ output/ 2>/dev/null || echo "src not found"
           cp -R public/ output/
+          cp -R prisma/ output/ 2>/dev/null || echo "prisma not found"
           cp package*.json output/
           cp next.config.ts output/ 2>/dev/null || echo "next.config.ts not found, skipping"
           cp vercel.json output/ 2>/dev/null || echo "vercel.json not found, skipping"
