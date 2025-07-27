@@ -6,6 +6,7 @@ import { statisticsService } from '@/api/services/admin/statistics';
 import type { StatisticsData } from '@/api/types';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
+import { Skeleton } from '@/shared/ui/Skeleton';
 
 export default function AdminPage() {
   const [statistics, setStatistics] = useState<StatisticsData | null>(null);
@@ -42,9 +43,9 @@ export default function AdminPage() {
               <h1 className="text-2xl font-bold text-gray-900 mb-6">대시보드</h1>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {[...Array(4)].map((_, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow p-6 animate-pulse">
-                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-8 bg-gray-200 rounded"></div>
+                  <div key={index} className="bg-white rounded-lg shadow p-6">
+                    <Skeleton className="h-4 w-3/4 mb-2" />
+                    <Skeleton className="h-8 w-1/2" />
                   </div>
                 ))}
               </div>
