@@ -2,19 +2,16 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { reportAPI } from '@/api/services/exchange/report';
+import { reportAPI } from '@/api';
+import { HttpStatusCode } from '@/api/types/api';
 import { IMAGE_PATHS } from '@/constants/images';
 
 import { Modal } from './Modal';
 import { RadioGroup } from '../Radio';
 import { CompleteModal } from './CompleteModal';
-
-interface ReportedModalProps {
-  postOwnerUserId: number;
-  postId: number;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { ReportedModalProps, ReportReason } from './Modal.types';
+import { Input } from '../Input';
+import '@/styles/globals.css';
 
 export const ReportedModal: React.FC<ReportedModalProps> = ({
   postOwnerUserId,
@@ -22,31 +19,59 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const reportOption: string[] = ['욕설/혐오 표현 사용', '도배/홍보(타 플랫폼 유도 등)', '기타'];
+  const reportOption = Object.entries(ReportReason).map(([key, label]) => ({
+    label,
+    value: key,
+  }));
+
   const [completeOpen, setCompleteOpen] = useState(false);
   const [faultOpen, setFaultOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState<keyof typeof ReportReason | ''>('');
+  const [customReason, setCustomReason] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isOpen) setSelectedOption('');
+    if (isOpen) {
+      setSelectedOption('');
+      setCustomReason('');
+    }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (error) {
+      setFaultOpen(true);
+    }
+  }, [error]);
 
   const handleClick = useCallback(() => {
     if (selectedOption !== '') {
       const fetchReport = async () => {
         try {
+          const content =
+            selectedOption === 'ETC'
+              ? customReason.trim()
+              : ReportReason[selectedOption as keyof typeof ReportReason];
+
           const response = await reportAPI.reportPosts({
-            content: selectedOption,
-            postOwnerUserId,
-            postId,
+            content,
+            reportedUserId: postOwnerUserId,
+            tradePostId: postId,
           });
 
-          if (response.statusCode === 200) {
+          if (
+            response.statusCode === HttpStatusCode.OK ||
+            response.statusCode === HttpStatusCode.CREATED ||
+            response.statusCode === HttpStatusCode.NO_CONTENT
+          ) {
             setCompleteOpen(true);
           } else {
+            setError(response.message ?? '신고 요청에 실패했습니다.');
             setFaultOpen(true);
           }
         } catch (e) {
+          const errorMessage =
+            e instanceof Error && e.message ? e.message : '알 수 없는 오류가 발생했습니다.';
+          setError(errorMessage);
           setFaultOpen(true);
           throw e;
         }
@@ -54,7 +79,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
 
       fetchReport();
     }
-  }, [selectedOption, postId, postOwnerUserId]);
+  }, [selectedOption, customReason, postOwnerUserId, postId]);
 
   return (
     <>
@@ -71,23 +96,39 @@ export const ReportedModal: React.FC<ReportedModalProps> = ({
         type="double"
         hasCloseButton={false}
         onPrimaryClick={handleClick}
-        primaryButtonDisabled={!selectedOption}
+        primaryButtonDisabled={
+          !selectedOption || (selectedOption === 'ETC' && customReason.trim() === '')
+        }
       >
         <RadioGroup
-          options={reportOption}
-          value={selectedOption}
-          onValueChange={setSelectedOption}
+          options={reportOption.map((opt) => opt.label)}
+          value={ReportReason[selectedOption as keyof typeof ReportReason] ?? ''}
+          onValueChange={(label) => {
+            const matched = Object.entries(ReportReason).find(([, v]) => v === label);
+            setSelectedOption((matched?.[0] as keyof typeof ReportReason) ?? '');
+          }}
           color="black"
         />
+
+        {selectedOption === 'ETC' && (
+          <Input
+            className="w-full border p-2 mt-2 rounded bg-white caption-14-regular"
+            placeholder="신고 사유를 입력해주세요."
+            value={customReason}
+            onChange={(e) => setCustomReason(e.target.value)}
+          />
+        )}
       </Modal>
+
       <CompleteModal
         title="신고 접수가 완료되었어요!"
         description={`신고해주신 내용을 외계 요원이\n꼼꼼히 확인하고 조치할 예정입니다.`}
         isOpen={completeOpen}
         onClose={() => setCompleteOpen(false)}
       />
+
       <CompleteModal
-        title="에러가 발생했습니다."
+        title={error ?? '에러가 발생했습니다.'}
         description={`잠시 후 다시\n이용해주시길 바랍니다.`}
         isOpen={faultOpen}
         onClose={() => setFaultOpen(false)}

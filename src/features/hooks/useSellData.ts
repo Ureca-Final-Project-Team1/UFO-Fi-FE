@@ -10,7 +10,6 @@ export const useSellData = () => {
   const [pricePerGB, setPricePerGB] = useState(120);
 
   const maxCapacity = 10;
-  const averagePrice = 100;
   const sellCapacity = Array.isArray(value) ? value[0] : value;
   const totalPrice = sellCapacity * pricePerGB;
 
@@ -91,7 +90,6 @@ export const useSellData = () => {
 
     // 계산된 값들
     maxCapacity,
-    averagePrice,
     sellCapacity,
     totalPrice,
 

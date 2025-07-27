@@ -1,9 +1,34 @@
 #!/bin/sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# merge 커밋인지 확인
+if [ -f .git/MERGE_HEAD ]; then
+  echo "Merge commit detected, skipping prepare-commit-msg"
+  exit 0
+fi
+
+# 커밋 타입이 merge인지 확인
+COMMIT_SOURCE="$2"
+if [ "$COMMIT_SOURCE" = "merge" ]; then
+  echo "Merge commit detected via source, skipping"
+  exit 0
+fi
+
 COMMIT_MSG_FILE="$1"
 BRANCH_NAME=$(git symbolic-ref --short HEAD)
+
+# develop, main 브랜치는 스킵
+if [ "$BRANCH_NAME" = "develop" ] || [ "$BRANCH_NAME" = "main" ]; then
+  echo "Main branch detected ($BRANCH_NAME), skipping ticket ID injection"
+  exit 0
+fi
+
 TICKET_ID=$(echo "$BRANCH_NAME" | grep -oE '[A-Z]+-[0-9]+')
+
+# TICKET_ID가 없으면 스킵 
+if [ -z "$TICKET_ID" ]; then
+  exit 0
+fi
 
 # 커밋 메시지 첫 줄 추출
 FIRST_LINE=$(head -n1 "$COMMIT_MSG_FILE")

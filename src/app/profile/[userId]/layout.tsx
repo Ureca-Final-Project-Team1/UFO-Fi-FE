@@ -17,12 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       throw new Error('Invalid userId');
     }
 
-    const profile = await profileAPI.getProfile(userIdNumber);
+    const profile = await profileAPI.getProfileData(userIdNumber);
 
-    const title = `${profile.content.nickname}의 프로필`;
-    const description = `${profile.content.nickname}님의 UFO-Fi 프로필을 확인해보세요.`;
+    const title = `${profile.nickname}의 프로필`;
+    const description = `${profile.nickname}님의 UFO-Fi 프로필을 확인해보세요.`;
     const profileUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${userId}`;
-    const imageUrl = profile.content.profileImageUrl || IMAGE_PATHS.AVATAR;
+    const imageUrl = profile.profileImageUrl || IMAGE_PATHS.AVATAR;
 
     return {
       title,

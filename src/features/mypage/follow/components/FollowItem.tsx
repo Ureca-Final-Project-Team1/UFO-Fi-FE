@@ -51,7 +51,7 @@ export default function FollowItem({ user, actions, type }: FollowItemProps) {
   };
 
   return (
-    <div className="w-[25rem] flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
+    <div className="w-full flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
       <div className="flex items-center gap-3">
         <div className="relative">
           <Image src={profileImage} alt="프로필" width={50} height={50} className="rounded-full" />

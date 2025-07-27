@@ -20,7 +20,6 @@ export default function SellPage() {
     setTitleInput,
     pricePerGB,
     maxCapacity,
-    averagePrice,
     sellCapacity,
     totalPrice,
     handleSubmit,
@@ -77,24 +76,13 @@ export default function SellPage() {
         {/* 판매 용량 설정 슬라이더 */}
         <SellCapacitySlider value={value} setValue={setValue} maxCapacity={maxCapacity} />
 
-        {/* 평균 가격 안내 */}
-        <div className="flex items-center justify-between">
-          <h3 className="text-white font-bold text-lg">희망 판매가격</h3>
-          <div className="text-sm text-white/80">
-            이번 주 평균 거래가격:
-            <span className="text-cyan-400 font-bold ml-1">
-              {averagePrice.toLocaleString()} ZET
-            </span>
-          </div>
-        </div>
-
         {/* 1GB당 가격 입력 */}
         <div className="flex justify-center items-center gap-3.5">
           <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">
             1GB 당
           </div>
 
-          <div className="w-28 h-10 bg-blue-950 rounded-lg flex justify-center items-center px-2">
+          <div className="w-28 h-10 flex justify-center items-center px-2">
             <PriceInput
               value={String(pricePerGB)}
               onChange={(e) => handlePriceChange(e)}
