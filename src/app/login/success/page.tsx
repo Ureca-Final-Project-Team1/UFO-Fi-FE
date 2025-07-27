@@ -5,11 +5,13 @@ import { useEffect } from 'react';
 
 import { getUserInfoAPI } from '@/api/services/auth/userInfo';
 import { registerFCMToken } from '@/lib/fcm';
+import { useToastStore } from '@/stores/useToastStore';
 import { useUserInfoStore } from '@/stores/useUserInfoStore';
 
-const Page = () => {
+const SuccessPage = () => {
   const router = useRouter();
   const { setPhoneNumber } = useUserInfoStore();
+  const { setToast } = useToastStore();
 
   useEffect(() => {
     const handleLoginSuccess = async () => {
@@ -28,19 +30,23 @@ const Page = () => {
           case 'ROLE_REPORTED':
             router.push('/blackhole');
             break;
+          case 'ROLE_ADMIN':
+            router.push('/admin');
+            break;
           default:
             router.push('/');
             break;
         }
 
         setPhoneNumber(response.content.phoneNumber);
-      } catch (error) {
-        console.error('Login success handling failed:', error);
+      } catch (err) {
+        console.log('회원 정보 요청 실패: ', err);
+        setToast('회원 정보를 불러올 수 없습니다.', 'error');
         router.push('/login');
       }
     };
     handleLoginSuccess();
-  }, [router, setPhoneNumber]);
+  }, [router, setPhoneNumber, setToast]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -49,4 +55,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default SuccessPage;

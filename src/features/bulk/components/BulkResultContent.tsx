@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
 import { purchaseAPI } from '@/api/services/exchange/purchase';
@@ -37,7 +38,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
         const data = await bulkPurchaseAPI({
           desiredGb: capacityValue[0],
-          maxPrice: Number(pricePerGB),
+          unitPerZet: Number(pricePerGB),
         });
 
         if (data.message !== 'OK') {
@@ -76,17 +77,17 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
             sellMobileDataAmountGB: item.sellMobileDataCapacityGb,
           });
           if (response.statusCode !== 200) {
-            break;
+            toast.error('구매에 실패했습니다.');
+          } else {
+            toast.success('구매가 완료되었습니다!');
           }
         }
       };
 
       fetchPurchase();
-
-      alert('구매가 완료되었습니다!');
       router.push('/exchange');
     } catch {
-      alert('구매 중 오류가 발생했습니다.');
+      toast.error('구매 중 오류가 발생했습니다.');
     } finally {
       setIsPurchasing(false);
     }
