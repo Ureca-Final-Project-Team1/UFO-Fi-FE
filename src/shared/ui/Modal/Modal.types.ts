@@ -47,3 +47,9 @@ export interface ReportedModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export enum ReportReason {
+  PROFANITY = '욕설/혐오 표현 사용',
+  SPAM = '도배/홍보(타 플랫폼 유도 등)',
+  ETC = '기타',
+}
