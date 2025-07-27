@@ -198,7 +198,7 @@ export function useBannedWords(): UseBannedWordsReturn {
 
   useEffect(() => {
     fetchBannedWords(1, pageSize);
-  }, []);
+  }, []); // 의존성 배열을 비워두어 초기 로드만 실행
 
   return {
     bannedWords,
