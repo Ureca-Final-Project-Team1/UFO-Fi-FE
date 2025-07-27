@@ -57,17 +57,7 @@ jobs:
       - name: Create deployment package
         run: |
           mkdir -p output
-          cp -R src/ output/ 2>/dev/null || echo "src not found"
-          cp -R public/ output/
-          cp -R prisma/ output/ 2>/dev/null || echo "prisma not found"
-          cp package*.json output/
-          cp next.config.ts output/ 2>/dev/null || echo "next.config.ts not found, skipping"
-          cp vercel.json output/ 2>/dev/null || echo "vercel.json not found, skipping"
-          cp tailwind.config.ts output/ 2>/dev/null || echo "tailwind.config.ts not found, skipping"
-          cp postcss.config.js output/ 2>/dev/null || echo "postcss.config.js not found, skipping"
-          cp README.md output/ 2>/dev/null || echo "README.md not found, skipping"
-          cp tsconfig.json output/ 2>/dev/null || echo "tsconfig.json not found, skipping"
-          cp -R .github/ output/ 2>/dev/null || echo ".github not found, skipping"
+          cp -R UFO-Fi-FE/. output/
 
           echo "" >> output/README.md
           echo "## Auto Deploy Info" >> output/README.md
