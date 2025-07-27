@@ -68,7 +68,7 @@ export function PlanEditor({
       />
       {carrier && plan && maxData !== null && networkType && (
         <div className="w-full flex flex-col gap-5 mt-8">
-          <hr className="border-t border-white w-full" />
+          <hr className="border-t border-(--color-hr-border) w-full" />
           <div className="flex flex-col gap-5">
             <p className="text-start w-full text-white body-20-bold">
               다음 정보가 맞는지 확인해주세요.
