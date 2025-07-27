@@ -9,38 +9,77 @@ reviews:
   auto_review:
     enabled: true
     drafts: false
-  commit_status: true
-  changed_files_summary: true
-  suggested_labels: true
+  changed_files_summary: false
+  commit_status: false
   auto_apply_labels: true
   suggested_reviewers: true
   auto_assign_reviewers: true
+
   pre_merge_checks:
     docstrings:
       mode: warning
+
   finishing_touches:
     docstrings:
       enabled: true
+
   path_filters:
     - '!**/*.md'
     - '!**/*.txt'
     - '!**/package-lock.json'
     - '!**/yarn.lock'
     - '!**/*.log'
+
   path_instructions:
     - path: '**/*.{ts,tsx}'
       instructions: |
-        Review based on UFO-Fi conventions in .github/code_rabbit_rule.md
-        ...
-    - path: '**/api/**/*.ts'
-      instructions: |
-        ...
+        Follow UFO-Fi frontend code guidelines (see .github/code_rabbit_rule.md).
+        - Check for consistent naming conventions (PascalCase, camelCase, UPPER_SNAKE_CASE)
+        - Ensure proper use of `useCallback`, `useMemo` for performance
+        - Avoid using array index as React key
+        - Props should be destructured and defined via interface
+        - Avoid mixing logic and layout in a single file
+
     - path: '**/features/**/*.{ts,tsx}'
       instructions: |
-        ...
+        Follow Feature-Sliced Design principles:
+        - Ensure separation between components, hooks, and types
+        - Barrel exports (`index.ts`) should be present in each domain folder
+        - Move shared components to `shared/ui` if used in 3+ domains
+
     - path: '**/shared/**/*.{ts,tsx}'
       instructions: |
-        ...
+        Shared components should be generic and used by multiple domains.
+        - Validate folder placement (e.g., `shared/ui`, `shared/hooks`)
+        - Ensure naming convention is consistent and component is reusable
+
+    - path: '**/api/**/*.ts'
+      instructions: |
+        Enforce API structure:
+        - Use `{domain}API.method()` pattern
+        - Define types in `api/types/`
+        - Use `SuccessApiResponse<T>` and `ApiError` consistently
+        - Avoid hardcoded URLs, use axios instance (`api/client/axios.ts`)
+
+    - path: 'app/**/layout.tsx'
+      instructions: |
+        This is an SSR entry file in Next.js App Router (v15).
+        - Validate correct export of `metadata`
+        - Do not include side-effects (e.g. useEffect) in layout
+        - Check for required <html lang="ko"> and <meta> tags
+
+    - path: 'app/**/page.tsx'
+      instructions: |
+        - Pages should export `metadata` or `generateMetadata()` for SEO
+        - Use `'use client'` only if client-side hooks are needed
+        - Avoid mixing client/server logic without clear separation
+
+    - path: 'app/**/*.{ts,tsx}'
+      instructions: |
+        - Use Server Components by default
+        - If using Zustand, toast, or other client-side logic, declare `'use client'` explicitly
+        - Prefer `next/dynamic` over React.lazy()
+        - Do not import client-only libraries into Server Components
 
 chat:
   auto_reply: true
