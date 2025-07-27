@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, ChangeEvent } from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { plansAPI } from '@/api';
@@ -17,6 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui';
+
+const VALID_CARRIERS = ['SKT', 'LGU', 'KT'] as const;
 
 export const OCRInputSection = ({
   className,
@@ -35,8 +37,10 @@ export const OCRInputSection = ({
   const prevCarrier = useRef('');
   const [planNameOCR, setPlanNameOCR] = useState('');
   const [carrierOCR, setCarrierOCR] = useState('');
-  const watchedCarrier = control._formValues.carrier;
-
+  const watchedCarrier = useWatch({
+    control,
+    name: 'carrier',
+  });
   const { mutate: runOCRAndGPT } = useOCRToGptMutation((result) => {
     setPlanNameOCR(result[0]);
     setCarrierOCR(result[1]);
@@ -70,12 +74,11 @@ export const OCRInputSection = ({
     };
 
     updatePlans();
-  }, [watchedCarrier]);
+  }, [watchedCarrier, setValue, setPlans, setForm, setMaxData, setNetworkType, setIsLoading]);
 
   useEffect(() => {
     if (carrierOCR) {
-      const validCarriers = ['SKT', 'LGU', 'KT'];
-      const matched = validCarriers.find(
+      const matched = VALID_CARRIERS.find(
         (c) => carrierOCR.toUpperCase().includes(c) || (c === 'LGU' && carrierOCR.includes('LG')),
       );
       if (matched) {
@@ -95,7 +98,7 @@ export const OCRInputSection = ({
         toast.error('인식된 요금제를 목록에서 찾을 수 없습니다.');
       }
     }
-  }, [carrierOCR, planNameOCR]);
+  }, [carrierOCR, planNameOCR, plans, setValue, setForm]);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { Carrier } from '@/api/types/carrier';
 import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { ConfirmModal, NicknameEditor } from '@/features/mypage/components';
 import { PlanEditor } from '@/features/mypage/components/PlanEditor';
@@ -59,7 +58,7 @@ export default function EditProfilePage() {
         />
 
         <PlanEditor
-          carrier={carrier as Carrier | ''}
+          carrier={carrier}
           setCarrier={setCarrier}
           plan={plan}
           setPlan={setPlan}
