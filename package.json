@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --schema=./UFO-Fi-FE/prisma/schema.prisma && next build",
+    "build": "prisma generate --schema=./prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "node -e \"if (!process.env.CI) { try { require('husky').install() } catch (e) { } }\"",
