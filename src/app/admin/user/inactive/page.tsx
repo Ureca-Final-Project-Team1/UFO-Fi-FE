@@ -1,12 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { statisticsService } from '@/api/services/admin/statistics';
+import type { ReportsStatisticsData } from '@/api/types';
 import { ReportedUser } from '@/api/types/report';
 import { useReportedUsers } from '@/features/admin/hooks/useReportedUsers';
 import { Button } from '@/shared/ui/Button/Button';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
+import { Skeleton } from '@/shared/ui/Skeleton';
 import { AdminTable } from '@/shared/ui/Table/AdminTable';
 import { TableColumn, TableActions, BaseTableRow } from '@/shared/ui/Table/Table.types';
 
@@ -20,6 +23,32 @@ interface ReportedUserTableRow extends ReportedUser, BaseTableRow {
 
 export default function AdminInactiveUsersPage() {
   const { reportedUsers, isLoading, error, grantUser, refreshData } = useReportedUsers();
+  const [reportsStatistics, setReportsStatistics] = useState<ReportsStatisticsData | null>(null);
+  const [statisticsLoading, setStatisticsLoading] = useState(true);
+  const [statisticsError, setStatisticsError] = useState<string | null>(null);
+
+  // 비활성화 통계 데이터 가져오기
+  const fetchReportsStatistics = async () => {
+    try {
+      setStatisticsLoading(true);
+      const response = await statisticsService.getReportsStatistics();
+      setReportsStatistics(response.content);
+    } catch (err) {
+      console.error('비활성화 통계 데이터 로딩 실패:', err);
+      setStatisticsError('통계 데이터를 불러오는데 실패했습니다.');
+    } finally {
+      setStatisticsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReportsStatistics();
+  }, []);
+
+  const handleRefresh = () => {
+    refreshData();
+    fetchReportsStatistics();
+  };
 
   const columns: TableColumn<ReportedUserTableRow>[] = [
     {
@@ -85,8 +114,8 @@ export default function AdminInactiveUsersPage() {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  onClick={refreshData}
-                  disabled={isLoading}
+                  onClick={handleRefresh}
+                  disabled={isLoading || statisticsLoading}
                   icon="RefreshCw"
                 >
                   새로고침
@@ -95,17 +124,34 @@ export default function AdminInactiveUsersPage() {
             </div>
 
             {/* 에러 메시지 */}
-            {error && (
+            {(error || statisticsError) && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
-                <p className="text-sm">{error}</p>
+                {error && <p className="text-sm">{error}</p>}
+                {statisticsError && <p className="text-sm">{statisticsError}</p>}
               </div>
             )}
 
             {/* 통계 카드 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-sm font-medium text-gray-500 mb-2">총 비활성화 사용자</h3>
-                <p className="text-2xl font-bold text-red-600">{reportedUsers.length}</p>
+                <h3 className="text-sm font-medium text-gray-500 mb-2">전체 사용자</h3>
+                {statisticsLoading ? (
+                  <Skeleton className="h-8 w-16" />
+                ) : (
+                  <p className="text-2xl font-bold text-blue-600">
+                    {reportsStatistics?.allUsersCount?.toLocaleString() || 0}
+                  </p>
+                )}
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <h3 className="text-sm font-medium text-gray-500 mb-2">신고된 사용자</h3>
+                {statisticsLoading ? (
+                  <Skeleton className="h-8 w-16" />
+                ) : (
+                  <p className="text-2xl font-bold text-red-600">
+                    {reportsStatistics?.reportedUsersCount?.toLocaleString() || 0}
+                  </p>
+                )}
               </div>
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-sm font-medium text-gray-500 mb-2">처리 대기</h3>
