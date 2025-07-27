@@ -6,6 +6,8 @@ import {
   RollBackReportResponse,
   GrantUserRequest,
   GrantUserResponse,
+  ReportPostsResponse,
+  ReportPostsRequest,
 } from '@/api/types/report';
 
 export const reportAPI = {
@@ -30,6 +32,16 @@ export const reportAPI = {
   // 사용자 비활성화 해제
   grantUser: async (payload: GrantUserRequest): Promise<GrantUserResponse> => {
     const res = await apiRequest.put<GrantUserResponse>('/v1/user/grant-user', payload);
+    return res.data;
+  },
+
+  // 게시물 신고
+  reportPosts: async (payload: ReportPostsRequest): Promise<ReportPostsResponse> => {
+    const { tradePostId, ...body } = payload;
+    const res = await apiRequest.post<ReportPostsResponse>(
+      `/v1/trade-posts/${tradePostId}/report`,
+      body,
+    );
     return res.data;
   },
 };

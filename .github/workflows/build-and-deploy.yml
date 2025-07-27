@@ -54,27 +54,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create deployment package
+      - name: Run build.sh to prepare output
         run: |
-          mkdir -p output
-          cp -R src/ output/ 2>/dev/null || echo "src not found"
-          cp -R public/ output/
-          cp package*.json output/
-          cp next.config.ts output/ 2>/dev/null || echo "next.config.ts not found, skipping"
-          cp vercel.json output/ 2>/dev/null || echo "vercel.json not found, skipping"
-          cp tailwind.config.ts output/ 2>/dev/null || echo "tailwind.config.ts not found, skipping"
-          cp postcss.config.js output/ 2>/dev/null || echo "postcss.config.js not found, skipping"
-          cp README.md output/ 2>/dev/null || echo "README.md not found, skipping"
-          cp tsconfig.json output/ 2>/dev/null || echo "tsconfig.json not found, skipping"
-          cp -R .github/ output/ 2>/dev/null || echo ".github not found, skipping"
-
-          echo "" >> output/README.md
-          echo "## Auto Deploy Info" >> output/README.md
-          echo "- **Deployed from**: ${{ github.repository }}" >> output/README.md
-          echo "- **Commit**: ${{ github.sha }}" >> output/README.md
-          echo "- **Branch**: ${{ github.ref_name }}" >> output/README.md
-          echo "- **Deploy Date**: $(date)" >> output/README.md
-          echo "- **Vercel URL**: https://www.ufo-fi.store" >> output/README.md
+          chmod +x ./build.sh
+          ./build.sh
 
       - name: Push to personal deployment repository
         uses: cpina/github-action-push-to-another-repository@main
@@ -90,7 +73,7 @@ jobs:
 
       - name: Deployment Success Message
         run: |
-          echo "Deployment Complete!"
+          echo "Deployment Complete"
           echo "Personal Repo: https://github.com/abyss-s/UFO-Fi-FE"
           echo "Vercel URL: https://www.ufo-fi.store"
           echo "Commit: ${{ github.sha }}"

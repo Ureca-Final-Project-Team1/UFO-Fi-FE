@@ -60,7 +60,7 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen w-full text-white">
+    <div className="min-h-full w-full text-white">
       <TitleWithRouter title="팔로우 목록" iconVariant="back" />
 
       <div className="mx-4 mb-6">

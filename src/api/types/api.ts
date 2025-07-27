@@ -50,14 +50,11 @@ export enum HttpStatusCode {
   UNPROCESSABLE_ENTITY = 422,
   INTERNAL_SERVER_ERROR = 500,
 }
-
 // 타입 가드 함수들
-export const isSuccessResponse = <T>(
-  response: ApiResponse<T>,
-): response is SuccessApiResponse<T> => {
+export function isSuccessResponse<T>(response: ApiResponse<T>): response is SuccessApiResponse<T> {
   return response.statusCode >= 200 && response.statusCode < 300;
-};
+}
 
-export const isErrorResponse = (response: ApiResponse): response is ErrorApiResponse => {
+export function isErrorResponse(response: ApiResponse): response is ErrorApiResponse {
   return response.statusCode >= 400;
-};
+}
