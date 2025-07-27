@@ -35,3 +35,11 @@ export interface GrantUserRequest {
   userId: number;
 }
 export type GrantUserResponse = SuccessApiResponse<object>;
+
+// 게시물 신고 요청
+export interface ReportPostsRequest {
+  content: string;
+  reportedUserId: number;
+  tradePostId: number;
+}
+export type ReportPostsResponse = SuccessApiResponse<object>;
