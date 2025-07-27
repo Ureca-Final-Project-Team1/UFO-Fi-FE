@@ -4,11 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import { logoutAPI } from '@/api';
 import { LogoutModal } from '@/features/mypage/components';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon } from '@/shared';
+import { useToastStore } from '@/stores/useToastStore';
 import { useTradeTabStore } from '@/stores/useTradeTabStore';
 
 export default function MyPage() {
@@ -16,6 +18,7 @@ export default function MyPage() {
   const { setTab } = useTradeTabStore();
   const [isOpen, setIsOpen] = useState(false);
   const { data: mypageInfo, error, isLoading } = useMyInfo();
+  const { setToast } = useToastStore();
 
   const navigateToSalesHistory = () => {
     setTab('sell');
@@ -25,10 +28,14 @@ export default function MyPage() {
     setTab('purchase');
     router.push('/mypage/trade');
   };
-  const handleLogout = () => {
-    // TODO: 로그아웃 로직 추가 필요
-    router.push('/login');
-    toast.success('로그아웃 되었습니다!');
+  const handleLogout = async () => {
+    try {
+      await logoutAPI.setLogout();
+      setToast('로그아웃 되었습니다!', 'success');
+      router.push('/login');
+    } catch {
+      toast.error('로그아웃에 실패했습니다.');
+    }
   };
   const navigateToTerms = () => router.push('/mypage/privacy');
   const navigateToFollow = () => router.push('/mypage/follow');
