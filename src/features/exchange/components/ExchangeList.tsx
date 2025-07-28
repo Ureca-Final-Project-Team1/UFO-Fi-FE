@@ -54,6 +54,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         status: post.status,
         sellerNickname: post.sellerNickname,
         sellerId: post.sellerId,
+        sellerProfileUrl: post.sellerProfileUrl,
       }));
   }, [data?.pages, userInfo?.nickname]);
 
@@ -61,7 +62,10 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <div className="text-white">게시글을 불러오는 중...</div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+          <div className="text-white text-sm">게시글을 불러오는 중...</div>
+        </div>
       </div>
     );
   }
@@ -71,8 +75,8 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
     return (
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
-          <div className="text-red-400 mb-2">데이터를 불러오는데 실패했습니다</div>
-          <Button onClick={() => refetch()} className="text-sm underline">
+          <div className="text-red-400 mb-3">데이터를 불러오는데 실패했습니다</div>
+          <Button onClick={() => refetch()} variant="secondary" size="sm" className="px-4 py-2">
             다시 시도
           </Button>
         </div>
@@ -86,8 +90,9 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
   }
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div className="w-full px-3">
+      {/* 반응형 그리드  */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {sellingItems.map((item) => (
           <SellingItem
             key={item.id}
@@ -100,6 +105,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
             isOwner={item.isOwner}
             sellerNickname={item.sellerNickname}
             sellerId={item.sellerId}
+            sellerProfileUrl={item.sellerProfileUrl}
             onEdit={() => onEdit(item.id)}
             onDelete={() => onDelete(item.id)}
             onReport={() => onReport(item.id, item.sellerId)}
@@ -109,15 +115,28 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
       </div>
 
       {/* 무한스크롤 트리거 영역 */}
-      <div ref={loadMoreRef} className="w-full py-4 flex justify-center">
+      <div ref={loadMoreRef} className="w-full py-6 flex justify-center">
         {isFetchingNextPage ? (
-          <div className="text-white text-sm">더 많은 게시글을 불러오는 중...</div>
+          <div className="flex flex-col items-center gap-2">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+            <div className="text-white text-sm">더 많은 게시글을 불러오는 중...</div>
+          </div>
         ) : hasNextPage ? (
-          <div className="text-gray-400 text-sm">스크롤하여 더 보기</div>
+          <div className="text-gray-400 text-sm text-center">
+            <div className="animate-pulse">스크롤하여 더 보기</div>
+          </div>
         ) : sellingItems.length > 0 ? (
-          <div className="text-gray-400 text-sm">모든 게시글을 불러왔습니다!</div>
+          <div className="text-gray-400 text-sm text-center">
+            <div className="flex flex-col items-center gap-2">
+              <div>🎉 모든 게시글을 불러왔습니다!</div>
+              <div className="text-xs text-gray-500">총 {sellingItems.length}개의 상품</div>
+            </div>
+          </div>
         ) : null}
       </div>
-    </>
+
+      {/* 하단 여백 */}
+      <div className="h-4"></div>
+    </div>
   );
 };

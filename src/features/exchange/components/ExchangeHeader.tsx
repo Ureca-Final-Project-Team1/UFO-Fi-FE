@@ -1,7 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { IMAGE_PATHS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { SpeechBubble } from '@/features/main/components';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
@@ -20,9 +22,9 @@ export const ExchangeHeader = () => {
     router.push('/exchange/notification');
   };
 
-  // 예시 데이터
-  const availableVolume = 3; // GB
-  const maxVolume = 5; // GB
+  const handleBulkPurchase = () => {
+    router.push('/exchange/bulk');
+  };
 
   const renderZetBalance = () => {
     if (isLoading) return '로딩 중...';
@@ -31,58 +33,150 @@ export const ExchangeHeader = () => {
     return `${zet.toLocaleString()} ZET`;
   };
 
+  // 현재 요금제 정보에서 판매 가능 용량 계산
+  const getSellableCapacity = () => {
+    if (isLoading || isError || !userInfo) {
+      return { available: 0, max: 0 };
+    }
+
+    const available = userInfo.sellableDataAmount || 0; // 판매 가능한 데이터 양
+    const max = userInfo.sellMobileDataCapacityGb || 0; // 최대 판매 가능 용량
+
+    return { available, max };
+  };
+
+  const { available, max } = getSellableCapacity();
+
   return (
-    <div className="relative w-full gap-2 flex flex-row items-center shadow-lg">
-      <div className="flex flex-col gap-2 items-center">
-        {/* 말풍선 */}
-        <SpeechBubble tailDirection="bottom" className="w-[220px] text-center text-xs py-2 px-3">
-          조건에 맞는 상품을 원하시면 <br /> 필터링 기능을 이용해보세요!
-        </SpeechBubble>
-        <img src="/images/exchange/exchange_alien.svg" alt="캐릭터" className="w-50" />
+    <div className="w-full">
+      {/* 데스크톱/태블릿 레이아웃 */}
+      <div className="hidden md:flex relative w-full gap-4 items-start shadow-lg p-4">
+        {/* 캐릭터 섹션 */}
+        <div className="flex flex-col gap-2 items-center flex-shrink-0">
+          <SpeechBubble tailDirection="bottom" className="w-[220px] text-center text-xs py-2 px-3">
+            조건에 맞는 상품을 원하시면 <br /> 필터링 기능을 이용해보세요!
+          </SpeechBubble>
+          <Image src={IMAGE_PATHS.AL_EXCHANGE} alt="캐릭터" width={200} height={200} />
+        </div>
+
+        {/* 메인 컨텐츠 */}
+        <div className="flex-1 min-w-0">
+          {/* 알림 설정 카드 */}
+          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl border border-blue-500/30 mb-4 backdrop-blur-sm">
+            <p className="text-white caption-12-regular">원하는 상품이 올라오면 알려드려요.</p>
+            <Button size="sm" variant="ghost" onClick={handleNotificationSettings}>
+              <Icon name="Bell" className="w-5 h-5 pr-1" color="primary400" />
+              <span className="caption-12-bold text-white">알림설정</span>
+            </Button>
+          </div>
+
+          {/* 일괄구매/잔액/충전 */}
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <Button size="sm" variant="exploration-button" onClick={handleBulkPurchase}>
+              <Icon name="box" className="w-3 h-3 pr-1" />
+              <span className="caption-14-bold">일괄구매</span>
+            </Button>
+            <div className="flex items-center gap-2">
+              <Icon src={ICON_PATHS['COIN']} className="w-4 h-4" />
+              <span className="text-lg font-bold text-cyan-400">{renderZetBalance()}</span>
+              <Button
+                size="sm"
+                onClick={handleCharge}
+                className="w-auto rounded-md text-white text-sm bg-purple-400 px-4 hover:bg-purple-500"
+              >
+                충전
+              </Button>
+            </div>
+          </div>
+
+          {/* 이번 달 판매 가능 용량 */}
+          <div className="flex items-center text-md text-white mb-2">
+            <span>
+              이번 달 판매 가능 용량: {available}GB / {max}GB
+            </span>
+          </div>
+
+          {/* 프로그래스 바 */}
+          <Progress
+            showCurrentUsage={false}
+            showMinMaxLabels={false}
+            usedStorage={available}
+            totalStorage={max}
+            size="lg"
+            className="mb-4"
+          />
+
+          {/* 필터 버튼들 */}
+          <div className="flex flex-wrap gap-2">
+            <Chip rightIcon={<Icon name="ChevronDown" />}>통신사</Chip>
+            <Chip rightIcon={<Icon name="ChevronDown" />}>용량</Chip>
+            <Chip rightIcon={<Icon name="ChevronDown" />}>가격</Chip>
+          </div>
+        </div>
       </div>
 
-      <div>
+      {/* 모바일 레이아웃 */}
+      <div className="md:hidden w-full p-4 space-y-4">
         {/* 알림 설정 카드 */}
-        <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl border border-blue-500/30 mb-4 backdrop-blur-sm">
-          <p className="text-white caption-12-regular">원하는 상품이 올라오면 알려드려요.</p>
+        <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl border border-blue-500/30 backdrop-blur-sm">
+          <p className="text-white text-xs">원하는 상품이 올라오면 알려드려요.</p>
           <Button size="sm" variant="ghost" onClick={handleNotificationSettings}>
-            <Icon name="Bell" className="w-5 h-5 pr-1" color="primary400" />
-            <span className="caption-12-bold"> 알림설정</span>
+            <Icon name="Bell" className="w-4 h-4" color="primary400" />
+            <span className="caption-12-bold text-white pl-2">알림설정</span>
           </Button>
         </div>
 
+        {/* 캐릭터와 말풍선 */}
+        <div className="flex items-end gap-3">
+          <Image
+            src={IMAGE_PATHS.AL_EXCHANGE}
+            alt="캐릭터"
+            width={64}
+            height={64}
+            className="flex-shrink-0"
+          />
+          <SpeechBubble tailDirection="left" className="flex-1 text-xs py-2 px-3">
+            조건에 맞는 상품을 원하시면 필터링 기능을 이용해보세요!
+          </SpeechBubble>
+        </div>
+
         {/* 일괄구매/잔액/충전 */}
-        <div className="flex items-center justify-between gap-4 mb-3">
-          <Button size="sm" variant="exploration-button">
+        <div className="flex items-center justify-between gap-2">
+          <Button
+            size="sm"
+            variant="exploration-button"
+            onClick={handleBulkPurchase}
+            className="flex-shrink-0"
+          >
             <Icon name="box" className="w-3 h-3 pr-1" />
-            <span className="caption-14-bold"> 일괄구매</span>
+            <span className="text-xs font-bold">일괄구매</span>
           </Button>
-          <div className="flex items-center gap-2">
-            <Icon src={ICON_PATHS['COIN']} className="w-4 h-4" />
-            <span className="text-lg font-bold text-cyan-400">{renderZetBalance()}</span>
+          <div className="flex items-center gap-2 min-w-0">
+            <Icon src={ICON_PATHS['COIN']} className="w-4 h-4 flex-shrink-0" />
+            <span className="text-sm font-bold text-cyan-400 truncate">{renderZetBalance()}</span>
             <Button
               size="sm"
               onClick={handleCharge}
-              className="w-auto rounded-md text-white text-sm bg-purple-400 px-4"
+              className="rounded-md text-white text-xs bg-purple-400 px-3 py-1 flex-shrink-0 hover:bg-purple-500"
             >
               충전
             </Button>
           </div>
         </div>
 
-        {/* 이번 달 판매 가능 용량 */}
-        <div className="flex items-center text-md text-white">
-          <span>이번 달 판매 가능 용량 : {availableVolume}GB</span>
+        {/* 판매 가능 용량 */}
+        <div className="space-y-2">
+          <div className="text-white text-sm">
+            판매 가능 용량: {available}GB / {max}GB
+          </div>
+          <Progress
+            showCurrentUsage={false}
+            showMinMaxLabels={false}
+            usedStorage={available}
+            totalStorage={max}
+            size="md"
+          />
         </div>
-
-        <Progress
-          showCurrentUsage={false}
-          showMinMaxLabels={false}
-          usedStorage={availableVolume}
-          totalStorage={maxVolume}
-          size="lg"
-          className="mb-5"
-        />
 
         {/* 필터 버튼들 (통신사/용량/가격) */}
         <div className="flex flex-wrap gap-2">

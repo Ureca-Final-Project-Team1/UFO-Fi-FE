@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { Carrier } from '@/api/types/carrier';
+import { IMAGE_PATHS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
 
@@ -14,6 +15,7 @@ interface SellingItemProps {
   title: string;
   sellerNickname: string;
   sellerId: number;
+  sellerProfileUrl: string;
   onEdit?: () => void;
   onDelete?: () => void;
   onReport?: () => void;
@@ -44,6 +46,7 @@ export default function SellingItem({
   timeLeft,
   isOwner = false,
   sellerNickname,
+  sellerProfileUrl,
   onEdit,
   onDelete,
   onReport,
@@ -57,9 +60,24 @@ export default function SellingItem({
       <div className="relative z-10 p-4 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col">
         <div className="flex flex-row gap-2 justify-between">
           <div>
-            {/* 판매자 프로필 */}
+            {/* 판매자 프로필 이미지 */}
             <Avatar variant="selling" size="sm">
-              <Icon name="astronaut" className="w-6 h-6 text-purple-200" />
+              {sellerProfileUrl ? (
+                <Image
+                  src={sellerProfileUrl || IMAGE_PATHS.AVATAR}
+                  alt={`${sellerNickname} 프로필`}
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                // 프로필 이미지가 없을 때 기본 아이콘 또는 이니셜
+                <div className="w-full h-full bg-gray-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">
+                    {sellerNickname.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
             </Avatar>
           </div>
           <div className="flex flex-col items-end mb-1">
@@ -138,7 +156,7 @@ export default function SellingItem({
 
       {/* Stone 받침대 */}
       <Image
-        src="/images/exchange/stone.svg"
+        src={IMAGE_PATHS.STONE}
         alt="stone"
         width={260}
         height={70}
