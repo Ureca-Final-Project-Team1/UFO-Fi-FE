@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
+import { NotificationItem } from '@/api';
 import { ICON_PATHS } from '@/constants/icons';
-import { Icon, LucideIcon } from '@/shared/ui';
+import { Icon } from '@/shared';
+import { NotificationDropdown } from '@/shared/ui/NotificationDropdown';
 
 interface TopNavProps {
   title?: string;
@@ -18,14 +20,23 @@ const TopNav: React.FC<TopNavProps> = ({
   showNotification = false,
   onNotificationClick,
 }) => {
-  const handleNotificationClick = () => {
-    try {
-      if (onNotificationClick && typeof onNotificationClick === 'function') {
-        onNotificationClick();
-      }
-    } catch (error) {
-      console.error('Notification click error:', error);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
+  const handleNotificationClick = (notification: NotificationItem) => {
+    // URL이 있으면 해당 페이지로 이동
+    if (notification.url) {
+      window.open(notification.url, '_blank');
     }
+
+    if (onNotificationClick && typeof onNotificationClick === 'function') {
+      onNotificationClick();
+    }
+
+    setIsNotificationOpen(false);
+  };
+
+  const handleMarkAllRead = () => {
+    setIsNotificationOpen(false);
   };
 
   return (
@@ -43,13 +54,12 @@ const TopNav: React.FC<TopNavProps> = ({
         </div>
 
         {showNotification && (
-          <button
-            className="flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-white/10 active:scale-95"
-            onClick={handleNotificationClick}
-            aria-label="notification"
-          >
-            <LucideIcon name="Bell" size="lg" color="white" />
-          </button>
+          <NotificationDropdown
+            isOpen={isNotificationOpen}
+            onToggle={() => setIsNotificationOpen(!isNotificationOpen)}
+            onNotificationClick={handleNotificationClick}
+            onMarkAllRead={handleMarkAllRead}
+          />
         )}
       </div>
     </header>
