@@ -230,11 +230,12 @@ enum users_role {
 
 model voyage_letters {
   id           BigInt   @id @default(autoincrement())
-  user_id      BigInt
   step         Int      // 1~5단계
+  user_id      BigInt
   recipient_id BigInt
   content      String   @db.VarChar(1024)
   created_at   DateTime @default(now())
+  isLongestPath  Boolean  @default(false) // 현재 최장 경로인지 여부
 
   users        users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
