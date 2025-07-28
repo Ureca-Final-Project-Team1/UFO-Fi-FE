@@ -22,6 +22,8 @@ export interface NotificationDropdownProps {
   onNotificationClick?: (notification: NotificationItem) => void;
   onMarkAllRead?: () => void;
   className?: string;
+  notifications?: NotificationItem[];
+  isLoading?: boolean;
 }
 
 export interface NotificationItemProps {

@@ -1,50 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { Icon, NotificationItem, NotificationTrigger } from '@/shared';
+import type { NotificationItem as NotificationItemType } from '@/api';
+import { Icon, NotificationTrigger } from '@/shared';
 import { NotificationDropdownProps } from '@/shared';
+import { NotificationItem } from '@/shared';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/shared/ui/NotificationDropdown/DropdownMenu';
-
-import { NotificationType } from './NotificationDropdown.types';
-
-interface NotificationItem {
-  type: NotificationType;
-  title: string;
-  content: string;
-  url?: string;
-  notifiedAt: string;
-}
-
-// TODO:
-const fetchNotifications = async (): Promise<NotificationItem[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 800));
-
-  return [
-    {
-      type: 'BENEFIT',
-      title: 'ZET 충전 보너스 지급 완료!',
-      content: '10,000 ZET 충전에 대한 추가 1,000 ZET 보너스가 지급되었습니다.',
-      notifiedAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-    },
-    {
-      type: 'INTERESTED_POST',
-      title: '관심 상품 알림',
-      content: '회원님이 관심 상품 알림으로 설정한 매물이 등장했습니다!',
-      notifiedAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    },
-    {
-      type: 'SELL',
-      title: '데이터 거래 완료',
-      content: '5GB 데이터 판매가 성공적으로 완료되었습니다. 수익금이 계정에 입금되었어요.',
-      notifiedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-  ];
-};
 
 // 메인 드롭다운 컴포넌트
 export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
@@ -53,32 +19,11 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   onNotificationClick,
   onMarkAllRead,
   className = '',
+  notifications = [],
+  isLoading = false,
 }) => {
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // 알림 데이터 로드
-  const loadNotifications = async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchNotifications();
-      setNotifications(data);
-    } catch (error) {
-      console.error('Failed to load notifications:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 드롭다운이 열릴 때 알림 로드
-  useEffect(() => {
-    if (isOpen) {
-      loadNotifications();
-    }
-  }, [isOpen]);
-
   // 알림 클릭 처리
-  const handleNotificationClick = (notification: NotificationItem) => {
+  const handleNotificationClick = (notification: NotificationItemType) => {
     if (notification.url) {
       window.open(notification.url, '_blank');
     }
@@ -88,7 +33,6 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
 
   // 모두 읽음 처리
   const handleMarkAllRead = () => {
-    setNotifications([]);
     onMarkAllRead?.();
   };
 

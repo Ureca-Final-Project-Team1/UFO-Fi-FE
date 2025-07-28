@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { NotificationItem } from '@/api';
+import { notificationsAPI } from '@/api/services/notification/notifications';
+import { NotificationItem } from '@/api/types/notification';
 import { ICON_PATHS } from '@/constants/icons';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon } from '@/shared';
@@ -19,6 +20,33 @@ interface TopNavProps {
 const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }) => {
   const { data: myInfo } = useMyInfo();
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]); // 추가
+  const [isLoading, setIsLoading] = useState(false); // 추가
+
+  // 알림 데이터 로드 함수 추가
+  const loadNotifications = async () => {
+    setIsLoading(true);
+    try {
+      const response = await notificationsAPI.getNotifications();
+      setNotifications(response.content.notifications);
+    } catch (error) {
+      console.error('Failed to load notifications:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 드롭다운 열릴 때 알림 로드
+  useEffect(() => {
+    if (isNotificationOpen) {
+      loadNotifications();
+    }
+  }, [isNotificationOpen]);
+
+  const handleMarkAllRead = () => {
+    setNotifications([]);
+    setIsNotificationOpen(false);
+  };
 
   const handleNotificationClick = (notification: NotificationItem) => {
     if (notification.url) {
@@ -26,10 +54,6 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
     }
 
     onNotificationClick?.();
-    setIsNotificationOpen(false);
-  };
-
-  const handleMarkAllRead = () => {
     setIsNotificationOpen(false);
   };
 
@@ -54,6 +78,8 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
             onToggle={() => setIsNotificationOpen(!isNotificationOpen)}
             onNotificationClick={handleNotificationClick}
             onMarkAllRead={handleMarkAllRead}
+            notifications={notifications} // 추가
+            isLoading={isLoading} // 추가
           />
         )}
       </div>
