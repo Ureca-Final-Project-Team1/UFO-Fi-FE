@@ -92,9 +92,9 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
             </div>
           ) : (
             <div className="divide-y divide-gray-50">
-              {notifications.map((notification, index) => (
+              {notifications.map((notification) => (
                 <NotificationItem
-                  key={`${notification.title}-${index}`}
+                  key={`${notification.type}-${notification.title}-${notification.notifiedAt}`}
                   notification={notification}
                   onClick={() => handleNotificationClick(notification)}
                 />
