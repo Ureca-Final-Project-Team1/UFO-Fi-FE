@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { exchangeAPI, purchaseAPI } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
-import { Title, Button } from '@/shared';
+import { Button, TitleWithRouter } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
 export default function Step3Page() {
@@ -95,8 +95,6 @@ export default function Step3Page() {
 
       setPurchaseCompleted(true);
     } catch (err) {
-      console.error('구매 실패:', err);
-
       // 구매 실패 이벤트
       analytics.track.errorOccurred(
         'purchase_failed',
@@ -123,7 +121,7 @@ export default function Step3Page() {
   if (isLoading) {
     return (
       <div className="flex flex-col min-h-full px-4">
-        <Title title="데이터 구매하기" iconVariant="back" />
+        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
         <div className="flex items-center justify-center flex-1">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
@@ -134,7 +132,7 @@ export default function Step3Page() {
   if (error || !productData) {
     return (
       <div className="flex flex-col min-h-full items-center justify-center">
-        <Title title="데이터 구매하기" iconVariant="back" />
+        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
         <p className="text-red-400 text-center mb-4">{error}</p>
         <Button variant="secondary" onClick={() => router.back()}>
           돌아가기
@@ -147,7 +145,7 @@ export default function Step3Page() {
   if (purchaseCompleted) {
     return (
       <div className="flex flex-col min-h-full">
-        <Title title="데이터 구매하기" iconVariant="back" />
+        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
 
         {/* 중앙 컨텐츠 */}
         <div className="flex flex-col items-center justify-center flex-1 text-white text-center">
@@ -187,7 +185,7 @@ export default function Step3Page() {
         </div>
 
         {/* 하단 고정 버튼 */}
-        <div className="pb-8">
+        <div className="sticky bottom-0 bg-inherit py-8">
           <Button size="full-width" variant="primary" onClick={handleConfirm}>
             확인
           </Button>
@@ -198,11 +196,11 @@ export default function Step3Page() {
 
   // 구매 진행 화면
   return (
-    <div className="flex flex-col min-h-full">
-      <Title title="데이터 구매하기" iconVariant="back" />
+    <div className="flex flex-col min-h-full w-full">
+      <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
 
       {/* 중앙 컨텐츠 */}
-      <div className="flex flex-col items-center justify-center flex-1">
+      <div className="flex flex-col items-center justify-center">
         {/* 데이터 큐브 이미지 */}
         <div className="flex justify-center mb-8">
           <Image

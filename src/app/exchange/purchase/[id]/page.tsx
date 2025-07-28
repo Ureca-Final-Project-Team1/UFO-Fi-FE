@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { purchaseHistory } from '@/api/services/history/purchaseHistory';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
-import { Title, Icon, Button, Loading } from '@/shared';
+import { TitleWithRouter, Icon, Button, Loading } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
 export default function PurchasePage() {
@@ -59,7 +59,7 @@ export default function PurchasePage() {
 
   return (
     <div className="flex flex-col items-center min-h-full px-4">
-      <Title title="데이터 구매하기" iconVariant="back" />
+      <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
 
       {/* 안내 텍스트 */}
       <div className="w-full text-white mt-6 mb-8">

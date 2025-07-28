@@ -84,11 +84,7 @@ export default function ExchangePage() {
 
   // 구매 액션
   const handlePurchase = (id: number) => {
-    // eslint-disable-next-line no-console
-    console.log('데이터 구매:', id);
-    // TODO: 구매 프로세스 페이지로 이동 (해당 상품의 정보 필요)
     router.push(`/exchange/purchase/${id}`);
-    // toast.info('구매 기능은 준비 중입니다.');
   };
 
   return (
