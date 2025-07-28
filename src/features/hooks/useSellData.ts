@@ -19,7 +19,11 @@ export const useSellData = () => {
   };
 
   const validatePrice = (price: number): boolean => {
-    return typeof price === 'number' && price >= 1 && price <= 10000;
+    return typeof price === 'number' && price >= 1;
+  };
+
+  const validatePricePerGB = (pricePerGB: number): boolean => {
+    return typeof pricePerGB === 'number' && pricePerGB > 0 && pricePerGB <= 10000;
   };
 
   const validateCapacity = (capacity: number): boolean => {
@@ -99,7 +103,7 @@ export const useSellData = () => {
 
     // 유효성 검증 상태
     isValidTitle: validateTitle(titleInput),
-    isValidPrice: validatePrice(totalPrice),
+    isValidPrice: validatePricePerGB(pricePerGB) && validatePrice(totalPrice),
     isValidCapacity: validateCapacity(sellCapacity),
 
     // 로딩 상태

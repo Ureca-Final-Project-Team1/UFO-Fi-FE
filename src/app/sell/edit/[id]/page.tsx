@@ -50,7 +50,7 @@ export default function SellEditPage() {
 
   // 유효성 검사
   const isValidTitle = titleInput.trim().length >= 2 && titleInput.length <= 15;
-  const isValidPrice = pricePerGB > 0 && pricePerGB <= 10000;
+  const isValidPrice = pricePerGB > 0 && pricePerGB <= 10000 && totalPrice >= 1;
   const isValidCapacity = sellCapacity > 0 && sellCapacity <= maxCapacity;
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
