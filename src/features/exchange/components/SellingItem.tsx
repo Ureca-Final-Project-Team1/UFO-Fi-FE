@@ -52,21 +52,21 @@ export default function SellingItem({
   const carrierIcon = getCarrierIcon(carrier);
 
   return (
-    <div className="relative w-[11rem] mb-5">
+    <div className="relative w-[10rem] mb-5">
       {/* 카드 본체 */}
       <div className="relative z-10 p-4 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col">
         <div className="flex flex-row gap-2 justify-between">
           <div>
             {/* 판매자 프로필 */}
             <Avatar variant="selling" size="sm">
-              <Icon name="astronaut" className="w-7 h-7 text-purple-200" />
+              <Icon name="astronaut" className="w-6 h-6 text-purple-200" />
             </Avatar>
           </div>
           <div className="flex flex-col items-end mb-1">
             <div className="flex items-center gap-1 mb-1">
               <Badge showIcon={false} variant="carrier">
                 {carrierIcon && (
-                  <img src={carrierIcon} alt={carrier} className="w-4 h-4 object-contain" />
+                  <img src={carrierIcon} alt={carrier} className="w-3 h-3 object-contain" />
                 )}
               </Badge>
               <Badge showIcon={false} variant="secondary">
@@ -79,15 +79,17 @@ export default function SellingItem({
 
         {/* 제목 */}
         <div>
-          <span className="text-white text-[15px] font-semibold">{title}</span>
+          <span className="text-white text-[12px] font-semibold">{title}</span>
         </div>
         <div className="mt-auto">
           {/* 용량 + 가격 */}
           <div className="flex gap-2 items-baseline justify-between">
-            <span className="text-white text-lg font-bold">{capacity}</span>
-            <span className="text-cyan-300 text-lg font-bold">{price}</span>
+            <span className="text-white text-md font-bold">{capacity}</span>
+            <span className="text-cyan-300 text-md font-bold">{price}</span>
           </div>
-          {sellerNickname && <span className="text-gray-400 text-xs">by {sellerNickname}</span>}
+          {sellerNickname && (
+            <span className="text-gray-400 text-[0.7rem]">by {sellerNickname}</span>
+          )}
 
           {/* 구매 버튼 & 리포트/수정 버튼 */}
           <div className="flex justify-between items-center mt-1">
@@ -97,7 +99,7 @@ export default function SellingItem({
                   variant="exploration-button"
                   size="sm"
                   onClick={onPurchase}
-                  className="text-white px-4 py-1 caption-14-bold"
+                  className="text-white px-4 py-1"
                 >
                   구매하기
                 </Button>
@@ -139,7 +141,7 @@ export default function SellingItem({
         src="/images/exchange/stone.svg"
         alt="stone"
         width={260}
-        height={60}
+        height={70}
         className="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 z-0"
       />
     </div>
