@@ -118,7 +118,12 @@ export default function SellEditPage() {
         </div>
 
         {/* 판매 용량 설정 슬라이더 */}
-        <SellCapacitySlider value={value} setValue={setValue} maxCapacity={maxCapacity} />
+        <SellCapacitySlider
+          value={value}
+          setValue={setValue}
+          maxCapacity={maxCapacity}
+          errorMessage={getSellErrorMessages.price(isValidPrice, pricePerGB)}
+        />
 
         {/* 1GB당 가격 입력 */}
         <div className="flex justify-center items-center gap-3.5">
@@ -132,7 +137,6 @@ export default function SellEditPage() {
               onChange={(e) => handlePriceChange(e)}
               placeholder="금액"
               variant="blueFill"
-              error={getSellErrorMessages.price(isValidPrice, pricePerGB)}
             />
           </div>
 
