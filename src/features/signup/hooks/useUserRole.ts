@@ -28,7 +28,7 @@ export const useUserRole = (enabled: boolean = true) => {
   return {
     userRole,
     permissions,
-    phoneNumber: data?.content.phoneNumber,
+    phoneNumber: data?.content?.phoneNumber,
     isLoading,
     error,
   };
