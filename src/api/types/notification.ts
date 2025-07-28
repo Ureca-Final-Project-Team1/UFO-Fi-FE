@@ -14,20 +14,6 @@ export interface UpdateNotificationSettingRequest {
   enable: boolean;
 }
 
-export interface NotificationSettings {
-  benefit: boolean;
-  sell: boolean;
-  interestedPost: boolean;
-  reported: boolean;
-  followerPost: boolean;
-  tradeAll: boolean;
-}
-
-export interface UpdateNotificationSettingRequest {
-  type: NotificationType;
-  enable: boolean;
-}
-
 export interface NotificationItem {
   type: NotificationType;
   title: string;

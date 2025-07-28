@@ -21,21 +21,33 @@ interface NotificationItemProps {
 const notificationConfig = {
   BENEFIT: {
     icon: 'Gift',
+    bgColor: '#f8efff', // --color-primary-100
+    iconColor: '#b284f7', // --color-primary-300
   },
   SELL: {
     icon: 'CirclePlus',
+    bgColor: '#f8efff', // --color-primary-100
+    iconColor: '#b284f7', // --color-primary-300
   },
   INTERESTED_POST: {
     icon: 'Heart',
+    bgColor: '#f8efff', // --color-primary-100
+    iconColor: '#b284f7', // --color-primary-300
   },
   REPORTED: {
     icon: 'Shield',
+    bgColor: 'bg-red-100',
+    iconColor: '#DC2626', // red-600
   },
   FOLLOWER_POST: {
     icon: 'Users',
+    bgColor: 'bg-blue-100',
+    iconColor: '#2563EB', // blue-600
   },
   TRADE: {
     icon: 'RadioTower',
+    bgColor: 'bg-blue-100',
+    iconColor: '#2563EB', // blue-600
   },
 } as const;
 

@@ -2,55 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 
-import type { NotificationItem } from '@/api';
-import { Icon } from '@/shared';
+import { Icon, NotificationItem, NotificationTrigger } from '@/shared';
+import { NotificationDropdownProps } from '@/shared';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/shared/ui/NotificationDropdown/DropdownMenu';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
-interface NotificationDropdownProps {
-  isOpen: boolean;
-  onToggle: () => void;
-  onNotificationClick?: (notification: NotificationItem) => void;
-  onMarkAllRead?: () => void;
-  className?: string;
+import { NotificationType } from './NotificationDropdown.types';
+
+interface NotificationItem {
+  type: NotificationType;
+  title: string;
+  content: string;
+  url?: string;
+  notifiedAt: string;
 }
-
-const notificationConfig = {
-  BENEFIT: {
-    icon: 'Gift',
-    bgColor: '#f8efff', // --color-primary-100
-    iconColor: '#b284f7', // --color-primary-300
-  },
-  SELL: {
-    icon: 'CirclePlus',
-    bgColor: '#f8efff', // --color-primary-100
-    iconColor: '#b284f7', // --color-primary-300
-  },
-  INTERESTED_POST: {
-    icon: 'Heart',
-    bgColor: '#f8efff', // --color-primary-100
-    iconColor: '#b284f7', // --color-primary-300
-  },
-  REPORTED: {
-    icon: 'Shield',
-    bgColor: 'bg-red-100',
-    iconColor: '#DC2626', // red-600
-  },
-  FOLLOWER_POST: {
-    icon: 'Users',
-    bgColor: 'bg-blue-100',
-    iconColor: '#2563EB', // blue-600
-  },
-  TRADE: {
-    icon: 'RadioTower',
-    bgColor: 'bg-blue-100',
-    iconColor: '#2563EB', // blue-600
-  },
-} as const;
 
 // TODO:
 const fetchNotifications = async (): Promise<NotificationItem[]> => {
@@ -76,61 +44,6 @@ const fetchNotifications = async (): Promise<NotificationItem[]> => {
       notifiedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     },
   ];
-};
-
-// 개별 알림 아이템 컴포넌트
-const NotificationItem: React.FC<{
-  notification: NotificationItem;
-  onClick: () => void;
-}> = ({ notification, onClick }) => {
-  const config = notificationConfig[notification.type];
-  const iconName = config.icon;
-
-  return (
-    <div
-      className="flex items-start gap-3 p-4 w-full cursor-pointer hover:bg-gray-50 transition-colors border-l-4 border-transparent hover:border-blue-200"
-      onClick={onClick}
-    >
-      <div
-        className={`flex-shrink-0 w-10 h-10 rounded-full ${config.bgColor} flex items-center justify-center`}
-      >
-        <Icon name={iconName} color={config.iconColor} className="w-5 h-5" />
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between mb-1">
-          <h4 className="text-sm font-semibold text-gray-900 leading-5">{notification.title}</h4>
-          <span className="text-xs text-gray-500 ml-3 flex-shrink-0 mt-0.5">
-            {formatTimeAgo(notification.notifiedAt)}
-          </span>
-        </div>
-
-        <p className="text-sm text-gray-600 leading-5 line-clamp-2">{notification.content}</p>
-      </div>
-    </div>
-  );
-};
-
-// 알림 트리거 버튼 컴포넌트
-const NotificationTrigger: React.FC<{
-  unreadCount: number;
-  onClick: () => void;
-  className?: string;
-}> = ({ unreadCount, onClick, className = '' }) => {
-  return (
-    <button
-      className={`relative w-10 h-10 rounded-full transition-all duration-200 hover:bg-white/10 active:scale-95 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/30 ${className}`}
-      onClick={onClick}
-      aria-label={`알림 ${unreadCount > 0 ? `(${unreadCount}개의 새 알림)` : ''}`}
-    >
-      <Icon name="Bell" className="w-5 h-5" color="white" />
-      {/* {unreadCount > 0 && (
-        <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1 animate-pulse">
-          {unreadCount > 99 ? '99+' : unreadCount}
-        </span>
-      )} */}
-    </button>
-  );
 };
 
 // 메인 드롭다운 컴포넌트
