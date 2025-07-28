@@ -16,6 +16,10 @@ export { profileAPI } from './services/profile/profile';
 export { bannedWordsAPI } from './services/admin/bannedWords';
 export { reportAPI } from './services/report/report';
 export { logoutAPI } from './services/auth/logout';
+export { purchaseAPI } from './services/exchange/purchase';
+export { bulkPurchaseAPI } from './services/exchange/bulkPurchase';
+export { purchaseHistory } from './services/history/purchaseHistory';
+export { sellHistory } from './services/history/sellHistory';
 
 // 타입들 re-export
 export type * from './types';

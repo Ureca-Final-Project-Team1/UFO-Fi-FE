@@ -62,3 +62,27 @@ export interface BulkPurchaseParams {
   desiredGb: number;
   unitPerZet: number;
 }
+
+// 구매 상태 관련 타입
+export interface PurchaseStatus {
+  transactionId: string;
+  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+  createdAt: string;
+  completedAt?: string;
+  failureReason?: string;
+}
+
+// 구매 이력 관련 타입
+export interface PurchaseTransaction {
+  id: string;
+  postId: number;
+  sellerId: number;
+  buyerId: number;
+  totalZet: number;
+  dataAmountGB: number;
+  carrier: Carrier;
+  mobileDataType: MobileDataType;
+  status: PurchaseStatus['status'];
+  createdAt: string;
+  completedAt?: string;
+}

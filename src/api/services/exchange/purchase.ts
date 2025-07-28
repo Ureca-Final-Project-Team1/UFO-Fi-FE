@@ -1,17 +1,14 @@
 import { apiRequest } from '@/api/client/axios';
-import { PurchaseRequest, PurchaseResponse } from '@/api/types';
+import { PurchaseRequest, PurchaseResponse } from '@/api/types/exchange';
 
-export const purchaseAPI = async ({
-  postId,
-  sellerId,
-  totalZet,
-  sellMobileDataAmountGB,
-}: PurchaseRequest): Promise<PurchaseResponse> => {
-  const response = await apiRequest.post<PurchaseResponse>('v1/posts/purchase', {
-    postId,
-    sellerId,
-    totalZet,
-    sellMobileDataAmountGB,
-  });
-  return response.data;
+export const purchaseAPI = {
+  async purchase(data: PurchaseRequest): Promise<PurchaseResponse> {
+    const response = await apiRequest.post<PurchaseResponse>('/v1/posts/purchase', {
+      postId: data.postId,
+      sellerId: data.sellerId,
+      totalZet: data.totalZet,
+      sellMobileDataAmountGB: data.sellMobileDataAmountGB,
+    });
+    return response.data;
+  },
 };
