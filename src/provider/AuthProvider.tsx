@@ -99,15 +99,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     );
   }
 
-  // 에러나 권한 없으면 처리
-  if (
+  const shouldBlockAccess =
     shouldFetchUserInfo &&
     (error ||
       (pathname.startsWith('/admin') && userRole !== 'ROLE_ADMIN') ||
       (routeUtils.isProtectedRoute(pathname) &&
         userRole === 'ROLE_USER' &&
-        !onboardingUtils.isCompleted()))
-  ) {
+        !onboardingUtils.isCompleted()));
+
+  // 에러나 권한 없으면 처리
+  if (shouldBlockAccess) {
     return null;
   }
 
