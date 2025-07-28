@@ -29,7 +29,6 @@ export default function AchievementModal({ open, onClose, achievement }: Achieve
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="w-full max-w-sm mx-auto flex flex-col items-center gap-5 p-6">
-        {' '}
         <AchievementBadge
           i={i}
           j={j}
@@ -38,7 +37,7 @@ export default function AchievementModal({ open, onClose, achievement }: Achieve
           showName={false}
           className="mx-auto"
         />
-        <DialogHeader className="text-center">
+        <DialogHeader className="text-center flex flex-col items-center">
           <DialogTitle>{data.name}</DialogTitle>
           <DialogDescription>{data.description}</DialogDescription>
         </DialogHeader>
