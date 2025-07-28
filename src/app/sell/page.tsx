@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
@@ -34,10 +34,23 @@ export default function SellPage() {
 
   const isMobile = useViewportStore((state) => state.isMobile);
 
+  // 마우스 휠 스크롤 비활성화
+  useEffect(() => {
+    const preventWheel = (e: WheelEvent) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener('wheel', preventWheel, { passive: false });
+
+    return () => {
+      document.removeEventListener('wheel', preventWheel);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col min-h-full w-full justify-center">
+    <div className="flex flex-col min-h-full w-full justify-center overflow-hidden">
       <Title title="데이터 판매 등록" />
-      <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
+      <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32 overflow-hidden">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
