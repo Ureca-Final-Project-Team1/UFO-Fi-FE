@@ -104,7 +104,7 @@ model reports {
 model trade_histories {
   created_at    DateTime?               @db.DateTime(6)
   id            BigInt                  @id @default(autoincrement())
-  trade_post_id BigInt?                 @unique(map: "UKkhwebf5bgm66r0yvcs4h4kcmp")
+  trade_post_id BigInt?
   user_id       BigInt?
   status        trade_histories_status?
   users         users?                  @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKetvgnlh953qk751natofw5b40")
@@ -155,8 +155,8 @@ model users {
   id                                       BigInt                 @id @default(autoincrement())
   profile_photo_id                         BigInt?
   refresh_id                               BigInt?                @unique(map: "UK9sde85ftxx2wh0ot29qmagxxg")
-  user_account_id                          BigInt?                @unique(map: "UKjm7fmb3hqmw0m2o58w571egjg")
-  user_plan_id                             BigInt?                @unique(map: "UKopnelebdcyc0owd6hw02x29rx")
+  user_account_id                          BigInt?
+  user_plan_id                             BigInt?
   email                                    String?                @db.VarChar(255)
   kakao_id                                 String?                @db.VarChar(255)
   name                                     String?                @db.VarChar(255)
