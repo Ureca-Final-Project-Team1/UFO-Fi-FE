@@ -1,15 +1,60 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
 import { Title } from '@/shared';
+import AchievementModal from '@/shared/ui/Modal/AchievementModal';
 import { useViewportStore } from '@/stores/useViewportStore';
+import { Achievement, SelectedAchievementState } from '@/types/Achievement';
 
 const titleName = ['우주 여행 입문자', '전파 항해자', '우주 개척자', '전설의 항해자'];
 
 export default function AchievementPage() {
+  const [selectedAchievement, setSelectedAchievement] = useState<SelectedAchievementState | null>(
+    null,
+  );
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
   const { isDesktop, isTablet } = useViewportStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [levels, setLevels] = useState({
+    trade: 0,
+    follow: 0,
+    rotate: 0,
+    total: 0,
+  });
+
+  const handleClick = (i: number, j: number, isAchieve: boolean) => {
+    const type = j === 1 ? 'trade' : j === 2 ? 'rotate' : 'follow';
+    const matched = achievements.find((a) => a.level === i && a.type === type);
+    if (matched) {
+      if (matched) {
+        setSelectedAchievement({
+          achievement: matched,
+          i,
+          j,
+          isAchieve,
+        });
+        setIsModalOpen(true);
+      }
+    }
+  };
+  useEffect(() => {
+    fetch('/api/achievements/update', { method: 'POST' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.trade_level !== undefined) {
+          setLevels({
+            trade: data.trade_level,
+            follow: data.follow_level,
+            rotate: data.rotate_level,
+            total: data.total_level,
+          });
+          setAchievements(data.achievements ?? []);
+        }
+      });
+  }, []);
 
   return (
     <div className="relative w-full min-h-full items-center flex flex-col gap-6">
@@ -41,14 +86,34 @@ export default function AchievementPage() {
               className="z-0 object-contain"
               aria-hidden="true"
             />
-            {[1, 2, 3].map((j) => (
-              <div key={`${i}-${j}`} className="relative z-10 flex flex-col items-center gap-1">
-                <AchievementBadge i={i} j={j} isAchieve={false} />
-              </div>
-            ))}
+            {[1, 2, 3].map((j) => {
+              const type = j === 1 ? 'trade' : j === 2 ? 'rotate' : 'follow';
+              const isAchieve = levels[type] >= i;
+
+              const achievementName =
+                achievements.find((a) => a.level === i && a.type === type)?.name ?? '';
+
+              return (
+                <div key={`${i}-${j}`} className="relative z-10 flex flex-col items-center gap-1">
+                  <AchievementBadge
+                    i={i}
+                    j={j}
+                    isAchieve={levels.total >= i - 1 ? isAchieve : false}
+                    achievementName={achievementName}
+                    onClick={() => handleClick(i, j, levels.total >= i - 1 ? isAchieve : false)}
+                    className="hover:cursor-pointer"
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       ))}
+      <AchievementModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        achievement={selectedAchievement}
+      />
     </div>
   );
 }

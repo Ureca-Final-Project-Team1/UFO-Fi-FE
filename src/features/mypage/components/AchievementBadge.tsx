@@ -8,6 +8,8 @@ export interface AchievementBadgeProps {
   j: number;
   isAchieve: boolean;
   achievementName?: string;
+  showName?: boolean;
+  onClick?: () => void;
 }
 
 export const AchievementBadge = ({
@@ -16,9 +18,11 @@ export const AchievementBadge = ({
   j,
   isAchieve,
   achievementName,
+  showName = true,
+  onClick,
 }: AchievementBadgeProps) => {
   return (
-    <div key={j} className={`${className} flex flex-col mb-5`}>
+    <div key={j} onClick={onClick} className={`${className} flex flex-col mb-5`}>
       <div className="relative w-[70px] h-[70px] border-2 border-(--color-badge-border) rounded-[14px] object-cover overflow-hidden">
         <Image
           key={`lv${i}-${j}`}
@@ -39,7 +43,9 @@ export const AchievementBadge = ({
           </div>
         )}
       </div>
-      <p className="text-center pt-12 caption-14-regular">{achievementName ?? '업적 이름'}</p>
+      {showName && (
+        <p className="text-center pt-12 caption-14-regular">{achievementName ?? '업적 이름'}</p>
+      )}
     </div>
   );
 };

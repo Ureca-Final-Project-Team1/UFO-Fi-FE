@@ -242,3 +242,27 @@ model voyage_letters {
   @@index([user_id])
   @@unique([user_id, step]) // 사용자별 최대 5단계만 작성 가능
 }
+
+
+model achievement {
+  id              Int      @id @default(autoincrement())
+  level           Int
+  type            AchievementType
+  condition_value Int
+  name            String   // 업적 이름
+  description     String   // 업적 설명
+}
+
+model achievement_user {
+  id            BigInt  @id @default(autoincrement())
+  user_id       BigInt  @unique
+  trade_level   Int
+  rotate_level  Int
+  follow_level  Int
+}
+
+enum AchievementType {
+  trade
+  rotate
+  follow
+}
