@@ -51,21 +51,11 @@ export const routeUtils = {
 
   // 추가된 메서드들
   isExemptRoute: (pathname: string): boolean => {
-    const EXEMPT_ROUTES = [
-      '/onboarding',
-      '/login',
-      '/signup/**',
-      '/blackhole',
-      '/_next',
-      '/favicon.ico',
-      '/',
-    ];
-    return EXEMPT_ROUTES.some((route) => {
-      if (route.endsWith('/**')) {
-        return pathname.startsWith(route.slice(0, -3));
-      }
-      return pathname === route || pathname.startsWith(route + '/');
-    });
+    return (
+      routeUtils.isPublicRoute(pathname) ||
+      pathname.startsWith('/_next') ||
+      pathname === '/favicon.ico'
+    );
   },
 
   shouldCheckOnboarding: (pathname: string): boolean => {
