@@ -1,21 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { plansAPI, editProfileAPI } from '@/api';
+import type { Carrier } from '@/api/types/carrier';
+import type { Plan } from '@/api/types/plan';
 
 export function useEditProfile() {
   const [nickname, setNickname] = useState('');
-  const [carrier, setCarrier] = useState('');
+  const [carrier, setCarrier] = useState<Carrier | ''>('');
   const [plan, setPlan] = useState('');
-  const [plans, setPlans] = useState<
-    { id: number; label: string; value: string; maxData: number; networkType: string }[]
-  >([]);
+  const [plans, setPlans] = useState<Plan[]>([]);
   const [maxData, setMaxData] = useState<number | null>(null);
   const [networkType, setNetworkType] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'error' | 'success'>('idle');
   const [error, setError] = useState<string | null>(null);
-  const prevCarrier = useRef('');
+  const prevCarrier = useRef<Carrier | ''>('');
 
-  // 통신사 선택 시 요금제 가져오기
   useEffect(() => {
     if (!carrier || carrier === prevCarrier.current) return;
     setStatus('loading');
@@ -29,15 +28,7 @@ export function useEditProfile() {
           setPlans([]);
           return;
         }
-        setPlans(
-          response.map((p) => ({
-            id: p.planId,
-            label: p.planName,
-            value: p.planName,
-            maxData: p.sellMobileDataCapacityGB,
-            networkType: p.mobileDataType,
-          })),
-        );
+        setPlans(response);
       })
       .catch(() => setError('요금제 조회에 실패했습니다.'))
       .finally(() => {
@@ -46,17 +37,16 @@ export function useEditProfile() {
       });
   }, [carrier]);
 
-  // 요금제 선택 시 데이터 세팅
   useEffect(() => {
     if (!plan) {
       setMaxData(null);
       setNetworkType('');
       return;
     }
-    const selected = plans.find((p) => p.value === plan);
+    const selected = plans.find((p) => p.planName === plan);
     if (selected) {
-      setMaxData(selected.maxData);
-      setNetworkType(selected.networkType);
+      setMaxData(selected.sellMobileDataCapacityGB);
+      setNetworkType(selected.mobileDataType);
     }
   }, [plan, plans]);
 
@@ -76,13 +66,13 @@ export function useEditProfile() {
   };
 
   const savePlan = async () => {
-    const selected = plans.find((p) => p.value === plan);
+    const selected = plans.find((p) => p.planName === plan);
     if (!selected) {
       setError('선택한 요금제를 찾을 수 없습니다.');
       return false;
     }
     setStatus('loading');
-    const res = await editProfileAPI.updatePlan(selected.id, selected.label);
+    const res = await editProfileAPI.updatePlan(selected.planId, selected.planName);
     setStatus('idle');
     if (!res.success) {
       setError(res.message ?? '요금제 변경에 실패했습니다.');
@@ -99,8 +89,11 @@ export function useEditProfile() {
     plan,
     setPlan,
     plans,
+    setPlans,
     maxData,
+    setMaxData,
     networkType,
+    setNetworkType,
     status,
     error,
     setError,

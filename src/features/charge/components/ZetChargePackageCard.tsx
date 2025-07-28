@@ -30,7 +30,7 @@ export function ZetChargePackageCard({
   };
 
   return (
-    <div className="gradient-card-1 w-[358px] h-[104px] rounded-2xl px-5 py-3 relative">
+    <div className="gradient-card-1 w-full h-[104px] rounded-2xl px-5 py-3 relative">
       <Image
         src={IMAGE_PATHS[`PACKAGE_${id}` as keyof typeof IMAGE_PATHS]}
         alt={`패키지 ${id} 이미지`}

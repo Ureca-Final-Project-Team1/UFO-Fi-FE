@@ -6,6 +6,7 @@ import { statisticsService } from '@/api/services/admin/statistics';
 import type { ReportsStatisticsData } from '@/api/types';
 import { ReportedUser } from '@/api/types/report';
 import { useReportedUsers } from '@/features/admin/hooks/useReportedUsers';
+import { useModal } from '@/shared/hooks/useModal';
 import { Button } from '@/shared/ui/Button/Button';
 import Header from '@/shared/ui/Header/Header';
 import Sidebar from '@/shared/ui/Sidebar/Sidebar';
@@ -49,6 +50,7 @@ export default function AdminInactiveUsersPage() {
     refreshData();
     fetchReportsStatistics();
   };
+  const { showConfirm } = useModal();
 
   const columns: TableColumn<ReportedUserTableRow>[] = [
     {
@@ -91,11 +93,9 @@ export default function AdminInactiveUsersPage() {
 
   // 사용자 활성화
   async function handleActivateUser(row: ReportedUserTableRow) {
-    if (!confirm(`"${row.nickname}" 사용자를 활성화하시겠습니까?`)) {
-      return;
-    }
-
-    await grantUser(row.userid);
+    showConfirm('사용자 활성화', `"${row.nickname}" 사용자를 활성화하시겠습니까?`, () =>
+      grantUser(row.userid),
+    );
   }
 
   return (

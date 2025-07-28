@@ -50,7 +50,7 @@ export default function SellEditPage() {
 
   // 유효성 검사
   const isValidTitle = titleInput.trim().length >= 2 && titleInput.length <= 15;
-  const isValidPrice = pricePerGB > 0 && pricePerGB <= 10000;
+  const isValidPrice = pricePerGB > 0 && pricePerGB <= 9999 && totalPrice >= 1;
   const isValidCapacity = sellCapacity > 0 && sellCapacity <= maxCapacity;
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,19 +108,22 @@ export default function SellEditPage() {
               />
             </div>
           </div>
-          {titleInput && (
-            <div
-              className={`text-xs text-right ${
-                titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
-              }`}
-            >
-              {titleInput.length}/15
-            </div>
-          )}
+          <div
+            className={`text-xs text-right ${
+              titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
+            }`}
+          >
+            {titleInput.length}/15
+          </div>
         </div>
 
         {/* 판매 용량 설정 슬라이더 */}
-        <SellCapacitySlider value={value} setValue={setValue} maxCapacity={maxCapacity} />
+        <SellCapacitySlider
+          value={value}
+          setValue={setValue}
+          maxCapacity={maxCapacity}
+          errorMessage={getSellErrorMessages.price(isValidPrice, pricePerGB)}
+        />
 
         {/* 1GB당 가격 입력 */}
         <div className="flex justify-center items-center gap-3.5">
@@ -134,7 +137,6 @@ export default function SellEditPage() {
               onChange={(e) => handlePriceChange(e)}
               placeholder="금액"
               variant="blueFill"
-              error={getSellErrorMessages.price(isValidPrice, pricePerGB)}
             />
           </div>
 

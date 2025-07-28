@@ -40,7 +40,7 @@ export const SpeechBubble = ({
       )}
       {tailDirection === 'bottom' && (
         <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2">
-          <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[14px] absolute bottom-[2px] left-0 z-0" />
+          <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[14px] absolute left-0 z-0" />
           <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[16px] border-t-white relative z-10 -mb-[2px]" />
         </div>
       )}
