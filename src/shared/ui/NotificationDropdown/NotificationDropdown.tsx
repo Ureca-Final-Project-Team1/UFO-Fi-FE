@@ -9,6 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/shared/ui/NotificationDropdown/DropdownMenu';
+import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 interface NotificationDropdownProps {
   isOpen: boolean;
@@ -51,25 +52,7 @@ const notificationConfig = {
   },
 } as const;
 
-// 시간 포맷팅 함수
-const formatNotificationTime = (dateString: string): string => {
-  const now = new Date();
-  const notifiedAt = new Date(dateString);
-  const diffInMinutes = Math.floor((now.getTime() - notifiedAt.getTime()) / (1000 * 60));
-
-  if (diffInMinutes < 1) return '방금 전';
-  if (diffInMinutes < 60) return `${diffInMinutes}분 전`;
-
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  if (diffInHours < 24) return `${diffInHours}시간 전`;
-
-  const diffInDays = Math.floor(diffInHours / 24);
-  if (diffInDays < 7) return `${diffInDays}일 전`;
-
-  return notifiedAt.toLocaleDateString('ko-KR');
-};
-
-// Mock API function
+// TODO:
 const fetchNotifications = async (): Promise<NotificationItem[]> => {
   await new Promise((resolve) => setTimeout(resolve, 800));
 
@@ -118,7 +101,7 @@ const NotificationItem: React.FC<{
         <div className="flex items-start justify-between mb-1">
           <h4 className="text-sm font-semibold text-gray-900 leading-5">{notification.title}</h4>
           <span className="text-xs text-gray-500 ml-3 flex-shrink-0 mt-0.5">
-            {formatNotificationTime(notification.notifiedAt)}
+            {formatTimeAgo(notification.notifiedAt)}
           </span>
         </div>
 
@@ -141,11 +124,11 @@ const NotificationTrigger: React.FC<{
       aria-label={`알림 ${unreadCount > 0 ? `(${unreadCount}개의 새 알림)` : ''}`}
     >
       <Icon name="Bell" className="w-5 h-5" color="white" />
-      {unreadCount > 0 && (
+      {/* {unreadCount > 0 && (
         <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1 animate-pulse">
           {unreadCount > 99 ? '99+' : unreadCount}
         </span>
-      )}
+      )} */}
     </button>
   );
 };
@@ -262,21 +245,6 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
             </div>
           )}
         </div>
-
-        {/* 푸터 */}
-        {notifications.length > 0 && (
-          <div className="px-4 py-3 border-t border-gray-100 bg-gray-50/50">
-            <button
-              className="w-full text-center text-sm text-gray-600 hover:text-gray-800 font-medium transition-colors hover:bg-gray-100 py-2 rounded-md"
-              onClick={() => {
-                alert('모든 알림 보기 클릭');
-                onToggle();
-              }}
-            >
-              모든 알림 보기
-            </button>
-          </div>
-        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

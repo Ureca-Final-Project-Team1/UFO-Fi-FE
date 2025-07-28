@@ -1,7 +1,15 @@
 import type { IconType } from '@/shared/ui/Icons';
 
+export type NotificationType =
+  | 'BENEFIT'
+  | 'SELL'
+  | 'INTERESTED_POST'
+  | 'REPORTED'
+  | 'FOLLOWER_POST'
+  | 'TRADE';
+
 export interface NotificationItem {
-  type: 'BENEFIT' | 'SELL' | 'INTERESTED_POST' | 'REPORTED' | 'FOLLOWER_POST' | 'TRADE';
+  type: NotificationType;
   title: string;
   content: string;
   url?: string;

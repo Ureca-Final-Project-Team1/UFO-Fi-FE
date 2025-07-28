@@ -1,3 +1,5 @@
+import { NotificationType } from '@/shared/ui/NotificationDropdown/NotificationDropdown.types';
+
 export interface NotificationSettings {
   benefit: boolean;
   sell: boolean;
@@ -8,7 +10,7 @@ export interface NotificationSettings {
 }
 
 export interface UpdateNotificationSettingRequest {
-  type: 'BENEFIT' | 'SELL' | 'INTERESTED_POST' | 'REPORTED' | 'FOLLOWER_POST' | 'TRADE';
+  type: NotificationType;
   enable: boolean;
 }
 
@@ -22,12 +24,12 @@ export interface NotificationSettings {
 }
 
 export interface UpdateNotificationSettingRequest {
-  type: 'BENEFIT' | 'SELL' | 'INTERESTED_POST' | 'REPORTED' | 'FOLLOWER_POST' | 'TRADE';
+  type: NotificationType;
   enable: boolean;
 }
 
 export interface NotificationItem {
-  type: 'BENEFIT' | 'SELL' | 'INTERESTED_POST' | 'REPORTED' | 'FOLLOWER_POST' | 'TRADE';
+  type: NotificationType;
   title: string;
   content: string;
   url?: string;

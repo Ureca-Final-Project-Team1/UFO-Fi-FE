@@ -1,9 +1,12 @@
 import React from 'react';
 
 import { Icon } from '@/shared';
+import { formatTimeAgo } from '@/utils/formatTimeAgo';
+
+import { NotificationType } from './NotificationDropdown.types';
 
 interface NotificationItem {
-  type: 'BENEFIT' | 'SELL' | 'INTERESTED_POST' | 'REPORTED' | 'FOLLOWER_POST' | 'TRADE';
+  type: NotificationType;
   title: string;
   content: string;
   url?: string;
@@ -14,24 +17,6 @@ interface NotificationItemProps {
   notification: NotificationItem;
   onClick: () => void;
 }
-
-// 시간 포맷팅 함수
-const formatNotificationTime = (dateString: string): string => {
-  const now = new Date();
-  const notifiedAt = new Date(dateString);
-  const diffInMinutes = Math.floor((now.getTime() - notifiedAt.getTime()) / (1000 * 60));
-
-  if (diffInMinutes < 1) return '방금 전';
-  if (diffInMinutes < 60) return `${diffInMinutes}분 전`;
-
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  if (diffInHours < 24) return `${diffInHours}시간 전`;
-
-  const diffInDays = Math.floor(diffInHours / 24);
-  if (diffInDays < 7) return `${diffInDays}일 전`;
-
-  return notifiedAt.toLocaleDateString('ko-KR');
-};
 
 const notificationConfig = {
   BENEFIT: {
@@ -69,7 +54,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
         <div className="flex items-start justify-between mb-1">
           <h4 className="text-sm font-semibold text-gray-900 leading-5">{notification.title}</h4>
           <span className="text-xs text-gray-500 ml-3 flex-shrink-0 mt-0.5">
-            {formatNotificationTime(notification.notifiedAt)}
+            {formatTimeAgo(notification.notifiedAt)}
           </span>
         </div>
 
