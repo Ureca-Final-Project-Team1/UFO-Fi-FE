@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
@@ -33,19 +33,6 @@ export default function SellPage() {
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
 
   const isMobile = useViewportStore((state) => state.isMobile);
-
-  // 마우스 휠 스크롤 비활성화
-  useEffect(() => {
-    const preventWheel = (e: WheelEvent) => {
-      e.preventDefault();
-    };
-
-    document.addEventListener('wheel', preventWheel, { passive: false });
-
-    return () => {
-      document.removeEventListener('wheel', preventWheel);
-    };
-  }, []);
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center overflow-hidden">
@@ -140,6 +127,11 @@ export default function SellPage() {
           priority
         />
       </div>
+      <style jsx>{`
+        body {
+          overscroll-behavior: none;
+        }
+      `}</style>
     </div>
   );
 }
