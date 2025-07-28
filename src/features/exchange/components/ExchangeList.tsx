@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
@@ -46,7 +47,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         id: post.postId,
         title: post.title,
         carrier: post.carrier,
-        networkType: post.mobileDataType === '_5G' ? '5G' : 'LTE',
+        networkType: getMobileDataTypeDisplay(post.mobileDataType),
         capacity: `${post.sellMobileDataCapacityGb}GB`,
         price: `${post.totalPrice.toLocaleString()}ZET`,
         timeLeft: formatTimeAgo(post.createdAt),

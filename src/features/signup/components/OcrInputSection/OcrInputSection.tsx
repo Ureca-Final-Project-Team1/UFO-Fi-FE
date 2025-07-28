@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { plansAPI } from '@/api';
 import { Carrier } from '@/api/types/carrier';
+import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import { OCRInputSectionProps, ocrInputVariants, PlanCombo } from '@/features/signup/components';
 import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
 import {
@@ -178,7 +179,7 @@ export const OCRInputSection = ({
                 const selected = plans.find((p) => p.planName === value);
                 if (selected) {
                   setMaxData(selected.sellMobileDataCapacityGB);
-                  setNetworkType(selected.mobileDataType.replace(/^_/, ''));
+                  setNetworkType(getMobileDataTypeDisplay(selected.mobileDataType));
                 }
               }}
               disabled={isLoading}

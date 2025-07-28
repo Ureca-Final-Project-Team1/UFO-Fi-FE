@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
+import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import type { ProfileUser } from '@/api/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
@@ -90,7 +91,9 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
                     </div>
 
                     {/* ZET 표시 */}
-                    <div className="text-gray-400 text-xs">{post.mobileDataType}</div>
+                    <div className="text-gray-400 text-xs">
+                      {getMobileDataTypeDisplay(post.mobileDataType)}
+                    </div>
                   </div>
                 </SwiperSlide>
               ))}

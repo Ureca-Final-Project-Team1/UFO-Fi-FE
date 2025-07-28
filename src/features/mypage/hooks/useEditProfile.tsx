@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import { plansAPI, editProfileAPI } from '@/api';
 import type { Carrier } from '@/api/types/carrier';
+import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import type { Plan } from '@/api/types/plan';
 
 export function useEditProfile() {
@@ -46,7 +47,7 @@ export function useEditProfile() {
     const selected = plans.find((p) => p.planName === plan);
     if (selected) {
       setMaxData(selected.sellMobileDataCapacityGB);
-      setNetworkType(selected.mobileDataType);
+      setNetworkType(getMobileDataTypeDisplay(selected.mobileDataType));
     }
   }, [plan, plans]);
 
