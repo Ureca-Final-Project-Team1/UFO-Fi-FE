@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 
 import { NotificationItem } from '@/api';
 import { ICON_PATHS } from '@/constants/icons';
+import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon } from '@/shared';
 import { NotificationDropdown } from '@/shared/ui/NotificationDropdown';
 
@@ -15,23 +16,16 @@ interface TopNavProps {
   className?: string;
 }
 
-const TopNav: React.FC<TopNavProps> = ({
-  title = 'UFO-Fi',
-  showNotification = false,
-  onNotificationClick,
-}) => {
+const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }) => {
+  const { data: myInfo } = useMyInfo();
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const handleNotificationClick = (notification: NotificationItem) => {
-    // URL이 있으면 해당 페이지로 이동
     if (notification.url) {
       window.open(notification.url, '_blank');
     }
 
-    if (onNotificationClick && typeof onNotificationClick === 'function') {
-      onNotificationClick();
-    }
-
+    onNotificationClick?.();
     setIsNotificationOpen(false);
   };
 
@@ -53,7 +47,8 @@ const TopNav: React.FC<TopNavProps> = ({
           </Link>
         </div>
 
-        {showNotification && (
+        {/* 유저 정보 있을 때만 알림 드롭다운 표시 */}
+        {myInfo && (
           <NotificationDropdown
             isOpen={isNotificationOpen}
             onToggle={() => setIsNotificationOpen(!isNotificationOpen)}
