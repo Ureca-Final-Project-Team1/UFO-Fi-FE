@@ -23,7 +23,7 @@ export const useSellData = () => {
   };
 
   const validatePricePerGB = (pricePerGB: number): boolean => {
-    return typeof pricePerGB === 'number' && pricePerGB > 0 && pricePerGB <= 10000;
+    return typeof pricePerGB === 'number' && pricePerGB > 0 && pricePerGB <= 9999;
   };
 
   const validateCapacity = (capacity: number): boolean => {
