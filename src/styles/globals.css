@@ -201,6 +201,13 @@
   --color-exploration-border-via: #dd56fc;
   --color-exploration-border-to: #f03dff;
 
+  /* 행성 색상 */
+  --color-planet1: #b39645;
+  --color-planet2: #45b3b0;
+  --color-planet3: #4564b3;
+  --color-planet4: #8745b3;
+  --color-planet5: #b3459b;
+
   /* 취소 버튼 색상 */
   --color-cancel-border: #eaeaf2;
   --color-cancel-text: #35363f;
