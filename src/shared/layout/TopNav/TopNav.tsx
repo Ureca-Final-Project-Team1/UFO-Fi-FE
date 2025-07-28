@@ -1,10 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { notificationsAPI } from '@/api/services/notification/notifications';
+import { NotificationItem } from '@/api/types/notification';
 import { ICON_PATHS } from '@/constants/icons';
-import { Icon, LucideIcon } from '@/shared/ui';
+import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
+import { Icon } from '@/shared';
+import { NotificationDropdown } from '@/shared/ui/NotificationDropdown';
 
 interface TopNavProps {
   title?: string;
@@ -13,19 +17,44 @@ interface TopNavProps {
   className?: string;
 }
 
-const TopNav: React.FC<TopNavProps> = ({
-  title = 'UFO-Fi',
-  showNotification = false,
-  onNotificationClick,
-}) => {
-  const handleNotificationClick = () => {
+const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }) => {
+  const { data: myInfo } = useMyInfo();
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]); // 추가
+  const [isLoading, setIsLoading] = useState(false); // 추가
+
+  // 알림 데이터 로드 함수 추가
+  const loadNotifications = async () => {
+    setIsLoading(true);
     try {
-      if (onNotificationClick && typeof onNotificationClick === 'function') {
-        onNotificationClick();
-      }
+      const response = await notificationsAPI.getNotifications();
+      setNotifications(response.content.notifications);
     } catch (error) {
-      console.error('Notification click error:', error);
+      console.error('Failed to load notifications:', error);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // 드롭다운 열릴 때 알림 로드
+  useEffect(() => {
+    if (isNotificationOpen) {
+      loadNotifications();
+    }
+  }, [isNotificationOpen]);
+
+  const handleMarkAllRead = () => {
+    setNotifications([]);
+    setIsNotificationOpen(false);
+  };
+
+  const handleNotificationClick = (notification: NotificationItem) => {
+    if (notification.url) {
+      window.open(notification.url, '_blank');
+    }
+
+    onNotificationClick?.();
+    setIsNotificationOpen(false);
   };
 
   return (
@@ -42,14 +71,16 @@ const TopNav: React.FC<TopNavProps> = ({
           </Link>
         </div>
 
-        {showNotification && (
-          <button
-            className="flex items-center justify-center w-10 h-10 rounded-full transition-colors hover:bg-white/10 active:scale-95"
-            onClick={handleNotificationClick}
-            aria-label="notification"
-          >
-            <LucideIcon name="Bell" size="lg" color="white" />
-          </button>
+        {/* 유저 정보 있을 때만 알림 드롭다운 표시 */}
+        {myInfo && (
+          <NotificationDropdown
+            isOpen={isNotificationOpen}
+            onToggle={() => setIsNotificationOpen(!isNotificationOpen)}
+            onNotificationClick={handleNotificationClick}
+            onMarkAllRead={handleMarkAllRead}
+            notifications={notifications} // 추가
+            isLoading={isLoading} // 추가
+          />
         )}
       </div>
     </header>
