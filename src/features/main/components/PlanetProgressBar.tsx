@@ -1,5 +1,8 @@
 'use client';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+import { IMAGE_PATHS } from '@/constants';
 
 interface Planet {
   id: number;
@@ -8,14 +11,31 @@ interface Planet {
   color: string;
 }
 
+const getCSSVariable = (name: string): string => {
+  if (typeof window === 'undefined') return '';
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+};
+
 export default function PlanetProgressBar() {
-  const planets: Planet[] = [
-    { id: 1, src: '/images/main/planet1.svg', active: true, color: '#B39645' },
-    { id: 2, src: '/images/main/planet2.svg', active: true, color: '#45B3B0' },
-    { id: 3, src: '/images/main/planet3.svg', active: true, color: '#4564B3' },
-    { id: 4, src: '/images/main/planet4.svg', active: false, color: '#8745B3' },
-    { id: 5, src: '/images/main/planet5.svg', active: false, color: '#B3459B' },
-  ];
+  const [planets, setPlanets] = useState<Planet[]>([]);
+
+  useEffect(() => {
+    const colors = [
+      getCSSVariable('--color-planet1') || '#b39645',
+      getCSSVariable('--color-planet2') || '#45b3b0',
+      getCSSVariable('--color-planet3') || '#4564b3',
+      getCSSVariable('--color-planet4') || '#8745b3',
+      getCSSVariable('--color-planet5') || '#b3459b',
+    ];
+
+    setPlanets([
+      { id: 1, src: IMAGE_PATHS.PLANET_1, active: true, color: colors[0] },
+      { id: 2, src: IMAGE_PATHS.PLANET_2, active: true, color: colors[1] },
+      { id: 3, src: IMAGE_PATHS.PLANET_3, active: true, color: colors[2] },
+      { id: 4, src: IMAGE_PATHS.PLANET_4, active: false, color: colors[3] },
+      { id: 5, src: IMAGE_PATHS.PLANET_5, active: false, color: colors[4] },
+    ]);
+  }, []);
 
   const completed = planets.filter((p) => p.active).length;
 
@@ -35,8 +55,6 @@ export default function PlanetProgressBar() {
             <Planet key={p.id} {...p} />
           ))}
         </div>
-
-        {/* 진행 숫자 원형 */}
         <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
           {completed}/{planets.length}
         </div>
