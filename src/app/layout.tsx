@@ -9,7 +9,7 @@ import {
   QueryProvider,
   ViewportObserverProvider,
   AppLayoutProvider,
-  OnboardingGuardProvider,
+  AuthProvider,
 } from '@/provider';
 import AnalyticsProvider from '@/shared/components/Analytics';
 import FCMProvider from '@/shared/components/FCMProvider';
@@ -50,12 +50,12 @@ export default function RootLayout({
         <QueryProvider>
           <ViewportObserverProvider>
             <AppLayoutProvider>
-              <OnboardingGuardProvider>
+              <AuthProvider>
                 <FCMProvider>
                   {children}
                   <Analytics />
                 </FCMProvider>
-              </OnboardingGuardProvider>
+              </AuthProvider>
             </AppLayoutProvider>
             <ModalProvider />
           </ViewportObserverProvider>

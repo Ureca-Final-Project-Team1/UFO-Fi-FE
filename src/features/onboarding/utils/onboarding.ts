@@ -1,4 +1,5 @@
-import { ONBOARDING_CONSTANTS, OnboardingStep } from '@/features/onboarding/types/onboarding';
+import { OnboardingStep } from '@/features/onboarding/types/onboarding';
+import { analytics } from '@/utils/analytics';
 
 export const ONBOARDING_STEPS: OnboardingStep[] = [
   {
@@ -56,37 +57,56 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   },
 ];
 
-export const isOnboardingCompleted = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  return localStorage.getItem(ONBOARDING_CONSTANTS.STORAGE_KEY) === 'true';
-};
-
-export const markOnboardingComplete = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(ONBOARDING_CONSTANTS.STORAGE_KEY, 'true');
-  }
-};
-
-export const resetOnboarding = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem(ONBOARDING_CONSTANTS.STORAGE_KEY);
-  }
-};
-
 export const onboardingUtils = {
-  // 온보딩 완료 설정
-  complete: (): void => {
-    localStorage.setItem('ufo_fi_onboarding_completed', 'true');
+  /**
+   * 온보딩 완료 처리
+   * - MS Clarity와 GA4에 이벤트 전송
+   */
+  markComplete: (userId?: string): void => {
+    try {
+      // 온보딩 완료 이벤트 전송 (GTM + Clarity)
+      analytics.event('onboarding_completed', {
+        timestamp: Date.now(),
+        completion_date: new Date().toISOString(),
+        steps_completed: ONBOARDING_STEPS.length,
+        user_id: userId || 'anonymous',
+      });
+
+      // 사용자 식별 및 속성 업데이트 (Clarity)
+      if (userId) {
+        analytics.identifyUser(userId, {
+          onboarding_completed: true,
+          onboarding_completion_date: new Date().toISOString(),
+          user_journey_stage: 'activated',
+        });
+      }
+
+      // 기능 사용 트래킹
+      analytics.track.featureUsed('onboarding_flow', 'completion');
+    } catch (error) {
+      console.error('온보딩 완료 이벤트 전송 실패:', error);
+    }
   },
 
-  // 온보딩 완료 상태 확인
-  isCompleted: (): boolean => {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem('ufo_fi_onboarding_completed') === 'true';
+  /**
+   * 온보딩 시작 트래킹
+   */
+  trackStart: (userId?: string): void => {
+    analytics.event('onboarding_started', {
+      timestamp: Date.now(),
+      user_id: userId || 'anonymous',
+    });
   },
 
-  // 온보딩 초기화 (개발/테스트용)
-  reset: (): void => {
-    localStorage.removeItem('ufo_fi_onboarding_completed');
+  /**
+   * 온보딩 단계 진행 트래킹
+   */
+  trackStep: (stepNumber: number, stepTitle: string, userId?: string): void => {
+    analytics.event('onboarding_step_viewed', {
+      step_number: stepNumber,
+      step_title: stepTitle,
+      progress_percentage: Math.round((stepNumber / ONBOARDING_STEPS.length) * 100),
+      user_id: userId || 'anonymous',
+    });
   },
 };
