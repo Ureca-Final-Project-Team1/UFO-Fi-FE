@@ -37,7 +37,7 @@ export const bannedWordsAPI = {
   // 금칙어 단일 삭제
   async deleteOne(banwordId: number): Promise<DeleteSingleBannedWordResponse> {
     const response = await apiRequest.delete<DeleteSingleBannedWordResponse>(
-      `/v1/admin/${banwordId}`,
+      `/v1/admin/bannedword/${banwordId}`,
     );
     return response.data;
   },

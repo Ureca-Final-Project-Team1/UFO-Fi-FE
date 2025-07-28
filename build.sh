@@ -1,9 +1,13 @@
 #!/bin/bash
 mkdir -p output
 
-# .git 디렉토리 제외하고 전체 복사
-rsync -av --progress ./ output --exclude .git
-
+# .git, .github, output 디렉터리를 제외하고 전체 복사
+rsync -av --progress \
+  --exclude '.git' \
+  --exclude '.github' \
+  --exclude 'output' \
+  ./  output
+  
 cat <<EOF >> output/README.md
 
 ## Auto Deploy Info
