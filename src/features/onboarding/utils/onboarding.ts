@@ -56,33 +56,39 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   },
 ];
 
-export const isOnboardingCompleted = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  return localStorage.getItem(ONBOARDING_CONSTANTS.STORAGE_KEY) === 'true';
-};
-
-export const markOnboardingComplete = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(ONBOARDING_CONSTANTS.STORAGE_KEY, 'true');
-  }
-};
-
-export const resetOnboarding = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem(ONBOARDING_CONSTANTS.STORAGE_KEY);
-  }
-};
-
 export const onboardingUtils = {
-  // 온보딩 완료 여부 확인
+  /**
+   * 온보딩 완료 여부 확인
+   * - 클라이언트(localStorage)에 저장된 플래그를 기준으로 판단
+   * - SSR 환경에서는 항상 false
+   */
   isCompleted: (): boolean => {
     if (typeof window === 'undefined') return false;
-    return localStorage.getItem('ufo_fi_onboarding_completed') === 'true';
+    return localStorage.getItem(ONBOARDING_CONSTANTS.STORAGE_KEY) === 'true';
   },
 
-  // 온보딩 초기화
+  /**
+   * 온보딩 완료 처리
+   * - localStorage에 완료 플래그 저장
+   * - 서버 측 middleware에서 확인할 수 있도록 쿠키도 함께 저장
+   */
+  markComplete: (): void => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(ONBOARDING_CONSTANTS.STORAGE_KEY, 'true');
+      // 미들웨어에서 접근 가능한 쿠키 설정
+      document.cookie =
+        'ufo_fi_onboarding_completed=true; path=/; max-age=31536000; SameSite=strict';
+    }
+  },
+
+  /**
+   * 온보딩 상태 초기화
+   * - localStorage와 쿠키의 온보딩 완료 플래그 모두 제거
+   * - TODO: 로그아웃 시 사용
+   */
   reset: (): void => {
     if (typeof window === 'undefined') return;
-    localStorage.removeItem('ufo_fi_onboarding_completed');
+    localStorage.removeItem(ONBOARDING_CONSTANTS.STORAGE_KEY);
+    document.cookie = 'ufo_fi_onboarding_completed=; path=/; max-age=0; SameSite=strict';
   },
 };

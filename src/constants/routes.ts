@@ -49,16 +49,11 @@ export const routeUtils = {
     return pathname === ROUTE_CONFIG.BLACKHOLE_PATH;
   },
 
-  // 추가된 메서드들
   isExemptRoute: (pathname: string): boolean => {
     return (
       routeUtils.isPublicRoute(pathname) ||
       pathname.startsWith('/_next') ||
       pathname === '/favicon.ico'
     );
-  },
-
-  shouldCheckOnboarding: (pathname: string): boolean => {
-    return routeUtils.isProtectedRoute(pathname) && !routeUtils.isExemptRoute(pathname);
   },
 };
