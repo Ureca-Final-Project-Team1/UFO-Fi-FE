@@ -50,7 +50,7 @@ export function PlanEditor({
 
   return (
     <div>
-      <h2 className="mb-4 font-semibold text-base">요금제 변경</h2>
+      <h2 className="mb-4 font-semibold text-lg">요금제 변경</h2>
       <OCRInputSection
         control={control}
         errors={errors}
