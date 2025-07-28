@@ -177,13 +177,9 @@ export const usePurchaseFlow = ({ postId, isFirstPurchase = false }: UsePurchase
     (step: number) => {
       if (!state.productData) return;
 
-      purchaseTracker.trackStep(step, {
-        postId,
-        totalPrice: state.productData.totalPrice,
-        dataAmount: state.productData.sellMobileDataCapacityGb,
-      });
+      purchaseTracker.trackStep(step);
     },
-    [state.productData, postId],
+    [state.productData],
   );
 
   // 중도 이탈 추적
