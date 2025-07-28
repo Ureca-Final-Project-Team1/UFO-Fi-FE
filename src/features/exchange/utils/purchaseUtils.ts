@@ -1,4 +1,4 @@
-// features/exchange/utils/purchaseUtils.ts
+import { PurchaseStatus, PurchaseErrorType } from '@/api/types/exchange'; // ✅ enum import
 import type { EcommerceItem } from '@/types/analytics';
 import { analytics } from '@/utils/analytics';
 
@@ -30,7 +30,6 @@ export const purchaseTracker = {
 
   // 구매 성공
   trackSuccess: (data: PurchaseTrackingData, transactionId: string) => {
-    // GA4 이커머스 이벤트 - 올바른 타입으로 수정
     const items: EcommerceItem[] = [
       {
         item_id: data.postId,
@@ -42,18 +41,6 @@ export const purchaseTracker = {
     ];
 
     analytics.track.purchase(transactionId, data.totalPrice, items, data.sellerId.toString());
-
-    // 첫 구매 특별 이벤트
-    if (data.isFirstPurchase) {
-      analytics.event('first_purchase_completed', {
-        post_id: data.postId,
-        data_amount: data.dataAmount,
-        total_price: data.totalPrice,
-        carrier: data.carrier,
-        seller_id: data.sellerId,
-        transaction_id: transactionId,
-      });
-    }
 
     // 일반 구매 완료 이벤트
     analytics.event('purchase_completed', {
@@ -69,7 +56,6 @@ export const purchaseTracker = {
   // 구매 실패
   trackFailure: (data: Partial<PurchaseTrackingData>, error: string, step?: number) => {
     analytics.track.errorOccurred('purchase_failed', error);
-
     analytics.event('purchase_failed', {
       error_message: error,
       failure_step: step || 'unknown',
@@ -84,7 +70,6 @@ export const purchaseTracker = {
     });
   },
 
-  // 중도 이탈
   trackAbandonment: (data: Partial<PurchaseTrackingData>, step: number, reason?: string) => {
     analytics.event('purchase_abandoned', {
       abandoned_at_step: step,
@@ -102,26 +87,7 @@ function getStepName(step: number): string {
   return stepNames[step as keyof typeof stepNames] || 'unknown';
 }
 
-// 구매 상태 enum
-export enum PurchaseStatus {
-  PENDING = 'PENDING',
-  PROCESSING = 'PROCESSING',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  CANCELLED = 'CANCELLED',
-}
-
-// 구매 에러 타입
-export enum PurchaseErrorType {
-  INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE',
-  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
-  PRODUCT_UNAVAILABLE = 'PRODUCT_UNAVAILABLE',
-  NETWORK_ERROR = 'NETWORK_ERROR',
-  SERVER_ERROR = 'SERVER_ERROR',
-  USER_CANCELLED = 'USER_CANCELLED',
-}
-
-// 구매 상태에 따른 메시지 생성
+// ✅ 메시지 생성 함수 (enum 기반)
 export const getPurchaseStatusMessage = (status: PurchaseStatus, error?: string): string => {
   switch (status) {
     case PurchaseStatus.PENDING:
@@ -138,3 +104,4 @@ export const getPurchaseStatusMessage = (status: PurchaseStatus, error?: string)
       return '알 수 없는 상태입니다.';
   }
 };
+export { PurchaseErrorType, PurchaseStatus };

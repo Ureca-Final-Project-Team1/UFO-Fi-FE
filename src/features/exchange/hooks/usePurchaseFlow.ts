@@ -94,18 +94,8 @@ export const usePurchaseFlow = ({ postId, isFirstPurchase = false }: UsePurchase
 
     const hasEnoughBalance = state.userZetBalance >= state.productData.totalPrice;
 
-    if (!hasEnoughBalance) {
-      purchaseTracker.trackInsufficientBalance(
-        {
-          postId,
-          totalPrice: state.productData.totalPrice,
-        },
-        state.userZetBalance,
-      );
-    }
-
     return hasEnoughBalance;
-  }, [state.productData, state.userZetBalance, postId]);
+  }, [state.productData, state.userZetBalance]);
 
   // 구매 실행
   const executePurchase = useCallback(async () => {
@@ -125,7 +115,7 @@ export const usePurchaseFlow = ({ postId, isFirstPurchase = false }: UsePurchase
 
       const response = await purchaseAPI.purchase(purchaseRequest);
 
-      if (response.statusCode === 200) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         setState((prev) => ({
           ...prev,
           status: PurchaseStatus.COMPLETED,

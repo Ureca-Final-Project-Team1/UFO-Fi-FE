@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { exchangeAPI, myInfoAPI } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
+import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
 import { Button, TitleWithRouter } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
@@ -15,6 +16,7 @@ export default function Step1Page() {
   const searchParams = useSearchParams();
   const id = params.id as string;
   const isFirstPurchase = searchParams.get('first') === 'true';
+  const [showZetModal, setShowZetModal] = useState(false);
 
   const [productData, setProductData] = useState<ExchangePost | null>(null);
   const [userZet, setUserZet] = useState(0);
@@ -65,7 +67,6 @@ export default function Step1Page() {
   const handleNext = () => {
     if (!productData) return;
 
-    // ZET 잔액 확인
     if (userZet < productData.totalPrice) {
       analytics.event('purchase_insufficient_balance', {
         post_id: id,
@@ -74,8 +75,7 @@ export default function Step1Page() {
         deficit: productData.totalPrice - userZet,
       });
 
-      alert(`ZET 잔액이 부족합니다. ${productData.totalPrice - userZet}ZET가 더 필요합니다.`);
-      router.push('/charge'); // 충전 페이지로 이동
+      setShowZetModal(true);
       return;
     }
 
@@ -178,6 +178,16 @@ export default function Step1Page() {
       >
         {hasEnoughZet ? '다음' : 'ZET 충전하기'}
       </Button>
+
+      <InsufficientZetModal
+        isOpen={showZetModal}
+        onClose={() => setShowZetModal(false)}
+        onCancel={() => setShowZetModal(false)}
+        onGoToCharge={() => {
+          setShowZetModal(false);
+          router.push('/charge');
+        }}
+      />
     </div>
   );
 }

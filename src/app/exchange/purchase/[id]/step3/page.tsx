@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 import { exchangeAPI, purchaseAPI } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
@@ -94,6 +95,7 @@ export default function Step3Page() {
       }
 
       setPurchaseCompleted(true);
+      window.history.replaceState(null, '', `/exchange`);
     } catch (err) {
       // 구매 실패 이벤트
       analytics.track.errorOccurred(
@@ -103,7 +105,7 @@ export default function Step3Page() {
 
       const errorMessage = err instanceof Error ? err.message : '구매 중 오류가 발생했습니다.';
       setError(errorMessage);
-      alert(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsPurchasing(false);
     }
@@ -169,17 +171,6 @@ export default function Step3Page() {
             <br />
             안전하게 전송되었습니다.
           </p>
-
-          {/* 첫 구매 축하 메시지 */}
-          {isFirstPurchase && (
-            <div className="w-full bg-green-100 rounded-lg p-4 mb-6">
-              <p className="text-green-800 text-center font-medium">
-                🎉 첫 구매 완료를 축하합니다!
-                <br />
-                앞으로도 UFO-Fi와 함께 해주세요.
-              </p>
-            </div>
-          )}
 
           <p className="text-base">즐거운 데이터 여행 되세요 🚀</p>
         </div>
