@@ -108,15 +108,13 @@ export default function SellEditPage() {
               />
             </div>
           </div>
-          {titleInput && (
-            <div
-              className={`text-xs text-right ${
-                titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
-              }`}
-            >
-              {titleInput.length}/15
-            </div>
-          )}
+          <div
+            className={`text-xs text-right ${
+              titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
+            }`}
+          >
+            {titleInput.length}/15
+          </div>
         </div>
 
         {/* 판매 용량 설정 슬라이더 */}
