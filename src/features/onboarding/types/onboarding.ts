@@ -13,7 +13,8 @@ export const isOnboardingCompleted = (): boolean => {
 export const markOnboardingComplete = (): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem(ONBOARDING_CONSTANTS.STORAGE_KEY, 'true');
-    document.cookie = 'ufo_fi_onboarding_completed=true; path=/; max-age=31536000';
+    document.cookie =
+      'ufo_fi_onboarding_completed=true; path=/; max-age=2592000; Secure; SameSite=Strict';
   }
 };
 
