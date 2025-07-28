@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { exchangeAPI, myInfoAPI } from '@/api';
+import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
@@ -13,13 +13,12 @@ import { analytics } from '@/utils/analytics';
 export default function Step1Page() {
   const router = useRouter();
   const params = useParams();
-  const searchParams = useSearchParams();
   const id = params.id as string;
-  const isFirstPurchase = searchParams.get('first') === 'true';
   const [showZetModal, setShowZetModal] = useState(false);
 
   const [productData, setProductData] = useState<ExchangePost | null>(null);
   const [userZet, setUserZet] = useState(0);
+  const [, setIsFirstPurchase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,9 +26,10 @@ export default function Step1Page() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const [postsResponse, userInfo] = await Promise.all([
+        const [postsResponse, userInfo, history] = await Promise.all([
           exchangeAPI.getPosts({ size: 50 }),
           myInfoAPI.get(),
+          purchaseHistory(),
         ]);
 
         // ID로 해당 상품 찾기
@@ -43,15 +43,19 @@ export default function Step1Page() {
           throw new Error('판매 중인 상품이 아닙니다.');
         }
 
+        // 첫 구매 여부 확인
+        const isFirst = !history || history.length === 0;
+
         setProductData(product);
         setUserZet(userInfo?.zetAsset || 0);
+        setIsFirstPurchase(isFirst);
 
         // 애널리틱스 이벤트
         analytics.event('purchase_step1_viewed', {
           post_id: id,
           product_price: product.totalPrice,
           user_zet_balance: userInfo?.zetAsset || 0,
-          is_first_purchase: isFirstPurchase,
+          is_first_purchase: isFirst,
         });
       } catch (err) {
         console.error('데이터 조회 실패:', err);
@@ -62,7 +66,7 @@ export default function Step1Page() {
     };
 
     fetchData();
-  }, [id, isFirstPurchase]);
+  }, [id]);
 
   const handleNext = () => {
     if (!productData) return;
@@ -84,7 +88,7 @@ export default function Step1Page() {
       product_price: productData.totalPrice,
     });
 
-    router.push(`/exchange/purchase/${id}/step2${isFirstPurchase ? '?first=true' : ''}`);
+    router.push(`/exchange/purchase/${id}/step2`);
   };
 
   if (isLoading) {

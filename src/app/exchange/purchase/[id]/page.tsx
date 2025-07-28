@@ -14,43 +14,42 @@ export default function PurchasePage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  const [isFirstPurchase, setIsFirstPurchase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkFirstPurchase = async () => {
+    const checkAndRedirect = async () => {
       try {
         // 구매 내역 조회하여 첫 구매 여부 확인
         const history = await purchaseHistory();
-        const isFirst = !history || history.length === 0;
-        setIsFirstPurchase(isFirst);
+        const isFirstPurchase = !history || history.length === 0;
+
+        if (!isFirstPurchase) {
+          // 기존 구매자는 step1으로 바로 리다이렉트
+          router.replace(`/exchange/purchase/${id}/step1`);
+          return;
+        }
 
         // 첫 구매자라면 애널리틱스 이벤트 전송
-        if (isFirst) {
-          analytics.track.featureUsed('first_purchase_flow', 'started');
-        }
+        analytics.track.featureUsed('first_purchase_flow', 'started');
+        setIsLoading(false);
       } catch (error) {
         console.error('구매 내역 조회 실패:', error);
-        setIsFirstPurchase(false);
-      } finally {
-        setIsLoading(false);
+        // 에러 시에도 step1으로 리다이렉트
+        router.replace(`/exchange/purchase/${id}/step1`);
       }
     };
 
-    checkFirstPurchase();
-  }, []);
+    checkAndRedirect();
+  }, [id, router]);
 
   const handleContinue = () => {
-    // 첫 구매자 정보와 함께 다음 단계로 이동
-    const nextUrl = `/exchange/purchase/${id}/step1${isFirstPurchase ? '?first=true' : ''}`;
-
     // 구매 플로우 시작 이벤트
     analytics.event('purchase_flow_started', {
       post_id: id,
-      is_first_purchase: isFirstPurchase,
+      is_first_purchase: true,
     });
 
-    router.push(nextUrl);
+    router.push(`/exchange/purchase/${id}/step1`);
   };
 
   if (isLoading) {

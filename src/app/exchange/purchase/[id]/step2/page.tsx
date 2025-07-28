@@ -1,9 +1,9 @@
 'use client';
 import Image from 'next/image';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-import { exchangeAPI } from '@/api';
+import { exchangeAPI, purchaseHistory } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useUserRole } from '@/features/signup/hooks/useUserRole';
@@ -13,40 +13,46 @@ import { analytics } from '@/utils/analytics';
 export default function Step2Page() {
   const router = useRouter();
   const params = useParams();
-  const searchParams = useSearchParams();
   const id = params.id as string;
-  const isFirstPurchase = searchParams.get('first') === 'true';
 
   const { phoneNumber } = useUserRole();
 
   const [isChecked, setIsChecked] = useState(false);
   const [productData, setProductData] = useState<ExchangePost | null>(null);
   const [userPhoneNumber, setUserPhoneNumber] = useState('');
+  const [, setIsFirstPurchase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 상품 정보 조회
-        const postsResponse = await exchangeAPI.getPosts({ size: 50 });
+        // 상품 정보와 구매 내역 조회
+        const [postsResponse, history] = await Promise.all([
+          exchangeAPI.getPosts({ size: 50 }),
+          purchaseHistory(),
+        ]);
+
         const product = postsResponse.posts.find((post) => post.postId === parseInt(id));
 
         if (!product) {
           throw new Error('상품을 찾을 수 없습니다.');
         }
 
+        // 첫 구매 여부 확인
+        const isFirst = !history || history.length === 0;
+
         setProductData(product);
+        setIsFirstPurchase(isFirst);
 
         // 사용자 전화번호 설정
         const userPhoneNumber = phoneNumber;
-
         setUserPhoneNumber(userPhoneNumber ?? '전화번호 없음');
 
         // 애널리틱스 이벤트
         analytics.event('purchase_step2_viewed', {
           post_id: id,
           data_amount: `${product.sellMobileDataCapacityGb}GB`,
-          is_first_purchase: isFirstPurchase,
+          is_first_purchase: isFirst,
         });
       } catch (error) {
         console.error('데이터 조회 실패:', error);
@@ -57,7 +63,7 @@ export default function Step2Page() {
     };
 
     fetchData();
-  }, [id, phoneNumber, router, isFirstPurchase]);
+  }, [id, phoneNumber, router]);
 
   const handleNext = () => {
     if (isChecked && productData) {
@@ -67,7 +73,7 @@ export default function Step2Page() {
         data_amount: `${productData.sellMobileDataCapacityGb}GB`,
       });
 
-      router.push(`/exchange/purchase/${id}/step3${isFirstPurchase ? '?first=true' : ''}`);
+      router.push(`/exchange/purchase/${id}/step3`);
     }
   };
 

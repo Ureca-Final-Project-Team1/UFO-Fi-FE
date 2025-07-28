@@ -1,10 +1,10 @@
 'use client';
 import Image from 'next/image';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { exchangeAPI, purchaseAPI } from '@/api';
+import { exchangeAPI, purchaseAPI, purchaseHistory } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { Button, TitleWithRouter } from '@/shared';
@@ -13,34 +13,41 @@ import { analytics } from '@/utils/analytics';
 export default function Step3Page() {
   const router = useRouter();
   const params = useParams();
-  const searchParams = useSearchParams();
   const id = params.id as string;
-  const isFirstPurchase = searchParams.get('first') === 'true';
 
   const [productData, setProductData] = useState<ExchangePost | null>(null);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [purchaseCompleted, setPurchaseCompleted] = useState(false);
+  const [isFirstPurchase, setIsFirstPurchase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const postsResponse = await exchangeAPI.getPosts({ size: 50 });
+        const [postsResponse, history] = await Promise.all([
+          exchangeAPI.getPosts({ size: 50 }),
+          purchaseHistory(),
+        ]);
+
         const product = postsResponse.posts.find((post) => post.postId === parseInt(id));
 
         if (!product) {
           throw new Error('상품을 찾을 수 없습니다.');
         }
 
+        // 첫 구매 여부 확인
+        const isFirst = !history || history.length === 0;
+
         setProductData(product);
+        setIsFirstPurchase(isFirst);
 
         // Step3 도달 이벤트
         analytics.event('purchase_step3_viewed', {
           post_id: id,
           data_amount: `${product.sellMobileDataCapacityGb}GB`,
           total_price: product.totalPrice,
-          is_first_purchase: isFirstPurchase,
+          is_first_purchase: isFirst,
         });
       } catch (err) {
         console.error('상품 정보 조회 실패:', err);
@@ -51,7 +58,7 @@ export default function Step3Page() {
     };
 
     fetchProductData();
-  }, [id, isFirstPurchase]);
+  }, [id]);
 
   const handlePurchase = async () => {
     if (!productData || isPurchasing) return;
