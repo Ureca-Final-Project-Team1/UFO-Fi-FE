@@ -37,7 +37,8 @@ export default function MyPage() {
       toast.error('로그아웃에 실패했습니다.');
     }
   };
-  const navigateToTerms = () => router.push('/mypage/privacy');
+  const navigateToTerms = () => router.push('/mypage/service');
+  const navigateToPrivacy = () => router.push('/mypage/privacy');
   const navigateToFollow = () => router.push('/mypage/follow');
   const navigateToNotification = () => router.push('/mypage/notification');
 
@@ -49,6 +50,7 @@ export default function MyPage() {
   const supportItems = [
     { label: '로그아웃', onClick: () => setIsOpen(true) },
     { label: '이용 약관', onClick: navigateToTerms },
+    { label: '개인정보처리방침', onClick: navigateToPrivacy },
   ];
 
   if (isLoading) {
