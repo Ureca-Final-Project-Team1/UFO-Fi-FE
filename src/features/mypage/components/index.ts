@@ -6,3 +6,4 @@ export { ConfirmModal } from './ConfirmModal';
 export { LogoutModal } from './LogoutModal';
 export { NicknameEditor } from './NicknameEditor';
 export { PlanEditor } from './PlanEditor';
+export * from './trade-detail';
