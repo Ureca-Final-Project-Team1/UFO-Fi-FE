@@ -4,12 +4,16 @@ type Props = {
   value: number[];
   setValue: React.Dispatch<React.SetStateAction<number[]>>;
   maxCapacity: number;
+  errorMessage?: string;
 };
 
-export function SellCapacitySlider({ value, setValue, maxCapacity }: Props) {
+export function SellCapacitySlider({ value, setValue, maxCapacity, errorMessage }: Props) {
   return (
     <div className="space-y-4 items-center">
-      <h3 className="text-white font-bold text-lg">판매 용량 설정</h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-white font-bold text-lg">판매 용량 설정</h3>
+        {errorMessage && <div className="text-red-400 text-sm font-medium">{errorMessage}</div>}
+      </div>
       <DataSlider
         value={value}
         onValueChange={setValue}

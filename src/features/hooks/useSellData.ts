@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
+import { validatePricePerGB, validateTotalPrice } from '@/lib/validate';
 
 export const useSellData = () => {
   const [value, setValue] = useState([5]);
@@ -16,10 +17,6 @@ export const useSellData = () => {
   // 유효성 검증 함수들
   const validateTitle = (title: string): boolean => {
     return title.trim().length >= 1 && title.trim().length <= 15;
-  };
-
-  const validatePrice = (price: number): boolean => {
-    return typeof price === 'number' && price >= 1 && price <= 10000;
   };
 
   const validateCapacity = (capacity: number): boolean => {
@@ -52,7 +49,7 @@ export const useSellData = () => {
     }
 
     // 가격 검증 (1ZET 이상)
-    if (!validatePrice(totalPrice)) {
+    if (!validateTotalPrice(totalPrice)) {
       toast.error('총 판매 가격은 1ZET 이상이어야 합니다.');
       return;
     }
@@ -99,7 +96,7 @@ export const useSellData = () => {
 
     // 유효성 검증 상태
     isValidTitle: validateTitle(titleInput),
-    isValidPrice: validatePrice(totalPrice),
+    isValidPrice: validatePricePerGB(pricePerGB) && validateTotalPrice(totalPrice),
     isValidCapacity: validateCapacity(sellCapacity),
 
     // 로딩 상태

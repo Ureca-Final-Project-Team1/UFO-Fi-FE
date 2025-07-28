@@ -35,9 +35,9 @@ export default function SellPage() {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
-    <div className="flex flex-col min-h-full w-full justify-center">
+    <div className="flex flex-col min-h-full w-full justify-center overflow-hidden">
       <Title title="데이터 판매 등록" />
-      <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
+      <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32 overflow-hidden">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -62,19 +62,22 @@ export default function SellPage() {
               />
             </div>
           </div>
-          {titleInput && (
-            <div
-              className={`text-xs text-right ${
-                titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
-              }`}
-            >
-              {titleInput.length}/15
-            </div>
-          )}
+          <div
+            className={`text-xs text-right ${
+              titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
+            }`}
+          >
+            {titleInput.length}/15
+          </div>
         </div>
 
         {/* 판매 용량 설정 슬라이더 */}
-        <SellCapacitySlider value={value} setValue={setValue} maxCapacity={maxCapacity} />
+        <SellCapacitySlider
+          value={value}
+          setValue={setValue}
+          maxCapacity={maxCapacity}
+          errorMessage={getSellErrorMessages.price(isValidPrice, pricePerGB)}
+        />
 
         {/* 1GB당 가격 입력 */}
         <div className="flex justify-center items-center gap-3.5">
@@ -88,7 +91,6 @@ export default function SellPage() {
               onChange={(e) => handlePriceChange(e)}
               placeholder="금액"
               variant="blueFill"
-              error={getSellErrorMessages.price(isValidPrice, pricePerGB)}
             />
           </div>
 
@@ -125,6 +127,11 @@ export default function SellPage() {
           priority
         />
       </div>
+      <style jsx>{`
+        body {
+          overscroll-behavior: none;
+        }
+      `}</style>
     </div>
   );
 }

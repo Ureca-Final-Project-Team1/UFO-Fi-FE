@@ -17,7 +17,9 @@ export function PriceInput(props: CustomInputProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const onlyNums = getOnlyNumbers(e.target.value);
-
+    if (onlyNums.length > 4) {
+      return;
+    }
     if (!isControlled) {
       setInternalValue(onlyNums);
     }
@@ -36,6 +38,7 @@ export function PriceInput(props: CustomInputProps) {
       onChange={handleChange}
       inputMode="numeric"
       pattern="[0-9,]*"
+      maxLength={4}
       placeholder="금액 입력"
       className={cn(
         'bg-[var(--color-badge-bg-dark)] text-[var(--color-text-selling)] text-center font-semibold placeholder-[var(--color-text-selling)]',
