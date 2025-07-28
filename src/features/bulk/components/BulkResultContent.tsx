@@ -2,20 +2,19 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { toast } from 'sonner';
 
 import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
-import { purchaseAPI } from '@/api/services/exchange/purchase';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { Icon, TitleWithRouter, Button } from '@/shared';
+import { useBulkStore } from '@/stores/useBulkStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 import { useBulkPurchase } from '../hooks/useBulkPurchase';
-import { BulkResultContentItem, BulkResultItem } from '../types/bulkResult.types';
+import { BulkPurchaseItem, GetBulkPurchaseContent } from '../types/bulkResult.types';
 
 interface BulkResultContentProps {
-  initialData?: BulkResultContentItem;
+  initialData?: GetBulkPurchaseContent;
 }
 
 export function BulkResultContent({ initialData }: BulkResultContentProps) {
@@ -23,10 +22,10 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   const { capacityValue, pricePerGB } = useBulkPurchase();
+  const { setPostIds } = useBulkStore();
 
-  const [resultData, setResultData] = useState<BulkResultContentItem | null>(initialData || null);
+  const [resultData, setResultData] = useState<GetBulkPurchaseContent | null>(initialData || null);
   const [isLoading, setIsLoading] = useState(!initialData);
-  const [isPurchasing, setIsPurchasing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // API에서 결과 데이터 가져오기
@@ -36,7 +35,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
         setIsLoading(true);
         setError(null);
 
-        const data = await bulkPurchaseAPI({
+        const data = await bulkPurchaseAPI.getBulkPurchaseResult({
           desiredGb: capacityValue[0],
           unitPerZet: Number(pricePerGB),
         });
@@ -51,6 +50,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           }
         }
 
+        setPostIds(data.content.posts.map((item) => item.postId));
         setResultData(data.content);
       } catch (err) {
         console.error('Failed to fetch result data:', err);
@@ -63,34 +63,9 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     fetchResultData();
   }, [capacityValue, pricePerGB]);
 
-  const handlePurchase = async () => {
+  const handlePurchase = () => {
     if (!resultData) return;
-
-    setIsPurchasing(true);
-    try {
-      const fetchPurchase = async () => {
-        for (const item of resultData.posts) {
-          const response = await purchaseAPI({
-            postId: item.postId,
-            sellerId: item.sellerId,
-            totalZet: item.totalPrice,
-            sellMobileDataAmountGB: item.sellMobileDataCapacityGb,
-          });
-          if (response.statusCode !== 200) {
-            toast.error('구매에 실패했습니다.');
-          } else {
-            toast.success('구매가 완료되었습니다!');
-          }
-        }
-      };
-
-      fetchPurchase();
-      router.push('/exchange');
-    } catch {
-      toast.error('구매 중 오류가 발생했습니다.');
-    } finally {
-      setIsPurchasing(false);
-    }
+    router.push('/exchange/bulk/result');
   };
 
   // 로딩 상태
@@ -118,12 +93,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     <div className="flex flex-col min-h-full w-full">
       <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
       <div className="px-4">
-        <BulkResultDisplay
-          data={resultData}
-          onPurchase={handlePurchase}
-          isPurchasing={isPurchasing}
-          isMobile={isMobile}
-        />
+        <BulkResultDisplay data={resultData} onPurchase={handlePurchase} isMobile={isMobile} />
       </div>
     </div>
   );
@@ -149,9 +119,9 @@ function BulkResultDisplay({
   isPurchasing,
   isMobile,
 }: {
-  data: BulkResultContentItem;
+  data: GetBulkPurchaseContent;
   onPurchase: () => void;
-  isPurchasing: boolean;
+  isPurchasing?: boolean;
   isMobile: boolean;
 }) {
   const { totalGb, totalPrice, posts } = data;
@@ -219,7 +189,7 @@ function BulkResultDisplay({
         <h3 className="text-white font-bold text-lg flex items-center gap-2">매칭된 데이터 목록</h3>
 
         <div className={`gap-3 ${isMobile ? 'grid grid-cols-2' : 'flex flex-col'}`}>
-          {posts.map((item: BulkResultItem, index: number) => (
+          {posts.map((item: BulkPurchaseItem, index: number) => (
             <BulkResultCard
               key={index}
               message={item.title}

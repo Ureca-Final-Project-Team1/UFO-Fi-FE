@@ -58,8 +58,3 @@ export interface PurchaseResponse {
     zetAsset: number;
   };
 }
-
-export interface BulkPurchaseParams {
-  desiredGb: number;
-  unitPerZet: number;
-}

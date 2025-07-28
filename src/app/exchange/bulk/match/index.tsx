@@ -10,7 +10,7 @@ import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { Icon, Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
-function BulkResultContent() {
+function BulkMatchContent() {
   const searchParams = useSearchParams();
   const capacity = searchParams.get('capacity') || '8';
   const budget = searchParams.get('budget') || '720';
@@ -120,7 +120,7 @@ export default function BulkResultPage() {
         </div>
       }
     >
-      <BulkResultContent />
+      <BulkMatchContent />
     </Suspense>
   );
 }
