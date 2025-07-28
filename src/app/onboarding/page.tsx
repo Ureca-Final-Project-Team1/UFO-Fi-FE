@@ -36,7 +36,7 @@ export default function OnboardingPage() {
       setCurrentStep((prev) => prev + 1);
     } else {
       // 온보딩 완료 처리
-      onboardingUtils.isCompleted();
+      localStorage.setItem('ufo_fi_onboarding_completed', 'true');
       router.push(ROUTE_CONFIG.DEFAULT_REDIRECT);
     }
   }, [currentStep, router]);
