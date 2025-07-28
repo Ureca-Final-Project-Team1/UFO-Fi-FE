@@ -41,6 +41,7 @@ export default function MyPage() {
   const navigateToPrivacy = () => router.push('/mypage/privacy');
   const navigateToFollow = () => router.push('/mypage/follow');
   const navigateToNotification = () => router.push('/mypage/notification');
+  const navigateToAchievement = () => router.push('/mypage/achievement');
 
   const transactionItems = [
     { label: '판매 내역', onClick: navigateToSalesHistory },
@@ -81,13 +82,13 @@ export default function MyPage() {
           />
           <p className="mt-2 caption-12-regular">팔로우 목록</p>
         </div>
-        <div className="group hover:cursor-pointer">
+        <div className="group hover:cursor-pointer" onClick={navigateToAchievement}>
           <Icon
-            name="Eye"
+            name="Star"
             size={24}
             className="mx-auto transition-all duration-300 group-hover:scale-110 text-white"
           />
-          <p className="mt-2 caption-12-regular">최근 본 글</p>
+          <p className="mt-2 caption-12-regular">업적 목록</p>
         </div>
         <div className="group hover:cursor-pointer" onClick={navigateToNotification}>
           <Icon
