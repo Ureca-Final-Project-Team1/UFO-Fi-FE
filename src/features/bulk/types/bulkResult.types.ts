@@ -1,4 +1,5 @@
 import { Carrier } from '@/api/types/carrier';
+import { MobileDataType } from '@/api/types/mobileData';
 
 export interface BulkResultData {
   statusCode: number;
@@ -21,7 +22,7 @@ export interface BulkResultItem {
   status: string;
   createdAt: Date;
   pricePerUnit: number;
-  mobileDataType: string;
+  mobileDataType: MobileDataType;
   sellerNickname: string;
   sellerId: number;
 }
