@@ -1,5 +1,6 @@
 // 모든 API 서비스 re-export
 export { notificationAPI } from './services/notification/settings';
+export { notificationsAPI } from './services/notification/notifications';
 export { signupAPI } from './services/auth/signup';
 export { plansAPI } from './services/auth/plans';
 export { sellAPI } from './services/sell/posts';
