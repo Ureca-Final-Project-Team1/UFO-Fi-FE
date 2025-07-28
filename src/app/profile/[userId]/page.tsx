@@ -11,7 +11,7 @@ export default function ProfilePage() {
 
   if (!userId || isNaN(userId)) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-full">
         <div className="text-white">잘못된 사용자 ID입니다.</div>
       </div>
     );
@@ -20,7 +20,7 @@ export default function ProfilePage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-full">
           <div className="text-white">프로필을 불러오는 중...</div>
         </div>
       }

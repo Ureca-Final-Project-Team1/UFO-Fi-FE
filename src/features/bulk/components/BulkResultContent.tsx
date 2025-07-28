@@ -96,7 +96,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   // 로딩 상태
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-full">
         <div className="text-white">검색 결과를 불러오는 중...</div>
       </div>
     );
@@ -104,9 +104,9 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
   if (error || !resultData) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-full">
         <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
-        <div className="w-full h-full flex items-center justify-center text-white">
+        <div className="flex items-center justify-center text-white">
           검색 결과를 찾을 수 없습니다.
         </div>
       </div>

@@ -15,18 +15,22 @@ import {
 import type { PlanComboProps } from './PlanCombo.types';
 import { planComboItemClass } from './planComboVariants';
 
-export function PlanCombo({ planNames = [], onSelect, value }: PlanComboProps) {
+export function PlanCombo({ planNames = [], onSelect, value, disabled = false }: PlanComboProps) {
   const [input, setInput] = useState('');
   const [selected, setSelected] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [hasUserSelected, setHasUserSelected] = useState(false);
 
   useEffect(() => {
-    if (value && !hasUserSelected) {
+    if (value === '') {
+      setInput('');
+      setSelected('');
+      setHasUserSelected(false);
+    } else {
       setInput(value);
       setSelected(value);
     }
-  }, [value, hasUserSelected]);
+  }, [value]);
 
   useEffect(() => {
     if (planNames.length > 0 && !hasUserSelected) {
@@ -49,10 +53,11 @@ export function PlanCombo({ planNames = [], onSelect, value }: PlanComboProps) {
         <CommandInput
           placeholder="요금제를 선택해 주세요."
           value={input}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => !disabled && setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
           onInput={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.currentTarget.value)}
           className="h-[50px] justify-between text-[16px]"
+          disabled={disabled}
         />
 
         {isOpen && (

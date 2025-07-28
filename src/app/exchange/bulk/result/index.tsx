@@ -21,7 +21,7 @@ function BulkResultContent() {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <div className="justify-center items-center">
       <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
 
       <div className="relative rounded-[20px] space-y-6 pb-12 px-4">
@@ -115,7 +115,7 @@ export default function BulkResultPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-full">
           <div className="text-white">로딩 중...</div>
         </div>
       }

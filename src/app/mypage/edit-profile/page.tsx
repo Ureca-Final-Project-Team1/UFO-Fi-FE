@@ -1,9 +1,12 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
-import { ConfirmModal, NicknameEditor, PlanEditor } from '@/features/mypage/components';
+import { ConfirmModal, NicknameEditor } from '@/features/mypage/components';
+import { PlanEditor } from '@/features/mypage/components/PlanEditor';
 import { useEditProfile } from '@/features/mypage/hooks/useEditProfile';
 
 export default function EditProfilePage() {
@@ -16,18 +19,24 @@ export default function EditProfilePage() {
     plan,
     setPlan,
     plans,
+    setPlans,
     status,
-    error,
     saveNickname,
     savePlan,
   } = useEditProfile();
+
   const [modalType, setModalType] = useState<'nickname' | 'plan' | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSaveNickname = async () => {
     if (await saveNickname()) setModalType('nickname');
   };
 
   const handleSavePlan = async () => {
+    if (!plan) {
+      toast.error('요금제를 선택해주세요.');
+      return;
+    }
     if (await savePlan()) setModalType('plan');
   };
 
@@ -37,26 +46,30 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full">
+    <div className="flex flex-col min-h-full w-full">
       <TitleWithRouter title="프로필 수정" iconVariant="back" />
-      <div className="mx-4 mt-6 flex flex-col gap-8">
+
+      <div className="mt-6 flex flex-col gap-8">
         <NicknameEditor
           nickname={nickname}
           setNickname={setNickname}
           onSave={handleSaveNickname}
           isLoading={status === 'loading'}
         />
+
         <PlanEditor
           carrier={carrier}
           setCarrier={setCarrier}
           plan={plan}
           setPlan={setPlan}
           plans={plans}
+          setPlans={setPlans}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
           onSave={handleSavePlan}
-          isLoading={status === 'loading'}
-          error={error}
         />
       </div>
+
       <ConfirmModal
         isOpen={!!modalType}
         onClose={handleModalConfirm}

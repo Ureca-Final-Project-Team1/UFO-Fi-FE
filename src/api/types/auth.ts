@@ -1,3 +1,4 @@
+import { SuccessApiResponse } from './api';
 import { Carrier } from './carrier';
 import type { Plan } from './plan';
 
@@ -32,3 +33,10 @@ export interface GetPlansResponse {
     plansReadRes: Plan[];
   };
 }
+
+export interface SetLogoutContent {
+  statusCode: number;
+  message: string;
+}
+
+export type SetLogoutResponse = SuccessApiResponse<SetLogoutContent>;
