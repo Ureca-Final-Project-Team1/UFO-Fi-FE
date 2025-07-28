@@ -8,7 +8,7 @@ import { AlienWithSpeech } from '@/features/onboarding/components';
 import { NextButton } from '@/features/onboarding/components';
 import { OnboardingImageFrame } from '@/features/onboarding/components';
 import { StepIndicator } from '@/features/onboarding/components';
-import { ONBOARDING_STEPS, onboardingUtils } from '@/features/onboarding/utils/onboarding';
+import { ONBOARDING_STEPS } from '@/features/onboarding/utils/onboarding';
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -16,13 +16,6 @@ export default function OnboardingPage() {
   const router = useRouter();
 
   const step = ONBOARDING_STEPS[currentStep];
-
-  // 이미 온보딩이 완료된 경우 홈으로 리다이렉트
-  useEffect(() => {
-    if (onboardingUtils.isCompleted()) {
-      router.push(ROUTE_CONFIG.DEFAULT_REDIRECT);
-    }
-  }, [router]);
 
   useEffect(() => {
     setIsVisible(false);

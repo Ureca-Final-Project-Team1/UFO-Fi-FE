@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { getUserInfoAPI } from '@/api/services/auth/userInfo';
-import { onboardingUtils } from '@/features/onboarding/utils/onboarding';
 import { registerFCMToken } from '@/lib/fcm';
 import { useToastStore } from '@/stores/useToastStore';
 import { useUserInfoStore } from '@/stores/useUserInfoStore';
@@ -36,12 +35,7 @@ const SuccessPage = () => {
             break;
           case 'ROLE_USER':
           default:
-            const isOnboardingCompleted = onboardingUtils.isCompleted();
-            if (isOnboardingCompleted) {
-              router.push('/');
-            } else {
-              router.push('/onboarding');
-            }
+            router.push('/');
             break;
         }
 

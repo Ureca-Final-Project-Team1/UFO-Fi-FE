@@ -1,15 +1,18 @@
 export const ROUTE_CONFIG = {
-  // 보호된 라우트 (온보딩 필요)
-  PROTECTED_ROUTES: ['/sell', '/exchange', '/signal', '/mypage'],
+  // 보호된 라우트 (인증 필요)
+  PROTECTED_ROUTES: ['/sell', '/exchange', '/signal', '/mypage', '/onboarding'],
 
   // 공개 라우트 (인증 불필요)
-  PUBLIC_ROUTES: ['/', '/login', '/signup/**', '/onboarding', '/blackhole'],
+  PUBLIC_ROUTES: ['/', '/login', '/signup/**'],
 
   // 회원가입 관련 라우트
   SIGNUP_ROUTES: ['/signup/privacy', '/signup/profile', '/signup/plan'],
 
   // 관리자 전용 라우트
   ADMIN_ROUTES: ['/admin/**'],
+
+  // 정지된 사용자 라우트
+  BLACKHOLE_ROUTES: ['/blackhole'],
 
   // 리디렉션 경로
   DEFAULT_REDIRECT: '/',
@@ -19,7 +22,7 @@ export const ROUTE_CONFIG = {
 } as const;
 
 export const routeUtils = {
-  // 보호된 라우트 확인 (온보딩 완료 필요)
+  // 보호된 라우트 확인 (인증 필요)
   isProtectedRoute: (pathname: string): boolean => {
     return ROUTE_CONFIG.PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
   },
@@ -49,6 +52,7 @@ export const routeUtils = {
     return pathname === ROUTE_CONFIG.BLACKHOLE_PATH;
   },
 
+  // 예외 라우트 확인
   isExemptRoute: (pathname: string): boolean => {
     return (
       routeUtils.isPublicRoute(pathname) ||

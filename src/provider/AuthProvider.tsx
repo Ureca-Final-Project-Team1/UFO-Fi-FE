@@ -28,19 +28,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (shouldFetchUserInfo && isLoading) return;
 
     if (shouldFetchUserInfo && userRole) {
-      // 1. 회원가입 미완료
-      if (userRole === 'ROLE_NO_INFO' && !routeUtils.isSignupRoute(pathname)) {
-        router.replace('/signup/privacy');
+      // 1. ROLE_REPORTED 유저는 모든 경로 차단 후 블랙홀로 이동
+      if (userRole === 'ROLE_REPORTED' && pathname !== '/blackhole') {
+        router.replace('/blackhole?mode=self');
         return;
       }
 
-      // 2. 정지된 유저
-      if (userRole === 'ROLE_REPORTED' && !routeUtils.isBlackholeRoute(pathname)) {
-        router.replace(`${ROUTE_CONFIG.BLACKHOLE_PATH}?mode=self`);
-        return;
-      }
-
-      // 3. 관리자 페이지는 관리자만
+      // 2. 관리자 페이지는 관리자만 접근 가능
       if (routeUtils.isAdminRoute(pathname) && userRole !== 'ROLE_ADMIN') {
         router.replace(ROUTE_CONFIG.DEFAULT_REDIRECT);
         return;

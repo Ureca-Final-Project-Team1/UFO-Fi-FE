@@ -21,16 +21,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // 3. 온보딩 미완료 유저가 보호 라우트 접근 시 → /onboarding 리디렉션
-  if (
-    isAuthenticated &&
-    routeUtils.isProtectedRoute(pathname) &&
-    !pathname.startsWith('/onboarding') &&
-    request.cookies.get('ufo_fi_onboarding_completed')?.value !== 'true'
-  ) {
-    return NextResponse.redirect(new URL('/onboarding', request.url));
-  }
-
+  // 미들웨어는 단순히 인증 상태만 체크하고, 나머지는 AuthProvider에서 처리
   return NextResponse.next();
 }
 
