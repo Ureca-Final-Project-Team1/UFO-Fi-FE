@@ -20,3 +20,4 @@ export * from './Command';
 export * from './Pagination';
 export * from './Table';
 export * from './NotificationDropdown';
+export * from './Loading';
