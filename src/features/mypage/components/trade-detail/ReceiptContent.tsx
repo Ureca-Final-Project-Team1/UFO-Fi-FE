@@ -22,8 +22,7 @@ export const ReceiptContent = ({ purchaseDetail }: ReceiptContentProps) => {
           <Icon src={ICON_PATHS.UFO_LOGO} alt="UFO Logo" size="3xl" />
           <div className="text-3xl font-bold text-gray-800">UFO-Fi</div>
         </div>
-        <div className="flex justify-between border-b-2 border-dotted border-gray-400 pb-1 mb-3"></div>
-
+        <hr className="border-dotted  border-t-2 border-gray-400 mb-3" />
         {/* 주문번호 */}
         <div className="flex justify-between border-b-2 border-dotted border-gray-400 pb-1 mb-3">
           <span className="text-sm text-gray-600">주문번호</span>
