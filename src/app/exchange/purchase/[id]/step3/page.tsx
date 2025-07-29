@@ -12,7 +12,7 @@ import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';
 import { Button, TitleWithRouter } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
-export default function SimpleEnhancedStep3Page() {
+export default function Step3Page() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
