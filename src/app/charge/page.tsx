@@ -8,12 +8,16 @@ import { Icon, TitleWithRouter } from '@/shared';
 
 export default function ZetChargePage() {
   const { handleChargePackage, isProcessing } = useZetCharge();
-  const { data: myInfo, isLoading: isUserLoading } = useMyInfo();
+  const { data: myInfo, isLoading: isUserLoading, error: userError } = useMyInfo();
 
   const zetAsset = myInfo?.zetAsset ?? 0;
 
+  if (userError) {
+    return null;
+  }
+
   return (
-    <div className="relative min-h-full flex flex-col">
+    <div className="min-h-full flex flex-col">
       <div className="px-4 pt-4">
         <div className="flex items-center justify-between mb-2">
           <TitleWithRouter title="ZET 코인 충전소" iconVariant="back" />
@@ -30,11 +34,13 @@ export default function ZetChargePage() {
             />
             {isUserLoading ? (
               <span className="body-16-bold text-cyan-400">...</span>
-            ) : (
+            ) : zetAsset > 0 ? (
               <>
-                <span className="body-16-bold text-cyan-400">{zetAsset}</span>
+                <span className="body-16-bold text-cyan-400">{zetAsset.toLocaleString()}</span>
                 <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
               </>
+            ) : (
+              <span className="body-14-medium text-gray-400">보유 제트 없음</span>
             )}
           </div>
         </div>
@@ -56,8 +62,8 @@ export default function ZetChargePage() {
         {/* 결제 로딩 */}
         {isProcessing && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 flex flex-col items-center gap-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="bg-white rounded-lg p-6 flex flex-col items-center gap-4 max-w-sm mx-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
               <p className="text-gray-700 font-medium">결제를 준비하고 있습니다...</p>
               <p className="text-gray-500 text-sm text-center">
                 잠시 후 결제창이 나타납니다.
