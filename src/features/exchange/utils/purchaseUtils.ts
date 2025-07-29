@@ -8,7 +8,6 @@ export interface PurchaseTrackingData {
   dataAmount: number;
   carrier: string;
   sellerId: number;
-  buyerId: number;
   isFirstPurchase?: boolean;
 }
 
@@ -41,7 +40,7 @@ export const purchaseTracker = {
       },
     ];
 
-    analytics.track.purchase(transactionId, data.totalPrice, items, data.buyerId.toString());
+    analytics.track.purchase(transactionId, data.totalPrice, items);
 
     // 일반 구매 완료 이벤트
     analytics.event('purchase_completed', {

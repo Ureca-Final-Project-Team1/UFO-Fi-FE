@@ -96,7 +96,6 @@ export interface PurchaseTransaction {
   id: string;
   postId: number;
   sellerId: number;
-  buyerId: number;
   totalZet: number;
   dataAmountGB: number;
   carrier: Carrier;
