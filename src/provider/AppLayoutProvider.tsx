@@ -57,7 +57,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     <div className="min-h-screen w-full flex justify-center">
       <div
         className={`
-          relative w-full min-w-[375px] max-w-[620px] overflow-hidden
+          relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden
           ${backgroundImageUrl ? 'nav-container-bg' : ''}
         `}
         style={containerStyle}
@@ -71,7 +71,6 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
             paddingBottom: isNavigationHidden ? '0px' : `${BOTTOM_NAV_HEIGHT}px`,
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
-            display: 'flex',
           }}
         >
           {children}
