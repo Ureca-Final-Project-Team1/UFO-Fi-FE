@@ -78,24 +78,19 @@ export async function POST() {
         (newlyAchieved.find((n: achievement) => n.id === a.id) ? new Date() : null),
     }));
 
-    const tradeLevel = Math.max(
-      ...allAchievements
-        .filter((a: achievement) => a.type === 'trade' && tradeCount >= a.condition_value)
-        .map((a: achievement) => a.level),
-      0,
-    );
-    const followLevel = Math.max(
-      ...allAchievements
-        .filter((a: achievement) => a.type === 'follow' && followerCount >= a.condition_value)
-        .map((a: achievement) => a.level),
-      0,
-    );
-    const rotateLevel = Math.max(
-      ...allAchievements
-        .filter((a: achievement) => a.type === 'rotate' && step5Count >= a.condition_value)
-        .map((a: achievement) => a.level),
-      0,
-    );
+    // 레벨 계산 헬퍼 함수
+    const calculateLevel = (type: 'trade' | 'follow' | 'rotate', currentValue: number): number => {
+      return Math.max(
+        ...allAchievements
+          .filter((a: achievement) => a.type === type && currentValue >= a.condition_value)
+          .map((a: achievement) => a.level),
+        0,
+      );
+    };
+
+    const tradeLevel = calculateLevel('trade', tradeCount);
+    const followLevel = calculateLevel('follow', followerCount);
+    const rotateLevel = calculateLevel('rotate', step5Count);
     const totalLevel = Math.min(tradeLevel, followLevel, rotateLevel);
 
     return NextResponse.json({
