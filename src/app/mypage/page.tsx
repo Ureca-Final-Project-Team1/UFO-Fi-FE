@@ -106,7 +106,7 @@ export default function MyPage() {
   // 데이터가 없는 경우
   if (!mypageInfo) {
     return (
-      <div className="w-full min-h-hull flex flex-1 items-center justify-center">
+      <div className="w-full min-h-full flex flex-1 items-center justify-center">
         <div className="text-center text-white">
           <p>프로필 정보가 없습니다</p>
           <button
