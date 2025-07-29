@@ -40,9 +40,11 @@ export default function PlanetProgressBar() {
   const completed = planets.filter((p) => p.active).length;
 
   return (
-    <div className="flex flex-col items-center w-full gap-2 px-4">
+    <div className="flex flex-col items-center w-full gap-4 px-4">
       {/* 진행 텍스트 */}
-      <p className="text-white text-sm">{completed}번째 은하까지 탐사 완료...</p>
+      <p className="text-white text-sm pyeongchangpeace-title-2">
+        {completed}번째 은하까지 탐사 완료...
+      </p>
 
       {/* 행성 + 점선 궤도 */}
       <div className="relative flex items-center justify-center w-full">
@@ -66,7 +68,7 @@ export default function PlanetProgressBar() {
 function Planet({ src, active, color }: Planet) {
   return (
     <div
-      className="relative w-12 h-12 rounded-full flex items-center justify-center"
+      className="relative w-10 h-10 rounded-full flex items-center justify-center"
       style={{
         backgroundColor: active ? color : 'transparent',
         boxShadow: active
@@ -78,7 +80,7 @@ function Planet({ src, active, color }: Planet) {
           : 'none',
       }}
     >
-      <Image src={src} alt="planet" width={50} height={50} />
+      <Image src={src} alt="planet" width={42} height={42} />
     </div>
   );
 }
