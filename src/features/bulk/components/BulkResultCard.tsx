@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { Carrier } from '@/api/types/carrier';
+import { IMAGE_PATHS } from '@/constants';
 import { Icon, Avatar } from '@/shared';
 
 interface BulkResultCardProps {
@@ -35,7 +36,7 @@ export function BulkResultCard({
       <div className="flex items-center gap-2">
         <Avatar size="sm">
           <Image
-            src={profileUrl || '/images/avatar.svg'}
+            src={profileUrl || IMAGE_PATHS.AVATAR}
             alt="profile"
             className="w-full h-full object-cover rounded-full"
             width={32}
