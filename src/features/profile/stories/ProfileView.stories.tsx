@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Carrier } from '@/api/types/carrier';
+import { MobileDataType } from '@/api/types/mobileData';
 import type { ProfileUser } from '@/api/types/profile';
 import { IMAGE_PATHS } from '@/constants/images';
 
@@ -13,7 +14,7 @@ const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
   tradePostsRes: [
     {
       postId: 1,
-      mobileDataType: '_5G',
+      mobileDataType: '_5G' as MobileDataType,
       carrier: Carrier.LGU,
       sellMobileDataAmountGB: 5,
       title: '5GX 프리미엄 팝니다',
@@ -21,7 +22,7 @@ const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
     },
     {
       postId: 2,
-      mobileDataType: '_5G',
+      mobileDataType: '_5G' as MobileDataType,
       carrier: Carrier.KT,
       sellMobileDataAmountGB: 3,
       title: '요고 다이렉트 요고 38',
@@ -29,7 +30,7 @@ const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
     },
     {
       postId: 3,
-      mobileDataType: 'LTE',
+      mobileDataType: 'LTE' as MobileDataType,
       carrier: Carrier.SKT,
       sellMobileDataAmountGB: 7,
       title: '데이터 쉐어링 플랜',
