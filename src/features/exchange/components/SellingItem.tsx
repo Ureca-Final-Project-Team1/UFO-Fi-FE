@@ -4,6 +4,7 @@ import { Carrier } from '@/api/types/carrier';
 import { IMAGE_PATHS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
+import { UserLink } from '@/shared/ui/UserLink';
 
 interface SellingItemProps {
   carrier: Carrier;
@@ -46,6 +47,7 @@ export default function SellingItem({
   timeLeft,
   isOwner = false,
   sellerNickname,
+  sellerId,
   sellerProfileUrl,
   onEdit,
   onDelete,
@@ -106,7 +108,14 @@ export default function SellingItem({
             <span className="text-cyan-300 text-md font-bold">{price}</span>
           </div>
           {sellerNickname && (
-            <span className="text-gray-400 text-[0.7rem]">by {sellerNickname}</span>
+            <div className="text-[0.7rem]">
+              <span className="text-gray-400">by </span>
+              <UserLink
+                userId={sellerId}
+                nickname={sellerNickname}
+                className="text-cyan-300 hover:text-cyan-200 text-[0.7rem] underline-offset-2"
+              />
+            </div>
           )}
 
           {/* 구매 버튼 & 리포트/수정 버튼 */}
