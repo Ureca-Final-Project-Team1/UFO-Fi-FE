@@ -10,7 +10,7 @@ import {
 } from '../types/FollowType.types';
 
 export default function FollowItem({ user, actions, type }: FollowItemProps) {
-  const { id: userId, profileImage, isFollowing } = user;
+  const { id: userId, nickname, profileImage, isFollowing } = user;
   const { onFollow, onUnfollow } = actions;
 
   const getButtonConfig = (): FollowButtonConfig => {
@@ -57,7 +57,7 @@ export default function FollowItem({ user, actions, type }: FollowItemProps) {
           <Image src={profileImage} alt="프로필" width={50} height={50} className="rounded-full" />
         </div>
         <div>
-          <p className="body-16-bold text-white">지구인 {userId}</p>
+          <p className="body-16-bold text-white">{nickname}</p>
         </div>
       </div>
 
