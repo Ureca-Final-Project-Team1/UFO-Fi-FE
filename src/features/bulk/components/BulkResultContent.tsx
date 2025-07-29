@@ -34,6 +34,8 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
   const [resultData, setResultData] = useState<GetBulkPurchaseContent | null>(initialData || null);
   const [isLoading, setIsLoading] = useState(!initialData);
+  const [isPurchasing, setIsPurchasing] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -73,10 +75,12 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
   const handlePurchase = () => {
     if (!resultData) return;
+
     if (zet < price) {
       setIsOpen(true);
       return;
     }
+    setIsPurchasing(true);
     router.push('/exchange/bulk/purchase');
   };
 
@@ -105,7 +109,12 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     <div className="flex flex-col min-h-full w-full">
       <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
       <div className="px-4">
-        <BulkResultDisplay data={resultData} onPurchase={handlePurchase} isMobile={isMobile} />
+        <BulkResultDisplay
+          data={resultData}
+          onPurchase={handlePurchase}
+          isPurchasing={isPurchasing}
+          isMobile={isMobile}
+        />
       </div>
       <InsufficientZetModal
         isOpen={isOpen}
@@ -142,7 +151,7 @@ function BulkResultDisplay({
 }: {
   data: GetBulkPurchaseContent;
   onPurchase: () => void;
-  isPurchasing?: boolean;
+  isPurchasing: boolean;
   isMobile: boolean;
 }) {
   const { totalGb, totalPrice, posts } = data;
