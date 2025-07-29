@@ -47,7 +47,7 @@ const MypageNotificationPage = () => {
             response.sell && response.interestedPost && response.followerPost && response.reported,
         });
       } catch (err) {
-        console.log('알림 설정 불러오기 오류: ', err);
+        console.warn('알림 설정 불러오기 오류: ', err);
         toast.error('알림 설정을 불러올 수 없습니다.');
       }
     };
@@ -72,7 +72,7 @@ const MypageNotificationPage = () => {
       }
       setNotificationState(newNotificationState);
     } catch (err) {
-      console.log('알림 설정 변경 실패: ', err);
+      console.warn('알림 설정 변경 실패: ', err);
       toast.error('알림 설정을 변경할 수 없습니다.');
     }
   };
