@@ -2,24 +2,27 @@ export interface PaymentRequest {
   orderId: string;
   packageName: string;
   amount: number;
+  price: number;
 }
 
 export interface PaymentResponse {
-  name: string;
-  email: string;
   orderId: string;
+  email: string;
+  name: string;
   amount: number;
+  price: number;
 }
 
 export interface PaymentConfirmRequest {
   paymentKey: string;
   orderId: string;
   amount: number;
+  price: number;
 }
 
 export interface PaymentConfirmResponse {
-  receiptUrl: string;
-  currentZetBalance?: number;
+  amount: number;
+  zetAsset: number;
 }
 
 export interface TossPaymentSuccessParams {

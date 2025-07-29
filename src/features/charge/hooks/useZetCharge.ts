@@ -15,7 +15,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 export function useZetCharge() {
   const [isProcessing, setIsProcessing] = useState(false);
-  const { requestPayment, isLoaded, error } = useTossPayments(TOSS_CLIENT_KEY);
+  const { requestPayment, isLoaded, error, resetError } = useTossPayments(TOSS_CLIENT_KEY);
   const { data: userInfo } = useMyInfo();
 
   const handleChargePackage = async (packageId: string, zetAmount: number, price: number) => {
@@ -38,38 +38,38 @@ export function useZetCharge() {
       return;
     }
 
+    resetError();
     setIsProcessing(true);
 
     try {
       const orderId = generateOrderId();
       const packageName = `ZET 패키지 ${packageId} (${zetAmount} ZET)`;
-
-      // 안전한 고객키 생성
       const customerKey = generateCustomerKey(userInfo.nickname ?? userInfo.email ?? undefined);
 
       const chargeRequest: PaymentRequest = {
         orderId,
         packageName,
-        amount: price,
+        amount: zetAmount,
+        price: price,
       };
 
       const chargeResponse = await paymentAPI.charge(chargeRequest);
 
       const paymentConfig = {
-        amount: chargeResponse.amount,
+        amount: chargeResponse.price,
         orderId: chargeResponse.orderId,
         orderName: packageName,
         successUrl: `${BASE_URL}/payment/success`,
         failUrl: `${BASE_URL}/payment/fail`,
         customerEmail: chargeResponse.email,
         customerName: chargeResponse.name,
-        customerKey: customerKey,
+        customerKey: `${customerKey}_${Date.now()}`,
       };
 
       await requestPayment(paymentConfig);
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(`충전 실패: ${error.message}`);
+        toast.error(`${error.message}`);
       } else {
         toast.error('충전 요청 중 오류가 발생했습니다.');
       }
