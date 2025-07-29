@@ -51,6 +51,7 @@ export const IMAGE_PATHS = {
   PURCHASE_COMPLETED: '/images/purchase-completed.svg',
   BADGES_LOCKED: '/icons/badges/locked.svg',
   MY_PLANET: '/images/main/myplanet.svg',
+  MY_PLANET_HALF: '/images/myplanet-half.svg',
   RECEIPT: '/images/receipt.svg',
 } as const;
 
