@@ -1,26 +1,64 @@
 'use client';
-import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 
+import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+import { purchaseHistory } from '@/api/services/history/purchaseHistory';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
-import { Title, Icon, Button } from '@/shared';
+import { TitleWithRouter, Icon, Button, Loading } from '@/shared';
+import { analytics } from '@/utils/analytics';
 
 export default function PurchasePage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAndRedirect = async () => {
+      try {
+        // 구매 내역 조회하여 첫 구매 여부 확인
+        const history = await purchaseHistory();
+        const isFirstPurchase = !history || history.length === 0;
+
+        if (!isFirstPurchase) {
+          // 기존 구매자는 step1으로 바로 리다이렉트
+          router.replace(`/exchange/purchase/${id}/step1`);
+          return;
+        }
+
+        // 첫 구매자라면 애널리틱스 이벤트 전송
+        analytics.track.featureUsed('first_purchase_flow', 'started');
+        setIsLoading(false);
+      } catch (error) {
+        console.error('구매 내역 조회 실패:', error);
+        // 에러 시에도 step1으로 리다이렉트
+        router.replace(`/exchange/purchase/${id}/step1`);
+      }
+    };
+
+    checkAndRedirect();
+  }, [id, router]);
 
   const handleContinue = () => {
-    // 첫 구매 여부 확인 후 다음 단계로 이동
-    // TODO: API로 사용자 구매 이력 확인
+    // 구매 플로우 시작 이벤트
+    analytics.event('purchase_flow_started', {
+      post_id: id,
+      is_first_purchase: true,
+    });
+
     router.push(`/exchange/purchase/${id}/step1`);
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <div className="flex flex-col items-center h-full px-4">
-      <Title title="데이터 구매하기" iconVariant="back" />
+    <div className="flex flex-col items-center min-h-full px-4">
+      <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
 
       {/* 안내 텍스트 */}
       <div className="w-full text-white mt-6 mb-8">
@@ -77,7 +115,7 @@ export default function PurchasePage() {
       </div>
 
       {/* 확인 버튼 */}
-      <Button size="full-width" variant="primary" onClick={handleContinue} className="mt-auto mb-8">
+      <Button size="full-width" variant="primary" onClick={handleContinue} className="mt-auto my-8">
         이해했어요
       </Button>
     </div>
