@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
-import { ExchangeFilters } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Title, Modal } from '@/shared';
@@ -95,11 +94,13 @@ export default function ExchangePage() {
           <Title title="전파 거래소" />
         </div>
 
-        {/* 잔액 & 알림 설정 */}
-        <ExchangeHeader />
+        <div className="mb-5">
+          {/* 상단 영역 */}
+          <ExchangeHeader />
+        </div>
 
         {/* 필터 & 일괄구매 */}
-        <ExchangeFilters />
+        {/* <ExchangeFilters /> */}
 
         {/* 게시글 목록 */}
         <ExchangeList

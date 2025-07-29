@@ -10,9 +10,11 @@ export const gptService = async (info: {
     body: JSON.stringify(info),
   });
 
+  const result = await response.json();
+
   if (!response.ok) {
     throw new Error('GPT 분석 실패');
   }
 
-  return await response.json();
+  return result;
 };
