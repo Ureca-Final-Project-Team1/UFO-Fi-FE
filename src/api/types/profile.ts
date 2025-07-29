@@ -1,9 +1,10 @@
 import { SuccessApiResponse } from './api';
 import { Carrier } from './carrier';
+import { MobileDataType } from './mobileData';
 
 export interface TradePost {
   postId: number;
-  mobileDataType: 'LTE' | '_5G';
+  mobileDataType: MobileDataType;
   carrier: Carrier;
   sellMobileDataAmountGB: number;
   title: string;

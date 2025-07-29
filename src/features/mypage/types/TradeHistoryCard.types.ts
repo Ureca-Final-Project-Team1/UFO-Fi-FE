@@ -3,7 +3,8 @@ import { BadgeState } from '@/shared';
 export interface TradeHistoryCardProps {
   carrier: string;
   message: string;
-  state?: BadgeState | undefined;
-  dataAmount?: number;
+  state?: BadgeState;
+  dataAmount: number;
   price: number;
+  onClick?: () => void;
 }

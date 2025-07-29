@@ -1,18 +1,20 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { Avatar } from '@/shared/ui';
 import { Button } from '@/shared/ui';
 import { Progress } from '@/shared/ui/Progress';
+
 interface SignalCardProps {
   userId: string;
-  profileImageUrl?: string;
+  profileImageUrl: string | undefined;
   zetAmount: number;
-  availableData: number; // GB
-  maxData: number; // GB
+  availableData: number;
+  maxData: number;
 }
 
 export default function SignalCard({
@@ -52,7 +54,7 @@ export default function SignalCard({
         {/* 왼쪽 캐릭터 */}
         <div className="flex flex-col items-center shrink-0">
           <Avatar size="md" className="border sm:w-[80px] sm:h-[80px]" variant="default">
-            <img
+            <Image
               src={profileImageUrl || IMAGE_PATHS.AVATAR}
               alt="지구인"
               width={64}
@@ -86,11 +88,13 @@ export default function SignalCard({
 
           <div className="caption-12-bold flex flex-col text-gray-800">
             <span>보유중인 ZET</span>
-            <div className="flex items-center">
+            <div className="flex justify-between items-center gap-2">
               <span className="body-16-bold font-bold text-chart-4">{zetAmount} ZET</span>
-              <button className="ml-auto body-14-medium rounded-md px-4 py-2 flex items-center justify-center exploration-button">
-                충전
-              </button>
+              <Link href="/charge">
+                <button className="ml-auto whitespace-nowrap body-14-medium rounded-md px-4 py-2 flex items-center justify-center exploration-button">
+                  충전
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -103,7 +107,7 @@ export default function SignalCard({
             className="text-gray-800 caption-8-medium h-7 px-1 py-1 whitespace-nowrap"
             onClick={() => router.push('/mypage/edit-profile')}
           >
-            ✏️ 프로필 수정
+            ✏️&nbsp;프로필 수정
           </Button>
           <Image
             src={IMAGE_PATHS.QR}

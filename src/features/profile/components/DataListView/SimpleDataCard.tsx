@@ -6,6 +6,7 @@ import type { TradePost } from '@/api/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 interface SimpleDataCardProps {
   post: TradePost;
@@ -31,7 +32,7 @@ export function SimpleDataCard({ post, sellerNickname }: SimpleDataCardProps) {
   const [isLoading, setIsLoading] = useState(false);
   const carrierIcon = getCarrierIcon(post.carrier);
   const timeAgo = formatTimeAgo(post.createdAt);
-  const networkType = post.mobileDataType === '_5G' ? '5G' : 'LTE';
+  const networkType = getMobileDataTypeDisplay(post.mobileDataType);
 
   const handlePurchase = async () => {
     setIsLoading(true);
