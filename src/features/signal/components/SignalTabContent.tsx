@@ -156,7 +156,7 @@ export default function SignalTabContent() {
               planetSize={planetSizes[1]}
             />
           </div>
-          <div className="absolute top-[480px] left-[500px]">
+          <div className="absolute top-[550px] left-[490px]">
             <PlanetComponent
               ref={setPlanetRef(2)}
               planetSrc={PLANETS[2]}
