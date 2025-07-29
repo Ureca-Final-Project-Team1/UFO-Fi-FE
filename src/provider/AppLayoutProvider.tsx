@@ -66,10 +66,12 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
         <main
           className="overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white"
           style={{
-            height: `calc(100dvh - ${isNavigationHidden ? '0px' : `${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px`})`,
-            marginTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
+            minHeight: '100dvh',
+            paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
+            paddingBottom: isNavigationHidden ? '0px' : `${BOTTOM_NAV_HEIGHT}px`,
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
+            display: 'flex',
           }}
         >
           {children}

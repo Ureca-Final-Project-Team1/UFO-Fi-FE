@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import '@/styles/globals.css';
 
 import { ICON_PATHS } from '@/constants/icons';
-import { Badge } from '@/shared';
-import { Icon } from '@/shared';
+import { Badge, Icon } from '@/shared';
 
 import { TradeHistoryCardProps } from '../types/TradeHistoryCard.types';
 
@@ -15,9 +13,13 @@ export const TradeHistoryCard = ({
   state,
   dataAmount,
   price,
+  onClick,
 }: TradeHistoryCardProps) => {
   return (
-    <div className="relative w-full rounded-2xl px-4 py-3 text-white shadow-md overflow-hidden">
+    <div
+      className={`relative w-full rounded-2xl px-4 py-3 text-white shadow-md overflow-hidden ${onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+      onClick={onClick}
+    >
       <div
         className="absolute inset-0 w-full h-full rounded-2xl"
         style={{

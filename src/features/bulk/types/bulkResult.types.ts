@@ -1,4 +1,5 @@
 import { Carrier } from '@/api/types/carrier';
+import { MobileDataType } from '@/api/types/mobileData';
 
 export interface BulkPurchaseItem {
   postId: number;
@@ -9,7 +10,7 @@ export interface BulkPurchaseItem {
   status: string;
   createdAt: Date;
   pricePerUnit: number;
-  mobileDataType: string;
+  mobileDataType: MobileDataType;
   sellerNickname: string;
   sellerId: number;
 }

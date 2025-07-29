@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 const VALID_CARRIERS = ['SKT', 'LGU', 'KT'] as const;
 
@@ -189,7 +190,7 @@ export const OCRInputSection = ({
                 const selected = plans.find((p) => p.planName === value);
                 if (selected) {
                   setMaxData(selected.sellMobileDataCapacityGB);
-                  setNetworkType(selected.mobileDataType.replace(/^_/, ''));
+                  setNetworkType(getMobileDataTypeDisplay(selected.mobileDataType));
                 }
               }}
               disabled={isLoading}
