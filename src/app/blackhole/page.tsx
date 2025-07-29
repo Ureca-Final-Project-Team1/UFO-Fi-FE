@@ -12,7 +12,7 @@ function BlackholePageInner() {
   const mode = searchParams.get('mode') || 'self';
 
   return (
-    <div className="flex flex-col min-h-screen w-full overflow-hidden">
+    <div className="flex flex-col min-h-full w-full">
       <TitleWithRouter title="홈" iconVariant="back" className="mb-0" />
       <div className="flex flex-col items-center justify-center flex-1 w-full px-4">
         <div className="flex flex-col items-center">
@@ -33,15 +33,6 @@ function BlackholePageInner() {
           </div>
         </div>
       </div>
-      <style jsx global>{`
-        body {
-          overflow: hidden;
-          overscroll-behavior: none;
-        }
-        html {
-          overflow: hidden;
-        }
-      `}</style>
     </div>
   );
 }
