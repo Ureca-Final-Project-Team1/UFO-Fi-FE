@@ -90,19 +90,25 @@ export const OCRInputSection = ({
     }
 
     if (planNameOCR) {
-      const matchedPlan = plans.find((p) => p.planName === planNameOCR);
-      if (matchedPlan) {
-        setValue('planName', planNameOCR);
-        setForm({ planName: planNameOCR });
-      } else {
-        toast.error('인식된 요금제를 목록에서 찾을 수 없습니다.');
+      setValue('planName', planNameOCR, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+
+      const selected = plans.find((p) => p.planName === planNameOCR);
+      if (selected) {
+        setMaxData(selected.sellMobileDataCapacityGB);
+        setNetworkType(selected.mobileDataType.replace(/^_/, ''));
       }
     }
-  }, [carrierOCR, planNameOCR, plans, setValue, setForm]);
+  }, [carrierOCR, planNameOCR, plans, setValue, setForm, setMaxData, setNetworkType]);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    e.target.value = '';
 
     if (!file.type.startsWith('image/')) {
       toast.error('이미지 파일만 업로드 가능합니다.');
@@ -145,8 +151,13 @@ export const OCRInputSection = ({
               disabled={isLoading}
             >
               <SelectTrigger className={ocrInputVariants.selectTrigger}>
-                <SelectValue placeholder="통신사 선택" />
+                {field.value ? (
+                  <SelectValue />
+                ) : (
+                  <span className="text-[16px] text-gray-400">통신사 선택</span>
+                )}
               </SelectTrigger>
+
               <SelectContent>
                 <SelectItem value="SKT">SKT</SelectItem>
                 <SelectItem value="LGU">LG U+</SelectItem>

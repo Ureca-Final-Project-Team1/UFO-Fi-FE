@@ -20,6 +20,7 @@ export interface ExchangePost {
   mobileDataType: MobileDataType;
   sellerNickname: string;
   sellerId: number;
+  sellerProfileUrl: string;
 }
 
 export interface ExchangeCursor {

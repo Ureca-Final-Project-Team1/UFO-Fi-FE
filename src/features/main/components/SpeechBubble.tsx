@@ -5,11 +5,18 @@ import React from 'react';
 export type SpeechBubbleProps = {
   children: React.ReactNode;
   tailDirection?: 'left' | 'right' | 'top' | 'bottom';
+  className?: string;
 };
 
-export const SpeechBubble = ({ children, tailDirection = 'left' }: SpeechBubbleProps) => {
+export const SpeechBubble = ({
+  children,
+  tailDirection = 'left',
+  className,
+}: SpeechBubbleProps) => {
   return (
-    <div className="relative bg-white text-black p-5 rounded-2xl max-w-[280px] shadow-2xl border-2 border-gray-100">
+    <div
+      className={`relative bg-white text-black p-5 rounded-2xl max-w-[280px] shadow-2xl border-2 border-gray-100 ${className}`}
+    >
       <p className="text-sm font-medium leading-relaxed whitespace-pre-line">{children}</p>
       {tailDirection === 'left' && (
         <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2">

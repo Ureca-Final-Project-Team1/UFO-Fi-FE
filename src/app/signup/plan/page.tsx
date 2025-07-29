@@ -105,7 +105,7 @@ const PlanPage = () => {
         </div>
 
         {watchedCarrier && watchedPlanName && maxData !== null && networkType && (
-          <div className="w-full flex flex-col gap-5 mt-8">
+          <div className="w-full flex flex-col gap-5 mt-8 mb-4">
             <hr className="border-t border-[var(--color-hr-border)] w-full" />
             <div className="flex flex-col gap-5">
               <p className="text-start w-full text-white body-20-bold">

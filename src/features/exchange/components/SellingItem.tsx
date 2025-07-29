@@ -1,4 +1,7 @@
+import Image from 'next/image';
+
 import { Carrier } from '@/api/types/carrier';
+import { IMAGE_PATHS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
 
@@ -12,6 +15,7 @@ interface SellingItemProps {
   title: string;
   sellerNickname: string;
   sellerId: number;
+  sellerProfileUrl: string;
   onEdit?: () => void;
   onDelete?: () => void;
   onReport?: () => void;
@@ -42,6 +46,7 @@ export default function SellingItem({
   timeLeft,
   isOwner = false,
   sellerNickname,
+  sellerProfileUrl,
   onEdit,
   onDelete,
   onReport,
@@ -50,86 +55,113 @@ export default function SellingItem({
   const carrierIcon = getCarrierIcon(carrier);
 
   return (
-    <div className="relative p-4 rounded-2xl border border-white/10 gradient-card-1">
-      {/* 오른쪽 상단 버튼 */}
-      <div className="absolute top-2 right-2 flex">
-        {isOwner ? (
-          <>
-            <Button
-              variant="ghost"
-              size="compact"
-              onClick={onEdit}
-              className="p-1 hover:bg-white/10 rounded-full"
-            >
-              <Icon name="Edit" className="w-4 h-4 text-white/70 hover:text-white" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="compact"
-              onClick={onDelete}
-              className="p-1 hover:bg-red-500/20 rounded-full"
-            >
-              <Icon name="Trash2" className="w-4 h-4 text-red-300 hover:text-red-200" />
-            </Button>
-          </>
-        ) : (
-          <Button
-            variant="ghost"
-            size="compact"
-            onClick={onReport}
-            className="p-1 hover:bg-white/10 rounded-full"
-          >
-            <Icon name="Siren" className="w-4 h-4" color="red" />
-          </Button>
-        )}
-      </div>
-
-      {/* 콘텐츠 라인 */}
-      <div className="flex gap-4 items-center">
-        {/* 아바타 */}
-        <Avatar variant="selling" size="md">
-          <Icon name="astronaut" className="w-8 h-8 text-purple-200" />
-        </Avatar>
-
-        {/* 정보 영역 */}
-        <div className="flex-1 flex flex-col gap-1">
-          {/* 뱃지 및 판매자 정보 */}
-          <div className="flex items-center justify-between">
-            <Badge showIcon={false} variant="secondary">
-              <div className="flex items-center gap-1">
-                {carrierIcon && <Icon src={carrierIcon} alt={carrier} className="w-4 h-4" />}
-                <span>{`${carrier} ${networkType}`}</span>
-              </div>
-            </Badge>
+    <div className="relative w-[10rem] mb-5">
+      {/* 카드 본체 */}
+      <div className="relative z-10 p-4 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col">
+        <div className="flex flex-row gap-2 justify-between">
+          <div>
+            {/* 판매자 프로필 이미지 */}
+            <Avatar variant="selling" size="sm">
+              {sellerProfileUrl ? (
+                <Image
+                  src={sellerProfileUrl || IMAGE_PATHS.AVATAR}
+                  alt={`${sellerNickname} 프로필`}
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                // 프로필 이미지가 없을 때 기본 아이콘 또는 이니셜
+                <div className="w-full h-full bg-gray-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">
+                    {sellerNickname.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+            </Avatar>
           </div>
+          <div className="flex flex-col items-end mb-1">
+            <div className="flex items-center gap-1 mb-1">
+              <Badge showIcon={false} variant="carrier">
+                {carrierIcon && (
+                  <img src={carrierIcon} alt={carrier} className="w-3 h-3 object-contain" />
+                )}
+              </Badge>
+              <Badge showIcon={false} variant="secondary">
+                {`${networkType}`}
+              </Badge>
+            </div>
+            <span className="text-gray-400 text-xs">{timeLeft}</span>
+          </div>
+        </div>
 
-          <span className="text-white text-xl font-bold">{title}</span>
-
+        {/* 제목 */}
+        <div>
+          <span className="text-white text-[12px] font-semibold">{title}</span>
+        </div>
+        <div className="mt-auto">
           {/* 용량 + 가격 */}
-          <div className="flex gap-2 items-baseline">
-            <span className="text-white text-xl font-bold">{capacity}</span>
-            <span className="text-cyan-300 text-xl font-bold">{price}</span>
+          <div className="flex gap-2 items-baseline justify-between">
+            <span className="text-white text-md font-bold">{capacity}</span>
+            <span className="text-cyan-300 text-md font-bold">{price}</span>
           </div>
+          {sellerNickname && (
+            <span className="text-gray-400 text-[0.7rem]">by {sellerNickname}</span>
+          )}
 
-          {/* 판매자 닉네임 표시 */}
-          {sellerNickname && <span className="text-gray-300 text-xs">by {sellerNickname}</span>}
-
-          {/* 시간 + 구매 버튼 한 줄 정렬 */}
-          <div className="flex justify-between items-center">
-            <span className="text-gray-300 text-sm">{timeLeft}</span>
-            {!isOwner && (
-              <Button
-                variant="exploration-button"
-                size="sm"
-                onClick={onPurchase}
-                className="text-white shadow-lg px-4 py-2 caption-14-bold"
-              >
-                구매하기
-              </Button>
+          {/* 구매 버튼 & 리포트/수정 버튼 */}
+          <div className="flex justify-between items-center mt-1">
+            {!isOwner ? (
+              <>
+                <Button
+                  variant="exploration-button"
+                  size="sm"
+                  onClick={onPurchase}
+                  className="text-white px-4 py-1"
+                >
+                  구매하기
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="compact"
+                  onClick={onReport}
+                  className="p-1 hover:bg-white/10 rounded-full"
+                >
+                  <Icon name="Siren" className="w-4 h-4" color="white" />
+                </Button>
+              </>
+            ) : (
+              <div className="flex gap-1">
+                <Button
+                  variant="ghost"
+                  size="compact"
+                  onClick={onEdit}
+                  className="p-1 hover:bg-white/10 rounded-full"
+                >
+                  <Icon name="Edit" className="w-4 h-4 text-white/70 hover:text-white" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="compact"
+                  onClick={onDelete}
+                  className="p-1 hover:bg-red-500/20 rounded-full"
+                >
+                  <Icon name="Trash2" className="w-4 h-4 text-red-300 hover:text-red-200" />
+                </Button>
+              </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Stone 받침대 */}
+      <Image
+        src={IMAGE_PATHS.STONE}
+        alt="stone"
+        width={260}
+        height={70}
+        className="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 z-0"
+      />
     </div>
   );
 }
