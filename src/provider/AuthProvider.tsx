@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import { ROUTE_CONFIG, routeUtils } from '@/constants/routes';
 import { useUserRole } from '@/features/signup/hooks/useUserRole';
+import { Loading } from '@/shared';
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -49,11 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // 로딩 중일 때 스피너 표시
   if (shouldFetchUserInfo && isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-      </div>
-    );
+    return <Loading />;
   }
 
   // 에러나 권한 없으면 처리

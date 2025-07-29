@@ -1,0 +1,40 @@
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+
+import {
+  ErrorState,
+  EmptyState,
+  ReceiptContent,
+  CompletionImage,
+} from '@/features/mypage/components';
+import { usePurchaseDetail } from '@/features/mypage/hooks';
+import { TitleWithRouter } from '@/shared';
+
+export default function MyTradeDetailPage() {
+  const searchParams = useSearchParams();
+  const purchaseHistoryId = searchParams.get('id');
+  const { purchaseDetail, loading, error } = usePurchaseDetail(purchaseHistoryId);
+
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    return <ErrorState error={error} />;
+  }
+
+  if (!purchaseDetail) {
+    return <EmptyState />;
+  }
+
+  return (
+    <div className="w-full flex-1 flex flex-col items-center">
+      <TitleWithRouter title="주문 상세" iconVariant="back" />
+      <ReceiptContent purchaseDetail={purchaseDetail} />
+      <div className="mt-auto">
+        <CompletionImage />
+      </div>
+    </div>
+  );
+}

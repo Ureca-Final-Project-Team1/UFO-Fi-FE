@@ -3,14 +3,13 @@ import PlanetProgressBar from '@/features/main/components/PlanetProgressBar';
 
 export default function HomePage() {
   return (
-    <div className="flex flex-row justify-center w-full min-h-full">
-      <div className="relative w-full bg-[url(/bg.png)] bg-cover">
-        {/* 궤도 + 위성 + 말풍선 */}
+    <div className="w-full min-h-full flex flex-col">
+      <div className="flex-1 flex items-center justify-center">
         <OrbitWithSatellite />
+      </div>
 
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
-          <PlanetProgressBar />
-        </div>
+      <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-30">
+        <PlanetProgressBar />
       </div>
     </div>
   );

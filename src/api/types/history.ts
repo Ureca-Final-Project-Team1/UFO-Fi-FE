@@ -1,10 +1,12 @@
+import { MobileDataType } from './mobileData';
+
 interface BaseHistoryResponse {
   postId: number;
   createdAt: string;
   carrier: string;
   title: string;
   totalZet: number;
-  mobileDataType: string;
+  mobileDataType: MobileDataType;
   totalGB: number;
 }
 

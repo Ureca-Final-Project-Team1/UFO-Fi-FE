@@ -8,6 +8,7 @@ import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteE
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
 
@@ -46,7 +47,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         id: post.postId,
         title: post.title,
         carrier: post.carrier,
-        networkType: post.mobileDataType === '_5G' ? '5G' : 'LTE',
+        networkType: getMobileDataTypeDisplay(post.mobileDataType),
         capacity: `${post.sellMobileDataCapacityGb}GB`,
         price: `${post.totalPrice.toLocaleString()}ZET`,
         timeLeft: formatTimeAgo(post.createdAt),
