@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { notificationAPI } from '@/api';
-import { Title } from '@/shared';
+import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { Switch } from '@/shared/ui/Switch';
 import '@/styles/globals.css';
 
@@ -79,7 +79,7 @@ const MypageNotificationPage = () => {
 
   return (
     <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 px-4 gap-4 text-white">
-      <Title title="알림 설정하기" className="body-20-bold" />
+      <TitleWithRouter title="알림 설정하기" iconVariant="back" />
 
       <div className="w-full max-w-md flex flex-col gap-6">
         <div className="grid grid-cols-[80px_1fr_auto] gap-y-4 items-center">
