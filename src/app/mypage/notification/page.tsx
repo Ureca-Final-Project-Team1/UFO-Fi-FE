@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { notificationAPI } from '@/api';
-import { Title } from '@/shared';
+import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { Switch } from '@/shared/ui/Switch';
 import '@/styles/globals.css';
 
@@ -47,7 +47,7 @@ const MypageNotificationPage = () => {
             response.sell && response.interestedPost && response.followerPost && response.reported,
         });
       } catch (err) {
-        console.log('알림 설정 불러오기 오류: ', err);
+        console.warn('알림 설정 불러오기 오류: ', err);
         toast.error('알림 설정을 불러올 수 없습니다.');
       }
     };
@@ -72,16 +72,16 @@ const MypageNotificationPage = () => {
       }
       setNotificationState(newNotificationState);
     } catch (err) {
-      console.log('알림 설정 변경 실패: ', err);
+      console.warn('알림 설정 변경 실패: ', err);
       toast.error('알림 설정을 변경할 수 없습니다.');
     }
   };
 
   return (
-    <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 px-4 gap-4 text-white">
-      <Title title="알림 설정하기" className="body-20-bold" />
+    <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 gap-4 text-white">
+      <TitleWithRouter title="알림 설정하기" iconVariant="back" />
 
-      <div className="w-full max-w-md flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6">
         <div className="grid grid-cols-[80px_1fr_auto] gap-y-4 items-center">
           <p className="col-span-2">이벤트 혜택 수신 알림</p>
           <Switch

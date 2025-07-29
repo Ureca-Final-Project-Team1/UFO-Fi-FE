@@ -112,7 +112,7 @@ export default function OrbitWithSatellite() {
       })}
 
       {/* 중앙 행성 + 외계인 */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 relative w-auto h-[220px]">
+      <div className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 relative w-auto h-[220px]">
         {/* 말풍선 */}
         <div className="absolute top-[-90px] left-1/2 -translate-x-1/2 z-20">
           <SpeechBubble tailDirection="bottom">지구인님, 오늘 거래하실 건가요?</SpeechBubble>

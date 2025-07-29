@@ -1,4 +1,5 @@
 import { Carrier } from './carrier';
+import { MobileDataType } from './mobileData';
 
 export interface Plan {
   planId: number;
@@ -7,5 +8,5 @@ export interface Plan {
   mobileDataAmount: number;
   isUltimatedAmount: boolean;
   sellMobileDataCapacityGB: number;
-  mobileDataType: 'LTE' | '_5G';
+  mobileDataType: MobileDataType;
 }
