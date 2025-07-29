@@ -3,12 +3,12 @@
 import { useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
 

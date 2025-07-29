@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 
 import { plansAPI, editProfileAPI } from '@/api';
 import type { Carrier } from '@/api/types/carrier';
-import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import type { Plan } from '@/api/types/plan';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 export function useEditProfile() {
   const [nickname, setNickname] = useState('');

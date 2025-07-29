@@ -6,10 +6,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import type { ProfileUser } from '@/api/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 interface ProfileContentSectionsProps {
   profile: ProfileUser;

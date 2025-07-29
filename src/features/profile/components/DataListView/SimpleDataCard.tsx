@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 
-import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import type { TradePost } from '@/api/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 interface SimpleDataCardProps {
   post: TradePost;

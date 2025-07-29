@@ -6,7 +6,6 @@ import { toast } from 'sonner';
 
 import { plansAPI } from '@/api';
 import { Carrier } from '@/api/types/carrier';
-import { getMobileDataTypeDisplay } from '@/api/types/mobileData';
 import { OCRInputSectionProps, ocrInputVariants, PlanCombo } from '@/features/signup/components';
 import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
 import {
@@ -18,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui';
+import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 const VALID_CARRIERS = ['SKT', 'LGU', 'KT'] as const;
 
