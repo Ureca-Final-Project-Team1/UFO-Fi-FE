@@ -67,12 +67,7 @@ export default function AchievementPage() {
       });
   }, []);
 
-  if (isLoading)
-    return (
-      <div className="w-full min-h-full flex justify-center items-center">
-        <Loading />
-      </div>
-    );
+  if (isLoading) return <Loading />;
   if (error)
     return <div className="w-full min-h-full flex justify-center items-center">{error}</div>;
 
