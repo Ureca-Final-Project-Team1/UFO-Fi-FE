@@ -4,21 +4,24 @@ export const dynamic = 'force-dynamic';
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import '@/styles/globals.css';
-
 import { toast } from 'sonner';
 
 import { purchaseHistory } from '@/api/services/history/purchaseHistory';
 import { sellHistory } from '@/api/services/history/sellHistory';
 import { PurchaseHistoryResponse, SellHistoryResponse } from '@/api/types/history';
-import { TradeHistoryCard, TradeHistoryCardProps } from '@/features/mypage/components';
+import { TradeHistoryCard } from '@/features/mypage/components';
+import { TradeHistoryCardProps } from '@/features/mypage/types/TradeHistoryCard.types';
 import { useTradeHistory } from '@/hooks/useTradeHistory';
 import { BadgeState } from '@/shared';
 import { Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui';
 import { useTradeTabStore } from '@/stores/useTradeTabStore';
 import { groupByDate } from '@/utils/groupByDate';
 
-type TradeCardItem = TradeHistoryCardProps & { createdAt: Date };
+type TradeCardItem = TradeHistoryCardProps & {
+  createdAt: Date;
+  purchaseHistoryId?: number;
+  postId?: number;
+};
 
 const STATUS_MAP: Record<string, BadgeState> = {
   SELLING: 'selling',
@@ -42,6 +45,8 @@ const convertToCardProps = (
     price: item.totalZet ?? 0,
     dataAmount: item.totalGB ?? 0,
     state: isSell && 'status' in item ? convertStatusToBadgeState(item.status) : 'sold',
+    purchaseHistoryId: 'purchaseHistoryId' in item ? item.purchaseHistoryId : undefined,
+    postId: item.postId,
   }));
 
 const MyTradeHistoryPage = () => {
@@ -97,7 +102,17 @@ const MyTradeHistoryPage = () => {
     </div>
   );
 
-  const renderGroupedHistory = (grouped: Record<string, TradeCardItem[]>) =>
+  const handleCardClick = (item: TradeCardItem, isSell: boolean) => {
+    if (!isSell) {
+      // 구매 내역 클릭 시 상세 페이지로 이동
+      router.push(`/mypage/trade/detail?id=${item.purchaseHistoryId}`);
+    }
+  };
+
+  const renderGroupedHistory = (
+    grouped: Record<string, TradeCardItem[]>,
+    isSell: boolean = false,
+  ) =>
     Object.entries(grouped)
       .sort(([a], [b]) => (a > b ? -1 : 1))
       .map(([date, items]) => (
@@ -112,6 +127,7 @@ const MyTradeHistoryPage = () => {
                 dataAmount={item.dataAmount}
                 price={item.price}
                 state={item.state}
+                onClick={!isSell ? () => handleCardClick(item, isSell) : undefined}
               />
             ))}
           </div>
@@ -146,13 +162,17 @@ const MyTradeHistoryPage = () => {
         </TabsList>
         <div ref={contentRef} className="px-8 overflow-y-auto h-full pt-4 mb-4 hide-scrollbar">
           <TabsContent value="sell" className="text-white h-full">
-            {sellTrade.length === 0 ? <EmptyTradeNotice /> : renderGroupedHistory(groupedSellTrade)}
+            {sellTrade.length === 0 ? (
+              <EmptyTradeNotice />
+            ) : (
+              renderGroupedHistory(groupedSellTrade, true)
+            )}
           </TabsContent>
           <TabsContent value="purchase" className="text-white h-full">
             {purchaseTrade.length === 0 ? (
               <EmptyTradeNotice />
             ) : (
-              renderGroupedHistory(groupedPurchaseTrade)
+              renderGroupedHistory(groupedPurchaseTrade, false)
             )}
           </TabsContent>
         </div>

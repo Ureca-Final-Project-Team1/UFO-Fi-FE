@@ -71,6 +71,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
             paddingBottom: isNavigationHidden ? '0px' : `${BOTTOM_NAV_HEIGHT}px`,
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
+            display: 'flex',
           }}
         >
           {children}
