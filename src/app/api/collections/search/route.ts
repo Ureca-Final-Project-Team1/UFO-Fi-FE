@@ -89,7 +89,9 @@ export async function GET() {
       where: { follower_user_id: Number(userId) },
       select: { following_user_id: true },
     });
-    const followedIds = followedUsers.map((f) => f.following_user_id);
+    const followedIds = followedUsers.map((f: { following_user_id: bigint }) =>
+      Number(f.following_user_id),
+    );
 
     // Qdrant의 벡터 유사도 추천 API 호출
     const qdrantUrl = `${process.env.QDRANT_API_BASE_URL}/collections/ufo_fi/points/recommend`;
@@ -116,7 +118,7 @@ export async function GET() {
             // 자기 자신 제외
             { key: 'id', match: { value: Number(userId) } },
             // 이미 팔로우한 사용자들 제외
-            ...followedIds.map((id) => ({ key: 'id', match: { value: Number(id) } })),
+            ...followedIds.map((id: number) => ({ key: 'id', match: { value: Number(id) } })),
           ],
         },
       }),

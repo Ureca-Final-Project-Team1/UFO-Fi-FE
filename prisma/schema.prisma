@@ -134,7 +134,6 @@ model trade_histories {
   created_at    DateTime?               @db.DateTime(6)
   id            BigInt                  @id @default(autoincrement())
   trade_post_id BigInt?
-  trade_post_id BigInt?
   user_id       BigInt?
   status        trade_histories_status?
   users         users?                  @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKetvgnlh953qk751natofw5b40")

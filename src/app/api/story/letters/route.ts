@@ -75,7 +75,7 @@ export async function POST() {
     });
 
     const existingMap = new Map<number, (typeof existingLetters)[number]>(
-      existingLetters.map((l) => [l.step, l]),
+      existingLetters.map((l: (typeof existingLetters)[number]) => [l.step, l]),
     );
     const newLetters: (typeof existingLetters)[number][] = [];
 
@@ -91,8 +91,11 @@ export async function POST() {
       const toId = path[i];
       const step = i;
 
-      const fromName = users.find((u) => u.id === fromId)?.name ?? '어느 항해자';
-      const toName = users.find((u) => u.id === toId)?.name ?? '다른 별';
+      const fromName =
+        users.find((u: { id: bigint; name: string | null }) => u.id === fromId)?.name ??
+        '어느 항해자';
+      const toName =
+        users.find((u: { id: bigint; name: string | null }) => u.id === toId)?.name ?? '다른 별';
 
       const prompt = `당신은 은하계 항해 AI입니다. ${fromName}의 데이터가 ${toName}에게 도달했습니다.\n이 사실을 감성적이거나 재치있는 편지로 한 줄 적어주세요.`;
 
@@ -117,8 +120,10 @@ export async function POST() {
     }
 
     const currentPathLetterIds = [
-      ...existingLetters.filter((l) => l.step < prefixEnd).map((l) => l.id),
-      ...newLetters.map((l) => l.id),
+      ...existingLetters
+        .filter((l: (typeof existingLetters)[number]) => l.step < prefixEnd)
+        .map((l) => l.id),
+      ...newLetters.map((l: (typeof newLetters)[number]) => l.id),
     ];
 
     await prisma.voyage_letters.updateMany({
@@ -139,7 +144,7 @@ export async function POST() {
       orderBy: { step: 'asc' },
     });
 
-    const serialized = finalLetters.map((l) => ({
+    const serialized = finalLetters.map((l: (typeof finalLetters)[number]) => ({
       id: l.id.toString(),
       user_id: l.user_id.toString(),
       step: l.step,
