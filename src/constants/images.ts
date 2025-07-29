@@ -25,6 +25,7 @@ export const IMAGE_PATHS = {
   PACKAGE_B: '/images/zet-2.png',
   PACKAGE_C: '/images/zet-3.png',
   PACKAGE_D: '/images/zet-4.png',
+  PACKAGE_E: '/images/zet-5.png',
   PLANET_1: '/images/main/planet1.svg',
   PLANET_2: '/images/main/planet2.svg',
   PLANET_3: '/images/main/planet3.svg',

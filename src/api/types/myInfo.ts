@@ -3,10 +3,10 @@ export interface MyInfoResponse {
   message: string;
   content: {
     nickname: string;
-    email: string | null;
+    email: string;
     sellMobileDataCapacityGb: number;
     sellableDataAmount: number;
     zetAsset: number;
-    profileImageUrl?: string;
+    profileImageUrl: string;
   };
 }
