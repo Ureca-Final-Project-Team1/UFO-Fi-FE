@@ -15,7 +15,7 @@ export async function POST() {
   try {
     const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
     const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
-    const userId = decoded.id ?? decoded.sub;
+    const userId = BigInt(decoded.id ?? decoded.sub);
 
     // STEP 1: 기존 편지 최대 step 조회
     const existingLetters = await prisma.voyage_letters.findMany({
@@ -61,7 +61,7 @@ export async function POST() {
       for (const history of purchases) {
         const sellerId = history.trade_posts?.user_id;
         if (sellerId && !visited.has(sellerId)) {
-          await bfs(BigInt(sellerId));
+          await bfs(sellerId);
         }
       }
     }
@@ -74,13 +74,15 @@ export async function POST() {
       select: { id: true, name: true },
     });
 
-    const existingMap = new Map(existingLetters.map((l) => [`${l.step}`, l]));
-    const newLetters: typeof existingLetters = [];
-    let prefixEnd = 1;
+    const existingMap = new Map<number, (typeof existingLetters)[number]>(
+      existingLetters.map((l) => [l.step, l]),
+    );
+    const newLetters: (typeof existingLetters)[number][] = [];
 
+    let prefixEnd = 1;
     for (; prefixEnd < path.length; prefixEnd++) {
       const toId = path[prefixEnd];
-      const existing = existingMap.get(`${prefixEnd}`);
+      const existing = existingMap.get(prefixEnd);
       if (!existing || existing.recipient_id !== toId) break;
     }
 
@@ -95,7 +97,7 @@ export async function POST() {
       const prompt = `당신은 은하계 항해 AI입니다. ${fromName}의 데이터가 ${toName}에게 도달했습니다.\n이 사실을 감성적이거나 재치있는 편지로 한 줄 적어주세요.`;
 
       const completion = await openai.chat.completions.create({
-        model: 'gpt-4.1-mini',
+        model: 'gpt-4.0',
         messages: [{ role: 'user', content: prompt }],
       });
 
