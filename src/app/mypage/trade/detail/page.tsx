@@ -9,7 +9,7 @@ import {
   CompletionImage,
 } from '@/features/mypage/components';
 import { usePurchaseDetail } from '@/features/mypage/hooks';
-import { Title } from '@/shared';
+import { TitleWithRouter } from '@/shared';
 
 export default function MyTradeDetailPage() {
   const searchParams = useSearchParams();
@@ -29,10 +29,12 @@ export default function MyTradeDetailPage() {
   }
 
   return (
-    <div className="overflow-y-hidden w-full min-h-f flex flex-col items-center justify-center">
-      <Title title="주문 상세" iconVariant="back" />
+    <div className="w-full flex-1 flex flex-col items-center">
+      <TitleWithRouter title="주문 상세" iconVariant="back" />
       <ReceiptContent purchaseDetail={purchaseDetail} />
-      <CompletionImage />
+      <div className="mt-auto">
+        <CompletionImage />
+      </div>
     </div>
   );
 }
