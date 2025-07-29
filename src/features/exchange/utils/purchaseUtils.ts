@@ -1,4 +1,4 @@
-import { PurchaseStatus, PurchaseErrorType } from '@/api/types/exchange'; // ✅ enum import
+import { PurchaseStatus, PurchaseErrorType } from '@/api/types/exchange';
 import type { EcommerceItem } from '@/types/analytics';
 import { analytics } from '@/utils/analytics';
 
@@ -87,7 +87,7 @@ function getStepName(step: number): string {
   return stepNames[step as keyof typeof stepNames] || 'unknown';
 }
 
-// ✅ 메시지 생성 함수 (enum 기반)
+// 메시지 생성 함수 (enum 기반)
 export const getPurchaseStatusMessage = (status: PurchaseStatus, error?: string): string => {
   switch (status) {
     case PurchaseStatus.PENDING:

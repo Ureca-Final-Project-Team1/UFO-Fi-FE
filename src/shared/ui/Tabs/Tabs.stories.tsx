@@ -20,7 +20,7 @@ const meta: Meta<typeof Tabs> = {
 export default meta;
 type Story = StoryObj<typeof Tabs>;
 
-// ✅ 기본 탭
+// 기본 탭
 export const Default: Story = {
   name: '기본 사용',
   render: () => (
@@ -52,7 +52,7 @@ export const Default: Story = {
   },
 };
 
-// ✅ 커스텀 스타일 적용
+// 커스텀 스타일 적용
 export const WithCustomTriggerSize: Story = {
   name: 'Trigger 커스텀 스타일',
   render: () => (
@@ -84,7 +84,7 @@ export const WithCustomTriggerSize: Story = {
   },
 };
 
-// ✅ AllSize: size에 따른 탭 스타일 비교
+// AllSize: size에 따른 탭 스타일 비교
 export const AllSizes: Story = {
   name: 'Trigger 사이즈 비교',
   render: () => (

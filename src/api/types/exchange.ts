@@ -82,7 +82,7 @@ export interface BulkPurchaseParams {
   unitPerZet: number;
 }
 
-// ✅ 구매 상태 정보 타입
+// 구매 상태 정보 타입
 export interface PurchaseStatusInfo {
   transactionId: string;
   status: PurchaseStatus;
@@ -91,7 +91,7 @@ export interface PurchaseStatusInfo {
   failureReason?: string;
 }
 
-// ✅ 구매 이력 타입
+// 구매 이력 타입
 export interface PurchaseTransaction {
   id: string;
   postId: number;
