@@ -37,7 +37,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
   };
 
   return (
-    <footer className="absolute bottom-0 left-0 right-0 h-16 z-30">
+    <footer className="fixed bottom-0 left-1/2 transform -translate-x-1/2 h-16 z-30 w-full min-w-[375px] max-w-[620px]">
       <div className="w-full h-16 bg-primary-700 border-t border-white/10">
         <nav className="flex items-center justify-around h-16 w-full">
           {navItems.map((item) => {

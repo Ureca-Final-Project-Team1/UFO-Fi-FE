@@ -20,8 +20,8 @@ interface TopNavProps {
 const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }) => {
   const { data: myInfo } = useMyInfo();
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]); // 추가
-  const [isLoading, setIsLoading] = useState(false); // 추가
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 알림 데이터 로드 함수 추가
   const loadNotifications = async () => {
@@ -58,7 +58,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 h-14 bg-primary-700 z-30 shadow-sm">
+    <header className="fixed top-0 left-1/2 transform -translate-x-1/2 h-14 z-30 w-full min-w-[375px] max-w-[620px] bg-primary-700 shadow-sm">
       <div className="flex items-center justify-between h-full px-4 w-full">
         <div className="flex items-center gap-3">
           {ICON_PATHS?.UFO_LOGO ? (
@@ -78,8 +78,8 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
             onToggle={() => setIsNotificationOpen(!isNotificationOpen)}
             onNotificationClick={handleNotificationClick}
             onMarkAllRead={handleMarkAllRead}
-            notifications={notifications} // 추가
-            isLoading={isLoading} // 추가
+            notifications={notifications}
+            isLoading={isLoading}
           />
         )}
       </div>
