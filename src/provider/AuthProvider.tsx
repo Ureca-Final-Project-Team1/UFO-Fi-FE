@@ -50,7 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // 로딩 중일 때 스피너 표시
   if (shouldFetchUserInfo && isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center w-full flex-1">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
       </div>
     );
