@@ -70,7 +70,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     try {
       const fetchPurchase = async () => {
         for (const item of resultData.posts) {
-          const response = await purchaseAPI({
+          const response = await purchaseAPI.purchase({
             postId: item.postId,
             sellerId: item.sellerId,
             totalZet: item.totalPrice,
