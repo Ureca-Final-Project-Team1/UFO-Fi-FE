@@ -9,7 +9,7 @@ import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { Button, Loading, Title } from '@/shared';
 import { usePostIdsStore } from '@/stores/useBulkStore';
 
-import { FailureBulkPurchaseItem, SuccessBulkPurchaseItem } from '../types/bulkResult.types';
+import { BulkPurchaseItem, FailureBulkPurchaseItem } from '../types/bulkResult.types';
 
 function timeAgoString(date: Date): string {
   const diff = (new Date().getTime() - new Date(date).getTime()) / 1000;
@@ -23,7 +23,7 @@ export function BulkPurchaseContent() {
   const { postIds, setPostIds } = usePostIdsStore();
   const router = useRouter();
 
-  const [successBulkPurchase, setSuccessBulkPurchase] = useState<SuccessBulkPurchaseItem[]>([]);
+  const [successBulkPurchase, setSuccessBulkPurchase] = useState<BulkPurchaseItem[]>([]);
   const [failureBulkPurchase, setFailureBulkPurchase] = useState<FailureBulkPurchaseItem[]>([]);
   const [postCounts, setPostCounts] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);

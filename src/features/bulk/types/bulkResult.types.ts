@@ -42,15 +42,10 @@ export interface PostBulkPurchaseResponse {
 export interface PostBulkPurchaseContent {
   successCount: number;
   failureCount: number;
-  successPosts: SuccessBulkPurchaseItem[];
+  successPosts: BulkPurchaseItem[];
   failPosts: FailureBulkPurchaseItem[];
 }
 
-export interface SuccessBulkPurchaseItem extends BulkPurchaseItem {
-  sellerProfileUrl: string;
-}
-
 export interface FailureBulkPurchaseItem extends BulkPurchaseItem {
-  sellerProfileUrl: string;
   reason: string;
 }

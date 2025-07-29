@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 import { BulkResultContent } from '@/features/bulk/components/BulkResultContent';
 
-export default function BulkMatchPage() {
+export default function BulkResultPage() {
   return (
     <Suspense
       fallback={
