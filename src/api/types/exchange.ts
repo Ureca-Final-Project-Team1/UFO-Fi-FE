@@ -8,7 +8,7 @@ export type CarrierType = Carrier;
 export type ExchangeStatus = (typeof EXCHANGE_STATUSES)[number];
 export type MobileDataType = (typeof MOBILE_DATA_TYPES)[number];
 
-// ✅ 구매 상태 enum
+// 구매 상태 enum
 export enum PurchaseStatus {
   PENDING = 'PENDING',
   PROCESSING = 'PROCESSING',
@@ -17,7 +17,7 @@ export enum PurchaseStatus {
   CANCELLED = 'CANCELLED',
 }
 
-// ✅ 구매 실패 이유 enum
+// 구매 실패 이유 enum
 export enum PurchaseErrorType {
   INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE',
   PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
@@ -83,7 +83,7 @@ export interface BulkPurchaseParams {
   unitPerZet: number;
 }
 
-// ✅ 구매 상태 정보 타입
+// 구매 상태 정보 타입
 export interface PurchaseStatusInfo {
   transactionId: string;
   status: PurchaseStatus;
@@ -92,12 +92,11 @@ export interface PurchaseStatusInfo {
   failureReason?: string;
 }
 
-// ✅ 구매 이력 타입
+// 구매 이력 타입
 export interface PurchaseTransaction {
   id: string;
   postId: number;
   sellerId: number;
-  buyerId: number;
   totalZet: number;
   dataAmountGB: number;
   carrier: Carrier;
