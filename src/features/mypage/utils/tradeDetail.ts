@@ -8,7 +8,6 @@ export const formatDate = (dateString: string) => {
       month: '2-digit',
       day: '2-digit',
     })
-    .replace(/\./g, '.')
     .replace(/\s/g, ' ');
 };
 
