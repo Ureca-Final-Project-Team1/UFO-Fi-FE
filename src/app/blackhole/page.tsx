@@ -13,7 +13,7 @@ function BlackholePageInner() {
 
   return (
     <div className="flex flex-col min-h-full w-full">
-      <TitleWithRouter title="홈" iconVariant="back" className="mb-0" />
+      <TitleWithRouter title="홈" />
       <div className="flex flex-col items-center justify-center flex-1 w-full px-4">
         <div className="flex flex-col items-center">
           <p className="text-lg font-bold text-white text-center mb-8">
