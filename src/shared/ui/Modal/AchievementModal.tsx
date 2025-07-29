@@ -18,13 +18,19 @@ export default function AchievementModal({ open, onClose, achievement }: Achieve
 
   const { i, j, isAchieve, achievement: data } = achievement;
 
-  const achievedDate = isAchieve
-    ? new Date().toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : null;
+  const achievedDate =
+    isAchieve && data.achievedAt
+      ? new Date(data.achievedAt).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : null;
+
+  const conditionText =
+    data.type === 'trade' ? '회 거래' : data.type === 'follow' ? '명 팔로워' : '번 항해 완료';
+
+  const levelText = `${isAchieve ? `업적 달성 🎉` : '업적 미달성'}`;
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
@@ -41,14 +47,13 @@ export default function AchievementModal({ open, onClose, achievement }: Achieve
           <DialogTitle>{data.name}</DialogTitle>
           <DialogDescription>{data.description}</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-2 text-sm text-gray-600 whitespace-pre-line text-center">
-          달성 조건: {data.condition_value.toLocaleString()}
-          {data.type === 'trade'
-            ? '회 거래'
-            : data.type === 'follow'
-              ? '명 팔로워'
-              : '번 항해 완료'}
-          {achievedDate ? `\n달성일: ${achievedDate}` : ''}
+        <div className="flex flex-col gap-1 text-sm text-gray-600 text-center whitespace-pre-line">
+          <span>
+            달성 조건: {data.condition_value.toLocaleString()}
+            {conditionText}
+          </span>
+          {achievedDate && <span>달성일: {achievedDate}</span>}
+          <span className="font-semibold">{levelText}</span>
         </div>
         <DialogFooter className="w-full mt-4">
           <Button className="w-full" onClick={onClose}>

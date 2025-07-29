@@ -51,6 +51,19 @@ model nickname {
   nickname_adjective String? @db.VarChar(255)
 }
 
+model notification_histories {
+  id                BigInt                                    @id @default(autoincrement())
+  notified_at       DateTime?                                 @db.DateTime(6)
+  user_id           BigInt?
+  content           String?                                   @db.VarChar(255)
+  title             String?                                   @db.VarChar(255)
+  url               String?                                   @db.VarChar(255)
+  notification_type notification_histories_notification_type?
+  users             users?                                    @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKd8sa0pk7oc16oxkqihyv1daj7")
+
+  @@index([user_id], map: "FKd8sa0pk7oc16oxkqihyv1daj7")
+}
+
 model notification_settings {
   is_event_agreed           Boolean? @db.Bit(1)
   is_follower_post_agreed   Boolean? @db.Bit(1)
@@ -60,6 +73,22 @@ model notification_settings {
   id                        BigInt   @id @default(autoincrement())
   user_id                   BigInt?  @unique(map: "UKm9ggfvif86mvq5382j88cequn")
   users                     users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKmh6alfw96lc851ea0snhijfk")
+}
+
+model payments {
+  amount       Int
+  approved_at  DateTime?       @db.DateTime(6)
+  id           BigInt          @id @default(autoincrement())
+  requested_at DateTime?       @db.DateTime(6)
+  user_id      BigInt?
+  method       String?         @db.VarChar(255)
+  order_id     String          @unique(map: "UK8vo36cen604as7etdfwmyjsxt") @db.VarChar(255)
+  package_name String?         @db.VarChar(255)
+  payment_key  String?         @db.VarChar(255)
+  status       payments_status
+  users        users?          @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKj94hgy9v5fw1munb90tar2eje")
+
+  @@index([user_id], map: "FKj94hgy9v5fw1munb90tar2eje")
 }
 
 model plans {
@@ -104,13 +133,14 @@ model reports {
 model trade_histories {
   created_at    DateTime?               @db.DateTime(6)
   id            BigInt                  @id @default(autoincrement())
-  trade_post_id BigInt?                 @unique(map: "UKkhwebf5bgm66r0yvcs4h4kcmp")
+  trade_post_id BigInt?
   user_id       BigInt?
   status        trade_histories_status?
   users         users?                  @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKetvgnlh953qk751natofw5b40")
   trade_posts   trade_posts?            @relation(fields: [trade_post_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKew9h39ucqipv6r9pkkdlq94io")
 
   @@index([user_id], map: "FKetvgnlh953qk751natofw5b40")
+  @@index([trade_post_id], map: "FKew9h39ucqipv6r9pkkdlq94io")
 }
 
 model trade_posts {
@@ -125,7 +155,7 @@ model trade_posts {
   mobile_data_type             trade_posts_mobile_data_type?
   status                       trade_posts_status?
   reports                      reports[]
-  trade_histories              trade_histories?
+  trade_histories              trade_histories[]
   users                        users?                        @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKqy0qemklwus3v4tg25c19upxd")
 
   @@index([user_id], map: "FKqy0qemklwus3v4tg25c19upxd")
@@ -133,51 +163,53 @@ model trade_posts {
 
 model user_accounts {
   id           BigInt  @id @default(autoincrement())
+  user_id      BigInt? @unique(map: "UK8o642jss0gbxconmpyu9hke6m")
   bank         String? @db.VarChar(255)
   bank_account String? @db.VarChar(255)
   password     String? @db.VarChar(255)
-  users        users?
+  users        users?  @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKeu175seh3s7swirv0s1ugieyu")
 }
 
 model user_plans {
+  purchase_data_amount Int?
   sellable_data_amount Int?
   id                   BigInt  @id @default(autoincrement())
   plan_id              BigInt?
+  user_id              BigInt? @unique(map: "UKiadtx01qxop97dsldqm2wwn9")
+  users                users?  @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK8ws03c6bnq8p220rbnlnw2blv")
   plans                plans?  @relation(fields: [plan_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKq3swp19ett3gtuhruau03sxy2")
-  users                users?
 
   @@index([plan_id], map: "FKq3swp19ett3gtuhruau03sxy2")
 }
 
 model users {
-  is_active                                Boolean?               @db.Bit(1)
+  is_active                                Boolean?                 @db.Bit(1)
   zet_asset                                Int?
-  id                                       BigInt                 @id @default(autoincrement())
+  id                                       BigInt                   @id @default(autoincrement())
   profile_photo_id                         BigInt?
-  refresh_id                               BigInt?                @unique(map: "UK9sde85ftxx2wh0ot29qmagxxg")
-  user_account_id                          BigInt?                @unique(map: "UKjm7fmb3hqmw0m2o58w571egjg")
-  user_plan_id                             BigInt?                @unique(map: "UKopnelebdcyc0owd6hw02x29rx")
-  email                                    String?                @db.VarChar(255)
-  kakao_id                                 String?                @db.VarChar(255)
-  name                                     String?                @db.VarChar(255)
-  nickname                                 String?                @db.VarChar(255)
-  phone_number                             String?                @db.VarChar(255)
-  reputation                               String?                @db.VarChar(255)
+  refresh_id                               BigInt?                  @unique(map: "UK9sde85ftxx2wh0ot29qmagxxg")
+  email                                    String?                  @db.VarChar(255)
+  kakao_id                                 String?                  @db.VarChar(255)
+  name                                     String?                  @db.VarChar(255)
+  nickname                                 String?                  @db.VarChar(255)
+  phone_number                             String?                  @db.VarChar(255)
+  reputation                               String?                  @db.VarChar(255)
   role                                     users_role?
   fcm_tokens                               fcm_tokens[]
-  follows_follows_follower_user_idTousers  follows[]              @relation("follows_follower_user_idTousers")
-  follows_follows_following_user_idTousers follows[]              @relation("follows_following_user_idTousers")
+  follows_follows_follower_user_idTousers  follows[]                @relation("follows_follower_user_idTousers")
+  follows_follows_following_user_idTousers follows[]                @relation("follows_following_user_idTousers")
   interested_posts                         interested_posts[]
+  notification_histories                   notification_histories[]
   notification_settings                    notification_settings?
-  reports_reports_reporting_user_idTousers reports[]              @relation("reports_reporting_user_idTousers")
-  reports_reports_reported_user_idTousers  reports[]              @relation("reports_reported_user_idTousers")
+  payments                                 payments[]
+  reports_reports_reporting_user_idTousers reports[]                @relation("reports_reporting_user_idTousers")
+  reports_reports_reported_user_idTousers  reports[]                @relation("reports_reported_user_idTousers")
   trade_histories                          trade_histories[]
   trade_posts                              trade_posts[]
-  user_plans                               user_plans?            @relation(fields: [user_plan_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK1tpe52ppvvmeshdps6mdc6aun")
-  user_accounts                            user_accounts?         @relation(fields: [user_account_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKbcurcu3ke5e0bq4ld5ym9va34")
-  profile_photo                            profile_photo?         @relation(fields: [profile_photo_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKjkh0ielp5opkdbqmdmq4x5g75")
-  refreshs                                 refreshs?              @relation(fields: [refresh_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKt80anxmture0i6gt74feisyb1")
-  voyage_letters                           voyage_letters[]
+  user_accounts                            user_accounts?
+  user_plans                               user_plans?
+  profile_photo                            profile_photo?           @relation(fields: [profile_photo_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKjkh0ielp5opkdbqmdmq4x5g75")
+  refreshs                                 refreshs?                @relation(fields: [refresh_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKt80anxmture0i6gt74feisyb1")
 
   @@index([profile_photo_id], map: "FKjkh0ielp5opkdbqmdmq4x5g75")
 }
@@ -191,6 +223,15 @@ enum plans_carrier {
   KT
   LGU
   SKT
+}
+
+enum notification_histories_notification_type {
+  BENEFIT
+  FOLLOWER_POST
+  INTERESTED_POST
+  REPORTED
+  SELL
+  TRADE
 }
 
 enum plans_mobile_data_type {
@@ -211,6 +252,14 @@ enum trade_posts_carrier {
 enum trade_posts_mobile_data_type {
   LTE
   G   @map("_5G")
+}
+
+enum payments_status {
+  DONE
+  FAIL
+  IN_PROGRESS
+  READY
+  TIMEOUT
 }
 
 enum trade_posts_status {
@@ -237,8 +286,6 @@ model voyage_letters {
   created_at   DateTime @default(now())
   isLongestPath  Boolean  @default(false) // 현재 최장 경로인지 여부
 
-  users        users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
   @@index([user_id])
   @@unique([user_id, step]) // 사용자별 최대 5단계만 작성 가능
 }
@@ -253,16 +300,17 @@ model achievement {
   description     String   // 업적 설명
 }
 
-model achievement_user {
-  id            BigInt  @id @default(autoincrement())
-  user_id       BigInt  @unique
-  trade_level   Int
-  rotate_level  Int
-  follow_level  Int
+model user_achievements {
+  id             BigInt   @id @default(autoincrement())
+  user_id        BigInt
+  achievement_id Int
+  achieved_at    DateTime
+  @@unique([user_id, achievement_id])
 }
 
+
 enum AchievementType {
-  trade
+  trade 
   rotate
   follow
 }

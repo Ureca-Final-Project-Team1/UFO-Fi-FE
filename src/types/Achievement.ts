@@ -5,6 +5,7 @@ export interface Achievement {
   name: string;
   description: string;
   condition_value: number;
+  achievedAt?: string;
 }
 
 export type SelectedAchievementState = {

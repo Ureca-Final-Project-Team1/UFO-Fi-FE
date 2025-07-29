@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
-import { Title } from '@/shared';
+import { Loading, Title } from '@/shared';
 import AchievementModal from '@/shared/ui/Modal/AchievementModal';
 import { useViewportStore } from '@/stores/useViewportStore';
 import { Achievement, SelectedAchievementState } from '@/types/Achievement';
@@ -18,6 +18,8 @@ export default function AchievementPage() {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const { isDesktop, isTablet } = useViewportStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [levels, setLevels] = useState({
     trade: 0,
     follow: 0,
@@ -29,20 +31,22 @@ export default function AchievementPage() {
     const type = j === 1 ? 'trade' : j === 2 ? 'rotate' : 'follow';
     const matched = achievements.find((a) => a.level === i && a.type === type);
     if (matched) {
-      if (matched) {
-        setSelectedAchievement({
-          achievement: matched,
-          i,
-          j,
-          isAchieve,
-        });
-        setIsModalOpen(true);
-      }
+      setSelectedAchievement({
+        achievement: matched,
+        i,
+        j,
+        isAchieve,
+      });
+      setIsModalOpen(true);
     }
   };
   useEffect(() => {
+    setIsLoading(true);
     fetch('/api/achievements/update', { method: 'POST' })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch achievements');
+        return res.json();
+      })
       .then((data) => {
         if (data.trade_level !== undefined) {
           setLevels({
@@ -53,8 +57,24 @@ export default function AchievementPage() {
           });
           setAchievements(data.achievements ?? []);
         }
+      })
+      .catch((err) => {
+        console.error('Achievement fetch error:', err);
+        setError('업적 정보를 불러오는데 실패했습니다.');
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
+
+  if (isLoading)
+    return (
+      <div className="w-full min-h-full flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  if (error)
+    return <div className="w-full min-h-full flex justify-center items-center">{error}</div>;
 
   return (
     <div className="relative w-full min-h-full items-center flex flex-col gap-6">
