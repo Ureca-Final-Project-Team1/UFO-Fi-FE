@@ -7,7 +7,8 @@ import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { useMyInfo } from '@/features/mypage/hooks';
-import { Icon, TitleWithRouter, Button, ChargeModal } from '@/shared';
+import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
+import { Icon, TitleWithRouter, Button } from '@/shared';
 import { usePostIdsStore } from '@/stores/useBulkStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
@@ -35,7 +36,6 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
 
-  // API에서 결과 데이터 가져오기
   useEffect(() => {
     const fetchResultData = async () => {
       try {
@@ -107,10 +107,11 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
       <div className="px-4">
         <BulkResultDisplay data={resultData} onPurchase={handlePurchase} isMobile={isMobile} />
       </div>
-      <ChargeModal
+      <InsufficientZetModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onConfirm={() => {
+        onCancel={() => setIsOpen(false)}
+        onGoToCharge={() => {
           setIsOpen(false);
           router.push('/charge');
         }}
