@@ -22,6 +22,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const isNavigationHidden =
     pathname.startsWith('/login') ||
     pathname.startsWith('/onboarding') ||
+    pathname.startsWith('/blackhole') ||
     pathname.startsWith('/signup/privacy');
 
   const backgroundImageUrl = (() => {
