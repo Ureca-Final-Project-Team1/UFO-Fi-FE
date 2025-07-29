@@ -78,10 +78,10 @@ const MypageNotificationPage = () => {
   };
 
   return (
-    <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 px-4 gap-4 text-white">
+    <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 gap-4 text-white">
       <TitleWithRouter title="알림 설정하기" iconVariant="back" />
 
-      <div className="w-full max-w-md flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-6">
         <div className="grid grid-cols-[80px_1fr_auto] gap-y-4 items-center">
           <p className="col-span-2">이벤트 혜택 수신 알림</p>
           <Switch
