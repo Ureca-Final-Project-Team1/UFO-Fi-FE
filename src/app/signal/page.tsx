@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import SignalTabContent from '@/features/signal/components/SignalTabContent';
 import { Title } from '@/shared';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui/Tabs';
 
@@ -27,7 +28,9 @@ export default function SignalPage() {
 
         {/* 탭 콘텐츠 */}
         <div className="flex-1">
-          <TabsContent value="orbit">전파 궤도</TabsContent>
+          <TabsContent value="orbit">
+            <SignalTabContent />
+          </TabsContent>
 
           <TabsContent value="letters">편지함</TabsContent>
         </div>
