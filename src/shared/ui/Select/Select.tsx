@@ -105,7 +105,7 @@ function SelectItem({
       data-slot="select-item"
       className={cn(
         selectItemVariants(),
-        'flex items-center justify-between px-2 py-1 gap-2',
+        'flex items-center justify-between py-1 gap-2',
         className,
       )}
       {...props}

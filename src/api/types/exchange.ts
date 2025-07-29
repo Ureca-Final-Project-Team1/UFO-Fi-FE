@@ -7,6 +7,25 @@ export const EXCHANGE_STATUSES = ['SELLING', 'SOLD_OUT', 'REPORTED', 'EXPIRED', 
 export type CarrierType = Carrier;
 export type ExchangeStatus = (typeof EXCHANGE_STATUSES)[number];
 
+// 구매 상태 enum
+export enum PurchaseStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  CANCELLED = 'CANCELLED',
+}
+
+// 구매 실패 이유 enum
+export enum PurchaseErrorType {
+  INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE',
+  PRODUCT_NOT_FOUND = 'PRODUCT_NOT_FOUND',
+  PRODUCT_UNAVAILABLE = 'PRODUCT_UNAVAILABLE',
+  NETWORK_ERROR = 'NETWORK_ERROR',
+  SERVER_ERROR = 'SERVER_ERROR',
+  USER_CANCELLED = 'USER_CANCELLED',
+}
+
 export interface ExchangePost {
   postId: number;
   title: string;
@@ -19,6 +38,7 @@ export interface ExchangePost {
   mobileDataType: MobileDataType;
   sellerNickname: string;
   sellerId: number;
+  sellerProfileUrl: string;
 }
 
 export interface ExchangeCursor {
@@ -60,4 +80,27 @@ export interface PurchaseResponse {
 export interface BulkPurchaseParams {
   desiredGb: number;
   unitPerZet: number;
+}
+
+// 구매 상태 정보 타입
+export interface PurchaseStatusInfo {
+  transactionId: string;
+  status: PurchaseStatus;
+  createdAt: string;
+  completedAt?: string;
+  failureReason?: string;
+}
+
+// 구매 이력 타입
+export interface PurchaseTransaction {
+  id: string;
+  postId: number;
+  sellerId: number;
+  totalZet: number;
+  dataAmountGB: number;
+  carrier: Carrier;
+  mobileDataType: MobileDataType;
+  status: PurchaseStatus;
+  createdAt: string;
+  completedAt?: string;
 }

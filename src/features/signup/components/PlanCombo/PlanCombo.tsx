@@ -19,31 +19,22 @@ export function PlanCombo({ planNames = [], onSelect, value, disabled = false }:
   const [input, setInput] = useState('');
   const [selected, setSelected] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [hasUserSelected, setHasUserSelected] = useState(false);
 
   useEffect(() => {
     if (value === '') {
       setInput('');
       setSelected('');
-      setHasUserSelected(false);
     } else {
       setInput(value);
       setSelected(value);
     }
   }, [value]);
 
-  useEffect(() => {
-    if (planNames.length > 0 && !hasUserSelected) {
-      setIsOpen(true);
-    }
-  }, [planNames]);
-
   const handlePlanSelect = (value: string) => {
     const newValue = value === selected ? '' : value;
     setSelected(newValue);
     setInput(newValue);
     setIsOpen(false);
-    setHasUserSelected(true);
     onSelect?.(newValue);
   };
 
@@ -56,7 +47,7 @@ export function PlanCombo({ planNames = [], onSelect, value, disabled = false }:
           onFocus={() => !disabled && setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
           onInput={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.currentTarget.value)}
-          className="h-[50px] justify-between text-[16px]"
+          className="h-9 justify-between rounded-md text-[14px] md:text-[16px] placeholder:text-gray-400"
           disabled={disabled}
         />
 
