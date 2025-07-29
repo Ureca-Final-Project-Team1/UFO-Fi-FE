@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { Carrier } from '@/api/types/carrier';
 import { Icon, Avatar } from '@/shared';
 
@@ -8,6 +10,7 @@ interface BulkResultCardProps {
   price: number;
   seller: string;
   timeAgo: string;
+  profileUrl?: string;
 }
 
 const CARRIER_COLORS = {
@@ -24,12 +27,21 @@ export function BulkResultCard({
   price,
   seller,
   timeAgo,
+  profileUrl,
 }: BulkResultCardProps) {
   return (
     <div className="gradient-card-1 rounded-2xl p-4 flex flex-col gap-3 h-full min-h-[120px]">
       {/* 상단: 사용자 닉네임 & 타임스탬프 */}
       <div className="flex items-center gap-2">
-        <Avatar size="sm" />
+        <Avatar size="sm">
+          <Image
+            src={profileUrl || '/images/avatar.svg'}
+            alt="profile"
+            className="w-full h-full object-cover rounded-full"
+            width={32}
+            height={32}
+          />
+        </Avatar>
         <div className="flex flex-col">
           <span className="text-white caption-14-bold">{seller}</span>
           <span className="text-gray-300 caption-12-regular">{timeAgo}</span>

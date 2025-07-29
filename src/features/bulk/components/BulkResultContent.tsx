@@ -6,8 +6,9 @@ import { useState, useEffect } from 'react';
 import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
-import { Icon, TitleWithRouter, Button } from '@/shared';
-import { useBulkStore } from '@/stores/useBulkStore';
+import { useMyInfo } from '@/features/mypage/hooks';
+import { Icon, TitleWithRouter, Button, ChargeModal } from '@/shared';
+import { usePostIdsStore } from '@/stores/useBulkStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 import { useBulkPurchase } from '../hooks/useBulkPurchase';
@@ -18,11 +19,17 @@ interface BulkResultContentProps {
 }
 
 export function BulkResultContent({ initialData }: BulkResultContentProps) {
+  const { data: userInfo } = useMyInfo();
+
+  const zet = userInfo?.zetAsset || 0;
+  const [price, setPrice] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
   const isMobile = useViewportStore((state) => state.isMobile);
 
   const { capacityValue, pricePerGB } = useBulkPurchase();
-  const { setPostIds } = useBulkStore();
+  const { setPostIds } = usePostIdsStore();
 
   const [resultData, setResultData] = useState<GetBulkPurchaseContent | null>(initialData || null);
   const [isLoading, setIsLoading] = useState(!initialData);
@@ -50,6 +57,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           }
         }
 
+        setPrice(data.content.totalPrice);
         setPostIds(data.content.posts.map((item) => item.postId));
         setResultData(data.content);
       } catch (err) {
@@ -61,11 +69,15 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     };
 
     fetchResultData();
-  }, [capacityValue, pricePerGB]);
+  }, [capacityValue, pricePerGB, setPostIds]);
 
   const handlePurchase = () => {
     if (!resultData) return;
-    router.push('/exchange/bulk/result');
+    if (zet < price) {
+      setIsOpen(true);
+      return;
+    }
+    router.push('/exchange/bulk/purchase');
   };
 
   // 로딩 상태
@@ -95,6 +107,14 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
       <div className="px-4">
         <BulkResultDisplay data={resultData} onPurchase={handlePurchase} isMobile={isMobile} />
       </div>
+      <ChargeModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={() => {
+          setIsOpen(false);
+          router.push('/charge');
+        }}
+      />
     </div>
   );
 }
@@ -162,7 +182,6 @@ function BulkResultDisplay({
           </div>
         </div>
       </div>
-
       {shortfall > 0 && (
         <div className="flex flex-col justify-center items-center space-y-2">
           <p className="text-white body-16-medium">
@@ -172,7 +191,6 @@ function BulkResultDisplay({
           <p className="text-white body-16-medium">그래도 구매하시겠습니까?</p>
         </div>
       )}
-
       <div className="flex justify-start">
         <Button
           size="full-width"
@@ -184,7 +202,6 @@ function BulkResultDisplay({
           {isPurchasing ? '구매 중...' : '구매하기'}
         </Button>
       </div>
-
       <div className="space-y-4">
         <h3 className="text-white font-bold text-lg flex items-center gap-2">매칭된 데이터 목록</h3>
 
@@ -198,6 +215,7 @@ function BulkResultDisplay({
               carrier={item.carrier}
               seller={item.sellerNickname}
               timeAgo={getTimeAgo(new Date(item.createdAt).getTime())}
+              profileUrl={item.sellerProfileUrl || ''}
             />
           ))}
         </div>

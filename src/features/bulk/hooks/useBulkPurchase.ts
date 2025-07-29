@@ -26,11 +26,9 @@ export function useBulkPurchase() {
     setIsSubmitting(true);
 
     try {
-      // TODO: 실제 API 연결 시 수정 필요
       await new Promise((resolve) => setTimeout(resolve, 1500)); // 로딩 시뮬레이션
-
       // 동적 라우트로 이동
-      router.push('/exchange/bulk/match');
+      router.push('/exchange/bulk/result');
     } catch (error) {
       console.error('검색 오류:', error);
       alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');

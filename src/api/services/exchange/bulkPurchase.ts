@@ -14,10 +14,9 @@ export const bulkPurchaseAPI = {
   },
 
   async postBulkPurchaseResult(postIds: number[]): Promise<PostBulkPurchaseResponse> {
-    const response = await apiRequest.post<PostBulkPurchaseResponse>(
-      'v1/posts/bulk-purchase',
+    const response = await apiRequest.post<PostBulkPurchaseResponse>('v1/posts/bulk-purchase', {
       postIds,
-    );
+    });
     return response.data;
   },
 };

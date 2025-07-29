@@ -13,6 +13,7 @@ export interface BulkPurchaseItem {
   mobileDataType: MobileDataType;
   sellerNickname: string;
   sellerId: number;
+  sellerProfileUrl: string;
 }
 
 export interface GetBulkPurchaseRequest {

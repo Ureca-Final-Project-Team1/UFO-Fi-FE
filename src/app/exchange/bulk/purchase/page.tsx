@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 
-import { BulkResultContent } from '@/features/bulk/components/BulkResultContent';
+import { BulkPurchaseContent } from '@/features/bulk/components/BulkPurchaseContent';
 
 export default function BulkMatchPage() {
   return (
@@ -13,7 +13,7 @@ export default function BulkMatchPage() {
         </div>
       }
     >
-      <BulkResultContent />
+      <BulkPurchaseContent />
     </Suspense>
   );
 }
