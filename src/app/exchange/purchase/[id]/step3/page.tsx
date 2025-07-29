@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
+import { PurchaseErrorType } from '@/api/types/exchange';
 import type { ExchangePost, PurchaseRequest } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseErrorRecovery';
@@ -287,7 +288,11 @@ export default function SimpleEnhancedStep3Page() {
           errorType={state.errorType}
           postId={id}
           onRetry={handleErrorRetry}
-          canRetry={true} // 필요에 따라 동적으로 설정
+          canRetry={
+            state.errorType !== PurchaseErrorType.PRODUCT_UNAVAILABLE &&
+            state.errorType !== PurchaseErrorType.INSUFFICIENT_BALANCE &&
+            state.errorType !== PurchaseErrorType.PRODUCT_NOT_FOUND
+          }
         />
       )}
     </>
