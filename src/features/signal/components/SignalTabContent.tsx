@@ -6,16 +6,17 @@ import { IMAGE_PATHS } from '@/constants';
 
 import PlanetComponent from './PlanetComponent';
 
-interface Point {
-  x: number;
-  y: number;
+interface SignalTabContentProps {
+  maxHeight?: number;
 }
 
-export default function SignalTabContent() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const planetRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [positions, setPositions] = useState<Point[]>([]);
+  const [scale, setScale] = useState<number>(1);
+
+  // 임시로 행성 도달 상태 (나중에 props나 상태관리로 받아올 예정)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [planetStatus, setPlanetStatus] = useState<boolean[]>([true, true, false, false, false]);
 
   const PLANETS = [
     IMAGE_PATHS.PLANET_1,
@@ -33,153 +34,128 @@ export default function SignalTabContent() {
     IMAGE_PATHS.SATELLITE_5,
   ];
 
-  // 각 행성별 시작/끝 점 offset (위치 보정)
-  const offsetMap: { from: Point; to: Point }[] = [
-    { from: { x: 40, y: -50 }, to: { x: 40, y: -65 } }, // 1 → 2
-    { from: { x: -50, y: 60 }, to: { x: -50, y: 120 } }, // 2 → 3
-    { from: { x: 50, y: 35 }, to: { x: -70, y: 40 } }, // 3 → 4
-    { from: { x: 50, y: -70 }, to: { x: 30, y: -40 } }, // 4 → 5
-  ];
+  // 기본 레이아웃 설정
+  const baseLayout = {
+    containerHeight: 675,
+    planets: [
+      { top: 36, left: 36 },
+      { top: 200, left: 170 },
+      { top: 440, left: 390 },
+      { top: 50, left: 500 },
+      { top: 180, left: 740 },
+    ],
+  };
 
-  const updatePositions = () => {
-    if (!wrapperRef.current) return;
-    const containerRect = wrapperRef.current.getBoundingClientRect();
+  const planetSizes = [145, 185, 145, 195, 120];
 
-    const newPositions = planetRefs.current
-      .map((el) => {
-        if (!el) return null;
-        const rect = el.getBoundingClientRect();
-        return {
-          x: rect.left - containerRect.left + rect.width / 2,
-          y: rect.top - containerRect.top + rect.height / 2,
-        };
-      })
-      .filter(Boolean) as Point[];
+  // 점선 경로 생성
+  const getCurvePath = (
+    from: { x: number; y: number },
+    to: { x: number; y: number },
+    index: number,
+  ) => {
+    if (index === 2) {
+      // 3번째 연결선은 베지어 곡선
+      const cp1 = { x: from.x + 200, y: from.y - 150 };
+      const cp2 = { x: to.x - 200, y: to.y + 150 };
+      return `M ${from.x},${from.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${to.x},${to.y}`;
+    }
 
-    setPositions(newPositions);
+    // 나머지는 호(arc)
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const radius = (Math.sqrt(dx * dx + dy * dy) / 2) * 0.8;
+    const sweepFlag = index === 1 ? 0 : 1;
+
+    return `M ${from.x},${from.y} A ${radius},${radius} 0 0,${sweepFlag} ${to.x},${to.y}`;
+  };
+
+  // 연결선 색상 결정 (두 행성 모두 도달했을 때만 색상)
+  const getConnectionColor = (fromIndex: number, toIndex: number) => {
+    return planetStatus[fromIndex] && planetStatus[toIndex] ? '#7BD5FF' : '#666666';
+  };
+
+  const calculateScale = () => {
+    const availableHeight = maxHeight || window.innerHeight * 0.8;
+    const newScale = Math.min(1, availableHeight / baseLayout.containerHeight);
+    setScale(newScale);
   };
 
   useEffect(() => {
-    updatePositions();
-    window.addEventListener('resize', updatePositions);
-    return () => window.removeEventListener('resize', updatePositions);
-  }, []);
+    calculateScale();
+    const handleResize = () => calculateScale();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [maxHeight]);
 
-  const getCurvePath = (from: Point, to: Point, index: number) => {
-    const offset = offsetMap[index] || { from: { x: 0, y: 0 }, to: { x: 0, y: 0 } };
-
-    const adjustedFrom = {
-      x: from.x + offset.from.x,
-      y: from.y + offset.from.y,
-    };
-    const adjustedTo = {
-      x: to.x + offset.to.x,
-      y: to.y + offset.to.y,
-    };
-
-    // 3 → 4 구간만 S자 커브 (C)
-    if (index === 2) {
-      const cp1 = { x: adjustedFrom.x + 150, y: adjustedFrom.y - 100 };
-      const cp2 = { x: adjustedTo.x - 150, y: adjustedTo.y + 100 };
-      return {
-        path: `M ${adjustedFrom.x},${adjustedFrom.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${adjustedTo.x},${adjustedTo.y}`,
-        adjustedFrom,
-        adjustedTo,
-        cp1,
-        cp2,
-      };
-    }
-
-    // 그 외 구간은 Arc(반원)
-    const dx = adjustedTo.x - adjustedFrom.x;
-    const dy = adjustedTo.y - adjustedFrom.y;
-    const radius = Math.sqrt(dx * dx + dy * dy) / 2;
-
-    const sweepFlag = index === 1 ? 0 : 1; // 2→3만 아래로 휘게
-
-    return {
-      path: `M ${adjustedFrom.x},${adjustedFrom.y} A ${radius},${radius} 0 0,${sweepFlag} ${adjustedTo.x},${adjustedTo.y}`,
-      adjustedFrom,
-      adjustedTo,
-      cp1: { x: 0, y: 0 },
-      cp2: { x: 0, y: 0 },
-    };
-  };
-
-  const setPlanetRef = (index: number) => (el: HTMLDivElement | null) => {
-    planetRefs.current[index] = el;
-  };
-  const planetSizes = [180, 230, 180, 240, 150];
+  const scaledHeight = baseLayout.containerHeight * scale;
 
   return (
     <div className="relative w-full overflow-hidden">
-      <div ref={scrollRef} className="w-full h-[800px] overflow-x-auto scroll-smooth">
-        <div ref={wrapperRef} className="relative flex w-[1400px] h-full">
-          {/*  SVG 점선 */}
-          <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
-            {positions.map((from, i) => {
-              const to = positions[i + 1];
+      <div
+        className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
+        style={{ height: `${scaledHeight}px` }}
+      >
+        <div
+          ref={wrapperRef}
+          className="relative"
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            width: `${860}px`,
+            height: `${baseLayout.containerHeight}px`,
+          }}
+        >
+          {/* SVG 점선 - 각 연결선별로 개별 색상 */}
+          <svg
+            className="absolute top-0 left-0 pointer-events-none"
+            width="860"
+            height={baseLayout.containerHeight}
+          >
+            {baseLayout.planets.map((from, i) => {
+              const to = baseLayout.planets[i + 1];
               if (!to) return null;
 
-              const { path } = getCurvePath(from, to, i);
+              const fromPoint = {
+                x: from.left + planetSizes[i] / 2,
+                y: from.top + planetSizes[i] / 2,
+              };
+              const toPoint = {
+                x: to.left + planetSizes[i + 1] / 2,
+                y: to.top + planetSizes[i + 1] / 2,
+              };
 
               return (
-                <g key={i}>
-                  <path
-                    d={path}
-                    fill="none"
-                    stroke="#7BD5FF"
-                    strokeWidth="2"
-                    strokeDasharray="8 6"
-                  />
-                  {/* <circle cx={adjustedFrom.x} cy={adjustedFrom.y} r={5} fill="red" /> */}
-                  {/* <circle cx={adjustedTo.x} cy={adjustedTo.y} r={5} fill="yellow" /> */}
-                </g>
+                <path
+                  key={i}
+                  d={getCurvePath(fromPoint, toPoint, i)}
+                  fill="none"
+                  stroke={getConnectionColor(i, i + 1)}
+                  strokeWidth="2"
+                  strokeDasharray="8 6"
+                />
               );
             })}
           </svg>
 
-          {/* 행성 렌더링 */}
-          <div className="absolute top-[40px] left-[40px]">
-            <PlanetComponent
-              ref={setPlanetRef(0)}
-              planetSrc={PLANETS[0]}
-              satelliteSrc={SATELLITES[0]}
-              planetSize={planetSizes[0]}
-            />
-          </div>
-          <div className="absolute top-[250px] left-[210px]">
-            <PlanetComponent
-              ref={setPlanetRef(1)}
-              planetSrc={PLANETS[1]}
-              satelliteSrc={SATELLITES[1]}
-              planetSize={planetSizes[1]}
-            />
-          </div>
-          <div className="absolute top-[550px] left-[490px]">
-            <PlanetComponent
-              ref={setPlanetRef(2)}
-              planetSrc={PLANETS[2]}
-              satelliteSrc={SATELLITES[2]}
-              planetSize={planetSizes[2]}
-            />
-          </div>
-          <div className="absolute top-[60px] left-[620px]">
-            <PlanetComponent
-              ref={setPlanetRef(3)}
-              planetSrc={PLANETS[3]}
-              satelliteSrc={SATELLITES[3]}
-              planetSize={planetSizes[3]}
-            />
-          </div>
-          <div className="absolute top-[220px] left-[920px]">
-            <PlanetComponent
-              ref={setPlanetRef(4)}
-              planetSrc={PLANETS[4]}
-              satelliteSrc={SATELLITES[4]}
-              planetSize={planetSizes[4]}
-            />
-          </div>
+          {/* 행성들 */}
+          {baseLayout.planets.map((planet, index) => (
+            <div
+              key={index}
+              className="absolute"
+              style={{
+                top: `${planet.top}px`,
+                left: `${planet.left}px`,
+              }}
+            >
+              <PlanetComponent
+                planetSrc={PLANETS[index]}
+                satelliteSrc={SATELLITES[index]}
+                planetSize={planetSizes[index]}
+                isArrived={planetStatus[index]} // 행성 도달 상태 전달
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
