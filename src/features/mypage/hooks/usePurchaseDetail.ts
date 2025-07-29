@@ -35,10 +35,10 @@ export const usePurchaseDetail = (purchaseHistoryId: string | null): UsePurchase
           setError('접근 권한이 없습니다.');
           setLoading(false);
           // 3초 후 자동으로 거래 내역 페이지로 리다이렉트
-          setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             router.push('/mypage/trade');
           }, 3000);
-          return;
+          return () => clearTimeout(timeoutId);
         }
 
         // 2. 권한이 확인되면 상세 정보를 가져옴
