@@ -45,16 +45,19 @@ export default function AchievementPage() {
     setIsLoading(true);
     achievementsAPI
       .updateAchievements()
-      .then((data) => {
-        if (data.trade_level !== undefined) {
-          setLevels({
-            trade: data.trade_level,
-            follow: data.follow_level,
-            rotate: data.rotate_level,
-            total: data.total_level,
-          });
-          setAchievements(data.achievements ?? []);
+      .then((res) => {
+        if (!res) {
+          console.warn('업적 응답 데이터가 비어 있습니다.');
+          return;
         }
+
+        setLevels({
+          trade: res.trade_level,
+          follow: res.follow_level,
+          rotate: res.rotate_level,
+          total: res.total_level,
+        });
+        setAchievements(res.achievements ?? []);
       })
       .catch((err) => {
         console.error('Achievement fetch error:', err);

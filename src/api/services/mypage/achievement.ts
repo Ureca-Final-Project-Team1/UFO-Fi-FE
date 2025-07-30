@@ -1,16 +1,28 @@
+import { nextApiRequest } from '@/api/client/axios';
+import { ApiError } from '@/api/client/axios';
+import { AchievementUpdateResponse } from '@/types/Achievement';
+
 export const achievementsAPI = {
-  async updateAchievements() {
-    const res = await fetch('/api/achievements/update', {
-      method: 'POST',
-      credentials: 'include',
-    });
+  async updateAchievements(): Promise<AchievementUpdateResponse> {
+    try {
+      const response = await nextApiRequest.post<AchievementUpdateResponse>(
+        '/api/achievements/update',
+      );
+      return response.data;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        console.error('업적 업데이트 ApiError:', {
+          message: error.message,
+          statusCode: error.statusCode,
+        });
 
-    const data = await res.json();
+        throw new Error(
+          `업적 업데이트 실패 (${error.statusCode}): ${error.message || '알 수 없는 오류'}`,
+        );
+      }
 
-    if (!res.ok) {
-      throw new Error(data.error || '업적 업데이트에 실패했습니다.');
+      console.error('알 수 없는 오류 발생:', error);
+      throw new Error('업적 업데이트 중 알 수 없는 오류가 발생했습니다.');
     }
-
-    return data;
   },
 };

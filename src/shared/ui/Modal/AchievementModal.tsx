@@ -18,7 +18,7 @@ export default function AchievementModal({ open, onClose, achievement }: Achieve
   if (!achievement) return null;
 
   const { i, j, isAchieve, achievement: data } = achievement;
-  const achievedDate = getAchievedDate(data.achievedAt, isAchieve);
+  const achievedDate = getAchievedDate(isAchieve, data.achievedAt);
   const conditionText =
     data.type === 'trade' ? '회 거래' : data.type === 'follow' ? '명 팔로워' : '번 항해 완료';
   const levelText = `${isAchieve ? `업적 달성 🎉` : '업적 미달성'}`;
