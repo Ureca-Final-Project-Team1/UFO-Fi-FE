@@ -2,41 +2,49 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { toast } from 'sonner';
 
 import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
-import { purchaseAPI } from '@/api/services/exchange/purchase';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
-import { Icon, Button, Title } from '@/shared';
+import { useMyInfo } from '@/features/mypage/hooks';
+import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
+import { Icon, Title, Button, Loading } from '@/shared';
+import { usePostIdsStore } from '@/stores/useBulkStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 import { useBulkPurchase } from '../hooks/useBulkPurchase';
-import { BulkResultContentItem, BulkResultItem } from '../types/bulkResult.types';
+import { BulkPurchaseItem, GetBulkPurchaseContent } from '../types/bulkResult.types';
 
 interface BulkResultContentProps {
-  initialData?: BulkResultContentItem;
+  initialData?: GetBulkPurchaseContent;
 }
 
 export function BulkResultContent({ initialData }: BulkResultContentProps) {
+  const { data: userInfo } = useMyInfo();
+
+  const zet = userInfo?.zetAsset || 0;
+  const [price, setPrice] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
   const isMobile = useViewportStore((state) => state.isMobile);
 
   const { capacityValue, pricePerGB } = useBulkPurchase();
+  const { setPostIds } = usePostIdsStore();
 
-  const [resultData, setResultData] = useState<BulkResultContentItem | null>(initialData || null);
+  const [resultData, setResultData] = useState<GetBulkPurchaseContent | null>(initialData || null);
   const [isLoading, setIsLoading] = useState(!initialData);
   const [isPurchasing, setIsPurchasing] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
-  // API에서 결과 데이터 가져오기
   useEffect(() => {
     const fetchResultData = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const data = await bulkPurchaseAPI({
+        const data = await bulkPurchaseAPI.getBulkPurchaseResult({
           desiredGb: capacityValue[0],
           unitPerZet: Number(pricePerGB),
         });
@@ -51,6 +59,8 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           }
         }
 
+        setPrice(data.content.totalPrice);
+        setPostIds(data.content.posts.map((item) => item.postId));
         setResultData(data.content);
       } catch (err) {
         console.error('Failed to fetch result data:', err);
@@ -61,45 +71,22 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
     };
 
     fetchResultData();
-  }, [capacityValue, pricePerGB]);
+  }, [capacityValue, pricePerGB, setPostIds]);
 
-  const handlePurchase = async () => {
+  const handlePurchase = () => {
     if (!resultData) return;
 
-    setIsPurchasing(true);
-    try {
-      const fetchPurchase = async () => {
-        for (const item of resultData.posts) {
-          const response = await purchaseAPI.purchase({
-            postId: item.postId,
-            sellerId: item.sellerId,
-            totalZet: item.totalPrice,
-            sellMobileDataAmountGB: item.sellMobileDataCapacityGb,
-          });
-          if (response.statusCode !== 200) {
-            toast.error('구매에 실패했습니다.');
-          } else {
-            toast.success('구매가 완료되었습니다!');
-          }
-        }
-      };
-
-      fetchPurchase();
-      router.push('/exchange');
-    } catch {
-      toast.error('구매 중 오류가 발생했습니다.');
-    } finally {
-      setIsPurchasing(false);
+    if (zet < price) {
+      setIsOpen(true);
+      return;
     }
+    setIsPurchasing(true);
+    router.push('/exchange/bulk/purchase');
   };
 
   // 로딩 상태
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-full">
-        <div className="text-white">검색 결과를 불러오는 중...</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error || !resultData) {
@@ -125,6 +112,15 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           isMobile={isMobile}
         />
       </div>
+      <InsufficientZetModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onCancel={() => setIsOpen(false)}
+        onGoToCharge={() => {
+          setIsOpen(false);
+          router.push('/charge');
+        }}
+      />
     </div>
   );
 }
@@ -149,7 +145,7 @@ function BulkResultDisplay({
   isPurchasing,
   isMobile,
 }: {
-  data: BulkResultContentItem;
+  data: GetBulkPurchaseContent;
   onPurchase: () => void;
   isPurchasing: boolean;
   isMobile: boolean;
@@ -192,7 +188,6 @@ function BulkResultDisplay({
           </div>
         </div>
       </div>
-
       {shortfall > 0 && (
         <div className="flex flex-col justify-center items-center space-y-2">
           <p className="text-white body-16-medium">
@@ -202,7 +197,6 @@ function BulkResultDisplay({
           <p className="text-white body-16-medium">그래도 구매하시겠습니까?</p>
         </div>
       )}
-
       <div className="flex justify-start">
         <Button
           size="full-width"
@@ -214,12 +208,11 @@ function BulkResultDisplay({
           {isPurchasing ? '구매 중...' : '구매하기'}
         </Button>
       </div>
-
       <div className="space-y-4">
         <h3 className="text-white font-bold text-lg flex items-center gap-2">매칭된 데이터 목록</h3>
 
         <div className={`gap-3 ${isMobile ? 'grid grid-cols-2' : 'flex flex-col'}`}>
-          {posts.map((item: BulkResultItem, index: number) => (
+          {posts.map((item: BulkPurchaseItem, index: number) => (
             <BulkResultCard
               key={index}
               message={item.title}
@@ -228,6 +221,7 @@ function BulkResultDisplay({
               carrier={item.carrier}
               seller={item.sellerNickname}
               timeAgo={getTimeAgo(new Date(item.createdAt).getTime())}
+              profileUrl={item.sellerProfileUrl || ''}
             />
           ))}
         </div>

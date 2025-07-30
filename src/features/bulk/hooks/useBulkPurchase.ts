@@ -26,11 +26,7 @@ export function useBulkPurchase() {
     setIsSubmitting(true);
 
     try {
-      // const totalBudget = Number(pricePerGB) * capacityValue[0];
-
-      // TODO: 실제 API 연결 시 수정 필요
       await new Promise((resolve) => setTimeout(resolve, 1500)); // 로딩 시뮬레이션
-
       // 동적 라우트로 이동
       router.push('/exchange/bulk/result');
     } catch (error) {

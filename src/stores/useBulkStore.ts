@@ -1,5 +1,6 @@
 import { SetStateAction } from 'react';
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface BulkState {
   capacityValue: number[];
@@ -8,6 +9,12 @@ interface BulkState {
   setCapacityValue: (value: SetStateAction<number[]>) => void;
   setPricePerGB: (value: string) => void;
   setImportantValue: (value: string) => void;
+}
+
+interface PostIdsState {
+  postIds: number[];
+  setPostIds: (value: number[]) => void;
+  clearPostIds: () => void;
 }
 
 export const useBulkStore = create<BulkState>((set) => ({
@@ -22,3 +29,17 @@ export const useBulkStore = create<BulkState>((set) => ({
   setPricePerGB: (value) => set({ pricePerGB: value }),
   setImportantValue: (value) => set({ importantValue: value }),
 }));
+
+export const usePostIdsStore = create<PostIdsState>()(
+  persist(
+    (set) => ({
+      postIds: [],
+      setPostIds: (value) => set({ postIds: value }),
+      clearPostIds: () => set({ postIds: [] }),
+    }),
+    {
+      name: 'post-ids-storage',
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);
