@@ -79,7 +79,7 @@ const PlanPage = () => {
   };
 
   return (
-    <div className="w-full min-h-full flex flex-col">
+    <div className="w-full min-h-[calc(100dvh - 120px)] flex flex-col">
       <div className="flex-1 flex flex-col justify-start items-start">
         <Title title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
         <div className="flex flex-col items-start gap-6 w-full">
