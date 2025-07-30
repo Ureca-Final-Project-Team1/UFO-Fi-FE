@@ -1,6 +1,6 @@
 import { SetStateAction } from 'react';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface BulkState {
   capacityValue: number[];
@@ -39,6 +39,7 @@ export const usePostIdsStore = create<PostIdsState>()(
     }),
     {
       name: 'post-ids-storage',
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

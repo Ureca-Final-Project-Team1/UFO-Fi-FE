@@ -8,7 +8,7 @@ import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { useMyInfo } from '@/features/mypage/hooks';
 import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
-import { Icon, TitleWithRouter, Button } from '@/shared';
+import { Icon, TitleWithRouter, Button, Loading } from '@/shared';
 import { usePostIdsStore } from '@/stores/useBulkStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
@@ -86,11 +86,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
   // 로딩 상태
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-full">
-        <div className="text-white">검색 결과를 불러오는 중...</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error || !resultData) {

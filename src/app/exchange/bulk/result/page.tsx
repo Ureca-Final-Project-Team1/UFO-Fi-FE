@@ -3,16 +3,11 @@
 import { Suspense } from 'react';
 
 import { BulkResultContent } from '@/features/bulk/components/BulkResultContent';
+import { Loading } from '@/shared';
 
 export default function BulkResultPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center min-h-full">
-          <div className="text-white">로딩 중...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<Loading />}>
       <BulkResultContent />
     </Suspense>
   );
