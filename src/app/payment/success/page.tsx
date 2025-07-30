@@ -12,9 +12,6 @@ import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button, Loading, Title } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
-// 전역 중복 방지
-const globalConfirmTracker = new Set<string>();
-
 function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -24,12 +21,11 @@ function PaymentSuccessContent() {
   const [isConfirming, setIsConfirming] = useState(true);
   const [chargedAmount, setChargedAmount] = useState<number>(0);
   const [newZetBalance, setNewZetBalance] = useState<number | null>(null);
-  const isExecutingRef = useRef(false);
   const hasExecutedRef = useRef(false);
 
   useEffect(() => {
     const confirmPayment = async () => {
-      if (isExecutingRef.current || hasExecutedRef.current) {
+      if (hasExecutedRef.current) {
         return;
       }
 
@@ -43,13 +39,7 @@ function PaymentSuccessContent() {
         return;
       }
 
-      if (globalConfirmTracker.has(orderId)) {
-        return;
-      }
-
-      isExecutingRef.current = true;
       hasExecutedRef.current = true;
-      globalConfirmTracker.add(orderId);
 
       try {
         const paymentAmount = parseInt(amount);
@@ -85,7 +75,6 @@ function PaymentSuccessContent() {
         router.push('/payment/fail');
       } finally {
         setIsConfirming(false);
-        isExecutingRef.current = false;
         // orderId는 성공/실패와 관계없이 제거하지 않음 (중복 방지 유지)
       }
     };
