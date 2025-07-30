@@ -47,7 +47,6 @@ export function useLetters() {
   const initializeLetters = useCallback(async () => {
     try {
       const { count } = await fetchLetters();
-      console.log('편지 상태 초기화:', count);
       setLetterCount(count);
       return count;
     } catch (error) {
