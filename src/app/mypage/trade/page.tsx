@@ -12,8 +12,7 @@ import { PurchaseHistoryResponse, SellHistoryResponse } from '@/api/types/histor
 import { TradeHistoryCard } from '@/features/mypage/components';
 import { TradeHistoryCardProps } from '@/features/mypage/types/TradeHistoryCard.types';
 import { useTradeHistory } from '@/hooks/useTradeHistory';
-import { BadgeState } from '@/shared';
-import { Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared';
+import { BadgeState, Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared';
 import { useTradeTabStore } from '@/stores/useTradeTabStore';
 import { groupByDate } from '@/utils/groupByDate';
 

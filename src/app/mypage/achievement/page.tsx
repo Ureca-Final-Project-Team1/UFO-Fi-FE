@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { achievementsAPI } from '@/api/services/mypage/achievement';
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
-import { Loading, Title } from '@/shared';
-import { AchievementModal } from '@/shared';
+import { Loading, Title, AchievementModal } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 import { Achievement, SelectedAchievementState } from '@/types/Achievement';
 

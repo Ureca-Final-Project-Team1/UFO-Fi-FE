@@ -3,9 +3,7 @@
 import React from 'react';
 
 import type { NotificationItem as NotificationItemType } from '@/api';
-import { Icon, NotificationTrigger } from '@/shared';
-import { NotificationDropdownProps } from '@/shared';
-import { NotificationItem } from '@/shared';
+import { Icon, NotificationTrigger, NotificationDropdownProps, NotificationItem } from '@/shared';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';
 

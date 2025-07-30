@@ -5,8 +5,7 @@ import { toast } from 'sonner';
 
 import { notificationAPI } from '@/api';
 import type { NotificationType } from '@/shared';
-import { Title } from '@/shared';
-import { Switch } from '@/shared';
+import { Title, Switch } from '@/shared';
 
 const MypageNotificationPage = () => {
   const [notificationState, setNotificationState] = useState({
