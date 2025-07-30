@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import LetterTabContent from '@/features/signal/components/LetterTabContent';
 import SignalTabContent from '@/features/signal/components/SignalTabContent';
 import { Title } from '@/shared';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui/Tabs';
@@ -9,7 +10,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui/Tabs';
 type TabType = 'orbit' | 'letters';
 
 export default function SignalPage() {
-  const [activeTab, setActiveTab] = useState<TabType>('orbit');
+  const [activeTab, setActiveTab] = useState<TabType>('letters');
 
   return (
     <div className="flex flex-col min-h-full w-full">
@@ -32,7 +33,9 @@ export default function SignalPage() {
             <SignalTabContent />
           </TabsContent>
 
-          <TabsContent value="letters">편지함</TabsContent>
+          <TabsContent value="letters">
+            <LetterTabContent />
+          </TabsContent>
         </div>
       </Tabs>
     </div>
