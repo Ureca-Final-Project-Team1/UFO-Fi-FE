@@ -7,13 +7,14 @@ interface BaseHistoryResponse {
   title: string;
   totalZet: number;
   mobileDataType: MobileDataType;
-  totalGB: number;
 }
 
 export interface PurchaseHistoryResponse extends BaseHistoryResponse {
   purchaseHistoryId: number;
+  totalGB: number;
 }
 
 export interface SellHistoryResponse extends BaseHistoryResponse {
   status: string;
+  sellMobileDataAmountGB: number;
 }
