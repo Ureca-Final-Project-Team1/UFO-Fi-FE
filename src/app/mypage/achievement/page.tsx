@@ -57,7 +57,13 @@ export default function AchievementPage() {
           rotate: res.rotate_level,
           total: res.total_level,
         });
-        setAchievements(res.achievements ?? []);
+        setAchievements(
+          (res.achievements ?? []).map((a) => ({
+            ...a,
+            id: Number(a.id),
+            type: a.type as 'trade' | 'follow' | 'rotate',
+          })),
+        );
       })
       .catch((err) => {
         console.error('Achievement fetch error:', err);
