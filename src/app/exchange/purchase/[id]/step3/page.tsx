@@ -9,7 +9,7 @@ import type { ExchangePost, PurchaseRequest } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseErrorRecovery';
 import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';
-import { Button, TitleWithRouter } from '@/shared';
+import { Button, Title } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
 export default function Step3Page() {
@@ -103,7 +103,7 @@ export default function Step3Page() {
   if (isLoading) {
     return (
       <div className="flex flex-col min-h-full px-4">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
         <div className="flex items-center justify-center flex-1">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
@@ -115,7 +115,7 @@ export default function Step3Page() {
   if (error || !productData) {
     return (
       <div className="flex flex-col min-h-full items-center justify-center px-4">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
         <p className="text-red-400 text-center mb-4">{error}</p>
         <Button variant="secondary" onClick={() => router.back()}>
           돌아가기
@@ -128,7 +128,7 @@ export default function Step3Page() {
   if (state.status === 'success') {
     return (
       <div className="flex flex-col min-h-full">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
 
         <div className="flex flex-col items-center justify-center flex-1 text-white text-center">
           <div className="mb-8">
@@ -177,7 +177,7 @@ export default function Step3Page() {
   return (
     <>
       <div className="flex flex-col min-h-full w-full px-4">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
 
         <div className="flex flex-col items-center justify-center flex-1">
           {/* 데이터 큐브 이미지 */}
