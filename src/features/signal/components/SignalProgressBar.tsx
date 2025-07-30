@@ -27,34 +27,34 @@ export default function SignalProgressBar() {
   const [planetStatus] = useState<boolean[]>([true, true, false, false, false]);
 
   // 도달한 행성의 개수 계산
-  const isArrived = planetStatus.filter(Boolean).length;
+  const completed = planetStatus.filter(Boolean).length;
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center flex-col px-2 sm:px-4">
+    <div className="flex flex-col items-center w-full gap-4 px-4">
       {/* 진행 텍스트 */}
-      <p className="text-white text-xs sm:text-sm pyeongchangpeace-title-2 mb-2 sm:mb-4">
-        {isArrived}번째 은하까지 탐사 완료...
+      <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
+        {completed}번째 은하까지 탐사 완료...
       </p>
 
       {/* 선 + 행성 */}
-      <div className="relative w-full flex justify-center items-center py-4 sm:py-6">
+      <div className="relative flex items-center justify-center w-full">
         {/* 가운데 점선 선 */}
-        <div className="absolute inset-x-2 sm:inset-x-4 top-1/2 h-0 border-t border-dashed border-white -translate-y-1/2 z-0" />
+        <div className="absolute inset-x-4 top-1/2 rounded-full border border-dashed border-gray-400 -translate-y-1/2" />
 
         {/* 행성들 */}
-        <div className="flex gap-1 sm:gap-3 md:gap-6 w-full justify-center items-end relative z-10">
+        <div className="flex gap-3 relative z-10">
           {PLANETS.map((planet, index) => (
             <PlanetWithSatellite
               key={index}
               planetSrc={planet}
               satelliteSrc={SATELLITES[index]}
-              planetSize={60} // 기본 크기를 작게 조정
+              planetSize={60}
               isArrived={planetStatus[index]}
             />
           ))}
         </div>
-        <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-[#222] text-white text-xs sm:text-sm ml-1 sm:ml-2 md:ml-3 relative z-10 flex-shrink-0">
-          {isArrived}/{PLANETS.length}
+        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
+          {completed}/{PLANETS.length}
         </div>
       </div>
     </div>

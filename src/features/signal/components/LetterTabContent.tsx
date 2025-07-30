@@ -1,9 +1,15 @@
+import LetterComponent from './LetterComponent';
 import SignalProgressBar from './SignalProgressBar';
 
 export default function LetterTabContent() {
   return (
-    <div className="relative w-full h-full flex items-center justify-center flex-col px-4">
-      <SignalProgressBar />
+    <div className="w-full min-h-full flex flex-col justify-center items-center space-y-4">
+      <div className="z-30 scale-85">
+        <SignalProgressBar />
+      </div>
+      <div>
+        <LetterComponent />
+      </div>
     </div>
   );
 }
