@@ -11,6 +11,39 @@ export function middleware(request: NextRequest) {
   const authToken = request.cookies.get('Authorization')?.value;
   const isAuthenticated = !!authToken;
 
+  // 예외 경로들 (미들웨어에서 처리하지 않음)
+  const exemptPaths = [
+    '/api',
+    '/_next',
+    '/favicon.ico',
+    '/images',
+    '/icons',
+    '/login',
+    '/signup',
+    '/blackhole',
+  ];
+
+  const conditionalRoutes = ['/', '/onboarding'];
+
+  // 예외 경로 체크
+  if (exemptPaths.some((path) => pathname.startsWith(path))) {
+    return NextResponse.next();
+  }
+
+  // 공개 라우트는 인증 체크 안함
+  if (routeUtils.isPublicRoute(pathname)) {
+    return NextResponse.next();
+  }
+
+  // 홈페이지와 온보딩은 로그인된 사용자만 접근 가능
+  if (conditionalRoutes.includes(pathname)) {
+    if (!isAuthenticated) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    return NextResponse.next();
+  }
+
   // 1. 비로그인 유저가 보호된 라우트 접근 시 → /login
   if (!isAuthenticated && routeUtils.isProtectedRoute(pathname)) {
     return NextResponse.redirect(new URL('/login', request.url));
@@ -21,7 +54,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // 미들웨어는 단순히 인증 상태만 체크하고, 나머지는 AuthProvider에서 처리
   return NextResponse.next();
 }
 

@@ -3,7 +3,7 @@ export const ROUTE_CONFIG = {
   PROTECTED_ROUTES: ['/sell', '/exchange', '/signal', '/mypage', '/onboarding'],
 
   // 공개 라우트 (인증 불필요)
-  PUBLIC_ROUTES: ['/', '/login', '/signup/**'],
+  PUBLIC_ROUTES: ['/', '/login', '/login/success', '/signup/**'],
 
   // 회원가입 관련 라우트
   SIGNUP_ROUTES: ['/signup/privacy', '/signup/profile', '/signup/plan'],
