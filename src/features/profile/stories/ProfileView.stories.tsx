@@ -45,15 +45,55 @@ const getMockProfileById = (userId: number): ProfileUser => {
     case 1:
       return createMockProfile({ userId: 1, nickname: '내 프로필' });
     case 999:
-      return createMockProfile({ userId: 999, nickname: '팔로우중인 지구인' });
-    case 500:
-      return createMockProfile({ userId: 500, nickname: '데이터없는 지구인', tradePostsRes: [] });
+      return createMockProfile({ userId: 999, nickname: '팔로잉중인 지구인' });
+    case 888:
+      return createMockProfile({ userId: 888, nickname: '미팔로우 지구인' });
     default:
       return createMockProfile();
   }
 };
 
-const MockProfileView = ({ userId }: { userId: number }) => {
+// 팔로우 버튼 컴포넌트 추가
+const FollowButton = ({
+  isFollowing,
+  isLoggedIn = true,
+}: {
+  isFollowing?: boolean;
+  isMyProfile?: boolean;
+  isLoggedIn?: boolean;
+}) => {
+  if (!isLoggedIn) {
+    return (
+      <button className="px-4 py-2 bg-primary-300 text-white rounded-lg text-sm hover:bg-primary-400 transition-colors">
+        로그인
+      </button>
+    );
+  }
+
+  return (
+    <button
+      className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+        isFollowing
+          ? 'bg-gray-100 text-black hover:bg-gray-200'
+          : 'bg-primary-300 text-white hover:bg-primary-400'
+      }`}
+    >
+      {isFollowing ? '언팔로우' : '팔로우'}
+    </button>
+  );
+};
+
+const MockProfileView = ({
+  userId,
+  isMyProfile = false,
+  isFollowing = false,
+  isLoggedIn = true,
+}: {
+  userId: number;
+  isMyProfile?: boolean;
+  isFollowing?: boolean;
+  isLoggedIn?: boolean;
+}) => {
   const profile = getMockProfileById(userId);
 
   return (
@@ -82,6 +122,17 @@ const MockProfileView = ({ userId }: { userId: number }) => {
               <span className="text-gray-400 text-sm">지구인 #{profile.userId}</span>
             </div>
           </div>
+
+          <div className="flex gap-2">
+            <FollowButton
+              isFollowing={isFollowing}
+              isMyProfile={isMyProfile}
+              isLoggedIn={isLoggedIn}
+            />
+            <button className="px-4 py-2 bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-600 transition-colors flex items-center gap-1">
+              공유
+            </button>
+          </div>
         </div>
 
         <div className="flex justify-center gap-8">
@@ -109,13 +160,6 @@ const MockProfileView = ({ userId }: { userId: number }) => {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="w-full h-px bg-white opacity-20"></div>
-
-          <div className="space-y-3">
-            <h3 className="text-white font-semibold text-lg">보유 업적</h3>
-            <div className="text-center text-gray-400 py-4">보유한 업적이 없습니다.</div>
           </div>
 
           <div className="w-full h-px bg-white opacity-20"></div>
@@ -162,13 +206,13 @@ const meta: Meta<typeof MockProfileView> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: '사용자 프로필 전체 뷰 컴포넌트입니다.',
+        component: '사용자 프로필 전체 뷰 컴포넌트 - 팔로우/언팔로우 기능 포함',
       },
     },
   },
   decorators: [
     (Story) => (
-      <div className="min-h-screen bg-gray-800">
+      <div className="min-h-screen bg-gray-900">
         <Story />
       </div>
     ),
@@ -178,6 +222,18 @@ const meta: Meta<typeof MockProfileView> = {
       control: 'number',
       description: '조회할 사용자 ID',
     },
+    isMyProfile: {
+      control: 'boolean',
+      description: '내 프로필 여부',
+    },
+    isFollowing: {
+      control: 'boolean',
+      description: '팔로우 상태',
+    },
+    isLoggedIn: {
+      control: 'boolean',
+      description: '로그인 상태',
+    },
   },
 };
 
@@ -185,32 +241,52 @@ export default meta;
 type Story = StoryObj<typeof MockProfileView>;
 
 export const Default: Story = {
-  args: { userId: 308 },
+  args: {
+    userId: 308,
+    isMyProfile: false,
+    isFollowing: false,
+    isLoggedIn: true,
+  },
 };
 
 export const MyProfile: Story = {
-  args: { userId: 1 },
+  args: {
+    userId: 1,
+    isMyProfile: true,
+    isFollowing: false,
+    isLoggedIn: true,
+  },
   parameters: {
     docs: {
-      description: { story: '내 프로필을 표시할 때는 공유 버튼이 나타납니다.' },
+      description: { story: '내 프로필을 표시할 때는 "내 프로필" 표시가 나타납니다.' },
+    },
+  },
+};
+
+export const NotFollowingUser: Story = {
+  args: {
+    userId: 888,
+    isMyProfile: false,
+    isFollowing: false,
+    isLoggedIn: true,
+  },
+  parameters: {
+    docs: {
+      description: { story: '팔로우하지 않은 사용자의 프로필 - "팔로우" 버튼이 표시됩니다.' },
     },
   },
 };
 
 export const FollowingUser: Story = {
-  args: { userId: 999 },
-  parameters: {
-    docs: {
-      description: { story: '이미 팔로우한 사용자의 프로필입니다.' },
-    },
+  args: {
+    userId: 999,
+    isMyProfile: false,
+    isFollowing: true,
+    isLoggedIn: true,
   },
-};
-
-export const EmptyData: Story = {
-  args: { userId: 500 },
   parameters: {
     docs: {
-      description: { story: '판매 데이터가 없는 사용자의 프로필입니다.' },
+      description: { story: '이미 팔로우한 사용자의 프로필 - "언팔로우" 버튼이 표시됩니다.' },
     },
   },
 };

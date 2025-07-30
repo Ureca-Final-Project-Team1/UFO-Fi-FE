@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // 토스페이먼츠 v2 표준 SDK 타입 정의
 interface TossPaymentsInstance {
@@ -35,7 +35,6 @@ export function useTossPayments(clientKey: string) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const paymentRef = useRef<TossPaymentsPayment | null>(null);
 
   // SDK 로드
   useEffect(() => {
@@ -83,6 +82,10 @@ export function useTossPayments(clientKey: string) {
     };
   }, [clientKey]);
 
+  const resetError = () => {
+    setError(null);
+  };
+
   // 결제 요청
   const requestPayment = async (config: {
     amount: number;
@@ -98,18 +101,18 @@ export function useTossPayments(clientKey: string) {
       throw new Error('토스페이먼츠 SDK가 준비되지 않았습니다.');
     }
 
+    // 시작 시 모든 상태 초기화
     setIsLoading(true);
     setError(null);
 
     try {
-      if (!paymentRef.current) {
-        const tossPayments = window.TossPayments(clientKey);
-        paymentRef.current = tossPayments.payment({
-          customerKey: config.customerKey || 'anonymous',
-        });
-      }
+      // 매번 새로운 payment 인스턴스 생성
+      const tossPayments = window.TossPayments(clientKey);
+      const payment = tossPayments.payment({
+        customerKey: config.customerKey || `${config.customerKey}_${Date.now()}`,
+      });
 
-      await paymentRef.current.requestPayment({
+      await payment.requestPayment({
         method: 'CARD',
         amount: {
           currency: 'KRW',
@@ -136,5 +139,6 @@ export function useTossPayments(clientKey: string) {
     isLoading,
     error,
     requestPayment,
+    resetError,
   };
 }

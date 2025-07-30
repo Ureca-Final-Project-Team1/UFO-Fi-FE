@@ -54,7 +54,6 @@ export default function ZetChargePage() {
               zet={pkg.zet}
               price={pkg.price}
               onBuyClick={handleChargePackage}
-              isLoading={isProcessing}
             />
           ))}
         </div>
