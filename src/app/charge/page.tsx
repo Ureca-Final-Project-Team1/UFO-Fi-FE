@@ -1,20 +1,12 @@
 'use client';
 
-import { IMAGE_PATHS, PACKAGES } from '@/constants';
+import { PACKAGES } from '@/constants';
 import { ZetChargePackageCard } from '@/features/charge/components/ZetChargePackageCard';
 import { useZetCharge } from '@/features/charge/hooks/useZetCharge';
-import { useMyInfo } from '@/features/mypage/hooks';
-import { Icon, TitleWithRouter } from '@/shared';
+import { TitleWithRouter } from '@/shared';
 
 export default function ZetChargePage() {
   const { handleChargePackage, isProcessing } = useZetCharge();
-  const { data: myInfo, isLoading: isUserLoading, error: userError } = useMyInfo();
-
-  const zetAsset = myInfo?.zetAsset ?? 0;
-
-  if (userError) {
-    return null;
-  }
 
   return (
     <div className="min-h-full flex flex-col">
@@ -25,24 +17,6 @@ export default function ZetChargePage() {
 
         <div className="flex items-center justify-between mb-4">
           <p className="body-16-medium text-white m-0">외계 전파 코인을 구매하세요!</p>
-
-          <div className="w-[124px] h-[36px] bg-primary-700 border-2 border-blue-500 rounded-xl flex items-center justify-center">
-            <Icon
-              src={IMAGE_PATHS.PACKAGE_A}
-              alt="패키지 아이콘"
-              className="mr-2 w-[20px] h-[20px]"
-            />
-            {isUserLoading ? (
-              <span className="body-16-bold text-cyan-400">...</span>
-            ) : zetAsset > 0 ? (
-              <>
-                <span className="body-16-bold text-cyan-400">{zetAsset.toLocaleString()}</span>
-                <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
-              </>
-            ) : (
-              <span className="body-14-medium text-gray-400">보유 제트 없음</span>
-            )}
-          </div>
         </div>
 
         {/* 패키지 카드 */}
