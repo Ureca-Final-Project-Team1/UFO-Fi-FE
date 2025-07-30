@@ -45,8 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         canonical: profileUrl,
       },
     };
-  } catch (error) {
-    console.error('generateMetadata error:', error);
+  } catch {
     return {
       title: '사용자 프로필 - UFO-Fi',
       description: 'UFO-Fi 사용자 프로필을 확인해보세요.',

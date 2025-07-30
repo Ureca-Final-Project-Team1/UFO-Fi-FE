@@ -1,0 +1,28 @@
+import type { achievement } from '@prisma/client';
+
+export interface AchievementUpdateResponse {
+  message: string;
+  trade_level: number;
+  follow_level: number;
+  rotate_level: number;
+  total_level: number;
+  achievements: (achievement & { achievedAt: string | null })[];
+  newly_achieved_ids: number[];
+}
+
+export interface Achievement {
+  id: number;
+  level: number;
+  type: 'trade' | 'rotate' | 'follow';
+  name: string;
+  description: string;
+  condition_value: number;
+  achievedAt?: string | null;
+}
+
+export type SelectedAchievementState = {
+  achievement: Achievement;
+  i: number;
+  j: number;
+  isAchieve: boolean;
+};

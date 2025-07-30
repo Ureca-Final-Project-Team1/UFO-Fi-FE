@@ -21,3 +21,4 @@ export * from './Pagination';
 export * from './Table';
 export * from './NotificationDropdown';
 export * from './Loading';
+export * from './SpeechBubble';

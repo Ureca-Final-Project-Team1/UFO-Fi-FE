@@ -6,8 +6,7 @@ import { Suspense } from 'react';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { useBulkResult } from '@/features/bulk/hooks/useBulkResult';
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
-import { Icon, Button } from '@/shared';
+import { Icon, Button, Title } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 function BulkResultContent() {
@@ -22,7 +21,7 @@ function BulkResultContent() {
 
   return (
     <div className="justify-center items-center">
-      <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
+      <Title title="매칭된 데이터" iconVariant="back" />
 
       <div className="relative rounded-[20px] space-y-6 pb-12 px-4">
         {/* 매칭 결과 */}

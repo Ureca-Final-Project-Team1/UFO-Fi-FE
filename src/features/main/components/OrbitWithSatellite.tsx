@@ -4,9 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { Modal } from '@/shared';
-
-import { SpeechBubble } from './SpeechBubble';
+import { Modal, SpeechBubble } from '@/shared';
 
 const ORBIT_BASE_SIZE = 600;
 const SATELLITE_WIDTH = 30;
