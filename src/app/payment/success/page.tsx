@@ -9,7 +9,7 @@ import { paymentAPI } from '@/api';
 import { PACKAGES } from '@/constants';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Icon, Title } from '@/shared/ui';
+import { Button, Icon, Loading, Title } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 function PaymentSuccessContent() {
@@ -165,18 +165,7 @@ function PaymentSuccessContent() {
 
 export default function PaymentSuccessPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center min-h-full bg-gradient-to-b from-primary-900 to-primary-800">
-          <div className="text-white text-center space-y-4">
-            <div className="animate-pulse">
-              <Icon src={IMAGE_PATHS.PACKAGE_A} alt="로딩" className="w-8 h-8 mx-auto mb-2" />
-            </div>
-            <p className="body-16-medium">결제 정보를 확인하는 중...</p>
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<Loading />}>
       <PaymentSuccessContent />
     </Suspense>
   );

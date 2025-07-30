@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { paymentAPI } from '@/api';
 import type { PaymentRequest } from '@/api/types/payment';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { generateOrderId, generateCustomerKey } from '@/utils/uuid';
+import { generateCustomerKey } from '@/utils/uuid';
 
 import { useTossPayments } from './useTossPayments';
 
@@ -42,9 +42,14 @@ export function useZetCharge() {
     setIsProcessing(true);
 
     try {
-      const orderId = generateOrderId();
+      const timestamp = Date.now();
+      const randomSuffix = Math.random().toString(36).substring(2, 8);
+
+      const orderId = `UFO-${timestamp}-${randomSuffix}`.toUpperCase();
       const packageName = `ZET 패키지 ${packageId} (${zetAmount} ZET)`;
-      const customerKey = generateCustomerKey(userInfo.nickname ?? userInfo.email ?? undefined);
+
+      const baseCustomerKey = generateCustomerKey(userInfo.nickname ?? userInfo.email ?? undefined);
+      const uniqueCustomerKey = `${baseCustomerKey}_${timestamp}_${randomSuffix}`;
 
       const chargeRequest: PaymentRequest = {
         orderId,
@@ -59,17 +64,42 @@ export function useZetCharge() {
         amount: chargeResponse.price,
         orderId: chargeResponse.orderId,
         orderName: packageName,
-        successUrl: `${BASE_URL}/payment/success`,
-        failUrl: `${BASE_URL}/payment/fail`,
+        successUrl: `${BASE_URL}/payment/success?t=${timestamp}`,
+        failUrl: `${BASE_URL}/payment/fail?t=${timestamp}`,
         customerEmail: chargeResponse.email,
         customerName: chargeResponse.name,
-        customerKey: `${customerKey}_${Date.now()}`,
+        customerKey: uniqueCustomerKey,
       };
 
       await requestPayment(paymentConfig);
     } catch (error) {
+      console.error('결제 요청 실패:', error);
+
       if (error instanceof Error) {
-        toast.error(`${error.message}`);
+        const errorMessage = error.message;
+
+        // 결제 취소 관련 에러 감지
+        if (errorMessage.includes('취소') || errorMessage.includes('CANCEL')) {
+          const shouldRefresh = confirm(
+            '결제가 취소되었습니다.\n' +
+              '다시 결제하려면 페이지를 새로고침해야 합니다.\n\n' +
+              '지금 새로고침하시겠습니까?',
+          );
+
+          if (shouldRefresh) {
+            window.location.reload();
+          } else {
+            toast.error('결제를 다시 시도하려면 페이지를 새로고침하세요.', {
+              duration: 5000,
+              action: {
+                label: '새로고침',
+                onClick: () => window.location.reload(),
+              },
+            });
+          }
+        } else {
+          // 일반 에러는 그냥 메시지만 표시      toast.error(`${errorMessage}`);
+        }
       } else {
         toast.error('충전 요청 중 오류가 발생했습니다.');
       }
