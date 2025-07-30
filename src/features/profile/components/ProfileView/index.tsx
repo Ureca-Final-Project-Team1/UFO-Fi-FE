@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { useProfile } from '@/features/profile/hooks/useProfile';
+import { useProfileWithFollow } from '@/features/profile/hooks/useProfileWithFollow';
 import { Title } from '@/shared';
 
 import { ProfileContentSections } from './ProfileContentSections';
@@ -15,7 +15,7 @@ interface ProfileViewProps {
 
 export function ProfileView({ userId }: ProfileViewProps) {
   const router = useRouter();
-  const { data: profile, isLoading, error } = useProfile(userId);
+  const { data: profile, isLoading, error, isMyProfile } = useProfileWithFollow(userId);
 
   if (isLoading) {
     return (
@@ -53,7 +53,7 @@ export function ProfileView({ userId }: ProfileViewProps) {
       <Title title="프로필 보기" iconVariant="back" />
 
       <div className="space-y-6 px-4">
-        <ProfileHeader profile={profile} />
+        <ProfileHeader profile={profile} isMyProfile={isMyProfile} />
         <ProfileStats profile={profile} />
         <ProfileContentSections profile={profile} />
       </div>
