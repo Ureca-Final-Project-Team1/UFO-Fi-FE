@@ -33,8 +33,8 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="w-full min-h-full flex flex-col">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col">
+    <div className="w-full min-h-[calc(100dvh-120px)] flex flex-col justify-between">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col gap-6">
         <div className="flex-1 flex flex-col justify-start items-start">
           <Title title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
 
@@ -74,7 +74,6 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
-
         {/* 고정된 하단 버튼 */}
         <div className="sticky bottom-0 bg-inherit pb-4">
           <Button type="submit" size="full-width" className="body-16-medium h-14 text-white">
