@@ -104,10 +104,6 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
           </Button>
         )}
 
-        {isActuallyMyProfile && (
-          <div className="text-cyan-400 text-sm px-3 py-2 bg-cyan-600/20 rounded-md">내 프로필</div>
-        )}
-
         {/* 로그아웃 상태에서는 로그인 유도 */}
         {!isLoggedIn && (
           <Button
