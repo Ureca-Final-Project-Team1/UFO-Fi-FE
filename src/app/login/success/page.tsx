@@ -23,23 +23,25 @@ const SuccessPage = () => {
 
         const response = await getUserInfoAPI.getInfo();
 
+        // 전화번호 저장
+        setPhoneNumber(response.content.phoneNumber);
+
+        // 사용자 역할에 따른 리다이렉트
         switch (response.content.role) {
           case 'ROLE_NO_INFO':
-            router.push('/signup/privacy');
+            router.replace('/signup/privacy');
             break;
           case 'ROLE_REPORTED':
-            router.push('/blackhole');
+            router.replace('/blackhole');
             break;
           case 'ROLE_ADMIN':
-            router.push('/admin');
+            router.replace('/admin');
             break;
           case 'ROLE_USER':
           default:
-            router.push('/');
+            router.replace('/');
             break;
         }
-
-        setPhoneNumber(response.content.phoneNumber);
       } catch {
         setToast('회원 정보를 불러올 수 없습니다.', 'error');
         router.push('/login');
