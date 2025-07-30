@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import { nextApiRequest } from '@/api/client/axios';
 import { Modal, SpeechBubble } from '@/shared';
 
 const ORBIT_BASE_SIZE = 600;
@@ -35,11 +36,15 @@ export default function OrbitWithSatellite() {
   useEffect(() => {
     async function fetchLetters() {
       try {
-        // TODO: userId 수정 필요
-        await fetch(`/api/story/letters/${10}`, { method: 'POST' });
-        const res = await fetch(`/api/story/letters/${10}`);
-        const data = await res.json();
-        setLetters(data);
+        await nextApiRequest.post('/api/story/letters');
+        const res = await nextApiRequest.get('/api/story/letters');
+        const data = (await res.data) as Letter[];
+        setLetters(
+          data.map((letter) => ({
+            step: Number(letter.step),
+            content: letter.content,
+          })),
+        );
       } catch (e) {
         console.error('편지 불러오기 실패:', e);
         toast.error('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');

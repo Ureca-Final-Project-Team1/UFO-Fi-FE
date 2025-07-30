@@ -6,13 +6,17 @@ import { statisticsService } from '@/api/services/admin/statistics';
 import type { ReportsStatisticsData } from '@/api/types';
 import { ReportedUser } from '@/api/types/report';
 import { useReportedUsers } from '@/features/admin/hooks/useReportedUsers';
+import {
+  Button,
+  Header,
+  Sidebar,
+  Skeleton,
+  AdminTable,
+  TableColumn,
+  TableActions,
+  BaseTableRow,
+} from '@/shared';
 import { useModal } from '@/shared/hooks/useModal';
-import { Button } from '@/shared/ui/Button/Button';
-import Header from '@/shared/ui/Header/Header';
-import Sidebar from '@/shared/ui/Sidebar/Sidebar';
-import { Skeleton } from '@/shared/ui/Skeleton';
-import { AdminTable } from '@/shared/ui/Table/AdminTable';
-import { TableColumn, TableActions, BaseTableRow } from '@/shared/ui/Table/Table.types';
 
 interface ReportedUserTableRow extends ReportedUser, BaseTableRow {
   id: number;

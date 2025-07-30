@@ -6,4 +6,5 @@ export type {
   NotificationDropdownProps,
   NotificationItemProps,
   NotificationTriggerProps,
+  NotificationType,
 } from './NotificationDropdown.types';

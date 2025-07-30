@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { statisticsService } from '@/api/services/admin/statistics';
 import type { StatisticsData } from '@/api/types';
-import Header from '@/shared/ui/Header/Header';
-import Sidebar from '@/shared/ui/Sidebar/Sidebar';
-import { Skeleton } from '@/shared/ui/Skeleton';
+import { Header, Sidebar, Skeleton } from '@/shared';
 
 export default function AdminPage() {
   const [statistics, setStatistics] = useState<StatisticsData | null>(null);
