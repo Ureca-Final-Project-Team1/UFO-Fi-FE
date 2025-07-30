@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { achievementsAPI } from '@/api/services/mypage/achievement';
+import { IMAGE_PATHS } from '@/constants';
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
 import { Loading, Title } from '@/shared';
 import AchievementModal from '@/shared/ui/Modal/AchievementModal';
@@ -57,7 +58,13 @@ export default function AchievementPage() {
           rotate: res.rotate_level,
           total: res.total_level,
         });
-        setAchievements(res.achievements ?? []);
+        setAchievements(
+          (res.achievements ?? []).map((a) => ({
+            ...a,
+            id: Number(a.id),
+            type: a.type as 'trade' | 'follow' | 'rotate',
+          })),
+        );
       })
       .catch((err) => {
         console.error('Achievement fetch error:', err);
@@ -96,7 +103,7 @@ export default function AchievementPage() {
           </p>
           <div className="relative w-full flex items-end justify-evenly">
             <Image
-              src="/images/cloud.svg"
+              src={IMAGE_PATHS.CLOUD}
               alt="cloud"
               fill
               className="z-0 object-contain"

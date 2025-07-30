@@ -1,3 +1,5 @@
+import { Achievement } from '@/types/Achievement';
+
 import { SuccessApiResponse } from './api';
 import { Carrier } from './carrier';
 import { MobileDataType } from './mobileData';
@@ -25,3 +27,9 @@ export interface GetProfileRequest {
 }
 
 export type GetProfileResponse = SuccessApiResponse<ProfileUser>;
+
+export type UserStats = {
+  trade_frequency: number;
+  dominant_trade_time: 'day' | 'night';
+  achievements: Achievement[];
+};
