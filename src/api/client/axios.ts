@@ -24,7 +24,7 @@ const axiosInstance = axios.create({
 
 // Next.js API 라우트 전용 axios 인스턴스
 const nextAxiosInstance = axios.create({
-  baseURL: '', // 현재 origin 기준으로 /api 경로 접근
+  baseURL: '',
   timeout: 10000,
   withCredentials: true,
   headers: {
@@ -60,6 +60,12 @@ const hasRefreshCookie = (): boolean => {
   return document.cookie.includes('Refresh=');
 };
 
+// Helper: 로그인 성공 페이지인지 확인
+const isLoginSuccessPage = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  return window.location.pathname === '/login/success';
+};
+
 // axiosInstance 응답 인터셉터
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -68,6 +74,11 @@ axiosInstance.interceptors.response.use(
     const statusCode = error.response?.status || 500;
 
     if (statusCode === 401 && !originalRequest._retry) {
+      // 로그인 성공 페이지에서는 리프레시 시도하지 않고 바로 에러 반환
+      if (isLoginSuccessPage()) {
+        return Promise.reject(new ApiError('Authentication failed on login success page', 401));
+      }
+
       // Refresh 쿠키 없으면 바로 로그인 만료 처리
       if (!hasRefreshCookie()) {
         if (typeof window !== 'undefined') {
@@ -92,13 +103,11 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // /refresh 호출
         const refreshResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/refresh`, {
           withCredentials: true,
           timeout: 5000,
         });
 
-        // 성공 시 큐 재처리 + 요청 재시도
         if (refreshResponse.data?.content?.reissueSuccess) {
           processQueue(null, 'refreshed');
           return axiosInstance(originalRequest);
@@ -106,7 +115,7 @@ axiosInstance.interceptors.response.use(
           throw new Error('Token refresh failed');
         }
       } catch (refreshError: unknown) {
-        // ✅ 실패 시 큐 실패 처리 + 쿠키 삭제 + 리다이렉트
+        console.error('Token refresh failed:', refreshError);
         processQueue(refreshError, null);
 
         if (typeof window !== 'undefined') {
@@ -133,7 +142,7 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-// nextAxiosInstance 응답 인터셉터
+// nextAxiosInstance 응답 인터셉터 (변경 없음)
 nextAxiosInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
@@ -155,7 +164,7 @@ nextAxiosInstance.interceptors.response.use(
   },
 );
 
-// API 요청 함수들
+// API 요청 함수들 (변경 없음)
 export const apiRequest = {
   get: <T>(url: string, config?: AxiosRequestConfig) => axiosInstance.get<T>(url, config),
   post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
