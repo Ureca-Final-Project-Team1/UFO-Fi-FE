@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/shared';
+import { getAchievedDate } from '@/utils/getAchievedDate';
 
 import { AchievementModalProps } from './Modal.types';
 
@@ -17,19 +18,9 @@ export default function AchievementModal({ open, onClose, achievement }: Achieve
   if (!achievement) return null;
 
   const { i, j, isAchieve, achievement: data } = achievement;
-
-  const achievedDate =
-    isAchieve && data.achievedAt
-      ? new Date(data.achievedAt).toLocaleDateString('ko-KR', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      : null;
-
+  const achievedDate = getAchievedDate(data.achievedAt, isAchieve);
   const conditionText =
     data.type === 'trade' ? '회 거래' : data.type === 'follow' ? '명 팔로워' : '번 항해 완료';
-
   const levelText = `${isAchieve ? `업적 달성 🎉` : '업적 미달성'}`;
 
   return (

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+import { achievementsAPI } from '@/api/services/mypage/achievement';
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
 import { Loading, Title } from '@/shared';
 import AchievementModal from '@/shared/ui/Modal/AchievementModal';
@@ -42,11 +43,8 @@ export default function AchievementPage() {
   };
   useEffect(() => {
     setIsLoading(true);
-    fetch('/api/achievements/update', { method: 'POST' })
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch achievements');
-        return res.json();
-      })
+    achievementsAPI
+      .updateAchievements()
       .then((data) => {
         if (data.trade_level !== undefined) {
           setLevels({
