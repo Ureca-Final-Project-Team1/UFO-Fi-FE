@@ -8,16 +8,9 @@ import { bulkPurchaseAPI } from '@/api';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { Button, Loading, Title } from '@/shared';
 import { usePostIdsStore } from '@/stores/useBulkStore';
+import { formatTimeAgo } from '@/utils';
 
 import { BulkPurchaseItem, FailureBulkPurchaseItem } from '../types/bulkResult.types';
-
-function timeAgoString(date: Date): string {
-  const diff = (new Date().getTime() - new Date(date).getTime()) / 1000;
-  if (diff < 60) return `${Math.floor(diff)}초 전`;
-  if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
-  return `${Math.floor(diff / 86400)}일 전`;
-}
 
 export function BulkPurchaseContent() {
   const { postIds, setPostIds } = usePostIdsStore();
@@ -35,6 +28,8 @@ export function BulkPurchaseContent() {
   };
 
   useEffect(() => {
+    if (postIds.length === 0) return;
+
     const fetchPurchase = async () => {
       try {
         setIsLoading(true);
@@ -84,7 +79,7 @@ export function BulkPurchaseContent() {
                 dataAmount={item.sellMobileDataCapacityGb}
                 price={item.totalPrice}
                 seller={item.sellerNickname}
-                timeAgo={timeAgoString(item.createdAt)}
+                timeAgo={formatTimeAgo(item.createdAt)}
                 profileUrl={item.sellerProfileUrl}
               />
             ))}
@@ -115,7 +110,7 @@ export function BulkPurchaseContent() {
                     dataAmount={item.sellMobileDataCapacityGb}
                     price={item.totalPrice}
                     seller={item.sellerNickname}
-                    timeAgo={timeAgoString(item.createdAt)}
+                    timeAgo={formatTimeAgo(item.createdAt)}
                     profileUrl={item.sellerProfileUrl}
                   />
                 </div>

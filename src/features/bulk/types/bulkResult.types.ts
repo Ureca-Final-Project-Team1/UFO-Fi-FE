@@ -8,7 +8,7 @@ export interface BulkPurchaseItem {
   sellMobileDataCapacityGb: number;
   carrier: Carrier;
   status: string;
-  createdAt: Date;
+  createdAt: string;
   pricePerUnit: number;
   mobileDataType: MobileDataType;
   sellerNickname: string;
