@@ -9,7 +9,7 @@ import { paymentAPI } from '@/api';
 import { PACKAGES } from '@/constants';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Icon, Loading, Title } from '@/shared';
+import { Button, Loading, Title } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 // 전역 중복 방지
@@ -94,22 +94,7 @@ function PaymentSuccessContent() {
   }, []); // 의존성 배열을 비워서 마운트 시에만 실행
 
   if (isConfirming) {
-    return (
-      <div className="flex flex-col h-full w-full items-center justify-center bg-gradient-to-b from-primary-900 to-primary-800">
-        <div className="text-center space-y-6">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400/30 border-t-cyan-400 mx-auto"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Icon src={IMAGE_PATHS.PACKAGE_A} alt="ZET" className="w-6 h-6" />
-            </div>
-          </div>
-          <div className="text-white space-y-2">
-            <h2 className="heading-24-bold">결제 승인 중입니다</h2>
-            <p className="body-16-medium text-gray-300">ZET 충전을 완료하고 있어요...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
