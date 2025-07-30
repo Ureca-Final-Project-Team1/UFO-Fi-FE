@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 import { toast } from 'sonner';
 
 import { paymentAPI } from '@/api';
@@ -11,6 +11,9 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button, Icon, Loading, Title } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
+
+// 전역 중복 방지
+const globalConfirmTracker = new Set<string>();
 
 function PaymentSuccessContent() {
   const router = useRouter();
@@ -21,9 +24,15 @@ function PaymentSuccessContent() {
   const [isConfirming, setIsConfirming] = useState(true);
   const [chargedAmount, setChargedAmount] = useState<number>(0);
   const [newZetBalance, setNewZetBalance] = useState<number | null>(null);
+  const isExecutingRef = useRef(false);
+  const hasExecutedRef = useRef(false);
 
   useEffect(() => {
     const confirmPayment = async () => {
+      if (isExecutingRef.current || hasExecutedRef.current) {
+        return;
+      }
+
       const paymentKey = searchParams.get('paymentKey');
       const orderId = searchParams.get('orderId');
       const amount = searchParams.get('amount');
@@ -33,6 +42,14 @@ function PaymentSuccessContent() {
         router.push('/charge');
         return;
       }
+
+      if (globalConfirmTracker.has(orderId)) {
+        return;
+      }
+
+      isExecutingRef.current = true;
+      hasExecutedRef.current = true;
+      globalConfirmTracker.add(orderId);
 
       try {
         const paymentAmount = parseInt(amount);
@@ -54,6 +71,7 @@ function PaymentSuccessContent() {
 
         setChargedAmount(confirmResponse.amount || zetAmount);
         setNewZetBalance(confirmResponse.zetAsset);
+
         const updatedUserInfo = await refetchUserInfo();
         if (updatedUserInfo.data) {
           setNewZetBalance(updatedUserInfo.data.zetAsset);
@@ -61,18 +79,19 @@ function PaymentSuccessContent() {
 
         toast.success('ZET 충전이 완료되었습니다!');
       } catch (error) {
-        console.error('결제 승인 오류:', error);
         toast.error(
           `결제 승인 중 오류가 발생했습니다: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
         );
         router.push('/payment/fail');
       } finally {
         setIsConfirming(false);
+        isExecutingRef.current = false;
+        // orderId는 성공/실패와 관계없이 제거하지 않음 (중복 방지 유지)
       }
     };
 
     confirmPayment();
-  }, [searchParams, router, refetchUserInfo]);
+  }, []); // 의존성 배열을 비워서 마운트 시에만 실행
 
   if (isConfirming) {
     return (
@@ -113,7 +132,7 @@ function PaymentSuccessContent() {
 
           {/* 메인 메시지 */}
           <div className="space-y-2">
-            <h1 className="heading-24-bold' text-white">ZET 충전 완료!</h1>
+            <h1 className="heading-24-bold text-white">ZET 충전 완료!</h1>
             <p className="body-16-medium text-gray-300">
               외계 전파 코인이 성공적으로 충전되었습니다.
             </p>
