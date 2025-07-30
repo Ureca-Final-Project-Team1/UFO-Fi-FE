@@ -8,7 +8,7 @@ import { Plan } from '@/api';
 import { Carrier } from '@/api/types/carrier';
 import { OCRInputSection } from '@/features/signup/components';
 import { SignupPlanSchema, signupPlanSchema } from '@/schemas/signupSchema';
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared';
 
 interface PlanEditorProps {
   carrier: Carrier | '';

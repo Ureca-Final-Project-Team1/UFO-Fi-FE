@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/shared';
 
 export default function NotFound() {
   const router = useRouter();

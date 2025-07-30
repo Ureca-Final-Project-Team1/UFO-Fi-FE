@@ -210,7 +210,8 @@ model users {
   user_plans                               user_plans?
   profile_photo                            profile_photo?           @relation(fields: [profile_photo_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKjkh0ielp5opkdbqmdmq4x5g75")
   refreshs                                 refreshs?                @relation(fields: [refresh_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKt80anxmture0i6gt74feisyb1")
-
+  user_achievements                        user_achievements[]
+  
   @@index([profile_photo_id], map: "FKjkh0ielp5opkdbqmdmq4x5g75")
 }
 
@@ -291,21 +292,25 @@ model voyage_letters {
 }
 
 
-model achievement {
-  id              Int      @id @default(autoincrement())
+model achievements {
+  id              BigInt              @id @default(autoincrement())
+  name            String
   level           Int
-  type            AchievementType
+  type            String
   condition_value Int
-  name            String   // 업적 이름
-  description     String   // 업적 설명
+  description     String
+
+  user_achievements user_achievements[]
 }
 
 model user_achievements {
-  id             BigInt   @id @default(autoincrement())
+  id             BigInt       @id @default(autoincrement())
   user_id        BigInt
-  achievement_id Int
-  achieved_at    DateTime
-  @@unique([user_id, achievement_id])
+  achievement_id BigInt
+  achieved_at    DateTime?
+
+  user        users        @relation(fields: [user_id], references: [id])
+  achievement achievements @relation(fields: [achievement_id], references: [id])
 }
 
 

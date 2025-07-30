@@ -4,8 +4,7 @@ import { useState } from 'react';
 
 import LetterTabContent from '@/features/signal/components/LetterTabContent';
 import SignalTabContent from '@/features/signal/components/SignalTabContent';
-import { Title } from '@/shared';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui/Tabs';
+import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared';
 
 type TabType = 'orbit' | 'letters';
 

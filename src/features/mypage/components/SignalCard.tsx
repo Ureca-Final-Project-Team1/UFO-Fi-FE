@@ -5,9 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Avatar } from '@/shared/ui';
-import { Button } from '@/shared/ui';
-import { Progress } from '@/shared/ui/Progress';
+import { Avatar, Button, Progress } from '@/shared';
 
 interface SignalCardProps {
   userId: string;

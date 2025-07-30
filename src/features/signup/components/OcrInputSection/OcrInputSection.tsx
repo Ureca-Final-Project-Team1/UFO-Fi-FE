@@ -16,7 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui';
+} from '@/shared';
 import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 const VALID_CARRIERS = ['SKT', 'LGU', 'KT'] as const;

@@ -1,4 +1,4 @@
-import { Icon } from '@/shared/ui/Icons';
+import { Icon } from '@/shared';
 
 interface MenuItemProps {
   label: string;
