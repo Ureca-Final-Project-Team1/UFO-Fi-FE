@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
+import { useLetters } from '@/hooks/useLetters';
 
 interface Planet {
   id: number;
@@ -18,6 +19,12 @@ const getCSSVariable = (name: string): string => {
 
 export default function PlanetProgressBar() {
   const [planets, setPlanets] = useState<Planet[]>([]);
+  const { planetStatus, completedPlanets, initializeLetters } = useLetters();
+
+  // 컴포넌트 마운트 시 편지 상태 로드
+  useEffect(() => {
+    initializeLetters();
+  }, [initializeLetters]);
 
   useEffect(() => {
     const colors = [
@@ -29,18 +36,21 @@ export default function PlanetProgressBar() {
     ];
 
     setPlanets([
-      { id: 1, src: IMAGE_PATHS.PLANET_1, active: true, color: colors[0] },
-      { id: 2, src: IMAGE_PATHS.PLANET_2, active: true, color: colors[1] },
-      { id: 3, src: IMAGE_PATHS.PLANET_3, active: true, color: colors[2] },
-      { id: 4, src: IMAGE_PATHS.PLANET_4, active: false, color: colors[3] },
-      { id: 5, src: IMAGE_PATHS.PLANET_5, active: false, color: colors[4] },
+      { id: 1, src: IMAGE_PATHS.PLANET_1, active: planetStatus[0], color: colors[0] },
+      { id: 2, src: IMAGE_PATHS.PLANET_2, active: planetStatus[1], color: colors[1] },
+      { id: 3, src: IMAGE_PATHS.PLANET_3, active: planetStatus[2], color: colors[2] },
+      { id: 4, src: IMAGE_PATHS.PLANET_4, active: planetStatus[3], color: colors[3] },
+      { id: 5, src: IMAGE_PATHS.PLANET_5, active: planetStatus[4], color: colors[4] },
     ]);
-  }, []);
+  }, [planetStatus]);
 
-  const completed = planets.filter((p) => p.active).length;
+  const completed = completedPlanets;
+
+  // 디버깅용 로그
+  console.log('PlanetProgressBar - planetStatus:', planetStatus, 'completed:', completed);
 
   return (
-    <div className="flex flex-col items-center w-full gap-4 px-4">
+    <div className="flex flex-col items-center w-full gap-10 px-4">
       {/* 진행 텍스트 */}
       <p className="text-white text-sm pyeongchangpeace-title-2">
         {completed}번째 은하까지 탐사 완료...
