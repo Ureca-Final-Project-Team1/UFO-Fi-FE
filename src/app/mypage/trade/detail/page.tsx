@@ -9,7 +9,7 @@ import {
   CompletionImage,
 } from '@/features/mypage/components';
 import { usePurchaseDetail } from '@/features/mypage/hooks';
-import { TitleWithRouter } from '@/shared';
+import { Title } from '@/shared';
 
 export default function MyTradeDetailPage() {
   const searchParams = useSearchParams();
@@ -30,7 +30,7 @@ export default function MyTradeDetailPage() {
 
   return (
     <div className="w-full flex-1 flex flex-col items-center">
-      <TitleWithRouter title="주문 상세" iconVariant="back" />
+      <Title title="주문 상세" iconVariant="back" />
       <ReceiptContent purchaseDetail={purchaseDetail} />
       <div className="mt-auto">
         <CompletionImage />
