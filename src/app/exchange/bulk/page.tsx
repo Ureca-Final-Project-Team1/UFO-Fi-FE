@@ -7,7 +7,7 @@ import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { BulkCapacitySlider } from '@/features/bulk/components/BulkCapacitySlider';
 import { useBulkPurchase } from '@/features/bulk/hooks/useBulkPurchase';
-import { Icon, TitleWithRouter, Button, PriceInput } from '@/shared';
+import { Icon, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function BulkPurchasePage() {
@@ -31,7 +31,7 @@ export default function BulkPurchasePage() {
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center px-4 pb-12">
-      <TitleWithRouter title="일괄구매" iconVariant="back" />
+      <Title title="일괄구매" iconVariant="back" />
       <div className="relative rounded-[20px] space-y-6 pb-12">
         {/* 거래 제안서 헤더 */}
         <div className="flex items-center space-x-3">

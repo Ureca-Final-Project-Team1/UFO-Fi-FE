@@ -9,7 +9,7 @@ import { Carrier, CARRIER_DISPLAY_NAMES } from '@/api/types/carrier';
 import { FilterBox } from '@/features/exchange/components/FilterBox';
 import { useFilteredItemCount } from '@/hooks/useFilteredItemCount';
 import { useFilterState } from '@/hooks/useFilterState';
-import { Button, Chip, DataRangeSlider, DataSlider, Icon, TitleWithRouter } from '@/shared';
+import { Button, Chip, DataRangeSlider, DataSlider, Icon, Title } from '@/shared';
 
 import '@/styles/globals.css';
 
@@ -103,7 +103,7 @@ const FilterNotificationPage = () => {
 
   return (
     <div className="flex flex-col justify-start items-center w-full min-h-full">
-      <TitleWithRouter title="알림 조건 설정" iconVariant="back" />
+      <Title title="알림 조건 설정" iconVariant="back" />
       <div className="overflow-y-auto flex flex-col gap-4 h-full mb-4 hide-scrollbar">
         {/* 통신사 선택 */}
         <FilterBox name="통신사" isMultipleSelection={true}>
