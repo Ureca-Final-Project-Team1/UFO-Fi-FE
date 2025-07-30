@@ -7,7 +7,7 @@ import { exchangeAPI, purchaseHistory } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useUserRole } from '@/features/signup/hooks/useUserRole';
-import { Button, TitleWithRouter } from '@/shared';
+import { Button, Title } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
 export default function Step2Page() {
@@ -86,7 +86,7 @@ export default function Step2Page() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center h-full px-4">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
         <div className="flex items-center justify-center flex-1">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
@@ -97,7 +97,7 @@ export default function Step2Page() {
   if (!productData) {
     return (
       <div className="flex flex-col justify-center items-center w-full min-h-full px-4">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
         <div className="flex flex-col flex-1">
           <p className="text-red-400 text-center mb-4">상품 정보를 불러올 수 없습니다.</p>
           <Button variant="secondary" onClick={() => router.back()}>
@@ -110,7 +110,7 @@ export default function Step2Page() {
 
   return (
     <div className="flex flex-col items-center h-full px-4">
-      <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+      <Title title="데이터 구매하기" iconVariant="back" />
 
       {/* 데이터 큐브 이미지 */}
       <div className="flex justify-center mt-12 mb-8">

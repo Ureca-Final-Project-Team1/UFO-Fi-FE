@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { Title } from './Title';
+import { TitleWithoutRouter } from './TitleWithoutRouter';
 
-const meta: Meta<typeof Title> = {
+const meta: Meta<typeof TitleWithoutRouter> = {
   title: 'UI/Title',
-  component: Title,
+  component: TitleWithoutRouter,
   parameters: {
     layout: 'centered',
     docs: {
@@ -24,7 +24,7 @@ const meta: Meta<typeof Title> = {
       options: ['none', 'back', 'close'],
       description: '아이콘 유형을 선택합니다',
     },
-    onClick: {
+    onIconClick: {
       description: '아이콘 클릭 시 실행될 함수',
     },
   },
@@ -38,7 +38,7 @@ const meta: Meta<typeof Title> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Title>;
+type Story = StoryObj<typeof TitleWithoutRouter>;
 
 export const Default: Story = {
   args: {
@@ -50,7 +50,7 @@ export const WithBackIcon: Story = {
   args: {
     title: '뒤로가기가 있는 타이틀',
     iconVariant: 'back',
-    onClick: () => alert('뒤로가기 버튼 클릭'),
+    onIconClick: () => alert('뒤로가기 버튼 클릭'),
   },
 };
 
@@ -58,6 +58,6 @@ export const WithCloseIcon: Story = {
   args: {
     title: '닫기 버튼이 있는 타이틀',
     iconVariant: 'close',
-    onClick: () => alert('닫기 버튼 클릭'),
+    onIconClick: () => alert('닫기 버튼 클릭'),
   },
 };

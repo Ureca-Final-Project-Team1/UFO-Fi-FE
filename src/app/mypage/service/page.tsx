@@ -4,12 +4,12 @@ import React from 'react';
 
 import serviceRaw from '@/constants/terms/service.md?raw';
 import { renderTermsWithHeadingsAndLinks } from '@/constants/terms/termsRenderer';
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
+import { Title } from '@/shared';
 
 export default function TermsPage() {
   return (
     <div>
-      <TitleWithRouter title="이용약관" iconVariant="back" />
+      <Title title="이용약관" iconVariant="back" />
       <div className="text-white overflow-y-auto text-sm max-h-[80vh] p-2 rounded-lg flex flex-col gap-1 leading-relaxed hide-scrollbar">
         {renderTermsWithHeadingsAndLinks(serviceRaw)}
       </div>

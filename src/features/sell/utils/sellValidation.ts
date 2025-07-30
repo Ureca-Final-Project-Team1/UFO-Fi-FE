@@ -1,7 +1,7 @@
 export const getSellErrorMessages = {
   title: (titleInput: string, isValidTitle: boolean) => {
     if (!titleInput) return undefined;
-    if (!isValidTitle) return '제목은 1~15자 이내여야 합니다.';
+    if (!isValidTitle) return '제목은 1~10자 이내여야 합니다.';
     return undefined;
   },
 
@@ -18,7 +18,7 @@ export const getSellErrorMessages = {
 };
 
 export const validateSellForm = {
-  title: (title: string) => title.length >= 1 && title.length <= 15,
+  title: (title: string) => title.length >= 1 && title.length <= 10,
   price: (pricePerGB: string | number, sellCapacity: number) => {
     const price = Number(pricePerGB);
     return price > 0 && price * sellCapacity >= 1;

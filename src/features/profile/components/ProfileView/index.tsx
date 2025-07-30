@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { useProfileWithFollow } from '@/features/profile/hooks/useProfileWithFollow';
+import { Title } from '@/shared';
 
 import { ProfileContentSections } from './ProfileContentSections';
 import { ProfileHeader } from './ProfileHeader';
@@ -50,7 +50,7 @@ export function ProfileView({ userId }: ProfileViewProps) {
 
   return (
     <div className="flex flex-col min-h-full w-full pb-6">
-      <TitleWithRouter title="프로필 보기" iconVariant="back" />
+      <Title title="프로필 보기" iconVariant="back" />
 
       <div className="space-y-6 px-4">
         <ProfileHeader profile={profile} isMyProfile={isMyProfile} />

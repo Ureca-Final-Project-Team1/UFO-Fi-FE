@@ -4,12 +4,12 @@ import React from 'react';
 
 import privacyRaw from '@/constants/terms/privacy.md?raw';
 import { renderTermsWithHeadingsAndLinks } from '@/constants/terms/termsRenderer';
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
+import { Title } from '@/shared';
 
 export default function TermsPage() {
   return (
     <div>
-      <TitleWithRouter title="개인정보 처리방침" iconVariant="back" />
+      <Title title="개인정보 처리방침" iconVariant="back" />
       <div className="text-white overflow-y-auto text-sm max-h-[80vh] p-2 rounded-lg flex flex-col gap-1 leading-relaxed hide-scrollbar">
         {renderTermsWithHeadingsAndLinks(privacyRaw)}
       </div>

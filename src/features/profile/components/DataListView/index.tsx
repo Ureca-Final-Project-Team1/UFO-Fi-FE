@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { useProfile } from '@/features/profile/hooks/useProfile';
+import { Title } from '@/shared';
 
 import { SimpleDataCard } from './SimpleDataCard';
 
@@ -36,7 +36,7 @@ export function DataListView({ userId }: DataListViewProps) {
 
   return (
     <div className="flex flex-col min-h-full w-full pb-6">
-      <TitleWithRouter title="판매중인 데이터 목록" iconVariant="back" />
+      <Title title="판매중인 데이터 목록" iconVariant="back" />
 
       <div className="px-4 space-y-4">
         <div className="space-y-4">
