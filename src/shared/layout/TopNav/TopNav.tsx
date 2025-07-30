@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { notificationsAPI } from '@/api/services/notification/notifications';
@@ -18,7 +19,8 @@ interface TopNavProps {
 }
 
 const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }) => {
-  const { data: myInfo } = useMyInfo();
+  const router = useRouter();
+  const { data: myInfo, isLoading: isMyInfoLoading } = useMyInfo();
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,6 +59,13 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
     setIsNotificationOpen(false);
   };
 
+  const handleZetClick = () => {
+    router.push('/charge');
+  };
+
+  // 실제 ZET 잔액 (API에서 불러온 데이터)
+  const zetAsset = myInfo?.zetAsset ?? 0;
+
   return (
     <header className="fixed top-0 left-1/2 transform -translate-x-1/2 h-14 z-30 w-full min-w-[375px] max-w-[620px] bg-primary-700 shadow-sm">
       <div className="flex items-center justify-between h-full px-4 w-full">
@@ -71,8 +80,33 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
           </Link>
         </div>
 
-        {/* 유저 정보 있을 때만 알림 드롭다운 표시 */}
-        {myInfo && (
+        {/* ZET 잔액 및 알림 드롭다운 */}
+        <div className="flex items-center gap-3">
+          {/* ZET 잔액 표시 */}
+          <div
+            className="w-[124px] h-[36px] bg-primary-700 border-2 border-blue-500 rounded-xl flex items-center justify-center cursor-pointer hover:bg-primary-600 transition-colors px-3"
+            onClick={handleZetClick}
+          >
+            {isMyInfoLoading ? (
+              <span className="body-16-bold text-cyan-400">...</span>
+            ) : (
+              <>
+                <span className="body-16-bold text-cyan-400">{zetAsset.toLocaleString()}</span>
+                <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
+                {/* 플러스 아이콘 추가 */}
+                <div className="w-5 h-5 bg-cyan-400 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+                  <Icon
+                    name="Plus"
+                    size="sm"
+                    color="rgb(var(--color-primary-700))"
+                    className="font-black"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* 알림 드롭다운 */}
           <NotificationDropdown
             isOpen={isNotificationOpen}
             onToggle={() => setIsNotificationOpen(!isNotificationOpen)}
@@ -81,7 +115,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
             notifications={notifications}
             isLoading={isLoading}
           />
-        )}
+        </div>
       </div>
     </header>
   );
