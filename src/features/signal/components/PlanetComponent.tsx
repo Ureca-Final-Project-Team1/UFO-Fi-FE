@@ -35,8 +35,6 @@ const PlanetComponent = React.forwardRef<HTMLDivElement, PlanetComponentProps>(
           height={planetSize}
           className={!isArrived ? 'grayscale' : ''}
         />
-
-        {isArrived && <span className="absolute top-[-36px] text-sm text-white">도착!</span>}
       </div>
     );
   },

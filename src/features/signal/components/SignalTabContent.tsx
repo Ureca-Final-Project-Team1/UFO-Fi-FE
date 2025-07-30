@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
+import { useLetters } from '@/hooks/useLetters';
 
 import PlanetComponent from './PlanetComponent';
 
@@ -14,9 +15,13 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(1);
 
-  // 임시로 행성 도달 상태 (나중에 props나 상태관리로 받아올 예정)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [planetStatus, setPlanetStatus] = useState<boolean[]>([true, true, false, false, false]);
+  // 전역 상태에서 행성 도달 상태 가져오기
+  const { planetStatus, completedPlanets, initializeLetters } = useLetters();
+
+  // 컴포넌트 마운트 시 편지 상태 로드
+  useEffect(() => {
+    initializeLetters();
+  }, [initializeLetters]);
 
   const PLANETS = [
     IMAGE_PATHS.PLANET_1,
@@ -92,6 +97,10 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
 
   return (
     <div className="relative w-full overflow-hidden">
+      <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
+        {completedPlanets}번째 은하까지 탐사 완료...
+      </p>
+
       <div
         className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
         style={{ height: `${scaledHeight}px` }}
@@ -152,7 +161,7 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
                 planetSrc={PLANETS[index]}
                 satelliteSrc={SATELLITES[index]}
                 planetSize={planetSizes[index]}
-                isArrived={planetStatus[index]} // 행성 도달 상태 전달
+                isArrived={planetStatus[index]} // 전역 상태에서 가져온 행성 도달 상태 전달
               />
             </div>
           ))}
