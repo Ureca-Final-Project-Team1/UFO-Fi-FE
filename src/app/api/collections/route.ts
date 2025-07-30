@@ -83,12 +83,12 @@ export async function POST() {
       // 최근 7일간 총 거래 횟수
       const trade_frequency = trades.length;
 
-      // 최근 게시물 작성일로부터 경과일 계산 (없으면 999로 설정)
+      // 최근 게시물 작성일로부터 경과일 계산 (없으면 30으로 설정)
       const lastPostDate = posts.reduce<Date | null>((latest, post) => {
         if (!post.created_at) return latest;
         return !latest || post.created_at > latest ? post.created_at : latest;
       }, null);
-      const recent_post_days = lastPostDate ? dayjs().diff(lastPostDate, 'day') : 999;
+      const recent_post_days = lastPostDate ? dayjs().diff(lastPostDate, 'day') : 30;
 
       // 거래 시간 분포 분석 (낮/밤 판단)
       const dayTradeCount = trades.filter((t) => {
