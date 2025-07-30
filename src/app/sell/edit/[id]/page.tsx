@@ -96,7 +96,6 @@ export default function SellEditPage() {
                 src={ICON_PATHS[postData.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
               />
             </div>
-
             <div className="flex-1">
               <Input
                 value={titleInput}
