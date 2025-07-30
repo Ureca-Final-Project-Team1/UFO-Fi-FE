@@ -5,15 +5,15 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
+import { Title } from '@/shared';
 
 function BlackholePageInner() {
   const searchParams = useSearchParams();
   const mode = searchParams.get('mode') || 'self';
 
   return (
-    <div className="flex flex-col min-h-screen w-full">
-      <TitleWithRouter title="홈" />
+    <div className="flex flex-col min-h-full w-full">
+      <Title title="홈" iconVariant="back" />
       <div className="flex flex-col items-center justify-center flex-1 w-full px-4">
         <div className="flex flex-col items-center">
           <p className="text-lg font-bold text-white text-center mb-8">

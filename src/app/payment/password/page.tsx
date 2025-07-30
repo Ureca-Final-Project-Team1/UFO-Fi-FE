@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import PasswordPad from '@/features/payment/components/PasswordPad';
 import { PaymentCancellationModal } from '@/features/payment/components/PaymentCancellationModal';
+import { Title } from '@/shared';
 
 export default function PaymentPasswordPage() {
   const [step, setStep] = useState<'register' | 'confirm'>('register');
@@ -39,7 +39,7 @@ export default function PaymentPasswordPage() {
 
   return (
     <div className="w-full  text-white px-4 py-6 space-y-8">
-      <TitleWithRouter title="비밀번호 입력" iconVariant="back" />
+      <Title title="비밀번호 입력" iconVariant="back" />
       <div className="flex-1 flex items-center justify-center">
         <PasswordPad
           key={step === 'register' ? 'register' : `confirm-${errorCount}`}

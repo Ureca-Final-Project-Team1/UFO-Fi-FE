@@ -11,7 +11,7 @@ import { useEditContext } from '@/features/exchange/components/EditProvider';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
-import { Icon, Input, TitleWithRouter, Button, PriceInput } from '@/shared';
+import { Icon, Input, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 import { handleApiAction } from '@/utils/handleApiAction';
 
@@ -80,7 +80,7 @@ export default function SellEditPage() {
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center">
-      <TitleWithRouter title="데이터 판매 수정" iconVariant="back" />
+      <Title title="데이터 판매 수정" iconVariant="back" />
       <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
@@ -96,24 +96,23 @@ export default function SellEditPage() {
                 src={ICON_PATHS[postData.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
               />
             </div>
-
             <div className="flex-1">
               <Input
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.target.value)}
                 placeholder="글 제목을 입력해주세요."
                 variant="blueFill"
-                maxLength={15}
+                maxLength={10}
                 error={getSellErrorMessages.title(titleInput, isValidTitle)}
               />
             </div>
           </div>
           <div
             className={`text-xs text-right ${
-              titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
+              titleInput.length === 10 ? 'text-red-400' : 'text-white/60'
             }`}
           >
-            {titleInput.length}/15
+            {titleInput.length}/10
           </div>
         </div>
 

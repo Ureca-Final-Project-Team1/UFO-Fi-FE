@@ -8,7 +8,7 @@ import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { useMyInfo } from '@/features/mypage/hooks';
 import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
-import { Icon, TitleWithRouter, Button, Loading } from '@/shared';
+import { Icon, Title, Button, Loading } from '@/shared';
 import { usePostIdsStore } from '@/stores/useBulkStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
@@ -92,7 +92,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   if (error || !resultData) {
     return (
       <div className="flex flex-col min-h-full">
-        <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
+        <Title title="매칭된 데이터" iconVariant="back" />
         <div className="flex items-center justify-center text-white">
           검색 결과를 찾을 수 없습니다.
         </div>
@@ -103,7 +103,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
   // 정상 상태
   return (
     <div className="flex flex-col min-h-full w-full">
-      <TitleWithRouter title="매칭된 데이터" iconVariant="back" />
+      <Title title="매칭된 데이터" iconVariant="back" />
       <div className="px-4">
         <BulkResultDisplay
           data={resultData}

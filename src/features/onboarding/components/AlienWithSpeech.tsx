@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import { SpeechBubble } from '@/features/main/components/SpeechBubble';
+import { SpeechBubble } from '@/shared';
 
 import { AlienCharacter } from './AlienCharacter';
 

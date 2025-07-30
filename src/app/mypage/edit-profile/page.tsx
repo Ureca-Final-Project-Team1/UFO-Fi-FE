@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { TitleWithRouter } from '@/features/common/components/TitleWithRouter';
 import { ConfirmModal, NicknameEditor } from '@/features/mypage/components';
 import { PlanEditor } from '@/features/mypage/components/PlanEditor';
 import { useEditProfile } from '@/features/mypage/hooks/useEditProfile';
+import { Title } from '@/shared';
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function EditProfilePage() {
 
   return (
     <div className="flex flex-col min-h-full w-full">
-      <TitleWithRouter title="프로필 수정" iconVariant="back" />
+      <Title title="프로필 수정" iconVariant="back" />
 
       <div className="mt-6 flex flex-col gap-8">
         <NicknameEditor

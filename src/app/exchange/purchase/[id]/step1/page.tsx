@@ -7,7 +7,7 @@ import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
-import { Button, TitleWithRouter } from '@/shared';
+import { Button, Title } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
 export default function Step1Page() {
@@ -94,7 +94,7 @@ export default function Step1Page() {
   if (isLoading) {
     return (
       <div className="flex flex-col h-full px-4">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
         <div className="flex items-center justify-center flex-1">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
@@ -105,7 +105,7 @@ export default function Step1Page() {
   if (error || !productData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-full px-4">
-        <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+        <Title title="데이터 구매하기" iconVariant="back" />
         <p className="text-red-400 text-center mb-4">{error}</p>
         <Button variant="secondary" onClick={() => router.back()} className="px-6 py-2">
           돌아가기
@@ -118,7 +118,7 @@ export default function Step1Page() {
 
   return (
     <div className="flex flex-col min-h-full px-4">
-      <TitleWithRouter title="데이터 구매하기" iconVariant="back" />
+      <Title title="데이터 구매하기" iconVariant="back" />
 
       <div className="flex flex-col items-center justify-center flex-1">
         {/* 코인 이미지 */}

@@ -1,6 +1,8 @@
 import { VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
+import { SelectedAchievementState } from '@/types/Achievement';
+
 import { modalVariants, modalHeaderVariants } from './modalVariants';
 
 export interface ModalProps extends VariantProps<typeof modalVariants> {
@@ -52,4 +54,10 @@ export enum ReportReason {
   PROFANITY = '욕설/혐오 표현 사용',
   SPAM = '도배/홍보(타 플랫폼 유도 등)',
   ETC = '기타',
+}
+
+export interface AchievementModalProps {
+  open: boolean;
+  onClose: () => void;
+  achievement: SelectedAchievementState | null;
 }

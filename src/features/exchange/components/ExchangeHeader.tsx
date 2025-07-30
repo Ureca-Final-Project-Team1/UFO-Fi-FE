@@ -5,10 +5,9 @@ import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
-import { SpeechBubble } from '@/features/main/components';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button, Chip, Icon } from '@/shared';
-import { Progress } from '@/shared/ui/Progress';
+import { SpeechBubble, Progress } from '@/shared';
 
 export const ExchangeHeader = () => {
   const router = useRouter();
@@ -53,8 +52,8 @@ export const ExchangeHeader = () => {
       <div className="hidden md:flex relative w-full gap-4 items-start shadow-lg p-4">
         {/* 캐릭터 섹션 */}
         <div className="flex flex-col gap-2 items-center flex-shrink-0">
-          <SpeechBubble tailDirection="bottom" className="w-[220px] text-center text-xs py-2 px-3">
-            조건에 맞는 상품을 원하시면 <br /> 필터링 기능을 이용해보세요!
+          <SpeechBubble tailDirection="bottom" size="sm">
+            조건에 맞는 상품을 원하시면 필터링 기능을 이용해보세요!
           </SpeechBubble>
           <Image src={IMAGE_PATHS.AL_EXCHANGE} alt="캐릭터" width={200} height={200} />
         </div>
@@ -127,15 +126,15 @@ export const ExchangeHeader = () => {
         </div>
 
         {/* 캐릭터와 말풍선 */}
-        <div className="flex items-end gap-3">
+        <div className="flex justify-center items-center gap-3">
           <Image
             src={IMAGE_PATHS.AL_EXCHANGE}
             alt="캐릭터"
-            width={64}
-            height={64}
+            width={120}
+            height={120}
             className="flex-shrink-0"
           />
-          <SpeechBubble tailDirection="left" className="flex-1 text-xs py-2 px-3">
+          <SpeechBubble tailDirection="left" size="sm">
             조건에 맞는 상품을 원하시면 필터링 기능을 이용해보세요!
           </SpeechBubble>
         </div>
