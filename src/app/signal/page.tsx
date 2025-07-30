@@ -9,7 +9,7 @@ import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared';
 type TabType = 'orbit' | 'letters';
 
 export default function SignalPage() {
-  const [activeTab, setActiveTab] = useState<TabType>('letters');
+  const [activeTab, setActiveTab] = useState<TabType>('orbit');
 
   return (
     <div className="flex flex-col min-h-full w-full">
