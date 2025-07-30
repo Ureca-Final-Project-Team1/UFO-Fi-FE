@@ -43,7 +43,9 @@ const convertToCardProps = (
     carrier: item.carrier ?? '',
     message: item.title ?? '',
     price: item.totalZet ?? 0,
-    dataAmount: item.totalGB ?? 0,
+    dataAmount: isSell
+      ? (item as SellHistoryResponse).sellMobileDataAmountGB
+      : (item as PurchaseHistoryResponse).totalGB,
     state: isSell && 'status' in item ? convertStatusToBadgeState(item.status) : 'sold',
     purchaseHistoryId: 'purchaseHistoryId' in item ? item.purchaseHistoryId : undefined,
     postId: item.postId,
@@ -135,32 +137,22 @@ const MyTradeHistoryPage = () => {
       ));
 
   return (
-    <div className="flex flex-col justify-start items-center w-full h-[calc(100vh-112px)]">
+    <div className="flex flex-col justify-start w-full min-h-full">
       <Tabs
         defaultValue="sell"
         value={tab}
         onValueChange={handleTabChange}
         className="w-full h-full"
       >
-        <TabsList className="bg-transparent w-full py-6 sm:py-8">
-          <TabsTrigger
-            className="flex body-16-bold items-center py-6 sm:py-8"
-            value="sell"
-            variant="darkTab"
-            size="full"
-          >
+        <TabsList className="my-4 w-auto px-10 gap-10">
+          <TabsTrigger value="sell" variant="darkTab" size="full">
             판매 내역
           </TabsTrigger>
-          <TabsTrigger
-            className="flex body-16-bold items-center py-6 sm:py-8"
-            value="purchase"
-            variant="darkTab"
-            size="full"
-          >
+          <TabsTrigger value="purchase" variant="darkTab" size="full">
             구매 내역
           </TabsTrigger>
         </TabsList>
-        <div ref={contentRef} className="px-8 overflow-y-auto h-full pt-4 mb-4 hide-scrollbar">
+        <div ref={contentRef} className="overflow-y-auto h-full hide-scrollbar">
           <TabsContent value="sell" className="text-white h-full">
             {sellTrade.length === 0 ? (
               <EmptyTradeNotice />
