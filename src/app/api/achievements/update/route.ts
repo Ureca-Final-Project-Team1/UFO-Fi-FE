@@ -1,4 +1,4 @@
-import type { achievement, user_achievements } from '@prisma/client';
+import { achievements } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -31,35 +31,40 @@ export async function POST() {
     ]);
 
     // 모든 업적 불러오기
-    const allAchievements: achievement[] = await prisma.achievement.findMany({
+    const allAchievements = await prisma.achievements.findMany({
       orderBy: [{ level: 'asc' }],
     });
 
     // 이미 달성한 업적 ID 및 시간 조회
-    const alreadyAchieved: Pick<user_achievements, 'achievement_id' | 'achieved_at'>[] =
-      await prisma.user_achievements.findMany({
-        where: { user_id: userId },
-        select: { achievement_id: true, achieved_at: true },
-      });
+    const alreadyAchieved = await prisma.user_achievements.findMany({
+      where: { user_id: userId },
+      select: { achievement_id: true, achieved_at: true },
+    });
 
+    // ID는 number로, achieved_at은 null 아닌 것만 Map에 저장
     const achievedMap = new Map<number, Date>(
-      alreadyAchieved.map((a) => [a.achievement_id, a.achieved_at]),
+      alreadyAchieved
+        .filter((a): a is { achievement_id: bigint; achieved_at: Date } => !!a.achieved_at)
+        .map((a) => [Number(a.achievement_id), a.achieved_at]),
     );
 
-    // 조건 만족 여부
-    const isMet = (type: 'trade' | 'follow' | 'rotate', value: number, required: number) =>
+    // 조건 만족 여부 판별
+    const isMet = (type: 'trade' | 'follow' | 'rotate', value: number, required: number): boolean =>
       value >= required;
 
-    // 새로 달성한 업적만 필터링
-    const newlyAchieved = allAchievements.filter((a: achievement) => {
+    // 새로 달성한 업적 필터링
+    const newlyAchieved = allAchievements.filter((a) => {
       const currentValue =
         a.type === 'trade' ? tradeCount : a.type === 'follow' ? followerCount : step5Count;
-      return isMet(a.type, currentValue, a.condition_value) && !achievedMap.has(a.id);
+      return (
+        isMet(a.type as 'trade' | 'follow' | 'rotate', currentValue, a.condition_value) &&
+        !achievedMap.has(Number(a.id))
+      );
     });
 
     // 새 업적 기록
     await prisma.$transaction(
-      newlyAchieved.map((a: achievement) =>
+      newlyAchieved.map((a) =>
         prisma.user_achievements.create({
           data: {
             user_id: userId,
@@ -70,20 +75,20 @@ export async function POST() {
       ),
     );
 
-    // 달성 정보 포함
-    const achievementsWithMeta = allAchievements.map((a: achievement) => ({
+    // 전체 업적에 달성 여부 추가
+    const achievementsWithMeta = allAchievements.map((a) => ({
       ...a,
       achievedAt:
-        achievedMap.get(a.id) ??
-        (newlyAchieved.find((n: achievement) => n.id === a.id) ? new Date() : null),
+        achievedMap.get(Number(a.id)) ??
+        (newlyAchieved.some((n) => n.id === a.id) ? new Date() : null),
     }));
 
-    // 레벨 계산 헬퍼 함수
+    // 레벨 계산 헬퍼
     const calculateLevel = (type: 'trade' | 'follow' | 'rotate', currentValue: number): number => {
       return Math.max(
         ...allAchievements
-          .filter((a: achievement) => a.type === type && currentValue >= a.condition_value)
-          .map((a: achievement) => a.level),
+          .filter((a) => a.type === type && currentValue >= a.condition_value)
+          .map((a) => a.level),
         0,
       );
     };
@@ -99,8 +104,13 @@ export async function POST() {
       follow_level: followLevel,
       rotate_level: rotateLevel,
       total_level: totalLevel,
-      achievements: achievementsWithMeta,
-      newly_achieved_ids: newlyAchieved.map((a: achievement) => a.id),
+      achievements: achievementsWithMeta.map((a) => ({
+        ...a,
+        id: Number(a.id),
+        condition_value: Number(a.condition_value),
+        level: Number(a.level),
+      })),
+      newly_achieved_ids: newlyAchieved.map((a: achievements) => Number(a.id)),
     });
   } catch (error) {
     console.error('Achievement update error:', error);
