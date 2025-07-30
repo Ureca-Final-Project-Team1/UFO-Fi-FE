@@ -1,8 +1,7 @@
-// buttonVariants.ts
 import { cva } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer',
   {
     variants: {
       variant: {
@@ -28,7 +27,6 @@ export const buttonVariants = cva(
 
         'project-button': 'rounded-[5px] bg-primary-200 text-black-700 hover:bg-primary-300/30',
 
-        // 팔로우 관련 버튼들 - 기존 패턴과 일치하도록 kebab-case 사용
         'follow-button':
           'bg-blue-500 text-white border border-blue-500 hover:bg-blue-600 focus:ring-blue-300',
         'following-button':
@@ -38,7 +36,7 @@ export const buttonVariants = cva(
       },
       size: {
         sm: 'h-9 w-[100px] rounded-md px-3 text-sm',
-        'follow-sm': 'h-8 w-[80px] rounded-lg px-3 text-xs', // 팔로우 버튼 전용 크기
+        'follow-sm': 'h-8 w-[80px] rounded-lg px-3 text-xs',
         default: 'h-10 w-[200px] px-4 py-2 text-md',
         lg: 'h-11 w-[300px] rounded-md px-8 text-lg',
         icon: 'h-10 w-10 rounded-md',
