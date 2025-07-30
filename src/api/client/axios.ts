@@ -38,11 +38,21 @@ nextAxiosInstance.interceptors.request.use((config) => config);
 
 // 응답 인터셉터
 let isRefreshing = false;
-let queue: ((token: string) => void)[] = [];
+let failedQueue: Array<{
+  resolve: (value?: unknown) => void;
+  reject: (error?: unknown) => void;
+}> = [];
 
-const processQueue = (token: string) => {
-  queue.forEach((cb) => cb(token));
-  queue = [];
+const processQueue = (error: unknown = null, token: string | null = null) => {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve(token);
+    }
+  });
+
+  failedQueue = [];
 };
 
 axiosInstance.interceptors.response.use(
@@ -51,48 +61,69 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
     const statusCode = error.response?.status || 500;
 
+    // 401 에러이고 아직 재시도하지 않은 경우
     if (statusCode === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
+      // 이미 리프레시 중인 경우 큐에 추가
       if (isRefreshing) {
-        return new Promise((resolve) => {
-          queue.push(() => resolve(axiosInstance(originalRequest)));
-        });
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => {
+            return axiosInstance(originalRequest);
+          })
+          .catch((err: unknown) => {
+            return Promise.reject(err);
+          });
       }
 
+      originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        const refreshToken = sessionStorage.getItem('refreshToken');
-        if (!refreshToken) throw new Error('RefreshToken 없음');
+        // GET 방식으로 /refresh 호출
+        const refreshResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/refresh`, {
+          withCredentials: true, // 쿠키 포함하여 요청
+          timeout: 5000,
+        });
 
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/refresh`,
-          {},
-          {
-            headers: {
-              Refresh: refreshToken,
-            },
-            withCredentials: true,
-          },
-        );
+        // 리프레시 성공 확인
+        if (refreshResponse.data?.content?.reissueSuccess) {
+          // 큐에 있던 요청들 재실행
+          processQueue(null, 'refreshed');
 
-        const newAccessToken = res.data.accessToken;
-        processQueue(newAccessToken);
+          // 원래 요청 재실행
+          return axiosInstance(originalRequest);
+        } else {
+          throw new Error('Token refresh failed');
+        }
+      } catch (refreshError: unknown) {
+        // 큐에 있던 요청들에게 에러 전파
+        processQueue(refreshError, null);
 
-        return axiosInstance(originalRequest);
-      } catch (err) {
-        toast.error('로그인이 만료되었습니다.');
-        window.location.href = '/login';
-        return Promise.reject(err);
+        // 쿠키 정리
+        if (typeof window !== 'undefined') {
+          // Authorization 쿠키 삭제
+          document.cookie =
+            'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
+          document.cookie =
+            'Refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
+
+          toast.error('로그인이 만료되었습니다. 다시 로그인해주세요.');
+
+          // 로그인 페이지로 리다이렉트
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 1000);
+        }
+
+        return Promise.reject(new ApiError('Authentication expired', 401));
       } finally {
         isRefreshing = false;
       }
     }
-    const message =
-      (error.response?.data as { message?: string })?.message ||
-      (error.response?.data as { content?: string })?.content ||
-      '요청 처리 중 오류가 발생했습니다.';
+
+    const errorData = error.response?.data as { message?: string; content?: string } | undefined;
+    const message = errorData?.message || errorData?.content || '요청 처리 중 오류가 발생했습니다.';
 
     const apiError = new ApiError(message, statusCode);
     return Promise.reject(apiError);
@@ -102,21 +133,20 @@ axiosInstance.interceptors.response.use(
 nextAxiosInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
     const statusCode = error.response?.status || 500;
 
-    if (statusCode === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      toast.error('인증이 만료되었습니다.');
-      window.location.href = '/login';
+    if (statusCode === 401) {
+      if (typeof window !== 'undefined') {
+        toast.error('인증이 만료되었습니다.');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1000);
+      }
       return Promise.reject(new ApiError('인증 오류', 401));
     }
 
-    const message =
-      (error.response?.data as { message?: string })?.message ||
-      (error.response?.data as { content?: string })?.content ||
-      '요청 처리 중 오류가 발생했습니다.';
+    const errorData = error.response?.data as { message?: string; content?: string } | undefined;
+    const message = errorData?.message || errorData?.content || '요청 처리 중 오류가 발생했습니다.';
 
     const apiError = new ApiError(message, statusCode);
     return Promise.reject(apiError);
