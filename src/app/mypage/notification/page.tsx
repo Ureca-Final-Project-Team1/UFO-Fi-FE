@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { notificationAPI } from '@/api';
-import { Title } from '@/shared';
-import type { NotificationType } from '@/shared/ui/NotificationDropdown/NotificationDropdown.types';
-import { Switch } from '@/shared/ui/Switch/Switch';
+import type { NotificationType } from '@/shared';
+import { Title, Switch } from '@/shared';
 
 const MypageNotificationPage = () => {
   const [notificationState, setNotificationState] = useState({

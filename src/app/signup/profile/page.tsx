@@ -8,7 +8,7 @@ import '@/styles/globals.css';
 
 import { Stepper } from '@/features/signup/components';
 import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
-import { Button, PhoneInput, Input, Title } from '@/shared/ui';
+import { Button, PhoneInput, Input, Title } from '@/shared';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const ProfilePage = () => {

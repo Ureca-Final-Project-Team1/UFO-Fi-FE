@@ -11,9 +11,9 @@ import {
   AppLayoutProvider,
   AuthProvider,
 } from '@/provider';
+import { Toaster } from '@/shared';
 import AnalyticsProvider from '@/shared/components/Analytics';
 import FCMProvider from '@/shared/components/FCMProvider';
-import { Toaster } from '@/shared/ui';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',

@@ -1,4 +1,4 @@
-import { NotificationType } from '@/shared/ui/NotificationDropdown/NotificationDropdown.types';
+import { NotificationType } from '@/shared';
 
 export interface NotificationSettings {
   benefit: boolean;

@@ -5,19 +5,19 @@ import { toast } from 'sonner';
 
 import { BannedWord } from '@/api/types/bannedWords';
 import { useBannedWords } from '@/features/admin/hooks/useBannedWords';
-import { useModal } from '@/shared/hooks/useModal';
-import { Button } from '@/shared/ui/Button/Button';
-import Header from '@/shared/ui/Header/Header';
-import { Input } from '@/shared/ui/Input/Input';
-import Sidebar from '@/shared/ui/Sidebar/Sidebar';
-import { AdminTable } from '@/shared/ui/Table/AdminTable';
 import {
+  Button,
+  Header,
+  Input,
+  Sidebar,
+  AdminTable,
   TableColumn,
   TableActions,
   TableSelection,
   TablePagination,
   BaseTableRow,
-} from '@/shared/ui/Table/Table.types';
+} from '@/shared';
+import { useModal } from '@/shared/hooks/useModal';
 
 interface BannedWordTableRow extends BannedWord, BaseTableRow {
   id: number;

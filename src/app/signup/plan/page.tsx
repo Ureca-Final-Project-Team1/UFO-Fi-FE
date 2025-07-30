@@ -11,7 +11,7 @@ import { Plan, signupAPI } from '@/api';
 import { Carrier } from '@/api/types/carrier';
 import { OCRInputSection, Stepper } from '@/features/signup/components';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
-import { Button, Title } from '@/shared/ui';
+import { Button, Title } from '@/shared';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const PlanPage = () => {

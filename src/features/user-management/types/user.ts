@@ -1,4 +1,4 @@
-import { BaseTableRow } from '@/shared/ui/Table/Table.types';
+import { BaseTableRow } from '@/shared';
 
 export interface UserRow extends BaseTableRow {
   id: number;
