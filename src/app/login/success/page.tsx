@@ -22,11 +22,9 @@ const SuccessPage = () => {
       // 쿠키 존재 여부 확인
       const hasAuthCookie =
         typeof document !== 'undefined' && document.cookie.includes('Authorization=');
-      const hasRefreshCookie =
-        typeof document !== 'undefined' && document.cookie.includes('Refresh=');
 
-      if (!hasAuthCookie && !hasRefreshCookie) {
-        setToast('로그인 처리 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+      if (!hasAuthCookie) {
+        setToast('로그인이 만료되었습니다. 다시 로그인해주세요.', 'error');
         setTimeout(() => {
           router.replace('/login');
         }, 500);
