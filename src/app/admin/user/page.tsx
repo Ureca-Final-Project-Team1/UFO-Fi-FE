@@ -1,6 +1,5 @@
 import UserManagementPage from '@/features/user-management/components/UserManagementPage';
-import Header from '@/shared/ui/Header/Header';
-import Sidebar from '@/shared/ui/Sidebar/Sidebar';
+import { Header, Sidebar } from '@/shared';
 
 export default function AdminUserPage() {
   return (

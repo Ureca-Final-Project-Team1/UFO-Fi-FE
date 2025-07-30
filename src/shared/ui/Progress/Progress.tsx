@@ -4,7 +4,7 @@ import * as ProgressPrimitive from '@radix-ui/react-progress';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Icon } from '@/shared/ui/Icons';
+import { Icon } from '@/shared';
 
 import { ProgressProps } from './Progress.types';
 import { progressVariants, progressIndicatorVariants } from './progressVariants';

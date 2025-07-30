@@ -2,20 +2,21 @@ type ProfileVectorInput = {
   avg_zet: number;
   data_gb: number;
   trade_frequency: number;
-  last_trade_diff_days: number | null;
+  recent_post_days: number;
 };
 
 export function getVectorFromProfile(profile: ProfileVectorInput): number[] {
   const normalizedAvgZet = profile.avg_zet / 1000; // 예상값: 0 ~ 5
   const normalizedDataGb = profile.data_gb / 10; // 예상값: 0 ~ 1
   const normalizedFrequency = Math.min(profile.trade_frequency / 100, 1); // capped at 1
-  const recentTradeScore =
-    profile.last_trade_diff_days === null ? 1 : 1 / (profile.last_trade_diff_days + 1); // 최근일수록 1에 가까움
+
+  // 최근 게시글이 작성된 지 며칠 지났는지 → 가까울수록 1에 가까움
+  const recentPostScore = 1 / (profile.recent_post_days + 1); // 최소값 보호
 
   return [
     parseFloat(normalizedAvgZet.toFixed(3)),
     parseFloat(normalizedDataGb.toFixed(3)),
     parseFloat(normalizedFrequency.toFixed(3)),
-    parseFloat(recentTradeScore.toFixed(3)),
+    parseFloat(recentPostScore.toFixed(3)),
   ];
 }

@@ -31,10 +31,13 @@ const TestPage = () => {
         setLoading(true);
         setError(null);
 
-        // 1. DELETE & POST (기존 벡터 DB 제거 및 재생성)
-        // const postRes = await fetch('/api/collections', { method: 'POST' });
-        // if (!postRes.ok) throw new Error('컬렉션 생성 또는 시딩 실패');
-
+        // 1. UPDATE
+        const postRes = await fetch('/api/collections', { method: 'POST' });
+        if (!postRes.ok) {
+          const errorText = await postRes.text();
+          console.error('Qdrant 실패 응답:', errorText);
+          throw new Error('컬렉션 생성 또는 시딩 실패');
+        }
         // 2. GET
         const searchRes = await fetch('/api/collections/search', { method: 'GET' });
 

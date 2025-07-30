@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import React, { useState } from 'react';
 
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared';
 
 import { PaymentCancellationModal } from './PaymentCancellationModal';
 
