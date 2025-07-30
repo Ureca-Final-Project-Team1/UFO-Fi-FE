@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { ICON_PATHS } from '@/constants/icons';
-import { Button } from '@/shared/ui';
+import { Button } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
 
 const LoginPage = () => {

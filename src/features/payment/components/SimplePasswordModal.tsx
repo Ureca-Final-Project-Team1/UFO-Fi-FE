@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Modal } from '@/shared/ui';
+import { Modal } from '@/shared';
 
 type PasswordFailureStatus = 'single' | 'multiple' | 'reset';
 

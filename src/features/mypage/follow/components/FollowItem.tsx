@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
-import { Button } from '@/shared/ui';
-import { UserLink } from '@/shared/ui/UserLink';
+import { Button } from '@/shared';
+import { UserLink } from '@/shared';
 
 import {
   FollowItemProps,

@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 
-import { Icon } from '@/shared/ui';
+import { Icon } from '@/shared';
 
 import NumberButton from './NumberButton';
 import PasswordInput from './PasswordInput';

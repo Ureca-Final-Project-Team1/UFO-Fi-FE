@@ -6,11 +6,8 @@ import type { NotificationItem as NotificationItemType } from '@/api';
 import { Icon, NotificationTrigger } from '@/shared';
 import { NotificationDropdownProps } from '@/shared';
 import { NotificationItem } from '@/shared';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/shared/ui/NotificationDropdown/DropdownMenu';
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';
 
 // 메인 드롭다운 컴포넌트
 export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({

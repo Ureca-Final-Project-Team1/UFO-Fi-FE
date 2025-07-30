@@ -10,7 +10,7 @@ import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { useScrollTracker } from '@/hooks/useScrollTracker';
 import { Title, Modal } from '@/shared';
-import { ReportedModal } from '@/shared/ui/Modal/ReportModal';
+import { ReportedModal } from '@/shared';
 import { handleApiAction } from '@/utils/handleApiAction';
 import queryClient from '@/utils/queryClient';
 

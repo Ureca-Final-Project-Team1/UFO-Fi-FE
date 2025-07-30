@@ -8,7 +8,7 @@ import { useFollowers } from '@/features/mypage/follow/hooks/useFollowers';
 import { useFollowing } from '@/features/mypage/follow/hooks/useFollowing';
 import { FOLLOW_TYPE } from '@/features/mypage/follow/types/FollowType.types';
 import { Title } from '@/shared';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared';
 
 export default function Page() {
   const { data: followersData, isLoading: followersLoading } = useFollowers();

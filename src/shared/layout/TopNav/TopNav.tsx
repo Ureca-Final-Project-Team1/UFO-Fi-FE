@@ -8,7 +8,7 @@ import { NotificationItem } from '@/api/types/notification';
 import { ICON_PATHS } from '@/constants/icons';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon } from '@/shared';
-import { NotificationDropdown } from '@/shared/ui/NotificationDropdown';
+import { NotificationDropdown } from '@/shared';
 
 interface TopNavProps {
   title?: string;

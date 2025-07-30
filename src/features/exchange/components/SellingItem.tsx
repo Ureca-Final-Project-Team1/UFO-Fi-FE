@@ -4,7 +4,7 @@ import { Carrier } from '@/api/types/carrier';
 import { IMAGE_PATHS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
-import { UserLink } from '@/shared/ui/UserLink';
+import { UserLink } from '@/shared';
 
 interface SellingItemProps {
   carrier: Carrier;
