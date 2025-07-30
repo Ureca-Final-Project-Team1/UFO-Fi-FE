@@ -103,17 +103,17 @@ export default function SellEditPage() {
                 onChange={(e) => setTitleInput(e.target.value)}
                 placeholder="글 제목을 입력해주세요."
                 variant="blueFill"
-                maxLength={15}
+                maxLength={10}
                 error={getSellErrorMessages.title(titleInput, isValidTitle)}
               />
             </div>
           </div>
           <div
             className={`text-xs text-right ${
-              titleInput.length === 15 ? 'text-red-400' : 'text-white/60'
+              titleInput.length === 10 ? 'text-red-400' : 'text-white/60'
             }`}
           >
-            {titleInput.length}/15
+            {titleInput.length}/10
           </div>
         </div>
 
