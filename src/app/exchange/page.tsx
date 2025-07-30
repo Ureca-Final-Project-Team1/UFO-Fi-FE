@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
+import { ScrollToTopButton } from '@/features/common/components/ScrollToTopButton';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
+import { useScrollTracker } from '@/hooks/useScrollTracker';
 import { Title, Modal } from '@/shared';
 import { ReportedModal } from '@/shared/ui/Modal/ReportModal';
 import { handleApiAction } from '@/utils/handleApiAction';
@@ -14,6 +16,7 @@ import queryClient from '@/utils/queryClient';
 
 export default function ExchangePage() {
   const router = useRouter();
+  useScrollTracker(); // 스크롤 위치 추적 훅
 
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
@@ -109,6 +112,11 @@ export default function ExchangePage() {
           onReport={handleReport}
           onPurchase={handlePurchase}
         />
+
+        {/* Scroll To Top 버튼 */}
+        <div className="justify-end flex">
+          <ScrollToTopButton />
+        </div>
       </div>
 
       {/* 삭제 확인 모달 */}
