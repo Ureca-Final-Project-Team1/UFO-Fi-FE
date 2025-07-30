@@ -1,12 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FreeMode } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-import type { ProfileUser } from '@/api/types/profile';
+import { nextApiRequest } from '@/api/client/axios';
+import type { ProfileUser, UserStats } from '@/api/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
 import { getMobileDataTypeDisplay } from '@/utils/mobileData';
@@ -19,6 +21,29 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
   const router = useRouter();
   const tradePosts = profile.tradePostsRes || [];
   const tradePostsCount = tradePosts.length;
+  const [userStats, setUserStats] = useState<UserStats | null>(null);
+
+  useEffect(() => {
+    const fetchUserStats = async () => {
+      try {
+        const response = await nextApiRequest.get<UserStats>('/api/collections/user-stats', {
+          params: { userId: profile.userId },
+        });
+        const { trade_frequency, dominant_trade_time } = response.data;
+
+        setUserStats({
+          trade_frequency,
+          dominant_trade_time,
+        });
+      } catch (error) {
+        console.error('Failed to fetch user stats:', error);
+      }
+    };
+
+    if (profile?.userId) {
+      fetchUserStats();
+    }
+  }, [profile?.userId]);
 
   const handleDataListClick = () => {
     router.push(`/profile/${profile.userId}/datalist`);
@@ -26,19 +51,24 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
 
   return (
     <div className="space-y-6">
-      {/* TODO: 거래 현황 */}
       <div className="space-y-3">
         <h3 className="text-white font-semibold text-lg">거래 현황</h3>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-gray-300 text-sm">7일 평균 거래량</span>
-            <span className="text-white text-sm font-medium">2건</span>
+            <span className="text-white text-sm font-medium">
+              {userStats?.trade_frequency ?? 0}건
+            </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-300 text-sm">7일 평균 거래 시간</span>
             <div className="flex items-center gap-1">
-              <span className="text-white text-sm font-medium">낮</span>
-              <span className="text-lg">☀️</span>
+              <span className="text-white text-sm font-medium">
+                {userStats?.dominant_trade_time === 'night' ? '밤' : '낮'}
+              </span>
+              <span className="text-lg">
+                {userStats?.dominant_trade_time === 'night' ? '🌙' : '☀️'}
+              </span>
             </div>
           </div>
         </div>

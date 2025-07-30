@@ -25,3 +25,8 @@ export interface GetProfileRequest {
 }
 
 export type GetProfileResponse = SuccessApiResponse<ProfileUser>;
+
+export type UserStats = {
+  trade_frequency: number;
+  dominant_trade_time: 'day' | 'night' | 'unknown';
+};
