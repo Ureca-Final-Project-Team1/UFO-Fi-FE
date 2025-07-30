@@ -1,13 +1,18 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { ICON_SIZES } from '@/constants/icons';
 import { cn } from '@/lib/utils';
 
 import { ImageIconProps } from './Icons.types';
 import { LucideIcon } from './LucideIcon';
+
+const isStaticFile = (src: string): boolean => {
+  // Next.js 정적 파일 경로 패턴 확인
+  return src.startsWith('/') && !src.startsWith('//');
+};
 
 /**
  * Next.js Image를 사용한 이미지 아이콘 컴포넌트
@@ -22,11 +27,21 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
   fallbackIcon = 'ImageOff',
 }) => {
   const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
 
-  // src 유효성 검사
+  // src 유효성 검사 및 정적 파일 여부 확인
   const isValidSrc = src && typeof src === 'string' && src.trim().length > 0;
+  const isStatic = useMemo(() => isValidSrc && isStaticFile(src), [src, isValidSrc]);
+
+  // 정적 파일이 아닌 경우에만 로딩 상태 초기화
+  React.useEffect(() => {
+    if (isValidSrc && !isStatic) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [src, isValidSrc, isStatic]);
 
   const renderFallback = () => (
     <div
@@ -59,7 +74,10 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
       className={cn('inline-flex items-center justify-center shrink-0 relative', className)}
       style={{ width: sizeValue, height: sizeValue }}
     >
-      {(hasError || isLoading) && <div className="absolute inset-0 z-10">{renderFallback()}</div>}
+      {/* 정적 파일이 아니고 로딩 중이거나 에러가 있을 때만 fallback 표시 */}
+      {!isStatic && (hasError || isLoading) && (
+        <div className="absolute inset-0 z-10">{renderFallback()}</div>
+      )}
 
       <Image
         src={src}
@@ -69,17 +87,22 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
         priority={priority}
         className={cn(
           'object-contain transition-opacity duration-200',
-          isLoading || hasError ? 'opacity-0' : 'opacity-100',
+          // 정적 파일은 즉시 표시, 외부 파일은 로딩 완료 후 표시
+          !isStatic && (isLoading || hasError) ? 'opacity-0' : 'opacity-100',
         )}
         sizes={`${sizeValue}px`}
         onLoad={() => {
-          setIsLoading(false);
+          if (!isStatic) {
+            setIsLoading(false);
+          }
           setHasError(false);
         }}
         onError={(e) => {
           console.error(`ImageIcon failed to load: ${src}`, e);
           setHasError(true);
-          setIsLoading(false);
+          if (!isStatic) {
+            setIsLoading(false);
+          }
         }}
         // 외부 이미지는 최적화 비활성화
         unoptimized={src.startsWith('http') || src.startsWith('//')}
