@@ -4,7 +4,7 @@ import { IMAGE_PATHS, PACKAGES } from '@/constants';
 import { ZetChargePackageCard } from '@/features/charge/components/ZetChargePackageCard';
 import { useZetCharge } from '@/features/charge/hooks/useZetCharge';
 import { useMyInfo } from '@/features/mypage/hooks';
-import { Icon, TitleWithRouter } from '@/shared';
+import { Icon, Title } from '@/shared';
 
 export default function ZetChargePage() {
   const { handleChargePackage, isProcessing } = useZetCharge();
@@ -20,7 +20,7 @@ export default function ZetChargePage() {
     <div className="min-h-full flex flex-col">
       <div className="px-4 pt-4">
         <div className="flex items-center justify-between mb-2">
-          <TitleWithRouter title="ZET 코인 충전소" iconVariant="back" />
+          <Title title="ZET 코인 충전소" iconVariant="back" />
         </div>
 
         <div className="flex items-center justify-between mb-4">
