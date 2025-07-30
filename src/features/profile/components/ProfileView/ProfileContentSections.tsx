@@ -17,6 +17,8 @@ interface ProfileContentSectionsProps {
 
 export function ProfileContentSections({ profile }: ProfileContentSectionsProps) {
   const router = useRouter();
+  const tradePosts = profile.tradePostsRes || [];
+  const tradePostsCount = tradePosts.length;
 
   const handleDataListClick = () => {
     router.push(`/profile/${profile.userId}/datalist`);
@@ -58,9 +60,9 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
       <div className="space-y-3">
         <div className="flex justify-between items-center">
           <h3 className="text-white font-semibold text-lg">
-            판매중인 데이터 <span className="text-cyan-400"> {profile.tradePostsRes.length}</span>건
+            판매중인 데이터 <span className="text-cyan-400"> {tradePostsCount}</span>건
           </h3>
-          {profile.tradePostsRes.length > 0 && (
+          {tradePostsCount > 0 && (
             <span
               onClick={handleDataListClick}
               className="text-cyan-400 text-sm hover:text-cyan-300 transition-colors cursor-pointer"
@@ -70,7 +72,7 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
           )}
         </div>
 
-        {profile.tradePostsRes.length > 0 ? (
+        {tradePostsCount > 0 ? (
           <div className="w-full">
             <Swiper
               modules={[FreeMode]}
@@ -79,20 +81,22 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
               freeMode={true}
               className="!px-1"
             >
-              {profile.tradePostsRes.map((post) => (
+              {tradePosts.map((post) => (
                 <SwiperSlide key={post.postId} className="!w-auto">
                   <div className="bg-gray-800 rounded-lg p-4 w-24 h-24 flex flex-col items-center justify-center space-y-2">
-                    {/* 통신사 로고 */}
-                    <Icon src={ICON_PATHS[post.carrier]} className="w-6 h-6" />
+                    {/* 통신사 로고 - null 체크 추가 */}
+                    {post.carrier && ICON_PATHS[post.carrier] && (
+                      <Icon src={ICON_PATHS[post.carrier]} className="w-6 h-6" />
+                    )}
 
                     {/* 용량 */}
                     <div className="text-cyan-400 text-xs font-bold text-center">
-                      {post.sellMobileDataAmountGB}GB
+                      {post.sellMobileDataAmountGB || 0}GB
                     </div>
 
                     {/* ZET 표시 */}
                     <div className="text-gray-400 text-xs">
-                      {getMobileDataTypeDisplay(post.mobileDataType)}
+                      {post.mobileDataType ? getMobileDataTypeDisplay(post.mobileDataType) : 'N/A'}
                     </div>
                   </div>
                 </SwiperSlide>

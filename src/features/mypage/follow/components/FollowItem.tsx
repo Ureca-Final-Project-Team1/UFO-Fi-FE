@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { Button } from '@/shared/ui';
+import { UserLink } from '@/shared/ui/UserLink';
 
 import {
   FollowItemProps,
@@ -12,6 +13,9 @@ import {
 export default function FollowItem({ user, actions, type }: FollowItemProps) {
   const { id: userId, nickname, profileImage, isFollowing } = user;
   const { onFollow, onUnfollow } = actions;
+
+  // #
+  const numericUserId = typeof userId === 'string' ? parseInt(userId.replace('#', ''), 10) : userId;
 
   const getButtonConfig = (): FollowButtonConfig => {
     if (type === FOLLOW_TYPE.FOLLOWER) {
@@ -57,7 +61,11 @@ export default function FollowItem({ user, actions, type }: FollowItemProps) {
           <Image src={profileImage} alt="프로필" width={50} height={50} className="rounded-full" />
         </div>
         <div>
-          <p className="body-16-bold text-white">{nickname}</p>
+          <UserLink
+            userId={numericUserId}
+            nickname={nickname}
+            className="body-16-bold text-white hover:text-cyan-300 transition-colors"
+          />
         </div>
       </div>
 
