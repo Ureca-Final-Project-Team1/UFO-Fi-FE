@@ -63,8 +63,8 @@ export async function GET() {
       },
     });
 
-    const sales = trades.filter((t) => t.status === 'SALE').length;
-    const purchases = trades.filter((t) => t.status === 'PURCHASE').length;
+    const sales = trades.filter((t: (typeof trades)[number]) => t.status === 'SALE').length;
+    const purchases = trades.filter((t: (typeof trades)[number]) => t.status === 'PURCHASE').length;
     const type = sales >= purchases ? 'seller' : 'purchaser';
     const oppositeType = type === 'seller' ? 'purchaser' : 'seller';
 
@@ -74,14 +74,14 @@ export async function GET() {
     const carriers = userPlans.map((p) => p.plans?.carrier).filter((c): c is string => !!c);
 
     const carrier =
-      carriers.sort((a, b) => {
+      carriers.sort((a: string, b: string) => {
         return carriers.filter((v) => v === b).length - carriers.filter((v) => v === a).length;
       })[0] ?? '';
 
     const types = userPlans.map((p) => p.plans?.mobile_data_type).filter((t): t is string => !!t);
 
     const mobile_data_type =
-      types.sort((a, b) => {
+      types.sort((a: string, b: string) => {
         return types.filter((v) => v === b).length - types.filter((v) => v === a).length;
       })[0] ?? '';
 
@@ -89,7 +89,9 @@ export async function GET() {
       where: { follower_user_id: Number(userId) },
       select: { following_user_id: true },
     });
-    const followedIds = followedUsers.map((f) => f.following_user_id);
+    const followedIds = followedUsers.map((f: { following_user_id: bigint }) =>
+      Number(f.following_user_id),
+    );
 
     // Qdrant의 벡터 유사도 추천 API 호출
     const qdrantUrl = `${process.env.QDRANT_API_BASE_URL}/collections/ufo_fi/points/recommend`;
@@ -116,7 +118,7 @@ export async function GET() {
             // 자기 자신 제외
             { key: 'id', match: { value: Number(userId) } },
             // 이미 팔로우한 사용자들 제외
-            ...followedIds.map((id) => ({ key: 'id', match: { value: id } })),
+            ...followedIds.map((id: number) => ({ key: 'id', match: { value: Number(id) } })),
           ],
         },
       }),

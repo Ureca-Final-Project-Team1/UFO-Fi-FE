@@ -22,8 +22,19 @@ const axiosInstance = axios.create({
   },
 });
 
+// Next.js API 라우트 전용 axios 인스턴스
+const nextAxiosInstance = axios.create({
+  baseURL: '', // 현재 origin 기준으로 /api 경로 접근
+  timeout: 10000,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 // 요청 인터셉터
 axiosInstance.interceptors.request.use((config) => config);
+nextAxiosInstance.interceptors.request.use((config) => config);
 
 // 응답 인터셉터
 let isRefreshing = false;
@@ -88,6 +99,30 @@ axiosInstance.interceptors.response.use(
   },
 );
 
+nextAxiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+    const statusCode = error.response?.status || 500;
+
+    if (statusCode === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      toast.error('인증이 만료되었습니다.');
+      window.location.href = '/login';
+      return Promise.reject(new ApiError('인증 오류', 401));
+    }
+
+    const message =
+      (error.response?.data as { message?: string })?.message ||
+      (error.response?.data as { content?: string })?.content ||
+      '요청 처리 중 오류가 발생했습니다.';
+
+    const apiError = new ApiError(message, statusCode);
+    return Promise.reject(apiError);
+  },
+);
+
 // API 요청 함수들
 export const apiRequest = {
   get: <T>(url: string, config?: AxiosRequestConfig) => axiosInstance.get<T>(url, config),
@@ -102,6 +137,21 @@ export const apiRequest = {
     axiosInstance.put<T>(url, data, config),
 
   delete: <T>(url: string, config?: AxiosRequestConfig) => axiosInstance.delete<T>(url, config),
+};
+
+export const nextApiRequest = {
+  get: <T>(url: string, config?: AxiosRequestConfig) => nextAxiosInstance.get<T>(url, config),
+
+  post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    nextAxiosInstance.post<T>(url, data, config),
+
+  patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    nextAxiosInstance.patch<T>(url, data, config),
+
+  put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+    nextAxiosInstance.put<T>(url, data, config),
+
+  delete: <T>(url: string, config?: AxiosRequestConfig) => nextAxiosInstance.delete<T>(url, config),
 };
 
 export default axiosInstance;
