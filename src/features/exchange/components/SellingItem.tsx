@@ -86,7 +86,13 @@ export default function SellingItem({
             <div className="flex items-center gap-1 mb-1">
               <Badge showIcon={false} variant="carrier">
                 {carrierIcon && (
-                  <img src={carrierIcon} alt={carrier} className="w-3 h-3 object-contain" />
+                  <Image
+                    src={carrierIcon}
+                    alt={carrier}
+                    width={12}
+                    height={12}
+                    className="object-contain"
+                  />
                 )}
               </Badge>
               <Badge showIcon={false} variant="secondary">
