@@ -12,6 +12,7 @@ export interface ImageIconProps extends Omit<IconProps, 'color'> {
   alt: string;
   priority?: boolean;
   fallbackIcon?: LucideIconType;
+  skipLoadingState?: boolean;
 }
 
 export interface IconWrapperProps extends IconProps {
