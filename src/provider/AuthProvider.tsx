@@ -15,8 +15,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const pathname = usePathname();
   const [hasRedirected, setHasRedirected] = useState(false);
 
-  // 모든 페이지에서 사용자 정보를 가져옴
-  const { userRole, isLoading, error } = useUserRole(true);
+  const isLoginSignupPage = pathname.startsWith('/login') || pathname.startsWith('/signup');
+
+  // 로그인, 회원가입을 제외한 모든 페이지에서 사용자 정보를 가져옴
+  const { userRole, isLoading, error } = useUserRole(!isLoginSignupPage);
 
   useEffect(() => {
     // 이미 리다이렉트했거나 로딩 중이면 처리하지 않음
