@@ -46,9 +46,6 @@ export default function PlanetProgressBar() {
 
   const completed = completedPlanets;
 
-  // 디버깅용 로그
-  console.log('PlanetProgressBar - planetStatus:', planetStatus, 'completed:', completed);
-
   return (
     <div className="flex flex-col items-center w-full gap-10 px-4">
       {/* 진행 텍스트 */}
