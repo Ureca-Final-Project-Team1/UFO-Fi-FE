@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
+import { useLetters } from '@/hooks/useLetters';
 
 import PlanetWithSatellite from './PlanetWithSatellite';
 
@@ -23,11 +24,16 @@ export default function SignalProgressBar() {
     IMAGE_PATHS.SATELLITE_5,
   ];
 
-  // 임시로 행성 도달 상태 (나중에 props나 상태관리로 받아올 예정)
-  const [planetStatus] = useState<boolean[]>([true, true, false, false, false]);
+  // 전역 상태에서 행성 도달 상태 가져오기
+  const { planetStatus, completedPlanets, initializeLetters } = useLetters();
+
+  // 컴포넌트 마운트 시 편지 상태 로드하기
+  useEffect(() => {
+    initializeLetters();
+  }, [initializeLetters]);
 
   // 도달한 행성의 개수 계산
-  const completed = planetStatus.filter(Boolean).length;
+  const completed = completedPlanets;
 
   return (
     <div className="flex flex-col items-center w-full gap-4 px-4">
