@@ -4,7 +4,7 @@ import Image from 'next/image';
 // import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Button, Title } from '@/shared/ui';
+import { Button, Title } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function AccounSuccessPage() {

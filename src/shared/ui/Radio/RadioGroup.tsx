@@ -4,7 +4,7 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Label } from '@/shared/ui';
+import { Label } from '@/shared';
 
 import { RadioGroupItem } from './RadioGroupItem';
 

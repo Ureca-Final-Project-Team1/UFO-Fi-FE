@@ -1,4 +1,4 @@
-import type { IconType } from '@/shared/ui/Icons';
+import type { IconType } from '@/shared';
 
 export type NotificationType =
   | 'BENEFIT'

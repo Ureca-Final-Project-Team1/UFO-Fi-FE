@@ -14,7 +14,7 @@ import { getAchievedDate } from '@/utils/getAchievedDate';
 
 import { AchievementModalProps } from './Modal.types';
 
-export default function AchievementModal({ open, onClose, achievement }: AchievementModalProps) {
+export function AchievementModal({ open, onClose, achievement }: AchievementModalProps) {
   if (!achievement) return null;
 
   const { i, j, isAchieve, achievement: data } = achievement;

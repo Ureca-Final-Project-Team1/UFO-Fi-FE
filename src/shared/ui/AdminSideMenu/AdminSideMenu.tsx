@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 import { Icon } from '@/shared';
-import type { IconType } from '@/shared/ui/Icons/Icons.types';
+import type { IconType } from '@/shared';
 
 interface MenuItem {
   id: string;
@@ -90,6 +90,18 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
     }
   }, [currentMenuItem]);
 
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setOpen(false);
+      setIsClosing(false);
+    }, 200);
+  }, []);
+
   // ESC 키로 메뉴 닫기
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -109,19 +121,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [open]);
-
-  const handleOpen = useCallback(() => {
-    setOpen(true);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setOpen(false);
-      setIsClosing(false);
-    }, 200);
-  }, []);
+  }, [open, handleClose]);
 
   const toggleMenu = useCallback((menuId: string) => {
     setOpenMenus((prev) => {
