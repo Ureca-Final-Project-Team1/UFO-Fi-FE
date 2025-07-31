@@ -3,10 +3,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
+import { achievementsAPI } from '@/api/services/mypage/achievement';
 import { IMAGE_PATHS } from '@/constants/images';
-import { Avatar, Button, Chip, Progress } from '@/shared';
+import { Avatar, Button, Progress } from '@/shared';
 import { Honorific } from '@/types/Achievement';
+
+import { HonorificChip } from './HonorificChip';
 
 interface SignalCardProps {
   userId: string;
@@ -23,10 +27,26 @@ export default function SignalCard({
   zetAmount,
   availableData,
   maxData,
-  honorifics,
+  honorifics: initialHonorifics,
 }: SignalCardProps) {
   const router = useRouter();
-  const handleClick = () => {};
+  const [honorifics, setHonorifics] = useState<Honorific[]>([]);
+
+  useEffect(() => {
+    const hasActive = initialHonorifics.some((h) => h.isActive);
+    if (!hasActive && initialHonorifics.length > 0) {
+      const firstName = initialHonorifics[0].name;
+
+      setHonorifics(
+        initialHonorifics.map((h) => ({
+          ...h,
+          isActive: h.name === firstName,
+        })),
+      );
+    } else {
+      setHonorifics(initialHonorifics);
+    }
+  }, [initialHonorifics]);
 
   return (
     <div
@@ -65,20 +85,35 @@ export default function SignalCard({
               style={{ borderColor: 'var(--chart-4)' }}
             />
           </Avatar>
-          <Chip
+
+          <HonorificChip
+            honorifics={honorifics}
+            onSelectHonorific={async (name: string) => {
+              setHonorifics((prev) =>
+                prev.map((h) => ({
+                  ...h,
+                  isActive: h.name === name,
+                })),
+              );
+
+              try {
+                await achievementsAPI.updateUserHonorific(name);
+              } catch (error) {
+                console.error('칭호 변경 실패:', error);
+              }
+            }}
             className="w-[5rem] mt-2 rounded-md text-xs text-white py-0.5"
             style={{ backgroundColor: 'var(--chart-4)' }}
-            onClick={handleClick}
           >
             {honorifics.find((h) => h.isActive)?.name || '칭호 없음'}
-          </Chip>
+          </HonorificChip>
         </div>
 
         {/* 가운데 텍스트 */}
         <div className="flex-1 space-y-1">
           <div className="flex justify-between items-center">
             <span className="body-20-bold text-black">
-              <span className="font-bold">{userId ? userId : '지구인'}</span>
+              <span className="font-bold">{userId || '지구인'}</span>
             </span>
           </div>
 
