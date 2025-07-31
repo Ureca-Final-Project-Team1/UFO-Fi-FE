@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
-import { ScrollToTopButton } from '@/features/common/components/ScrollToTopButton';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { useScrollTracker } from '@/hooks/useScrollTracker';
@@ -101,9 +100,6 @@ export default function ExchangePage() {
           <ExchangeHeader />
         </div>
 
-        {/* 필터 & 일괄구매 */}
-        {/* <ExchangeFilters /> */}
-
         {/* 게시글 목록 */}
         <ExchangeList
           onEdit={handleEdit}
@@ -111,11 +107,6 @@ export default function ExchangePage() {
           onReport={handleReport}
           onPurchase={handlePurchase}
         />
-
-        {/* Scroll To Top 버튼 */}
-        <div className="justify-end flex">
-          <ScrollToTopButton />
-        </div>
       </div>
 
       {/* 삭제 확인 모달 */}

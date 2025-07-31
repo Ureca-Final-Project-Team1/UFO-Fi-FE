@@ -135,7 +135,7 @@ export default function Step2Page() {
       {/* 안내 문구 */}
       <div className="text-center text-gray-300 text-sm mb-4">
         <p>
-          번호가 다르면 마이페이지에서
+          개인정보가 다르면 마이페이지에서
           <br />
           수정 후 다시 시도해주세요.
         </p>

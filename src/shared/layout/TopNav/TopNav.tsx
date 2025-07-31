@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { notificationsAPI } from '@/api/services/notification/notifications';
 import { NotificationItem } from '@/api/types/notification';
 import { ICON_PATHS } from '@/constants/icons';
+import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon, NotificationDropdown } from '@/shared';
 
@@ -24,7 +25,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 알림 데이터 로드 함수 추가
+  // 알림 데이터 로드 함수
   const loadNotifications = async () => {
     setIsLoading(true);
     try {
@@ -63,6 +64,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
   };
 
   const zetAsset = myInfo?.zetAsset ?? 0;
+  const formattedZet = formatZetAmount(zetAsset);
 
   return (
     <header className="fixed top-0 left-1/2 transform -translate-x-1/2 h-14 z-30 w-full min-w-[375px] max-w-[620px] bg-primary-700 shadow-sm">
@@ -91,7 +93,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
             >
               <div className="flex items-center overflow-hidden">
                 <span className="body-16-bold text-cyan-400 truncate max-w-[84px]">
-                  {zetAsset.toLocaleString()}
+                  {formattedZet}
                 </span>
                 <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
               </div>
