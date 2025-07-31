@@ -70,6 +70,9 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
             minHeight: '100dvh',
             paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
             paddingBottom: isNavigationHidden ? '0px' : `${BOTTOM_NAV_HEIGHT}px`,
+            height: isNavigationHidden
+              ? '100dvh'
+              : `calc(100dvh - ${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px)`,
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
           }}
