@@ -1,3 +1,5 @@
+import type { NotificationItem } from '@/api/types/notification';
+export type { NotificationItem };
 import type { IconType } from '@/shared';
 
 export type NotificationType =
@@ -7,14 +9,6 @@ export type NotificationType =
   | 'REPORTED'
   | 'FOLLOWER_POST'
   | 'TRADE';
-
-export interface NotificationItem {
-  type: NotificationType;
-  title: string;
-  content: string;
-  url?: string;
-  notifiedAt: string;
-}
 
 export interface NotificationDropdownProps {
   isOpen: boolean;
