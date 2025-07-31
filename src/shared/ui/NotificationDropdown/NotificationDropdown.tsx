@@ -3,6 +3,7 @@
 import React from 'react';
 
 import type { NotificationItem as NotificationItemType } from '@/api';
+import { nextApiRequest } from '@/api/client/axios';
 import { Icon, NotificationTrigger, NotificationDropdownProps, NotificationItem } from '@/shared';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';
@@ -17,21 +18,43 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   notifications = [],
   isLoading = false,
 }) => {
-  // 알림 클릭 처리
-  const handleNotificationClick = (notification: NotificationItemType) => {
-    if (notification.url) {
-      window.open(notification.url, '_blank');
+  // 단일 알림 읽음 처리
+  const handleNotificationClick = async (notification: NotificationItemType) => {
+    try {
+      // 읽지 않은 알림인 경우 읽음 처리
+      if (!notification.isRead && notification.id) {
+        await nextApiRequest.patch(`/api/notifications/${notification.id}/read`);
+      }
+
+      if (notification.url) {
+        window.open(notification.url, '_blank');
+      }
+
+      onNotificationClick?.(notification);
+    } catch (error) {
+      console.error('Failed to mark notification as read:', error);
+      // 에러가 발생해도 알림 클릭 처리는 계속 진행
+      if (notification.url) {
+        window.open(notification.url, '_blank');
+      }
+      onNotificationClick?.(notification);
     }
-    onNotificationClick?.(notification);
-    onToggle(); // 드롭다운 닫기
   };
 
-  // 모두 읽음 처리
-  const handleMarkAllRead = () => {
-    onMarkAllRead?.();
+  // 모든 알림 읽음 처리
+  const handleMarkAllRead = async () => {
+    try {
+      await nextApiRequest.patch('/api/notifications');
+      onMarkAllRead?.();
+    } catch (error) {
+      console.error('Failed to mark all notifications as read:', error);
+      // 에러가 발생해도 UI 업데이트는 진행
+      onMarkAllRead?.();
+    }
   };
 
-  const unreadCount = notifications.length;
+  // 읽지 않은 알림 개수 계산
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={onToggle}>
@@ -89,7 +112,10 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
             <div className="divide-y divide-gray-50">
               {notifications.map((notification) => (
                 <NotificationItem
-                  key={`${notification.type}-${notification.title}-${notification.notifiedAt}`}
+                  key={
+                    notification.id ||
+                    `${notification.type}-${notification.title}-${notification.notifiedAt}`
+                  }
                   notification={notification}
                   onClick={() => handleNotificationClick(notification)}
                 />

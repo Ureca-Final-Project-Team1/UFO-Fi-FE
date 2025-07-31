@@ -15,11 +15,13 @@ export interface UpdateNotificationSettingRequest {
 }
 
 export interface NotificationItem {
+  id: string;
   type: NotificationType;
   title: string;
   content: string;
   url?: string;
   notifiedAt: string;
+  isRead: boolean;
 }
 
 export interface GetNotificationsResponse {
@@ -27,6 +29,22 @@ export interface GetNotificationsResponse {
   message: string;
   content: {
     notifications: NotificationItem[];
+    unreadCount: number;
+  };
+}
+
+export interface MarkNotificationReadRequest {
+  notificationId: string;
+}
+
+export type MarkAllNotificationsReadRequest = object;
+
+export interface NotificationReadResponse {
+  statusCode: number;
+  message: string;
+  content: {
+    success: boolean;
+    updatedCount?: number;
   };
 }
 
