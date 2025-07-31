@@ -1,9 +1,10 @@
 'use client';
+
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-
 import '@/styles/globals.css';
+
 import { FilterBoxProps } from '../types/FilterBoxProps';
 
 interface FilterBoxWithChildren extends FilterBoxProps {
@@ -20,7 +21,7 @@ export const FilterBox = ({
   return (
     <div
       className={cn(
-        'relative min-w-full min-h-fit rounded-2xl px-4 py-3 text-white shadow-md overflow-hidden',
+        'relative w-full min-h-fit rounded-2xl p-4 py-3 text-white shadow-md overflow-hidden',
         className,
       )}
     >
@@ -32,11 +33,11 @@ export const FilterBox = ({
         }}
       />
       <div className="relative z-10 flex flex-col items-start justify-start w-full">
-        <div className="mb-2 body-18-bold">
+        <div className="mb-2 body-18-bold w-full">
           {name}
           {isMultipleSelection && <p className="caption-11-regular">중복 선택 가능</p>}
         </div>
-        {children}
+        <div className="w-full">{children}</div>
       </div>
     </div>
   );
