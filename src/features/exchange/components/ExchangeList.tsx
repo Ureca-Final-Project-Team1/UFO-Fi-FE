@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button } from '@/shared';
+import { Button, Skeleton } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
@@ -88,6 +88,10 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
   // 빈 상태
   if (sellingItems.length === 0) {
     return <ExchangeEmpty />;
+  }
+
+  if (isLoading) {
+    return <Skeleton />;
   }
 
   return (
