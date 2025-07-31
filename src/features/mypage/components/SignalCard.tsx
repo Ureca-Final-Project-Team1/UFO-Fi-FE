@@ -32,15 +32,12 @@ export default function SignalCard({
         backgroundColor: 'var(--color-background-card)',
       }}
     >
-      <div className="text-center py-2 px-2">
-        <h2
-          className="heading-20-bold sm:heading-24-bold"
-          style={{ color: 'var(--color-badge-hover-dark)' }}
-        >
+      <div className="text-center py-2">
+        <h2 className="heading-24-bold" style={{ color: 'var(--color-badge-hover-dark)' }}>
           UPHONIAN SIGNAL CARD
         </h2>
         <p
-          className="caption-8-regular sm:caption-10-regular"
+          className="caption-8-regular"
           style={{
             color: 'var(--color-badge-hover-dark)',
             opacity: 0.6,
