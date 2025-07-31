@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Avatar, Button, Progress } from '@/shared';
+import { Avatar, Button, Chip, Progress } from '@/shared';
+import { Honorific } from '@/types/Achievement';
 
 interface SignalCardProps {
   userId: string;
@@ -13,6 +14,7 @@ interface SignalCardProps {
   zetAmount: number;
   availableData: number;
   maxData: number;
+  honorifics: Honorific[];
 }
 
 export default function SignalCard({
@@ -21,8 +23,10 @@ export default function SignalCard({
   zetAmount,
   availableData,
   maxData,
+  honorifics,
 }: SignalCardProps) {
   const router = useRouter();
+  const handleClick = () => {};
 
   return (
     <div
@@ -61,12 +65,13 @@ export default function SignalCard({
               style={{ borderColor: 'var(--chart-4)' }}
             />
           </Avatar>
-          <button
+          <Chip
             className="w-[5rem] mt-2 rounded-md text-xs text-white py-0.5"
             style={{ backgroundColor: 'var(--chart-4)' }}
+            onClick={handleClick}
           >
-            🌱 지구 새싹
-          </button>
+            {honorifics.find((h) => h.isActive)?.name || '칭호 없음'}
+          </Chip>
         </div>
 
         {/* 가운데 텍스트 */}

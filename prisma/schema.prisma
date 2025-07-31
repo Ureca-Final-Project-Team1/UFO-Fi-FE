@@ -211,7 +211,7 @@ model users {
   profile_photo                            profile_photo?           @relation(fields: [profile_photo_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKjkh0ielp5opkdbqmdmq4x5g75")
   refreshs                                 refreshs?                @relation(fields: [refresh_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKt80anxmture0i6gt74feisyb1")
   user_achievements                        user_achievements[]
-  
+  user_honorific                           user_honorific[]
   @@index([profile_photo_id], map: "FKjkh0ielp5opkdbqmdmq4x5g75")
 }
 
@@ -318,4 +318,22 @@ enum AchievementType {
   trade 
   rotate
   follow
+}
+
+model honorific {
+  id        BigInt   @id @default(autoincrement()) // 고유한 칭호 ID
+  level     Int                                      // 단계 정보 (예: 1~10)
+  name      String   @db.VarChar(255)               // 칭호 이름
+
+  users     user_honorific[]                        // 관계 (1:N)
+}
+
+model user_honorific {
+  id             BigInt      @id @default(autoincrement())
+  user_id        BigInt
+  honorific_id   BigInt
+  is_active      Boolean     @default(false)         // 현재 착용 중인지 여부
+
+  honorific      honorific   @relation(fields: [honorific_id], references: [id])
+  users          users       @relation(fields: [user_id], references: [id])
 }
