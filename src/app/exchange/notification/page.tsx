@@ -18,7 +18,6 @@ const FilterNotificationPage = () => {
   useFilteredItemCount();
   const router = useRouter();
   const [selectedCarriers, setSelectedCarriers] = useState<Carrier[]>([Carrier.SKT]);
-  const [selectedReputations, setSelectedReputations] = useState<string[]>(['첫 출발']);
   const [isLoading, setIsLoading] = useState(false);
 
   // 통신사 선택 토글
@@ -28,16 +27,6 @@ const FilterNotificationPage = () => {
         ? prev.filter((c) => c !== carrier)
         : [...prev, carrier];
       return newCarriers;
-    });
-  };
-
-  // 평판 선택 토글
-  const toggleReputation = (reputation: string) => {
-    setSelectedReputations((prev) => {
-      const newReputations = prev.includes(reputation)
-        ? prev.filter((r) => r !== reputation)
-        : [...prev, reputation];
-      return newReputations;
     });
   };
 
@@ -95,7 +84,6 @@ const FilterNotificationPage = () => {
   // 전체 초기화
   const handleReset = () => {
     setSelectedCarriers([Carrier.SKT]);
-    setSelectedReputations(['첫 출발']);
     setData([minData]);
     setRange([minValue, maxValue]);
     toast.info('전체 조건이 초기화되었습니다.');
@@ -104,12 +92,12 @@ const FilterNotificationPage = () => {
   return (
     <div className="flex flex-col justify-start items-center w-full min-h-full">
       <Title title="알림 조건 설정" iconVariant="back" />
-      <div className="overflow-y-auto flex flex-col gap-4 h-full mb-4 hide-scrollbar">
+      <div className="overflow-y-auto flex flex-col gap-4 h-full mb-4 hide-scrollbar w-full px-4">
         {/* 통신사 선택 */}
-        <FilterBox name="통신사" isMultipleSelection={true}>
+        <FilterBox name="통신사" isMultipleSelection={true} className="w-full">
           <div className="flex flex-wrap w-full items-center gap-2">
             <Icon name="RotateCw" />
-            <div className="flex justify-start items-center gap-2">
+            <div className="flex justify-start items-center gap-2 flex-wrap">
               {Object.values(Carrier).map((carrier) => {
                 const displayName = CARRIER_DISPLAY_NAMES[carrier];
                 const isSelected = selectedCarriers.includes(carrier);
@@ -130,7 +118,7 @@ const FilterNotificationPage = () => {
         </FilterBox>
 
         {/* 용량 선택 */}
-        <FilterBox className="pb-10" name="용량">
+        <FilterBox className="pb-10 w-full" name="용량">
           <div className="w-full h-fit mt-2">
             <DataSlider
               value={data}
@@ -146,7 +134,7 @@ const FilterNotificationPage = () => {
         </FilterBox>
 
         {/* 단위가격 선택 */}
-        <FilterBox name="단위가격">
+        <FilterBox name="단위가격" className="w-full">
           <DataRangeSlider
             value={range}
             onValueChange={setRange}
@@ -155,31 +143,6 @@ const FilterNotificationPage = () => {
             minLabel={`${minValue}ZET`}
             maxLabel={`${maxValue}ZET`}
           />
-        </FilterBox>
-
-        {/* 평판 선택 */}
-        <FilterBox name="평판" isMultipleSelection={true}>
-          <div className="flex w-full items-center gap-3">
-            <Icon name="RotateCw" />
-            <div className="flex flex-wrap justify-center items-center gap-2">
-              {['첫 출발', '우주 새싹', '별빛 상인', '은하 베테랑', '우주 전설'].map(
-                (reputation) => {
-                  const isSelected = selectedReputations.includes(reputation);
-
-                  return (
-                    <Chip
-                      key={reputation}
-                      selected={isSelected}
-                      className="cursor-pointer transition-colors"
-                      onClick={() => toggleReputation(reputation)}
-                    >
-                      {reputation}
-                    </Chip>
-                  );
-                },
-              )}
-            </div>
-          </div>
         </FilterBox>
 
         {/* 버튼 영역 */}
@@ -204,22 +167,6 @@ const FilterNotificationPage = () => {
           >
             {isLoading ? '저장 중...' : '알림 조건 저장'}
           </Button>
-        </div>
-
-        {/* TODO: 현재 선택된 조건을 표시하며, 배포 이후 이 부분은 지울 예정 */}
-        <div className="bg-gray-50 p-3 rounded-lg text-sm text-black">
-          <div className="font-semibold mb-2">현재 설정:</div>
-          <div>
-            통신사:{' '}
-            {selectedCarriers.length > 0
-              ? selectedCarriers.map((c) => CARRIER_DISPLAY_NAMES[c]).join(', ')
-              : '선택 없음'}
-          </div>
-          <div>용량: {data[0]}GB</div>
-          <div>
-            가격: {range[0]} - {range[1]} ZET
-          </div>
-          <div className="mt-2 text-xs text-gray-500">※ 평판 필터는 현재 지원하지 않습니다</div>
         </div>
       </div>
     </div>
