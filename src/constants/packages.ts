@@ -1,8 +1,8 @@
 export const PACKAGES = [
-  { id: 'A', zet: 180, price: 1800 },
-  { id: 'B', zet: 360, price: 3600 },
-  { id: 'C', zet: 360, price: 3600 },
-  { id: 'D', zet: 1200, price: 12000 },
+  { id: 'A', zet: 150, price: 1500 },
+  { id: 'B', zet: 350, price: 3500 },
+  { id: 'C', zet: 500, price: 5000 },
+  { id: 'D', zet: 1000, price: 10000 },
   { id: 'E', zet: 3000, price: 30000 },
 ] as const;
 

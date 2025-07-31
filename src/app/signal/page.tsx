@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import LetterTabContent from '@/features/signal/components/LetterTabContent';
 import SignalTabContent from '@/features/signal/components/SignalTabContent';
 import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared';
 
@@ -31,7 +32,9 @@ export default function SignalPage() {
             <SignalTabContent />
           </TabsContent>
 
-          <TabsContent value="letters">편지함</TabsContent>
+          <TabsContent value="letters">
+            <LetterTabContent />
+          </TabsContent>
         </div>
       </Tabs>
     </div>

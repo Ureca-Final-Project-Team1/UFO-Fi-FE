@@ -1,13 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import '@/styles/globals.css';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { Plan, signupAPI } from '@/api';
+import { getUserInfoResponse, Plan, signupAPI } from '@/api';
 import { Carrier } from '@/api/types/carrier';
 import { OCRInputSection, Stepper } from '@/features/signup/components';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
@@ -15,12 +15,12 @@ import { Button, Title } from '@/shared';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 const PlanPage = () => {
-  const router = useRouter();
   const { name, phoneNumber, carrier, planName, setForm, isProfileComplete } = useSignupStore();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [maxData, setMaxData] = useState<number | null>(null);
   const [networkType, setNetworkType] = useState('');
+  const queryClient = useQueryClient();
 
   const {
     control,
@@ -69,7 +69,17 @@ const PlanPage = () => {
       });
       toast.success('회원가입이 완료되었습니다!');
       useSignupStore.getState().reset();
-      router.push('/');
+      queryClient.setQueryData(['userInfo'], (prev: getUserInfoResponse | undefined) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          content: {
+            ...prev.content,
+            role: 'ROLE_USER',
+          },
+        };
+      });
     } catch (error) {
       console.error('회원가입 에러:', error);
       toast.error('회원가입 중 오류가 발생했습니다.');

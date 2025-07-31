@@ -8,7 +8,7 @@ interface PlanetComponentProps {
   isArrived: boolean;
 }
 
-const PlanetComponent = React.forwardRef<HTMLDivElement, PlanetComponentProps>(
+const PlanetWithSatellite = React.forwardRef<HTMLDivElement, PlanetComponentProps>(
   ({ planetSrc, satelliteSrc, planetSize, isArrived }, ref) => {
     return (
       <div
@@ -23,7 +23,7 @@ const PlanetComponent = React.forwardRef<HTMLDivElement, PlanetComponentProps>(
             alt="위성"
             width={30}
             height={30}
-            className="absolute top-[-12px]"
+            className="absolute top-[-35px]"
           />
         )}
 
@@ -40,5 +40,5 @@ const PlanetComponent = React.forwardRef<HTMLDivElement, PlanetComponentProps>(
   },
 );
 
-PlanetComponent.displayName = 'PlanetComponent';
-export default PlanetComponent;
+PlanetWithSatellite.displayName = 'PlanetWithSatellite';
+export default PlanetWithSatellite;

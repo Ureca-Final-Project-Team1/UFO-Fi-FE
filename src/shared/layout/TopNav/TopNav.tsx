@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import { notificationsAPI } from '@/api/services/notification/notifications';
-import { NotificationItem } from '@/api/types/notification';
+import { nextApiRequest } from '@/api/client/axios';
+import type { NotificationItem } from '@/api/types/notification';
 import { ICON_PATHS } from '@/constants/icons';
+import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Icon, NotificationDropdown } from '@/shared';
 
@@ -24,14 +25,27 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 알림 데이터 로드 함수 추가
+  // 알림 데이터 로드 함수
   const loadNotifications = async () => {
     setIsLoading(true);
     try {
-      const response = await notificationsAPI.getNotifications();
-      setNotifications(response.content.notifications);
+      // Next.js API 라우트 사용
+      const response = await nextApiRequest.get<{
+        statusCode: number;
+        message: string;
+        content: {
+          notifications: NotificationItem[];
+          unreadCount: number;
+        };
+      }>('/api/notifications');
+
+      if (response.data.statusCode === 200) {
+        setNotifications(response.data.content.notifications);
+      }
     } catch (error) {
       console.error('Failed to load notifications:', error);
+      // 에러 발생 시 빈 배열로 설정
+      setNotifications([]);
     } finally {
       setIsLoading(false);
     }
@@ -44,12 +58,28 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
     }
   }, [isNotificationOpen]);
 
-  const handleMarkAllRead = () => {
-    setNotifications([]);
-    setIsNotificationOpen(false);
+  const handleMarkAllRead = async () => {
+    try {
+      await nextApiRequest.patch('/api/notifications');
+      // 모든 알림을 읽음 상태로 업데이트
+      setNotifications((prev) =>
+        prev.map((notification) => ({
+          ...notification,
+          isRead: true,
+        })),
+      );
+      setIsNotificationOpen(false);
+    } catch (error) {
+      console.error('Failed to mark all notifications as read:', error);
+    }
   };
 
   const handleNotificationClick = (notification: NotificationItem) => {
+    // 알림 클릭 시 해당 알림을 읽음 상태로 업데이트
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n)),
+    );
+
     if (notification.url) {
       window.open(notification.url, '_blank');
     }
@@ -63,6 +93,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
   };
 
   const zetAsset = myInfo?.zetAsset ?? 0;
+  const formattedZet = formatZetAmount(zetAsset);
 
   return (
     <header className="fixed top-0 left-1/2 transform -translate-x-1/2 h-14 z-30 w-full min-w-[375px] max-w-[620px] bg-primary-700 shadow-sm">
@@ -91,7 +122,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
             >
               <div className="flex items-center overflow-hidden">
                 <span className="body-16-bold text-cyan-400 truncate max-w-[84px]">
-                  {zetAsset.toLocaleString()}
+                  {formattedZet}
                 </span>
                 <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
               </div>

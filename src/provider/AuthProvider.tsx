@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { routeUtils } from '@/constants';
 import { useUserRole } from '@/features/signup/hooks/useUserRole';
 import { Loading } from '@/shared';
 
@@ -10,68 +11,80 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
+/**
+ * 인증 및 권한에 따라 접근을 제어하는 프로바이더 컴포넌트
+ * - 보호된 라우트에서는 유저 역할을 기반으로 리다이렉션 처리
+ * - 공개 라우트 또는 예외 경로는 그대로 접근 허용
+ */
 export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [hasRedirected, setHasRedirected] = useState(false);
 
-  const isLoginSignupPage = pathname.startsWith('/login') || pathname.startsWith('/signup');
+  // 공개 또는 예외 라우트가 아닌 경우에만 사용자 정보를 조회
+  const shouldFetchUser =
+    !routeUtils.isPublicRoute(pathname) && !routeUtils.isExemptRoute(pathname);
 
-  // 로그인, 회원가입을 제외한 모든 페이지에서 사용자 정보를 가져옴
-  const { userRole, isLoading, error } = useUserRole(!isLoginSignupPage);
+  const { userRole, isLoading, error } = useUserRole(shouldFetchUser);
 
   useEffect(() => {
-    // 이미 리다이렉트했거나 로딩 중이면 처리하지 않음
     if (hasRedirected || isLoading) return;
 
-    // 에러 발생 시 로그인 페이지로 (로그인 관련 페이지가 아닌 경우만)
-    if (error && !pathname.startsWith('/login') && !pathname.startsWith('/signup')) {
+    // 공개 또는 예외 라우트는 인증 검사 없이 통과
+    if (routeUtils.isPublicRoute(pathname) || routeUtils.isExemptRoute(pathname)) {
+      return;
+    }
+
+    // 사용자 정보 조회 중 에러 → 로그인 페이지로 이동
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.log('AuthProvider - Error occurred, redirecting to login');
       setHasRedirected(true);
       router.replace('/login');
       return;
     }
 
-    // 사용자 역할에 따른 처리
     if (userRole) {
-      // 1. ROLE_REPORTED 유저는 블랙홀로
+      // 1. 신고된 유저 → 블랙홀로 강제 이동
       if (userRole === 'ROLE_REPORTED' && pathname !== '/blackhole') {
+        // eslint-disable-next-line no-console
+        console.log('AuthProvider - ROLE_REPORTED user, redirecting to blackhole');
         setHasRedirected(true);
         router.replace('/blackhole?mode=self');
         return;
       }
 
-      // 2. ROLE_NO_INFO 유저는 회원가입으로
+      // 2. 회원정보 미입력 유저 → 회원가입 절차로 이동
       if (userRole === 'ROLE_NO_INFO' && !pathname.startsWith('/signup')) {
+        // eslint-disable-next-line no-console
+        console.log('AuthProvider - ROLE_NO_INFO user, redirecting to signup');
         setHasRedirected(true);
         router.replace('/signup/privacy');
         return;
       }
 
-      // 3. ROLE_ADMIN이 아닌 사용자가 관리자 페이지 접근
-      if (pathname.startsWith('/admin') && userRole !== 'ROLE_ADMIN') {
+      // 3. 일반 유저가 관리자 페이지 접근 시 → 홈으로 이동
+      if (routeUtils.isAdminRoute(pathname) && userRole !== 'ROLE_ADMIN') {
+        // eslint-disable-next-line no-console
+        console.log('AuthProvider - Non-admin accessing admin route, redirecting to home');
         setHasRedirected(true);
         router.replace('/');
         return;
       }
 
-      // 4. 일반 사용자가 회원가입 페이지 접근
-      if (userRole === 'ROLE_USER' && pathname.startsWith('/signup')) {
+      // 4. 일반 유저가 회원가입 라우트 접근 시 → 홈으로 이동
+      if (userRole === 'ROLE_USER' && routeUtils.isSignupRoute(pathname)) {
+        // eslint-disable-next-line no-console
+        console.log('AuthProvider - Regular user accessing signup, redirecting to home');
         setHasRedirected(true);
         router.replace('/');
         return;
       }
-    }
-
-    // 홈페이지에서 비로그인 사용자 처리
-    if (pathname === '/' && !userRole && !isLoading && !error) {
-      setHasRedirected(true);
-      router.replace('/login');
-      return;
     }
   }, [pathname, router, userRole, isLoading, error, hasRedirected]);
 
-  // 로딩 중일 때
-  if (isLoading) {
+  // 보호된 라우트에서 유저 정보 로딩 중일 경우
+  if (isLoading && shouldFetchUser) {
     return <Loading />;
   }
 
