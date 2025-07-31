@@ -9,11 +9,33 @@ export function middleware(request: NextRequest) {
   const authToken = request.cookies.get('Authorization')?.value;
   const isAuthenticated = !!authToken;
 
-  // 인증이 라우트들만 체크
-  const protectedRoutes = ['/sell', '/exchange', '/signal', '/mypage', '/admin'];
-  const needsAuth = protectedRoutes.some((route) => pathname.startsWith(route));
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname === '/favicon.ico' ||
+    pathname.startsWith('/images') ||
+    pathname.startsWith('/icons')
+  ) {
+    return NextResponse.next();
+  }
 
-  if (needsAuth && !isAuthenticated) {
+  // 보호된 라우트 (인증 필요)
+  const protectedRoutes = [
+    '/sell',
+    '/exchange',
+    '/signal',
+    '/mypage',
+    '/admin',
+    '/onboarding',
+    '/payment',
+    '/profile',
+    '/charge',
+  ];
+
+  const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
+
+  // 보호된 라우트에 비인증 사용자가 접근하려고 할 때
+  if (isProtectedRoute && !isAuthenticated) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
