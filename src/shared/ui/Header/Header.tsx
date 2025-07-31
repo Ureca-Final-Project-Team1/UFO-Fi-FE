@@ -1,86 +1,87 @@
 'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
-import { ICON_PATHS } from '@/constants/icons';
-
-import { AdminSideMenu } from '../AdminSideMenu/AdminSideMenu';
-import { IconType } from '../Icons';
-import { Icon } from '../Icons/Icon';
+import { logoutAPI } from '@/api';
+import { Button, Modal } from '@/shared';
 
 interface HeaderProps {
   userName?: string;
   onLogout?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ userName = '김명령', onLogout }) => {
-  const pathname = usePathname();
+export default function Header({ userName = 'Admin' }: HeaderProps) {
+  const router = useRouter();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const navItems = [
-    { href: '/admin', label: '대시보드', icon: 'Home' as IconType },
-    { href: '/admin/user', label: '사용자', icon: 'Users' as IconType },
-    { href: '/admin/posts', label: '게시물', icon: 'FileText' as IconType },
-    { href: '/admin/settings', label: '설정', icon: 'Settings' as IconType },
-  ];
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await logoutAPI.setLogout();
+      toast.success('로그아웃되었습니다.');
+      router.push('/login');
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+      toast.error('로그아웃에 실패했습니다.');
+    } finally {
+      setIsLoggingOut(false);
+      setIsLogoutModalOpen(false);
+    }
+  };
 
   return (
-    <header className="w-full h-16 flex items-center justify-between px-4 lg:px-6 bg-white border-b border-gray-200 sticky top-0 z-50">
-      {/* 좌측: 로고 + 네비게이션 */}
-      <div className="flex items-center gap-4 lg:gap-8 min-w-0">
-        <div className="flex items-center gap-2 min-w-0">
-          <Image src={ICON_PATHS.UFO_LOGO} alt="UFO-Fi 로고" width={28} height={28} />
-          <Link
-            href="/admin"
-            className="font-bold text-lg lg:text-xl text-gray-900 whitespace-nowrap pyeongchangpeace-logo"
-          >
-            UFO-Fi
-          </Link>
-        </div>
+    <>
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="px-4 py-3 lg:px-8">
+          <div className="flex items-center justify-between">
+            {/* 왼쪽: 로고 및 타이틀 */}
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">U</span>
+              </div>
+              <h1 className="text-xl font-bold text-gray-900">UFO-Fi Admin</h1>
+            </div>
 
-        {/* 데스크탑 네비게이션 */}
-        <nav className="hidden lg:flex items-center gap-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-blue-600 ${
-                pathname === item.href
-                  ? 'text-blue-600 border-b-2 border-blue-600 pb-1'
-                  : 'text-gray-600'
-              }`}
-            >
-              <Icon name={item.icon as IconType} className="w-4 h-4" />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+            {/* 오른쪽: 사용자 정보 및 로그아웃 */}
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                  <span className="text-gray-600 font-medium text-xs">
+                    {userName.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <span className="font-medium">{userName}</span>
+              </div>
 
-      {/* 우측: Admin 뱃지, 이름, 로그아웃 */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
-          <span className="bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full">
-            Admin
-          </span>
-          <span className="hidden sm:block text-sm font-medium text-gray-700">{userName}</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="text-gray-700 hover:text-gray-900"
+              >
+                로그아웃
+              </Button>
+            </div>
+          </div>
         </div>
-        <button
-          type="button"
-          className="p-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center"
-          onClick={onLogout}
-          title="로그아웃"
-        >
-          <Icon name="LogOut" className="w-5 h-5" color="black" />
-        </button>
-        <div className="flex items-center">
-          <AdminSideMenu />
-        </div>
-      </div>
-    </header>
+      </header>
+
+      {/* 로그아웃 확인 모달 */}
+      <Modal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        title="로그아웃 확인"
+        description="정말 로그아웃하시겠습니까?"
+        type="double"
+        primaryButtonText={isLoggingOut ? '로그아웃 중...' : '로그아웃'}
+        secondaryButtonText="취소"
+        onPrimaryClick={handleLogout}
+        onSecondaryClick={() => setIsLogoutModalOpen(false)}
+        primaryButtonDisabled={isLoggingOut}
+      />
+    </>
   );
-};
-
-export default Header;
+}
