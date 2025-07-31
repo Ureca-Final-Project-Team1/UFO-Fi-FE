@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
+import { ScrollToTopButton } from '@/features/common/components/ScrollToTopButton';
 import BottomNav from '@/shared/layout/BottomNav';
 import TopNav from '@/shared/layout/TopNav';
 
@@ -65,7 +66,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
       >
         {!isNavigationHidden && <TopNav />}
         <main
-          className="overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white"
+          className="overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white flex flex-col justify-center items-center"
           style={{
             minHeight: '100dvh',
             paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
@@ -80,6 +81,12 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
           {children}
         </main>
         {!isNavigationHidden && <BottomNav />}
+
+        {!isNavigationHidden && (
+          <div className="absolute bottom-24 right-4 z-50">
+            <ScrollToTopButton />
+          </div>
+        )}
       </div>
     </div>
   );

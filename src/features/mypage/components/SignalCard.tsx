@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants/images';
+import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { Avatar, Button, Progress } from '@/shared';
 
 interface SignalCardProps {
@@ -23,6 +24,7 @@ export default function SignalCard({
   maxData,
 }: SignalCardProps) {
   const router = useRouter();
+  const formattedZet = formatZetAmount(zetAmount);
 
   return (
     <div
@@ -32,12 +34,15 @@ export default function SignalCard({
         backgroundColor: 'var(--color-background-card)',
       }}
     >
-      <div className="text-center py-2">
-        <h2 className="heading-24-bold" style={{ color: 'var(--color-badge-hover-dark)' }}>
+      <div className="text-center py-2 px-2">
+        <h2
+          className="heading-20-bold sm:heading-24-bold"
+          style={{ color: 'var(--color-badge-hover-dark)' }}
+        >
           UPHONIAN SIGNAL CARD
         </h2>
         <p
-          className="caption-8-regular"
+          className="caption-8-regular sm:caption-10-regular"
           style={{
             color: 'var(--color-badge-hover-dark)',
             opacity: 0.6,
@@ -92,7 +97,7 @@ export default function SignalCard({
             <span>보유중인 ZET</span>
             <div className="flex justify-between items-center gap-1 sm:gap-2">
               <span className="body-14-bold sm:body-16-bold font-bold text-chart-4 truncate">
-                {zetAmount} ZET
+                {formattedZet} ZET
               </span>
               <Link href="/charge">
                 <button className="whitespace-nowrap caption-12-medium sm:body-14-medium rounded-md px-2 sm:px-4 py-1 sm:py-2 flex items-center justify-center exploration-button text-xs sm:text-sm">
