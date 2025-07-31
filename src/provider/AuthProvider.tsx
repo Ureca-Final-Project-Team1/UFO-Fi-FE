@@ -40,7 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return;
       }
 
-      // 2. ROLE_NO_INFO 유저는 회원가입으로
+      // 2. ROLE_NO_INFO 유저는 회원가입으로 (단, 이미 회원가입 페이지에 있지 않은 경우만)
       if (userRole === 'ROLE_NO_INFO' && !pathname.startsWith('/signup')) {
         setHasRedirected(true);
         router.replace('/signup/privacy');
@@ -58,6 +58,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (userRole === 'ROLE_USER' && pathname.startsWith('/signup')) {
         setHasRedirected(true);
         router.replace('/');
+        return;
+      }
+
+      // 5. 홈 리다이렉트
+      // 로그인된 사용자가 로그인 페이지 접근 시 홈으로 리다이렉트
+      // 만약 어드민이라면 백오피스로 이동
+      if (userRole === 'ROLE_USER' && pathname.startsWith('/login')) {
+        setHasRedirected(true);
+        router.replace('/');
+        return;
+      } else if (userRole === 'ROLE_ADMIN' && pathname.startsWith('/login')) {
+        setHasRedirected(true);
+        router.replace('/admin');
         return;
       }
     }
