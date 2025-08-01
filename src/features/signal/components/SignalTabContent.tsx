@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
 import { useLetters } from '@/hooks/useLetters';
+import { Loading } from '@/shared';
 
 import PlanetComponent from './PlanetComponent';
 
@@ -17,14 +18,10 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   const [scale, setScale] = useState<number>(1);
   const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
   const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 전역 상태에서 행성 도달 상태 가져오기
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
-
-  // 컴포넌트 마운트 시 편지 상태 로드
-  useEffect(() => {
-    initializeLetters();
-  }, [initializeLetters]);
 
   const PLANETS = [
     IMAGE_PATHS.PLANET_1,
@@ -89,6 +86,20 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     setScale(newScale);
   };
 
+  // 컴포넌트 마운트 시 편지 상태 로드
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await initializeLetters();
+      } catch (error) {
+        console.error('편지 상태 로드 실패:', error);
+      } finally {
+        setIsLoading(false); // ✅ 성공/실패 관계없이 로딩 끝
+      }
+    };
+    fetchData();
+  }, []); // 의존성 배열을 비워서 컴포넌트 마운트 시에만 실행
+
   useEffect(() => {
     calculateScale();
     const handleResize = () => calculateScale();
@@ -141,6 +152,11 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
       });
     }
   };
+
+  // 로딩 중일 때는 Loading 컴포넌트 렌더링
+  if (isLoading) {
+    return <Loading variant="signal" message="탐사 기록을 불러오는 중..." className="p-8" />;
+  }
 
   return (
     <div className="relative w-full overflow-hidden">

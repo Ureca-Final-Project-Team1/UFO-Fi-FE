@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { fetchAndCreateLetters, type LetterDisplay } from '@/api/services/story/letters';
+import { Loading } from '@/shared';
 import { useLetterStore } from '@/stores/useLetterStore';
-
-import { SignalLoading } from './SignalLoading';
 
 type Letter = LetterDisplay;
 
@@ -41,7 +40,7 @@ export default function LetterComponent() {
 
   // 로딩 중일 때 시그널 로딩 화면 표시
   if (isLoading) {
-    return <SignalLoading message="항해 편지를 불러오고 있어요..." />;
+    return <Loading variant="signal" message="항해 편지를 불러오고 있어요..." className="p-8" />;
   }
 
   // 에러 발생 시
