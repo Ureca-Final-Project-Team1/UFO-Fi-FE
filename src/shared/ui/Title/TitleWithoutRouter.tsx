@@ -9,15 +9,14 @@ import type { TitleIconVariant } from './Title.types';
 
 type IconType = 'ChevronLeft' | 'X';
 
+const iconVariantMap = {
+  back: 'ChevronLeft',
+  close: 'X',
+} as const;
+
 const getIconName = (variant: TitleIconVariant | undefined): IconType | null => {
-  switch (variant) {
-    case 'back':
-      return 'ChevronLeft';
-    case 'close':
-      return 'X';
-    default:
-      return null;
-  }
+  if (!variant || variant === 'none') return null;
+  return iconVariantMap[variant] || null;
 };
 
 type TitleWithoutRouterProps = ComponentProps<'div'> & {
