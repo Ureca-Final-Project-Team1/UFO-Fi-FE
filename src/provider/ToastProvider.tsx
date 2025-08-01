@@ -11,7 +11,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   return (
     <>
       {children}
-      <Toaster className={`fixed bottom-[${TOAST_CONFIG.BOTTOM_OFFSET}px] z-[9999]`} />
+      <Toaster className={`fixed bottom-[${TOAST_CONFIG.BOTTOM_OFFSET}] z-[9999]`} />
     </>
   );
 }
