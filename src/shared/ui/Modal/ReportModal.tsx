@@ -14,6 +14,8 @@ import { Input } from '../Input';
 import '@/styles/globals.css';
 
 export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
+  const { postOwnerUserId, postId, isOpen = false, onClose = () => {} } = props;
+
   const reportOption = Object.entries(ReportReason).map(([key, label]) => ({
     label,
     value: key,
@@ -26,11 +28,11 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (isOpen) {
       setSelectedOption('');
       setCustomReason('');
     }
-  }, [props.isOpen]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (error) {
@@ -49,8 +51,8 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
 
           const response = await reportAPI.reportPosts({
             content,
-            reportedUserId: props.postOwnerUserId,
-            tradePostId: props.postId,
+            reportedUserId: postOwnerUserId,
+            tradePostId: postId,
           });
 
           if (
@@ -74,13 +76,13 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
 
       fetchReport();
     }
-  }, [selectedOption, customReason, props.postOwnerUserId, props.postId]);
+  }, [selectedOption, customReason, postOwnerUserId, postId]);
 
   return (
     <>
       <Modal
-        isOpen={props.isOpen}
-        onClose={props.onClose}
+        isOpen={isOpen}
+        onClose={onClose}
         headerAlign="left"
         title="게시글을 신고하시겠습니까?"
         description="신고 사유를 선택해주세요."
