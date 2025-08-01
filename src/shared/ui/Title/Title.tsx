@@ -10,15 +10,16 @@ import type { TitleIconVariant } from './Title.types';
 
 type IconType = 'ChevronLeft' | 'X';
 
+// 스타일 맵 객체들
+const iconVariantMap = {
+  back: 'ChevronLeft',
+  close: 'X',
+  none: null,
+} as const;
+
 const getIconName = (variant: TitleIconVariant | undefined): IconType | null => {
-  switch (variant) {
-    case 'back':
-      return 'ChevronLeft';
-    case 'close':
-      return 'X';
-    default:
-      return null;
-  }
+  if (!variant || variant === 'none') return null;
+  return iconVariantMap[variant] || null;
 };
 
 type TitleProps = ComponentProps<'div'> & {
