@@ -14,14 +14,14 @@ import { Input } from '../Input';
 import '@/styles/globals.css';
 
 type ReportedModalProps = ComponentProps<'div'> & {
-  postOwnerUserId: number;
-  postId: number;
+  postOwnerUserId?: number;
+  postId?: number;
   isOpen?: boolean;
   onClose?: () => void;
 };
 
 export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
-  const { postOwnerUserId, postId, isOpen = false, onClose = () => {}, ...rest } = props;
+  const { postOwnerUserId = 0, postId = 0, isOpen = false, onClose = () => {}, ...rest } = props;
 
   const reportOption = Object.entries(ReportReason).map(([key, label]) => ({
     label,
