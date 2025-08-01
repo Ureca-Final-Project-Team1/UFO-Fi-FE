@@ -18,10 +18,22 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   const [scale, setScale] = useState<number>(1);
   const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
   const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 전역 상태에서 행성 도달 상태 가져오기
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
+
+  // 편지 상태 초기화 + 로딩 컨트롤
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        await initializeLetters();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
+  }, [initializeLetters]);
 
   const PLANETS = [
     IMAGE_PATHS.PLANET_1,
@@ -86,25 +98,10 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     setScale(newScale);
   };
 
-  // 컴포넌트 마운트 시 편지 상태 로드
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await initializeLetters();
-      } catch (error) {
-        console.error('편지 상태 로드 실패:', error);
-      } finally {
-        setIsLoading(false); // ✅ 성공/실패 관계없이 로딩 끝
-      }
-    };
-    fetchData();
-  }, []); // 의존성 배열을 비워서 컴포넌트 마운트 시에만 실행
-
   useEffect(() => {
     calculateScale();
-    const handleResize = () => calculateScale();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', calculateScale);
+    return () => window.removeEventListener('resize', calculateScale);
   }, [maxHeight]);
 
   // PC 마우스 휠 → 수평 스크롤 가능하도록 추가
@@ -140,114 +137,112 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   }, [scale]);
 
   const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-    }
+    scrollContainerRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
   };
+
   const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({
-        left: scrollContainerRef.current.scrollWidth,
-        behavior: 'smooth',
-      });
-    }
+    scrollContainerRef.current?.scrollTo({
+      left: scrollContainerRef.current.scrollWidth,
+      behavior: 'smooth',
+    });
   };
 
   return (
     <div className="relative w-full overflow-hidden">
-      {isLoading ? (
-        <Loading variant="signal" message="탐사 기록을 불러오는 중..." className="p-8" />
-      ) : (
-        <>
-          <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
-            {completedPlanets}번째 은하까지 탐사 완료...
-          </p>
+      {/* 로딩 오버레이로 변경 */}
+      {isLoading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60">
+          <Loading variant="signal" message="탐사 기록을 불러오는 중..." className="p-8" />
+        </div>
+      )}
 
-          {/* 스크롤 버튼 */}
-          {canScrollLeft && (
-            <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
-              <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
-                ◀
-              </button>
-            </div>
-          )}
-          {canScrollRight && (
-            <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
-              <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
-                ▶
-              </button>
-            </div>
-          )}
+      <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
+        {completedPlanets}번째 은하까지 탐사 완료...
+      </p>
 
-          <div
-            ref={scrollContainerRef}
-            className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
-            style={{ height: `${baseLayout.containerHeight * scale}px` }}
+      {/* 스크롤 버튼 */}
+      {canScrollLeft && (
+        <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
+          <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
+            ◀
+          </button>
+        </div>
+      )}
+      {canScrollRight && (
+        <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
+          <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
+            ▶
+          </button>
+        </div>
+      )}
+
+      <div
+        ref={scrollContainerRef}
+        className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
+        style={{ height: `${baseLayout.containerHeight * scale}px` }}
+      >
+        <div
+          ref={contentRef}
+          className="relative"
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            width: `860px`,
+            height: `${baseLayout.containerHeight}px`,
+          }}
+        >
+          {/* SVG 점선 - 각 연결선별로 개별 색상 */}
+          <svg
+            className="absolute top-0 left-0 pointer-events-none"
+            width="860"
+            height={baseLayout.containerHeight}
           >
+            {baseLayout.planets.map((from, i) => {
+              const to = baseLayout.planets[i + 1];
+              if (!to) return null;
+
+              const fromPoint = {
+                x: from.left + planetSizes[i] / 2,
+                y: from.top + planetSizes[i] / 2,
+              };
+              const toPoint = {
+                x: to.left + planetSizes[i + 1] / 2,
+                y: to.top + planetSizes[i + 1] / 2,
+              };
+
+              return (
+                <path
+                  key={i}
+                  d={getCurvePath(fromPoint, toPoint, i)}
+                  fill="none"
+                  stroke={getConnectionColor(i, i + 1)}
+                  strokeWidth="2"
+                  strokeDasharray="8 6"
+                />
+              );
+            })}
+          </svg>
+
+          {/* 행성들 */}
+          {baseLayout.planets.map((planet, index) => (
             <div
-              ref={contentRef}
-              className="relative"
+              key={index}
+              className="absolute"
               style={{
-                transform: `scale(${scale})`,
-                transformOrigin: 'top left',
-                width: `860px`,
-                height: `${baseLayout.containerHeight}px`,
+                top: `${planet.top}px`,
+                left: `${planet.left}px`,
               }}
             >
-              {/* SVG 점선 - 각 연결선별로 개별 색상 */}
-              <svg
-                className="absolute top-0 left-0 pointer-events-none"
-                width="860"
-                height={baseLayout.containerHeight}
-              >
-                {baseLayout.planets.map((from, i) => {
-                  const to = baseLayout.planets[i + 1];
-                  if (!to) return null;
-
-                  const fromPoint = {
-                    x: from.left + planetSizes[i] / 2,
-                    y: from.top + planetSizes[i] / 2,
-                  };
-                  const toPoint = {
-                    x: to.left + planetSizes[i + 1] / 2,
-                    y: to.top + planetSizes[i + 1] / 2,
-                  };
-
-                  return (
-                    <path
-                      key={i}
-                      d={getCurvePath(fromPoint, toPoint, i)}
-                      fill="none"
-                      stroke={getConnectionColor(i, i + 1)}
-                      strokeWidth="2"
-                      strokeDasharray="8 6"
-                    />
-                  );
-                })}
-              </svg>
-
-              {/* 행성들 */}
-              {baseLayout.planets.map((planet, index) => (
-                <div
-                  key={index}
-                  className="absolute"
-                  style={{
-                    top: `${planet.top}px`,
-                    left: `${planet.left}px`,
-                  }}
-                >
-                  <PlanetComponent
-                    planetSrc={PLANETS[index]}
-                    satelliteSrc={SATELLITES[index]}
-                    planetSize={planetSizes[index]}
-                    isArrived={planetStatus[index]}
-                  />
-                </div>
-              ))}
+              <PlanetComponent
+                planetSrc={PLANETS[index]}
+                satelliteSrc={SATELLITES[index]}
+                planetSize={planetSizes[index]}
+                isArrived={planetStatus[index]}
+              />
             </div>
-          </div>
-        </>
-      )}
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
