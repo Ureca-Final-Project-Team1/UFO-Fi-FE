@@ -1,19 +1,8 @@
-import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import '../styles/globals.css';
-import { TOAST_CONFIG } from '@/constants';
-import {
-  ModalProvider,
-  QueryProvider,
-  ViewportObserverProvider,
-  AppLayoutProvider,
-  AuthProvider,
-} from '@/provider';
-import { Toaster } from '@/shared';
-import AnalyticsProvider from '@/shared/components/Analytics';
-import FCMProvider from '@/shared/components/FCMProvider';
+import Providers from './providers';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -46,21 +35,7 @@ export default function RootLayout({
           } as React.CSSProperties
         }
       >
-        <AnalyticsProvider />
-        <QueryProvider>
-          <ViewportObserverProvider>
-            <AppLayoutProvider>
-              <AuthProvider>
-                <FCMProvider>
-                  {children}
-                  <Analytics />
-                </FCMProvider>
-              </AuthProvider>
-            </AppLayoutProvider>
-            <ModalProvider />
-          </ViewportObserverProvider>
-        </QueryProvider>
-        <Toaster style={{ bottom: TOAST_CONFIG.BOTTOM_OFFSET }} />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

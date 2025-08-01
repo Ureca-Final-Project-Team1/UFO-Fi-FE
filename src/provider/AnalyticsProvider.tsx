@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || '';
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || '';
 
-export default function Analytics() {
+export function AnalyticsProvider() {
   // Clarity 초기화
   useEffect(() => {
     if (CLARITY_ID) {
