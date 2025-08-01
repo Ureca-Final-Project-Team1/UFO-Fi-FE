@@ -16,12 +16,9 @@ function isSVGElement(
  * 아이콘을 감싸는 공통 래퍼 컴포넌트
  * 일관된 크기, 색상, 스타일링을 제공합니다.
  */
-export const IconWrapper: React.FC<IconWrapperProps> = ({
-  size = 'md',
-  color = 'current',
-  className,
-  children,
-}) => {
+export const IconWrapper: React.FC<IconWrapperProps> = (props) => {
+  const { size = 'md', color = 'current', className, children } = props;
+
   const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
   const colorValue = color in ICON_COLORS ? ICON_COLORS[color as keyof typeof ICON_COLORS] : color;
 
