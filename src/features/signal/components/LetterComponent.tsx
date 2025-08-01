@@ -48,10 +48,7 @@ export default function LetterComponent() {
     return (
       <div className="p-4 text-center">
         <p className="text-red-400 mb-2">{error}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="text-sm text-blue-400 hover:underline"
-        >
+        <button onClick={loadLetters} className="text-sm text-blue-400 hover:underline">
           다시 시도
         </button>
       </div>
