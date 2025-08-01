@@ -8,7 +8,7 @@ type NotificationTriggerProps = ComponentProps<'button'> & {
 };
 
 export const NotificationTrigger: React.FC<NotificationTriggerProps> = (props) => {
-  const { unreadCount = 0, onClick, className = '', ...rest } = props;
+  const { unreadCount = 0, onClick = () => {}, className = '', ...rest } = props;
 
   return (
     <button
