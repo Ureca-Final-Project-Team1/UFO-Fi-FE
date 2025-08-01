@@ -10,6 +10,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './Dropdo
 
 // 메인 드롭다운 컴포넌트
 export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props) => {
+  // props에서 필요한 값들을 추출하고 기본값 설정
+  const {
+    isOpen = false,
+    onToggle,
+    onNotificationClick,
+    onMarkAllRead,
+    className = '',
+    notifications = [],
+    isLoading = false,
+  } = props;
+
   // 단일 알림 읽음 처리
   const handleNotificationClick = async (notification: NotificationItemType) => {
     try {
@@ -22,14 +33,14 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
         window.open(notification.url, '_blank');
       }
 
-      props.onNotificationClick?.(notification);
+      onNotificationClick?.(notification);
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
       // 에러가 발생해도 알림 클릭 처리는 계속 진행
       if (notification.url) {
         window.open(notification.url, '_blank');
       }
-      props.onNotificationClick?.(notification);
+      onNotificationClick?.(notification);
     }
   };
 
@@ -37,26 +48,22 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
   const handleMarkAllRead = async () => {
     try {
       await nextApiRequest.patch('/api/notifications');
-      props.onMarkAllRead?.();
+      onMarkAllRead?.();
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
       // 에러가 발생해도 UI 업데이트는 진행
-      props.onMarkAllRead?.();
+      onMarkAllRead?.();
     }
   };
 
   // 읽지 않은 알림 개수 계산
-  const unreadCount = (props.notifications || []).filter((n) => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <DropdownMenu open={props.isOpen} onOpenChange={props.onToggle}>
+    <DropdownMenu open={isOpen} onOpenChange={onToggle}>
       <DropdownMenuTrigger asChild>
         <div>
-          <NotificationTrigger
-            unreadCount={unreadCount}
-            onClick={props.onToggle}
-            className={props.className || ''}
-          />
+          <NotificationTrigger unreadCount={unreadCount} onClick={onToggle} className={className} />
         </div>
       </DropdownMenuTrigger>
 
@@ -91,12 +98,12 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
 
         {/* 알림 목록 */}
         <div className="max-h-96 overflow-y-auto overscroll-contain">
-          {props.isLoading ? (
+          {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12">
               <Icon name="Loader2" className="w-8 h-8 animate-spin text-blue-500 mb-3" />
               <span className="text-sm text-gray-500 font-medium">알림을 불러오는 중...</span>
             </div>
-          ) : (props.notifications || []).length === 0 ? (
+          ) : notifications.length === 0 ? (
             <div className="py-12 px-6 text-center">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Icon name="Bell" className="w-8 h-8 text-gray-400" />
@@ -106,7 +113,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
             </div>
           ) : (
             <div className="divide-y divide-gray-50">
-              {(props.notifications || []).map((notification) => (
+              {notifications.map((notification) => (
                 <NotificationItem
                   key={
                     notification.id ||
