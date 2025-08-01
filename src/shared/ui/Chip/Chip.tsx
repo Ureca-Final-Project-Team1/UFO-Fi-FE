@@ -21,9 +21,15 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
   ) => {
     const { onClick, ...rest } = props;
     const [open, setOpen] = useState(false);
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (dropdown) setOpen((prev) => !prev);
+    const handleDropdownOpenClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (dropdown) {
+        setOpen((prev) => !prev);
+      }
       onClick?.(e);
+    };
+
+    const closeDropdown = () => {
+      setOpen(false);
     };
 
     const autoRightIcon = dropdown ? (
@@ -33,6 +39,7 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
         <Icon name="ChevronDown" />
       )
     ) : undefined;
+
     return (
       <div style={{ position: 'relative', display: 'inline-block' }}>
         <button
@@ -46,7 +53,7 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
             ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary-400 hover:text-primary-400'}
             ${className}
           `}
-          onClick={handleClick}
+          onClick={handleDropdownOpenClick}
           {...rest}
         >
           {leftIcon && <span className="mr-1 flex items-center">{leftIcon}</span>}
@@ -57,7 +64,7 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
         </button>
         {dropdown && open && (
           <div className="absolute z-10 mt-2 min-w-[120px] bg-white rounded-sm shadow-lg text-black">
-            {dropdown}
+            {typeof dropdown === 'function' ? dropdown({ closeDropdown }) : dropdown}
           </div>
         )}
       </div>

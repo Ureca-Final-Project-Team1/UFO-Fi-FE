@@ -3,10 +3,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
+import { achievementsAPI } from '@/api/services/mypage/achievement';
 import { IMAGE_PATHS } from '@/constants/images';
 import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { Avatar, Button, Progress } from '@/shared';
+import { Honorific } from '@/types/Achievement';
+
+import { HonorificChip } from './HonorificChip';
 
 interface SignalCardProps {
   userId: string;
@@ -14,6 +20,7 @@ interface SignalCardProps {
   zetAmount: number;
   availableData: number;
   maxData: number;
+  honorifics: Honorific[];
 }
 
 export default function SignalCard({
@@ -22,8 +29,29 @@ export default function SignalCard({
   zetAmount,
   availableData,
   maxData,
+  honorifics: initialHonorifics,
 }: SignalCardProps) {
   const router = useRouter();
+  const [honorifics, setHonorifics] = useState<Honorific[]>([]);
+
+  useEffect(() => {
+    if (initialHonorifics.length === 0) {
+      setHonorifics([]);
+      return;
+    }
+
+    const hasActive = initialHonorifics.some((h) => h.isActive);
+    if (hasActive) {
+      setHonorifics(initialHonorifics);
+    } else {
+      setHonorifics(
+        initialHonorifics.map((h, index) => ({
+          ...h,
+          isActive: index === 0,
+        })),
+      );
+    }
+  }, [initialHonorifics]);
   const formattedZet = formatZetAmount(zetAmount);
 
   return (
@@ -70,12 +98,32 @@ export default function SignalCard({
               style={{ borderColor: 'var(--chart-4)' }}
             />
           </Avatar>
-          <button
-            className="w-[4rem] sm:w-[5rem] mt-2 rounded-md text-[10px] sm:text-xs text-white py-0.5 px-1"
+
+          <HonorificChip
+            honorifics={honorifics}
+            onSelectHonorific={async (name: string) => {
+              setHonorifics((prev) =>
+                prev.map((h) => ({
+                  ...h,
+                  isActive: h.name === name,
+                })),
+              );
+
+              try {
+                await achievementsAPI.updateUserHonorific(name);
+              } catch (error) {
+                console.error('칭호 변경 실패:', error);
+                // 실패 시 이전 상태로 롤백
+                setHonorifics(initialHonorifics);
+                // 사용자에게 에러 알림 (toast 등 사용)
+                toast.error('칭호 변경에 실패했습니다. 다시 시도해주세요.');
+              }
+            }}
+            className="w-[5rem] mt-2 rounded-md text-xs text-white py-0.5"
             style={{ backgroundColor: 'var(--chart-4)' }}
           >
-            🌱 지구 새싹
-          </button>
+            {honorifics.find((h) => h.isActive)?.name || '칭호 없음'}
+          </HonorificChip>
         </div>
 
         {/* 가운데 텍스트 */}

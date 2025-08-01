@@ -26,3 +26,14 @@ export type SelectedAchievementState = {
   j: number;
   isAchieve: boolean;
 };
+
+export interface GetHonorificsResponse {
+  honorifics: Honorific[];
+}
+
+export interface Honorific {
+  id: number;
+  name: string;
+  level: number;
+  isActive: boolean;
+}
