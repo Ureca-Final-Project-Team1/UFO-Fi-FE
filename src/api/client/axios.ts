@@ -119,10 +119,15 @@ axiosInstance.interceptors.response.use(
         processQueue(refreshError, null);
 
         if (typeof window !== 'undefined') {
-          document.cookie =
-            'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
-          document.cookie =
-            'Refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
+          /*
+              클라이언트에서 쿠키를 삭제해도 HttpOnly 쿠키는 제거되지 않음
+              → 브라우저는 같은 이름의 새 쿠키를 생성해 두 개를 따로 저장함 (중복 쿠키 문제 발생)
+          */
+          // document.cookie =
+          //   'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
+          // document.cookie =
+          //   'Refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
+
           toast.error('로그인이 만료되었습니다. 다시 로그인해주세요.');
           setTimeout(() => {
             window.location.href = '/login';

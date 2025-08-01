@@ -1,22 +1,49 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { logoutAPI, ApiError } from '@/api';
+import { achievementsAPI } from '@/api/services/mypage/achievement';
 import { LogoutModal } from '@/features/mypage/components';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button, Icon, IconType, Loading } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
+import { Honorific } from '@/types/Achievement';
 
 export default function MyPage() {
   const router = useRouter();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { data: mypageInfo, error, isLoading, isError, refetch } = useMyInfo();
   const { setToast } = useToastStore();
+  const [honorifics, setHonorifics] = useState<Honorific[]>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchHonorifics = async () => {
+      try {
+        const response = await achievementsAPI.getHonorifics();
+        if (isMounted) {
+          setHonorifics(response.honorifics);
+        }
+      } catch (error) {
+        if (!isMounted) return;
+        console.error('칭호 조회 실패:', error);
+        if (error instanceof ApiError) {
+          toast.error(`칭호 조회에 실패했습니다: ${error.message}`);
+        } else {
+          toast.error('칭호 조회 중 알 수 없는 오류가 발생했습니다.');
+        }
+      }
+    };
+    fetchHonorifics();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const navigateToSellHistory = useCallback(() => {
     router.push('/mypage/trade?tab=sell');
@@ -124,6 +151,7 @@ export default function MyPage() {
         zetAmount={mypageInfo.zetAsset || 0}
         availableData={mypageInfo.sellableDataAmount || 0}
         maxData={mypageInfo.sellMobileDataCapacityGb || 0}
+        honorifics={honorifics}
       />
 
       <hr className="my-6 border-white/20" />
