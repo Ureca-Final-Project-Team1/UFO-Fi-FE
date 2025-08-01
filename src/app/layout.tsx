@@ -38,7 +38,7 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body
-        className={`${pretendard.variable} antialiased min-h-screen bg-transparent`}
+        className={`${pretendard.className} antialiased min-h-screen bg-transparent`}
         style={
           {
             '--font-pyeongchangpeace-bold': 'PyeongChangPeace-Bold',
