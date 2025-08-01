@@ -1,14 +1,16 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { toast } from 'sonner';
 
-// 커스텀 에러 클래스 (상태코드 포함)
+// 커스텀 에러 클래스 확장변경 (상태코드 포함)
 export class ApiError extends Error {
   public statusCode: number;
+  public response?: unknown;
 
-  constructor(message: string, statusCode: number) {
+  constructor(message: string, statusCode: number, response?: unknown) {
     super(message);
     this.name = 'ApiError';
     this.statusCode = statusCode;
+    this.response = response;
   }
 }
 
@@ -25,7 +27,7 @@ const axiosInstance = axios.create({
 // Next.js API 라우트 전용 axios 인스턴스
 const nextAxiosInstance = axios.create({
   baseURL: '',
-  timeout: 10000,
+  timeout: 30000, // 30초로 증가 (데이터베이스 쿼리 + OpenAI API 호출을 고려함)
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -135,16 +137,33 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    // 일반 오류 처리
-    const errorData = error.response?.data as { message?: string; content?: string } | undefined;
-    const message = errorData?.message || errorData?.content || '요청 처리 중 오류가 발생했습니다.';
-    return Promise.reject(new ApiError(message, statusCode));
+    // 에러 메시지 파싱 개선
+    const errorData = error.response?.data as
+      | { message?: string; content?: string; error?: string }
+      | undefined;
+    console.error('[API 응답 에러]', errorData); // 디버깅용 콘솔
+
+    const message =
+      errorData?.message ||
+      errorData?.content ||
+      errorData?.error ||
+      '요청 처리 중 오류가 발생했습니다.';
+
+    return Promise.reject(new ApiError(message, statusCode, errorData));
   },
 );
 
-// nextAxiosInstance 응답 인터셉터 (변경 없음)
+// nextAxiosInstance 응답 인터셉터 확장
 nextAxiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('[Next API 성공 응답]', {
+      url: response.config?.url,
+      status: response.status,
+      dataType: typeof response.data,
+      dataLength: Array.isArray(response.data) ? response.data.length : 'not array',
+    });
+    return response;
+  },
   async (error: AxiosError) => {
     const statusCode = error.response?.status || 500;
 
@@ -158,13 +177,43 @@ nextAxiosInstance.interceptors.response.use(
       return Promise.reject(new ApiError('인증 오류', 401));
     }
 
-    const errorData = error.response?.data as { message?: string; content?: string } | undefined;
-    const message = errorData?.message || errorData?.content || '요청 처리 중 오류가 발생했습니다.';
-    return Promise.reject(new ApiError(message, statusCode));
+    // 에러 응답 데이터 더 안전하게 처리
+    const errorData = error.response?.data as
+      | { message?: string; content?: string; error?: string }
+      | string
+      | undefined;
+
+    console.error('[Next API 응답 에러] 상세 정보:', {
+      url: error.config?.url,
+      method: error.config?.method?.toUpperCase(),
+      status: statusCode,
+      statusText: error.response?.statusText,
+      data: errorData,
+      message: error.message,
+      code: error.code,
+      hasResponse: !!error.response,
+      hasRequest: !!error.request && !error.response,
+      isTimeout: error.code === 'ECONNABORTED' || error.message.includes('timeout'),
+    });
+
+    let message: string;
+
+    // 타임아웃 에러 특별 처리
+    if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      message = '요청 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.';
+    } else if (typeof errorData === 'string') {
+      message = errorData;
+    } else if (errorData && typeof errorData === 'object') {
+      message = errorData.message || errorData.content || errorData.error || error.message;
+    } else {
+      message = error.message || '요청 처리 중 오류가 발생했습니다.';
+    }
+
+    return Promise.reject(new ApiError(message, statusCode, errorData));
   },
 );
 
-// API 요청 함수들 (변경 없음)
+// API 요청 함수들
 export const apiRequest = {
   get: <T>(url: string, config?: AxiosRequestConfig) => axiosInstance.get<T>(url, config),
   post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
