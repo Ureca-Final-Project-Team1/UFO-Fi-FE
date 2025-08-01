@@ -1,9 +1,3 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "cron": {
-    "update-qdrant": {
-      "path": "/api/schedule/update-qdrant",
-      "schedule": "0 15 * * *"
-    }
-  }
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
