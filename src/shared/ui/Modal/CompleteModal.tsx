@@ -14,6 +14,14 @@ type CompleteModalProps = ComponentProps<typeof Modal> & {
 };
 
 export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
+  const {
+    title = '완료',
+    description = '작업이 완료되었습니다',
+    isOpen = false,
+    onClose = () => {},
+    ...rest
+  } = props;
+
   return (
     <Modal
       headerAlign="left"
@@ -24,7 +32,11 @@ export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
       type="single"
       closeOnPrimary
       hasCloseButton={false}
-      {...props}
+      title={title}
+      description={description}
+      isOpen={isOpen}
+      onClose={onClose}
+      {...rest}
     />
   );
 };
