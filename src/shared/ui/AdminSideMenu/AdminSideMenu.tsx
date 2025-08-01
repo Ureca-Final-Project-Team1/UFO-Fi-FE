@@ -188,7 +188,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
             >
               <Icon
                 name={item.icon}
-                className={`w-5 h-5 transition-colors ${
+                className={` size-5 transition-colors ${
                   isActive ? iconColorMap.active : iconColorMap.inactive
                 }`}
               />
@@ -203,7 +203,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
             >
               <Icon
                 name={item.icon}
-                className={`w-5 h-5 transition-colors ${
+                className={`size-5 transition-colors ${
                   isActive ? iconColorMap.active : iconColorMap.inactive
                 }`}
               />
@@ -250,7 +250,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
         onClick={handleOpen}
         aria-label="메뉴 열기"
       >
-        <Icon name="Menu" className="w-5 h-5 text-gray-700" />
+        <Icon name="Menu" className="size-5 text-gray-700" />
       </button>
 
       {/* 오버레이 메뉴 (모바일/테블릿) */}
@@ -303,7 +303,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
               >
                 <Icon
                   name="HelpCircle"
-                  className="w-5 h-5 text-gray-500 group-hover:text-gray-700"
+                  className="size-5 text-gray-500 group-hover:text-gray-700"
                 />
                 <span>도움말</span>
               </Link>
