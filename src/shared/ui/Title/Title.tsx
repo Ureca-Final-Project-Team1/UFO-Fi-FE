@@ -22,13 +22,13 @@ const getIconName = (variant: TitleIconVariant | undefined): IconType | null => 
 };
 
 type TitleProps = ComponentProps<'div'> & {
-  title: string;
+  title?: string;
   iconVariant?: TitleIconVariant;
   onIconClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const Title: React.FC<TitleProps> = (props) => {
-  const { title, iconVariant = 'none', onIconClick, className, ...rest } = props;
+  const { title = '제목', iconVariant = 'none', onIconClick, className, ...rest } = props;
 
   const router = useRouter();
   const iconName = getIconName(iconVariant);
