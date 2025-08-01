@@ -8,6 +8,29 @@ import { cn } from '@/lib/utils';
 
 import { LucideIcon } from './LucideIcon';
 
+// 스타일 맵 객체들
+const fallbackStyleMap = {
+  container: 'flex items-center justify-center bg-gray-100 rounded text-gray-400',
+  icon: 'text-gray-400',
+  loading: 'animate-spin',
+} as const;
+
+const spanStyleMap = {
+  base: 'inline-flex items-center justify-center shrink-0',
+  withRelative: 'inline-flex items-center justify-center shrink-0 relative',
+} as const;
+
+const imageStyleMap = {
+  base: 'object-contain transition-opacity duration-200',
+  loading: 'opacity-0',
+  loaded: 'opacity-100',
+} as const;
+
+const errorMessages = {
+  invalidSrc: (src: string) => `Invalid src prop provided to ImageIcon: "${src}"`,
+  loadFailed: (src: string) => `ImageIcon failed to load: ${src}`,
+} as const;
+
 const isStaticFile = (src: string): boolean => {
   // Next.js 정적 파일 경로 패턴 확인
   return src.startsWith('/') && !src.startsWith('//');
@@ -54,35 +77,32 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
   }, [src, isValidSrc, isStatic]);
 
   const renderFallback = () => (
-    <div
-      className="flex items-center justify-center bg-gray-100 rounded text-gray-400"
-      style={{ width: sizeValue, height: sizeValue }}
-    >
+    <div className={fallbackStyleMap.container} style={{ width: sizeValue, height: sizeValue }}>
       <LucideIcon
         name={hasError ? fallbackIcon : 'Loader2'}
         size={size}
-        className={hasError ? '' : 'animate-spin'}
+        className={hasError ? '' : fallbackStyleMap.loading}
       />
     </div>
   );
 
   // src가 유효하지 않은 경우 즉시 에러 fallback
   if (!isValidSrc) {
-    console.warn(`Invalid src prop provided to ImageIcon: "${src}"`);
+    console.warn(errorMessages.invalidSrc(src));
     return (
       <span
-        className={cn('inline-flex items-center justify-center shrink-0', className)}
+        className={cn(spanStyleMap.base, className)}
         style={{ width: sizeValue, height: sizeValue }}
         {...rest}
       >
-        <LucideIcon name={fallbackIcon} size={size} className="text-gray-400" />
+        <LucideIcon name={fallbackIcon} size={size} className={fallbackStyleMap.icon} />
       </span>
     );
   }
 
   return (
     <span
-      className={cn('inline-flex items-center justify-center shrink-0 relative', className)}
+      className={cn(spanStyleMap.withRelative, className)}
       style={{ width: sizeValue, height: sizeValue }}
       {...rest}
     >
@@ -98,9 +118,9 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
         height={sizeValue}
         priority={priority}
         className={cn(
-          'object-contain transition-opacity duration-200',
+          imageStyleMap.base,
           // 정적 파일은 즉시 표시, 외부 파일은 로딩 완료 후 표시
-          !isStatic && (isLoading || hasError) ? 'opacity-0' : 'opacity-100',
+          !isStatic && (isLoading || hasError) ? imageStyleMap.loading : imageStyleMap.loaded,
         )}
         sizes={`${sizeValue}px`}
         onLoad={() => {
@@ -110,7 +130,7 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
           setHasError(false);
         }}
         onError={(e) => {
-          console.error(`ImageIcon failed to load: ${src}`, e);
+          console.error(errorMessages.loadFailed(src), e);
           setHasError(true);
           if (!isStatic) {
             setIsLoading(false);
