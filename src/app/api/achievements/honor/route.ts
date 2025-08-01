@@ -1,40 +1,18 @@
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
 
 export async function GET() {
-  // 1. 쿠키에서 JWT 토큰 꺼내기
-  const token = (await cookies()).get('Authorization')?.value;
-  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET 환경 변수가 설정되지 않았습니다.');
+  // STEP 1. 쿠키에서 JWT 토큰 추출 (로그인 여부 확인)
+  const result = await getUserFromToken();
+  if ('error' in result) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
 
-  // 2. JWT 디코딩 및 userId 추출
-  let userId: bigint;
-  try {
-    const secret = Buffer.from(process.env.JWT_SECRET, 'base64');
-    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
-    const id = decoded.id ?? decoded.sub;
-    if (!id) {
-      throw new Error('토큰에 user ID가 없습니다.');
-    }
-    userId = BigInt(id);
-  } catch (error) {
-    if (error instanceof jwt.TokenExpiredError) {
-      return NextResponse.json({ error: '토큰이 만료되었습니다.' }, { status: 401 });
-    } else if (error instanceof jwt.JsonWebTokenError) {
-      return NextResponse.json({ error: '토큰이 유효하지 않습니다.' }, { status: 401 });
-    } else {
-      console.error('Token processing error:', error);
-      return NextResponse.json({ error: '인증에 실패했습니다.' }, { status: 401 });
-    }
-  }
+  const { userId } = result;
 
-  // 3. 유저의 칭호 보유 내역 조회
+  // 2. 유저의 칭호 보유 내역 조회
   try {
     let userHonorifics = await prisma.user_honorific.findMany({
       where: { user_id: userId },
@@ -48,7 +26,7 @@ export async function GET() {
       },
     });
 
-    // 4. 없다면 기본 레벨 0 칭호 부여
+    // 3. 없다면 기본 레벨 0 칭호 부여
     if (userHonorifics.length === 0) {
       const baseHonor = await prisma.honorific.findFirst({
         where: { level: 0 },
@@ -78,7 +56,7 @@ export async function GET() {
       }
     }
 
-    // 5. 결과 반환
+    // 4. 결과 반환
     return NextResponse.json({
       userId: userId.toString(),
       honorifics: userHonorifics.map((uh) => ({
