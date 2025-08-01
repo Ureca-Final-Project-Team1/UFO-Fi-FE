@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { ScrollToTopButton } from '@/features/common/components/ScrollToTopButton';
@@ -45,11 +45,14 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   // 홈페이지만 중앙 정렬, 나머지는 일반 플렉스 컬럼
   const isHomePage = pathname === '/';
 
-  const contextValue: AppLayoutContextValue = {
-    isAdminPage: isAdminRoute,
-    hideNavigation: isNavigationHidden,
-    isPasswordPage,
-  };
+  const contextValue: AppLayoutContextValue = useMemo(
+    () => ({
+      isAdminPage: isAdminRoute,
+      hideNavigation: isNavigationHidden,
+      isPasswordPage,
+    }),
+    [isAdminRoute, isNavigationHidden, isPasswordPage],
+  );
 
   const backgroundImageUrl = (() => {
     if (
