@@ -4,18 +4,20 @@ import { cookies } from 'next/headers';
 export async function getUserFromToken() {
   const token = (await cookies()).get('Authorization')?.value;
   if (!token) {
-    return { error: 'Unauthorized', status: 401 as const };
+    return { error: '인증 토큰이 없습니다.', status: 401 as const };
   }
 
   if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET 환경 변수가 설정되지 않았습니다.');
+    return { error: 'JWT_SECRET 환경 변수가 설정되지 않았습니다.', status: 500 as const };
   }
 
   try {
     const secret = Buffer.from(process.env.JWT_SECRET, 'base64');
     const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
     const id = decoded.id ?? decoded.sub;
-    if (!id) throw new Error('토큰에 user ID가 없습니다.');
+    if (!id) {
+      return { error: '토큰에 유효한 사용자 ID가 없습니다.', status: 401 as const };
+    }
 
     return { userId: BigInt(id) };
   } catch (error) {
