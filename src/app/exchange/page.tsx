@@ -88,7 +88,7 @@ export default function ExchangePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full w-full pb-6">
+    <div className="pb-6">
       <div className="flex-1">
         {/* 헤더 */}
         <div className="flex items-center justify-between">

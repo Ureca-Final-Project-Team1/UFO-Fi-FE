@@ -1,3 +1,4 @@
+// src/app/sell/page.tsx
 'use client';
 
 import Image from 'next/image';
@@ -31,13 +32,13 @@ export default function SellPage() {
   } = useSellData();
 
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
-
   const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
-    <div className="flex flex-col min-h-full w-full justify-center overflow-hidden">
+    <div className="relative w-full h-full flex flex-col">
       <Title title="데이터 판매 등록" />
-      <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32 overflow-hidden">
+
+      <div className="flex-1 space-y-6 py-4">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -105,7 +106,7 @@ export default function SellPage() {
         />
 
         {/* 등록 버튼 */}
-        <div className="w-full mx-auto pt-2 flex justify-end relative">
+        <div className="w-full pt-2 flex justify-end">
           <Button
             size={isMobile ? 'default' : 'lg'}
             onClick={handleSubmit}
@@ -116,22 +117,12 @@ export default function SellPage() {
             {isSubmitting ? '등록 중...' : '등록하기'}
           </Button>
         </div>
-
-        {/* 하단 캐릭터 */}
-        <Image
-          src={IMAGE_PATHS.AL_SELL}
-          alt="판매 우주인"
-          width={200}
-          height={200}
-          className="absolute bottom-12 xs:-bottom-28 left-0"
-          priority
-        />
       </div>
-      <style jsx>{`
-        body {
-          overscroll-behavior: none;
-        }
-      `}</style>
+
+      {/* 하단 캐릭터 - 절대 위치로 배치 */}
+      <div className="absolute bottom-0 left-0 pointer-events-none">
+        <Image src={IMAGE_PATHS.AL_SELL} alt="판매 우주인" width={200} height={200} priority />
+      </div>
     </div>
   );
 }

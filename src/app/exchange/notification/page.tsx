@@ -90,7 +90,7 @@ const FilterNotificationPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start items-center w-full min-h-full">
+    <div>
       <Title title="알림 조건 설정" iconVariant="back" />
       <div className="overflow-y-auto flex flex-col gap-4 h-full mb-4 hide-scrollbar w-full px-4">
         {/* 통신사 선택 */}

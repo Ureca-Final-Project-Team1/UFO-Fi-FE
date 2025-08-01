@@ -102,19 +102,19 @@ export default function Step3Page() {
   // 로딩 중
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-full px-4">
+      <>
         <Title title="데이터 구매하기" iconVariant="back" />
         <div className="flex items-center justify-center flex-1">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>
-      </div>
+      </>
     );
   }
 
   // 초기 에러
   if (error || !productData) {
     return (
-      <div className="flex flex-col min-h-full items-center justify-center px-4">
+      <div className="flex flex-col h-full items-center justify-center px-4">
         <Title title="데이터 구매하기" iconVariant="back" />
         <p className="text-red-400 text-center mb-4">{error}</p>
         <Button variant="secondary" onClick={() => router.back()}>
@@ -127,7 +127,7 @@ export default function Step3Page() {
   // 구매 완료 화면
   if (state.status === 'success') {
     return (
-      <div className="flex flex-col min-h-full">
+      <>
         <Title title="데이터 구매하기" iconVariant="back" />
 
         <div className="flex flex-col items-center justify-center flex-1 text-white text-center">
@@ -167,7 +167,7 @@ export default function Step3Page() {
             확인
           </Button>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -176,7 +176,7 @@ export default function Step3Page() {
 
   return (
     <>
-      <div className="flex flex-col min-h-full w-full px-4">
+      <div className="flex flex-col h-full w-full px-4">
         <Title title="데이터 구매하기" iconVariant="back" />
 
         <div className="flex flex-col items-center justify-center flex-1">

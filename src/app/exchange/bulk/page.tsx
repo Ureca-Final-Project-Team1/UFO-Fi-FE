@@ -30,7 +30,7 @@ export default function BulkPurchasePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full w-full justify-center px-4 pb-12">
+    <div className="pb-10">
       <Title title="일괄구매" iconVariant="back" />
       <div className="relative rounded-[20px] space-y-6 pb-12">
         {/* 거래 제안서 헤더 */}

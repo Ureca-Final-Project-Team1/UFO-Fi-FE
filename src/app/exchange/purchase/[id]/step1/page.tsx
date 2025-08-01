@@ -104,7 +104,7 @@ export default function Step1Page() {
 
   if (error || !productData) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-full px-4">
+      <div className="flex flex-col items-center justify-center h-full px-4">
         <Title title="데이터 구매하기" iconVariant="back" />
         <p className="text-red-400 text-center mb-4">{error}</p>
         <Button variant="secondary" onClick={() => router.back()} className="px-6 py-2">
@@ -117,7 +117,7 @@ export default function Step1Page() {
   const hasEnoughZet = userZet >= productData.totalPrice;
 
   return (
-    <div className="flex flex-col min-h-full px-4">
+    <div className="flex flex-col h-full px-4">
       <Title title="데이터 구매하기" iconVariant="back" />
 
       <div className="flex flex-col items-center justify-center flex-1">

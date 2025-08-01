@@ -140,13 +140,8 @@ const MyTradeHistoryPage = () => {
       ));
 
   return (
-    <div className="flex flex-col justify-start w-full min-h-full">
-      <Tabs
-        defaultValue="sell"
-        value={tab}
-        onValueChange={handleTabChange}
-        className="w-full h-full"
-      >
+    <div>
+      <Tabs defaultValue="sell" value={tab} onValueChange={handleTabChange}>
         <TabsList className="my-4 w-auto px-10 gap-10">
           <TabsTrigger value="sell" variant="darkTab" size="full">
             판매 내역

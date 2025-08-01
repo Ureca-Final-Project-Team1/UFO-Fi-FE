@@ -63,22 +63,13 @@ export default function SellingItem({
           <div>
             {/* 판매자 프로필 이미지 */}
             <Avatar variant="selling" size="sm">
-              {sellerProfileUrl ? (
-                <Image
-                  src={sellerProfileUrl || IMAGE_PATHS.AVATAR}
-                  alt={`${sellerNickname} 프로필`}
-                  width={32}
-                  height={32}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              ) : (
-                // 프로필 이미지가 없을 때 기본 아이콘 또는 이니셜
-                <div className="w-full h-full bg-gray-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">
-                    {sellerNickname.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              )}
+              <Image
+                src={sellerProfileUrl || IMAGE_PATHS.AVATAR}
+                alt={`${sellerNickname} 프로필`}
+                width={32}
+                height={32}
+                className="w-full h-full object-cover rounded-full"
+              />
             </Avatar>
           </div>
           <div className="flex flex-col items-end mb-1">
