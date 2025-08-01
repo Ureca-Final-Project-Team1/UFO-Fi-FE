@@ -8,14 +8,14 @@ import { IconWrapper } from './IconWrapper';
 
 type LucideIconProps = ComponentProps<'span'> &
   IconProps & {
-    name: LucideIconType;
+    name?: LucideIconType;
   };
 
 /**
  * Lucide React 아이콘을 래핑하는 컴포넌트
  */
 export const LucideIcon: React.FC<LucideIconProps> = (props) => {
-  const { name, size = 'md', color = 'current', className, ...rest } = props;
+  const { name = 'HelpCircle', size = 'md', color = 'current', className = '', ...rest } = props;
 
   const IconComponent = LucideIcons[name];
   const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
