@@ -22,38 +22,40 @@ const getIconName = (variant: TitleIconVariant | undefined): IconType | null => 
 };
 
 export const Title: React.FC<TitleProps> = (props) => {
+  const { title, iconVariant = 'none', onIconClick, className, ...rest } = props;
+
   const router = useRouter();
-  const iconName = getIconName(props.iconVariant);
+  const iconName = getIconName(iconVariant);
   const hasIcon = iconName !== null;
 
   // 아이콘 클릭 핸들러
   const handleClick = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>): void => {
-      if (props.onIconClick) {
-        props.onIconClick(e);
-      } else if (props.iconVariant === 'back') {
+      if (onIconClick) {
+        onIconClick(e);
+      } else if (iconVariant === 'back') {
         router.back();
       }
     },
-    [props.onIconClick, props.iconVariant, router],
+    [onIconClick, iconVariant, router],
   );
 
   return (
-    <div className={cn('relative w-full flex items-center py-4 px-4', props.className)} {...props}>
+    <div className={cn('relative w-full flex items-center py-4 px-4', className)} {...rest}>
       {/* 아이콘 영역 */}
       {hasIcon && (
         <button
           type="button"
           onClick={handleClick}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
-          aria-label={`${props.iconVariant} 버튼`}
+          aria-label={`${iconVariant} 버튼`}
         >
           <Icon name={iconName} size="md" color="white" className="w-6 h-6 text-white" />
         </button>
       )}
 
       {/* 타이틀 영역 */}
-      <h1 className={cn('body-20-bold text-white', 'w-full text-center')}>{props.title}</h1>
+      <h1 className={cn('body-20-bold text-white', 'w-full text-center')}>{title}</h1>
     </div>
   );
 };
