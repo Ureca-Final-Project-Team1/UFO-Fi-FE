@@ -13,19 +13,14 @@ interface CompleteModalProps {
   onClose: () => void;
 }
 
-export const CompleteModal: React.FC<CompleteModalProps> = ({
-  title,
-  description,
-  isOpen,
-  onClose,
-}) => {
+export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={props.isOpen}
+      onClose={props.onClose}
       headerAlign="left"
-      title={title}
-      description={description}
+      title={props.title}
+      description={props.description}
       imageSrc={IMAGE_PATHS['AL_COMPLETE']}
       imageAlt="신고"
       imagePosition={{ x: 90, y: 50 }}
