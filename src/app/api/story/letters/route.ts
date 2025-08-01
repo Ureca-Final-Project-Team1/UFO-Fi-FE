@@ -1,14 +1,14 @@
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 
 import { prisma } from '@/lib/prisma';
-import { getUserFromToken } from '@/utils/getUserFromToken';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // GET: 현재 사용자에 대한 최장 경로 편지를 조회
 export async function GET() {
-
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('Authorization')?.value;
