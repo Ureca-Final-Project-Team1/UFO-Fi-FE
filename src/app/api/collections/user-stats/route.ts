@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
 
@@ -7,10 +7,15 @@ export async function GET(req: NextRequest) {
     // Step 0: userId 쿼리 파라미터 검증
     const userIdParam = req.nextUrl.searchParams.get('userId');
     if (!userIdParam) {
-      return new Response(JSON.stringify({ error: 'Missing userId' }), { status: 400 });
+      return NextResponse.json({ error: 'userId가 누락되었습니다.' }, { status: 400 });
     }
 
-    const userId = BigInt(userIdParam);
+    let userId: bigint;
+    try {
+      userId = BigInt(userIdParam);
+    } catch {
+      return NextResponse.json({ error: 'userId 형식이 올바르지 않습니다.' }, { status: 400 });
+    }
 
     // Step 1: 최근 일주일 간의 거래 기록 조회
     const now = new Date();
