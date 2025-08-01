@@ -66,7 +66,7 @@ const menuItems: MenuItem[] = [
 
 type AdminSideMenuProps = ComponentProps<'div'>;
 
-export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
+export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className, ...rest }) => {
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
@@ -220,7 +220,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
   }, [renderMenuItem]);
 
   return (
-    <>
+    <div {...rest}>
       {/* 햄버거 버튼 - 테블릿 이하에서 표시 */}
       <button
         className={`lg:hidden p-2 hover:bg-gray-100 transition-colors rounded flex items-center justify-center ${className || ''}`}
@@ -301,6 +301,6 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
           animation: slide-in-right 0.2s ease-out;
         }
       `}</style>
-    </>
+    </div>
   );
 };
