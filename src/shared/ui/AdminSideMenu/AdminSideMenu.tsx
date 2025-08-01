@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef, ComponentProps } from 'react';
 
 import { Icon } from '@/shared';
 import type { IconType } from '@/shared';
@@ -64,9 +64,7 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-interface AdminSideMenuProps {
-  className?: string;
-}
+type AdminSideMenuProps = ComponentProps<'div'>;
 
 export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
   const [open, setOpen] = useState(false);
