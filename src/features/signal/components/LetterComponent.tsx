@@ -40,7 +40,11 @@ export default function LetterComponent() {
 
   // 로딩 중일 때 시그널 로딩 화면 표시
   if (isLoading) {
-    return <Loading variant="signal" message="항해 편지를 불러오고 있어요..." className="p-8" />;
+    return (
+      <div className="h-full flex items-center justify-center">
+        <Loading variant="signal" message="항해 편지를 불러오고 있어요..." className="p-8" />
+      </div>
+    );
   }
 
   // 에러 발생 시
@@ -61,7 +65,6 @@ export default function LetterComponent() {
 
   return (
     <div className="space-y-4 p-4">
-      <h2 className="text-xl font-bold">🌌 항해 편지</h2>
       {letters.map((letter) => (
         <div
           key={letter.step}
