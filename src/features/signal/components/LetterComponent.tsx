@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { fetchAndCreateLetters, type LetterDisplay } from '@/api/services/story/letters';
@@ -15,28 +15,28 @@ export default function LetterComponent() {
   const [error, setError] = useState<string | null>(null);
   const { setLetterCount } = useLetterStore();
 
-  useEffect(() => {
-    async function loadLetters() {
-      try {
-        //편지 불러오기 시작
-        setIsLoading(true);
-        setError(null);
+  const loadLetters = useCallback(async () => {
+    try {
+      //편지 불러오기 시작
+      setIsLoading(true);
+      setError(null);
 
-        const { letters: fetchedLetters, count } = await fetchAndCreateLetters();
-        // 편지 불러오기 성공해서 상태 업데이트
-        setLetters(fetchedLetters);
-        setLetterCount(count);
-      } catch {
-        // 편지 불러오기 실패
-        setError('편지를 불러오는데 실패했습니다.');
-        toast.error('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');
-      } finally {
-        setIsLoading(false);
-      }
+      const { letters: fetchedLetters, count } = await fetchAndCreateLetters();
+      // 편지 불러오기 성공해서 상태 업데이트
+      setLetters(fetchedLetters);
+      setLetterCount(count);
+    } catch {
+      // 편지 불러오기 실패
+      setError('편지를 불러오는데 실패했습니다.');
+      toast.error('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
     }
-
-    loadLetters();
   }, [setLetterCount]);
+
+  useEffect(() => {
+    loadLetters();
+  }, [loadLetters]);
 
   // 로딩 중일 때 시그널 로딩 화면 표시
   if (isLoading) {
