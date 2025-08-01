@@ -13,6 +13,40 @@ import { ReportReason } from './Modal.types';
 import { Input } from '../Input';
 import '@/styles/globals.css';
 
+const modalConfig = {
+  headerAlign: 'left' as const,
+  title: '게시글을 신고하시겠습니까?',
+  description: '신고 사유를 선택해주세요.',
+  imageSrc: IMAGE_PATHS['AL_REPORTED'],
+  imageAlt: '신고',
+  imagePosition: { x: 90, y: 50 },
+  imageSize: { width: 150, height: 150 },
+  type: 'double' as const,
+  hasCloseButton: false,
+  color: 'black' as const,
+} as const;
+
+const inputStyle = {
+  className: 'w-full border p-2 mt-2 rounded bg-white caption-14-regular',
+  placeholder: '신고 사유를 입력해주세요.',
+} as const;
+
+const completeModalConfig = {
+  success: {
+    title: '신고 접수가 완료되었어요!',
+    description: '신고해주신 내용을 외계 요원이\n꼼꼼히 확인하고 조치할 예정입니다.',
+  },
+  error: {
+    title: (error: string | null) => error ?? '에러가 발생했습니다.',
+    description: '잠시 후 다시\n이용해주시길 바랍니다.',
+  },
+} as const;
+
+const errorMessages = {
+  default: '신고 요청에 실패했습니다.',
+  unknown: '알 수 없는 오류가 발생했습니다.',
+} as const;
+
 type ReportedModalProps = ComponentProps<'div'> & {
   postOwnerUserId?: number;
   postId?: number;
@@ -69,12 +103,11 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
           ) {
             setCompleteOpen(true);
           } else {
-            setError(response.message ?? '신고 요청에 실패했습니다.');
+            setError(response.message ?? errorMessages.default);
             setFaultOpen(true);
           }
         } catch (e) {
-          const errorMessage =
-            e instanceof Error && e.message ? e.message : '알 수 없는 오류가 발생했습니다.';
+          const errorMessage = e instanceof Error && e.message ? e.message : errorMessages.unknown;
           setError(errorMessage);
           setFaultOpen(true);
           throw e;
@@ -90,15 +123,15 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        headerAlign="left"
-        title="게시글을 신고하시겠습니까?"
-        description="신고 사유를 선택해주세요."
-        imageSrc={IMAGE_PATHS['AL_REPORTED']}
-        imageAlt="신고"
-        imagePosition={{ x: 90, y: 50 }}
-        imageSize={{ width: 150, height: 150 }}
-        type="double"
-        hasCloseButton={false}
+        headerAlign={modalConfig.headerAlign}
+        title={modalConfig.title}
+        description={modalConfig.description}
+        imageSrc={modalConfig.imageSrc}
+        imageAlt={modalConfig.imageAlt}
+        imagePosition={modalConfig.imagePosition}
+        imageSize={modalConfig.imageSize}
+        type={modalConfig.type}
+        hasCloseButton={modalConfig.hasCloseButton}
         onPrimaryClick={handleClick}
         primaryButtonDisabled={
           !selectedOption || (selectedOption === 'ETC' && customReason.trim() === '')
@@ -111,13 +144,13 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
             const matched = Object.entries(ReportReason).find(([, v]) => v === label);
             setSelectedOption((matched?.[0] as keyof typeof ReportReason) ?? '');
           }}
-          color="black"
+          color={modalConfig.color}
         />
 
         {selectedOption === 'ETC' && (
           <Input
-            className="w-full border p-2 mt-2 rounded bg-white caption-14-regular"
-            placeholder="신고 사유를 입력해주세요."
+            className={inputStyle.className}
+            placeholder={inputStyle.placeholder}
             value={customReason}
             onChange={(e) => setCustomReason(e.target.value)}
           />
@@ -125,15 +158,15 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
       </Modal>
 
       <CompleteModal
-        title="신고 접수가 완료되었어요!"
-        description={`신고해주신 내용을 외계 요원이\n꼼꼼히 확인하고 조치할 예정입니다.`}
+        title={completeModalConfig.success.title}
+        description={completeModalConfig.success.description}
         isOpen={completeOpen}
         onClose={() => setCompleteOpen(false)}
       />
 
       <CompleteModal
-        title={error ?? '에러가 발생했습니다.'}
-        description={`잠시 후 다시\n이용해주시길 바랍니다.`}
+        title={completeModalConfig.error.title(error)}
+        description={completeModalConfig.error.description}
         isOpen={faultOpen}
         onClose={() => setFaultOpen(false)}
       />
