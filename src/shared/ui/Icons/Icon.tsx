@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -7,24 +7,23 @@ import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.typ
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
-interface IconComponentProps extends IconProps {
-  name?: IconType;
-  src?: string;
-  alt?: string;
-}
+// CustomIconProps 타입 정의 (CustomIcons.tsx와 동일)
+type CustomIconProps = ComponentProps<'span'> & Omit<IconProps, 'onClick'>;
+
+type IconComponentProps = ComponentProps<'span'> &
+  IconProps & {
+    name?: IconType;
+    src?: string;
+    alt?: string;
+  };
 
 /**
  * 통합 아이콘 컴포넌트
  * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
  */
-export const Icon: React.FC<IconComponentProps> = ({
-  name,
-  src,
-  alt,
-  onClick,
-  className,
-  ...props
-}) => {
+export const Icon: React.FC<IconComponentProps> = (props) => {
+  const { name, src, alt, onClick, className, ...rest } = props;
+
   if (src) {
     return (
       <ImageIcon
@@ -32,7 +31,7 @@ export const Icon: React.FC<IconComponentProps> = ({
         alt={alt || name || 'icon'}
         onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
+        {...rest}
       />
     );
   }
@@ -42,7 +41,7 @@ export const Icon: React.FC<IconComponentProps> = ({
     return null;
   }
 
-  const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
+  const customIconComponents: Record<CustomIconType, React.ComponentType<CustomIconProps>> = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,
@@ -63,7 +62,7 @@ export const Icon: React.FC<IconComponentProps> = ({
       <CustomIconComponent
         onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
+        {...rest}
       />
     );
   }
@@ -74,7 +73,7 @@ export const Icon: React.FC<IconComponentProps> = ({
         name={name as LucideIconType}
         onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
+        {...rest}
       />
     );
   } catch (error) {
@@ -84,7 +83,7 @@ export const Icon: React.FC<IconComponentProps> = ({
         name="AlertCircle"
         onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
+        {...rest}
       />
     );
   }
