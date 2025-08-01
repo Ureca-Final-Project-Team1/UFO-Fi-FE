@@ -13,12 +13,9 @@ interface LucideIconProps extends IconProps {
 /**
  * Lucide React 아이콘을 래핑하는 컴포넌트
  */
-export const LucideIcon: React.FC<LucideIconProps> = ({
-  name,
-  size = 'md',
-  color = 'current',
-  className,
-}) => {
+export const LucideIcon: React.FC<LucideIconProps> = (props) => {
+  const { name, size = 'md', color = 'current', className } = props;
+
   const IconComponent = LucideIcons[name];
   const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
 
