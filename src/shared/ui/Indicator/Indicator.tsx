@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 import { indicatorVariants, basicDotVariants } from './indicatorVariants';
 
 type BasicDotIndicatorProps = ComponentProps<'div'> & {
-  step: number;
-  totalSteps: number;
+  step?: number;
+  totalSteps?: number;
   size?: 'sm' | 'md' | 'lg';
   orientation?: 'horizontal' | 'vertical';
   spacing?: 'tight' | 'normal' | 'wide';
@@ -20,13 +20,13 @@ type BasicDotIndicatorProps = ComponentProps<'div'> & {
  */
 export const Indicator: React.FC<BasicDotIndicatorProps> = (props) => {
   const {
-    step,
-    totalSteps,
+    step = 1,
+    totalSteps = 3,
     size = 'md',
     orientation = 'horizontal',
     spacing = 'normal',
     showHover = true,
-    onStepClick,
+    onStepClick = () => {},
     className,
     ...rest
   } = props;
@@ -42,7 +42,7 @@ export const Indicator: React.FC<BasicDotIndicatorProps> = (props) => {
       {Array.from({ length: totalSteps }, (_, index) => {
         const stepNumber = index + 1;
         const state = getStepState(stepNumber);
-        const isClickable = onStepClick && stepNumber <= step;
+        const isClickable = stepNumber <= step;
 
         return (
           <div
@@ -55,11 +55,11 @@ export const Indicator: React.FC<BasicDotIndicatorProps> = (props) => {
             role={isClickable ? 'button' : undefined}
             tabIndex={isClickable ? 0 : undefined}
             aria-label={`Step ${stepNumber} of ${totalSteps}`}
-            onClick={() => isClickable && onStepClick?.(stepNumber)}
+            onClick={() => isClickable && onStepClick(stepNumber)}
             onKeyDown={(e) => {
               if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
-                onStepClick?.(stepNumber);
+                onStepClick(stepNumber);
               }
             }}
           />
