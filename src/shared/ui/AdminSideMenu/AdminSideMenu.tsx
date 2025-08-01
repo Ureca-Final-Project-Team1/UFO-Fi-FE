@@ -66,7 +66,8 @@ const menuItems: MenuItem[] = [
 
 type AdminSideMenuProps = ComponentProps<'div'>;
 
-export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className, ...rest }) => {
+export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
+  const { className } = props;
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
@@ -162,7 +163,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className, ...rest
               onClick={handleClose}
             >
               <Icon
-                name={item.icon as IconType}
+                name={item.icon}
                 className={`w-5 h-5 transition-colors ${
                   isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
                 }`}
@@ -179,7 +180,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className, ...rest
               }`}
             >
               <Icon
-                name={item.icon as IconType}
+                name={item.icon}
                 className={`w-5 h-5 transition-colors ${
                   isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
                 }`}
@@ -220,10 +221,10 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className, ...rest
   }, [renderMenuItem]);
 
   return (
-    <div {...rest}>
+    <div {...props}>
       {/* 햄버거 버튼 - 테블릿 이하에서 표시 */}
       <button
-        className={`lg:hidden p-2 hover:bg-gray-100 transition-colors rounded flex items-center justify-center ${className || ''}`}
+        className={`lg:hidden p-2 hover:bg-gray-100 transition-colors rounded flex items-center justify-center ${className ?? ''}`}
         onClick={handleOpen}
         aria-label="메뉴 열기"
       >
