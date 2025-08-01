@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { fetchAndCreateLetters, type LetterDisplay } from '@/api/services/story/letters';
-import { Loading } from '@/shared';
+import { Button, Loading } from '@/shared';
 import { useLetterStore } from '@/stores/useLetterStore';
 
 type Letter = LetterDisplay;
@@ -27,8 +27,8 @@ export default function LetterComponent() {
       setLetterCount(count);
     } catch {
       // 편지 불러오기 실패
-      setError('편지를 불러오는데 실패했습니다.');
-      toast.error('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');
+      setError('편지를 불러오지 못했습니다...');
+      toast.error('편지를 불러오지 못했습니다. 다시 시도해주세요.');
     } finally {
       setIsLoading(false);
     }
@@ -48,9 +48,9 @@ export default function LetterComponent() {
     return (
       <div className="p-4 text-center">
         <p className="text-red-400 mb-2">{error}</p>
-        <button onClick={loadLetters} className="text-sm text-blue-400 hover:underline">
+        <Button size="default" variant="primary" onClick={loadLetters} className="mt-auto my-8">
           다시 시도
-        </button>
+        </Button>
       </div>
     );
   }
