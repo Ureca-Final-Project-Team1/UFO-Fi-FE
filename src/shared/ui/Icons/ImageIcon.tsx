@@ -27,8 +27,8 @@ type ImageIconProps = ComponentProps<'span'> & {
  */
 export const ImageIcon: React.FC<ImageIconProps> = (props) => {
   const {
-    src,
-    alt,
+    src = '',
+    alt = '',
     size = 'md',
     className,
     priority = false,
@@ -92,8 +92,8 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
       )}
 
       <Image
-        src={src!}
-        alt={alt || ''}
+        src={src}
+        alt={alt}
         width={sizeValue}
         height={sizeValue}
         priority={priority}
@@ -117,7 +117,7 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
           }
         }}
         // 외부 이미지는 최적화 비활성화
-        unoptimized={src?.startsWith('http') || src?.startsWith('//') || false}
+        unoptimized={src.startsWith('http') || src.startsWith('//')}
       />
     </span>
   );
