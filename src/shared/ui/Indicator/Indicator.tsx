@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import type { BasicDotIndicatorProps } from './Indicator.types';
 import { indicatorVariants, basicDotVariants } from './indicatorVariants';
+
+type BasicDotIndicatorProps = ComponentProps<'div'> & {
+  step: number;
+  totalSteps: number;
+  size?: 'sm' | 'md' | 'lg';
+  orientation?: 'horizontal' | 'vertical';
+  spacing?: 'tight' | 'normal' | 'wide';
+  showHover?: boolean;
+  onStepClick?: (step: number) => void;
+};
 
 /**
  * 기본 원형 점 Indicator 컴포넌트
  * 진행 단계(step)을 나타내기 위한 용도로 사용하는 원형 프로그래스 섹션입니다.
  */
 export const Indicator: React.FC<BasicDotIndicatorProps> = (props) => {
-  // props에서 필요한 값들을 추출하고 기본값 설정
   const {
     step,
     totalSteps,
