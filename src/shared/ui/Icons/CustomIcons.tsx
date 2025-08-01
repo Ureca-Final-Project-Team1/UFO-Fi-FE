@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { IconProps } from './Icons.types';
 import { IconWrapper } from './IconWrapper';
 
-export const UFOIcon: React.FC<IconProps> = (props) => (
+// CustomIconProps를 IconWrapper와 호환되도록 정의
+type CustomIconProps = ComponentProps<'span'> & Omit<IconProps, 'onClick'>;
+
+export const UFOIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg
       width="24"
@@ -22,7 +25,7 @@ export const UFOIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const PlanetIcon: React.FC<IconProps> = (props) => (
+export const PlanetIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg
       width="24"
@@ -40,7 +43,7 @@ export const PlanetIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const TrendingIcon: React.FC<IconProps> = (props) => (
+export const TrendingIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +66,7 @@ export const TrendingIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const AstronautIcon: React.FC<IconProps> = (props) => (
+export const AstronautIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg width="24" height="24" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -95,7 +98,7 @@ export const AstronautIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const SatelliteIcon: React.FC<IconProps> = (props) => (
+export const SatelliteIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg
       viewBox="0 0 24 24"
@@ -179,7 +182,7 @@ export const SatelliteIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const BoxIcon: React.FC<IconProps> = (props) => (
+export const BoxIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -193,7 +196,7 @@ export const BoxIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const RotateIcon: React.FC<IconProps> = (props) => (
+export const RotateIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -214,7 +217,7 @@ export const RotateIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const GraphIcon: React.FC<IconProps> = (props) => (
+export const GraphIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -227,7 +230,7 @@ export const GraphIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const CircleMinusIcon: React.FC<IconProps> = (props) => (
+export const CircleMinusIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_1098_1039)">
@@ -248,7 +251,7 @@ export const CircleMinusIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const ReturnIcon: React.FC<IconProps> = (props) => (
+export const ReturnIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -262,7 +265,7 @@ export const ReturnIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const EmblaPrevIcon: React.FC<IconProps> = (props) => (
+export const EmblaPrevIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg className="embla__button__svg" viewBox="0 0 532 532">
       <path
@@ -273,7 +276,7 @@ export const EmblaPrevIcon: React.FC<IconProps> = (props) => (
   </IconWrapper>
 );
 
-export const EmblaNextIcon: React.FC<IconProps> = (props) => (
+export const EmblaNextIcon: React.FC<CustomIconProps> = (props) => (
   <IconWrapper {...props}>
     <svg className="embla__button__svg" viewBox="0 0 532 532">
       <path
