@@ -1,18 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
 export type SpeechBubbleTailDirection = 'left' | 'right' | 'top' | 'bottom';
 
-export interface SpeechBubbleProps {
+type SpeechBubbleProps = ComponentProps<'div'> & {
   children: React.ReactNode;
   tailDirection?: SpeechBubbleTailDirection;
-  className?: string;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'default' | 'secondary';
-}
+};
 
 /**
  * 말풍선 컴포넌트
