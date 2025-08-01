@@ -4,48 +4,14 @@ import React, { useCallback, useEffect, useState, ComponentProps } from 'react';
 
 import { reportAPI } from '@/api';
 import { HttpStatusCode } from '@/api/types/api';
-import { IMAGE_PATHS } from '@/constants/images';
 
 import { Modal } from './Modal';
 import { RadioGroup } from '../Radio';
 import { CompleteModal } from './CompleteModal';
 import { ReportReason } from './Modal.types';
 import { Input } from '../Input';
+import { modalConfig, inputStyle, completeModalConfig, errorMessages } from './ReportModal.styles';
 import '@/styles/globals.css';
-
-const modalConfig = {
-  headerAlign: 'left' as const,
-  title: '게시글을 신고하시겠습니까?',
-  description: '신고 사유를 선택해주세요.',
-  imageSrc: IMAGE_PATHS['AL_REPORTED'],
-  imageAlt: '신고',
-  imagePosition: { x: 90, y: 50 },
-  imageSize: { width: 150, height: 150 },
-  type: 'double' as const,
-  hasCloseButton: false,
-  color: 'black' as const,
-} as const;
-
-const inputStyle = {
-  className: 'w-full border p-2 mt-2 rounded bg-white caption-14-regular',
-  placeholder: '신고 사유를 입력해주세요.',
-} as const;
-
-const completeModalConfig = {
-  success: {
-    title: '신고 접수가 완료되었어요!',
-    description: '신고해주신 내용을 외계 요원이\n꼼꼼히 확인하고 조치할 예정입니다.',
-  },
-  error: {
-    title: (error: string | null) => error ?? '에러가 발생했습니다.',
-    description: '잠시 후 다시\n이용해주시길 바랍니다.',
-  },
-} as const;
-
-const errorMessages = {
-  default: '신고 요청에 실패했습니다.',
-  unknown: '알 수 없는 오류가 발생했습니다.',
-} as const;
 
 type ReportedModalProps = ComponentProps<'div'> & {
   postOwnerUserId?: number;
