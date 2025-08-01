@@ -18,13 +18,7 @@ export interface SpeechBubbleProps {
  * 말풍선 컴포넌트
  * 다양한 방향의 꼬리와 크기, 스타일 변형을 지원합니다.
  */
-export const SpeechBubble: React.FC<SpeechBubbleProps> = ({
-  children,
-  tailDirection = 'left',
-  className,
-  size = 'md',
-  variant = 'default',
-}) => {
+export const SpeechBubble: React.FC<SpeechBubbleProps> = (props) => {
   // 크기별 스타일
   const sizeClasses = {
     sm: 'p-3 text-xs max-w-[200px]',
@@ -40,7 +34,7 @@ export const SpeechBubble: React.FC<SpeechBubbleProps> = ({
 
   // 꼬리 스타일 (variant에 따라 색상 변경)
   const getTailColors = () => {
-    switch (variant) {
+    switch (props.variant) {
       case 'secondary':
         return { borderColor: '#e5e7eb', fillColor: '#f3f4f6' }; // gray-200, gray-100
       default:
@@ -52,9 +46,9 @@ export const SpeechBubble: React.FC<SpeechBubbleProps> = ({
 
   // 꼬리 렌더링 함수
   const renderTail = () => {
-    const tailSize = size === 'sm' ? 10 : size === 'lg' ? 14 : 12;
+    const tailSize = props.size === 'sm' ? 10 : props.size === 'lg' ? 14 : 12;
 
-    switch (tailDirection) {
+    switch (props.tailDirection) {
       case 'left':
         return (
           <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-full">
@@ -160,12 +154,12 @@ export const SpeechBubble: React.FC<SpeechBubbleProps> = ({
     <div
       className={cn(
         'relative rounded-2xl shadow-lg border-2 font-medium leading-relaxed',
-        sizeClasses[size],
-        variantClasses[variant],
-        className,
+        sizeClasses[props.size || 'md'],
+        variantClasses[props.variant || 'default'],
+        props.className,
       )}
     >
-      <div className="whitespace-pre-line">{children}</div>
+      <div className="whitespace-pre-line">{props.children}</div>
       {renderTail()}
     </div>
   );
