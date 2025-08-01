@@ -15,6 +15,8 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(1);
+  const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
 
   // 전역 상태에서 행성 도달 상태 가져오기
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
@@ -110,11 +112,35 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     return () => container.removeEventListener('wheel', onWheel);
   }, []);
 
-  const scrollByAmount = 200;
-  const scrollLeft = () =>
-    scrollContainerRef.current?.scrollBy({ left: -scrollByAmount, behavior: 'smooth' });
-  const scrollRight = () =>
-    scrollContainerRef.current?.scrollBy({ left: scrollByAmount, behavior: 'smooth' });
+  // 스크롤 위치에 따른 버튼 표시 상태 업데이트
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const updateScrollButtons = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    };
+
+    updateScrollButtons();
+    container.addEventListener('scroll', updateScrollButtons);
+    return () => container.removeEventListener('scroll', updateScrollButtons);
+  }, [scale]);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  };
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        left: scrollContainerRef.current.scrollWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -123,16 +149,20 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
       </p>
 
       {/* 스크롤 버튼 */}
-      <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
-        <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
-          ◀
-        </button>
-      </div>
-      <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
-        <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
-          ▶
-        </button>
-      </div>
+      {canScrollLeft && (
+        <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
+          <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
+            ◀
+          </button>
+        </div>
+      )}
+      {canScrollRight && (
+        <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
+          <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
+            ▶
+          </button>
+        </div>
+      )}
 
       <div
         ref={scrollContainerRef}
