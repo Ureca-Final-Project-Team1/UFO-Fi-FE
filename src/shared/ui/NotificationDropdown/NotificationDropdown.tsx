@@ -22,9 +22,9 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
   // props에서 필요한 값들을 추출하고 기본값 설정
   const {
     isOpen = false,
-    onToggle,
-    onNotificationClick,
-    onMarkAllRead,
+    onToggle = () => {},
+    onNotificationClick = () => {},
+    onMarkAllRead = () => {},
     className = '',
     notifications = [],
     isLoading = false,
@@ -43,14 +43,14 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
         window.open(notification.url, '_blank');
       }
 
-      onNotificationClick?.(notification);
+      onNotificationClick(notification);
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
       // 에러가 발생해도 알림 클릭 처리는 계속 진행
       if (notification.url) {
         window.open(notification.url, '_blank');
       }
-      onNotificationClick?.(notification);
+      onNotificationClick(notification);
     }
   };
 
@@ -58,11 +58,11 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
   const handleMarkAllRead = async () => {
     try {
       await nextApiRequest.patch('/api/notifications');
-      onMarkAllRead?.();
+      onMarkAllRead();
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
       // 에러가 발생해도 UI 업데이트는 진행
-      onMarkAllRead?.();
+      onMarkAllRead();
     }
   };
 
@@ -76,7 +76,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
           <div>
             <NotificationTrigger
               unreadCount={unreadCount}
-              onClick={onToggle || (() => {})}
+              onClick={onToggle}
               className={className}
             />
           </div>
