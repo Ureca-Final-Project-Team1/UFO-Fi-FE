@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, ComponentProps } from 'react';
 
 import { reportAPI } from '@/api';
 import { HttpStatusCode } from '@/api/types/api';
@@ -9,12 +9,19 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { Modal } from './Modal';
 import { RadioGroup } from '../Radio';
 import { CompleteModal } from './CompleteModal';
-import { ReportedModalProps, ReportReason } from './Modal.types';
+import { ReportReason } from './Modal.types';
 import { Input } from '../Input';
 import '@/styles/globals.css';
 
+type ReportedModalProps = ComponentProps<'div'> & {
+  postOwnerUserId: number;
+  postId: number;
+  isOpen?: boolean;
+  onClose?: () => void;
+};
+
 export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
-  const { postOwnerUserId, postId, isOpen = false, onClose = () => {} } = props;
+  const { postOwnerUserId, postId, isOpen = false, onClose = () => {}, ...rest } = props;
 
   const reportOption = Object.entries(ReportReason).map(([key, label]) => ({
     label,
@@ -79,7 +86,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
   }, [selectedOption, customReason, postOwnerUserId, postId]);
 
   return (
-    <>
+    <div {...rest}>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -130,6 +137,6 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
         isOpen={faultOpen}
         onClose={() => setFaultOpen(false)}
       />
-    </>
+    </div>
   );
 };
