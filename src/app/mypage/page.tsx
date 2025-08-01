@@ -24,11 +24,15 @@ export default function MyPage() {
   const [honorifics, setHonorifics] = useState<Honorific[]>([]);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchHonorifics = async () => {
       try {
         const response = await achievementsAPI.getHonorifics();
-        setHonorifics(response.honorifics);
+        if (isMounted) {
+          setHonorifics(response.honorifics);
+        }
       } catch (error) {
+        if (!isMounted) return;
         console.error('칭호 조회 실패:', error);
         if (error instanceof ApiError) {
           toast.error(`칭호 조회에 실패했습니다: ${error.message}`);
@@ -38,6 +42,9 @@ export default function MyPage() {
       }
     };
     fetchHonorifics();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const navigateToSalesHistory = useCallback(() => {

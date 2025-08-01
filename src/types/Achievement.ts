@@ -32,7 +32,7 @@ export interface GetHonorificsResponse {
 }
 
 export interface Honorific {
-  id: string;
+  id: number;
   name: string;
   level: number;
   isActive: boolean;

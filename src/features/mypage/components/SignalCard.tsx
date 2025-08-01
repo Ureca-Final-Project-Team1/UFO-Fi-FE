@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { achievementsAPI } from '@/api/services/mypage/achievement';
 import { IMAGE_PATHS } from '@/constants/images';
@@ -34,18 +35,21 @@ export default function SignalCard({
   const [honorifics, setHonorifics] = useState<Honorific[]>([]);
 
   useEffect(() => {
-    const hasActive = initialHonorifics.some((h) => h.isActive);
-    if (!hasActive && initialHonorifics.length > 0) {
-      const firstName = initialHonorifics[0].name;
+    if (initialHonorifics.length === 0) {
+      setHonorifics([]);
+      return;
+    }
 
+    const hasActive = initialHonorifics.some((h) => h.isActive);
+    if (hasActive) {
+      setHonorifics(initialHonorifics);
+    } else {
       setHonorifics(
-        initialHonorifics.map((h) => ({
+        initialHonorifics.map((h, index) => ({
           ...h,
-          isActive: h.name === firstName,
+          isActive: index === 0,
         })),
       );
-    } else {
-      setHonorifics(initialHonorifics);
     }
   }, [initialHonorifics]);
   const formattedZet = formatZetAmount(zetAmount);
@@ -109,6 +113,10 @@ export default function SignalCard({
                 await achievementsAPI.updateUserHonorific(name);
               } catch (error) {
                 console.error('칭호 변경 실패:', error);
+                // 실패 시 이전 상태로 롤백
+                setHonorifics(initialHonorifics);
+                // 사용자에게 에러 알림 (toast 등 사용)
+                toast.error('칭호 변경에 실패했습니다. 다시 시도해주세요.');
               }
             }}
             className="w-[5rem] mt-2 rounded-md text-xs text-white py-0.5"
