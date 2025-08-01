@@ -1,17 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
 
 import { Modal } from './Modal';
 
-interface CompleteModalProps {
+type CompleteModalProps = ComponentProps<typeof Modal> & {
   title: string;
   description: string;
   isOpen: boolean;
   onClose: () => void;
-}
+};
 
 export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
   return (
