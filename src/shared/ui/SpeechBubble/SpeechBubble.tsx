@@ -29,7 +29,7 @@ const tailSizeMap = {
   lg: 14,
 } as const;
 
-type SpeechBubbleProps = ComponentProps<'div'> & {
+export type SpeechBubbleProps = ComponentProps<'div'> & {
   children?: React.ReactNode;
   tailDirection?: SpeechBubbleTailDirection;
   size?: 'sm' | 'md' | 'lg';
