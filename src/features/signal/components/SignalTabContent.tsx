@@ -110,11 +110,29 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     return () => container.removeEventListener('wheel', onWheel);
   }, []);
 
+  const scrollByAmount = 200;
+  const scrollLeft = () =>
+    scrollContainerRef.current?.scrollBy({ left: -scrollByAmount, behavior: 'smooth' });
+  const scrollRight = () =>
+    scrollContainerRef.current?.scrollBy({ left: scrollByAmount, behavior: 'smooth' });
+
   return (
     <div className="relative w-full overflow-hidden">
       <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
         {completedPlanets}번째 은하까지 탐사 완료...
       </p>
+
+      {/* 스크롤 버튼 */}
+      <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
+        <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
+          ◀
+        </button>
+      </div>
+      <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
+        <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
+          ▶
+        </button>
+      </div>
 
       <div
         ref={scrollContainerRef}
