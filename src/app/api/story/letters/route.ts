@@ -8,52 +8,99 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // GET: 현재 사용자에 대한 최장 경로 편지를 조회
 export async function GET() {
-  const result = await getUserFromToken();
-  if ('error' in result) {
-    return NextResponse.json({ error: result.error }, { status: result.status });
-  }
-
-  const { userId } = result;
 
   try {
-    const letters = await prisma.voyage_letters.findMany({
-      where: { user_id: userId, isLongestPath: true },
-      orderBy: { step: 'asc' },
-    });
+    const cookieStore = await cookies();
+    const token = cookieStore.get('Authorization')?.value;
 
-    // 편지가 없는 경우에도 빈 배열로 정상 응답
-    if (!letters || letters.length === 0) {
-      return NextResponse.json([]);
+    console.warn('JWT Token 확인:', !!token);
+
+    if (!token) {
+      console.warn('JWT Token이 없습니다');
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const response = letters.map((l) => ({
-      id: l.id.toString(),
-      user_id: l.user_id.toString(),
-      step: l.step,
-      recipient_id: l.recipient_id.toString(),
-      content: l.content,
-      isLongestPath: l.isLongestPath,
-      created_at: l.created_at.toISOString(),
-    }));
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET이 설정되지 않았습니다');
+      throw new Error('JWT_SECRET is not configured');
+    }
 
-    return NextResponse.json(response);
+    const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
+    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
+    const userId = BigInt(decoded.id ?? decoded.sub);
+
+    console.warn('사용자 ID:', userId.toString());
+
+    // 데이터베이스 쿼리 타임아웃 설정
+    const queryStartTime = Date.now();
+    const letters = await prisma.$transaction(
+      async (prisma) => {
+        return await prisma.voyage_letters.findMany({
+          where: { user_id: userId, isLongestPath: true },
+          orderBy: { step: 'asc' },
+          take: 10,
+        });
+      },
+      {
+        timeout: 20000, // 20초 타임아웃
+      },
+    );
+
+    const queryDuration = Date.now() - queryStartTime;
+    console.warn('조회된 편지 수:', letters.length, '쿼리 시간:', queryDuration + 'ms');
+
+    return NextResponse.json(
+      letters.map((l) => ({
+        id: l.id.toString(),
+        user_id: l.user_id.toString(),
+        step: l.step,
+        recipient_id: l.recipient_id.toString(),
+        content: l.content,
+        isLongestPath: l.isLongestPath,
+        created_at: l.created_at.toISOString(),
+      })),
+    );
   } catch (error) {
-    console.error('Letter fetch error:', error);
-    return NextResponse.json({ error: '편지를 불러오는 중 오류가 발생했습니다.' }, { status: 500 });
+    console.error('편지 조회 실패:', error);
+
+    // JWT 에러 처리
+    if (error instanceof jwt.JsonWebTokenError) {
+      return NextResponse.json({ error: '유효하지 않은 토큰입니다.' }, { status: 401 });
+    }
+
+    if (error instanceof jwt.TokenExpiredError) {
+      return NextResponse.json({ error: '토큰이 만료되었습니다.' }, { status: 401 });
+    }
+
+    return NextResponse.json({ error: '편지 조회 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }
 
 // POST: 사용자 기준으로 새로운 편지를 생성
 export async function POST() {
-  const result = await getUserFromToken();
-  if ('error' in result) {
-    return NextResponse.json({ error: result.error }, { status: result.status });
-  }
-
-  const { userId } = result;
-
   try {
-    // 이미 생성된 편지 중 최대 step 확인
+    const cookieStore = await cookies();
+    const token = cookieStore.get('Authorization')?.value;
+
+    console.warn('POST JWT Token 확인:', !!token);
+
+    if (!token) {
+      console.warn('POST JWT Token이 없습니다');
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    if (!process.env.JWT_SECRET) {
+      console.error('POST JWT_SECRET이 설정되지 않았습니다');
+      throw new Error('JWT_SECRET is not configured');
+    }
+
+    const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
+    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
+    const userId = BigInt(decoded.id ?? decoded.sub);
+
+    console.warn('POST 사용자 ID:', userId.toString());
+
+    // Step 1: 기존 편지 조회
     const existingLetters = await prisma.voyage_letters.findMany({
       where: { user_id: userId },
       orderBy: { step: 'asc' },
@@ -107,20 +154,25 @@ export async function POST() {
 
       const prompt = `당신은 은하계 항해 AI입니다. ${fromName}의 데이터가 ${toName}에게 도달했습니다.\n이 사실을 감성적이거나 재치있는 편지로 한 줄 적어주세요.`;
 
-      let content: string;
+      let content = '[편지 없음]';
       try {
-        // GPT에게 편지 생성 요청
-        const completion = await openai.chat.completions.create({
-          model: 'gpt-4.1-mini',
-          messages: [{ role: 'user', content: prompt }],
-        });
+        const completion = (await Promise.race([
+          openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 100,
+          }),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('OpenAI API timeout')), 15000),
+          ),
+        ])) as {
+          choices: { message: { content: string } }[];
+        };
+
         content = completion.choices[0].message.content ?? '[편지 없음]';
-      } catch (openaiError) {
-        console.error('OpenAI 응답 오류:', openaiError);
-        return NextResponse.json(
-          { error: '편지를 생성하는 중 OpenAI API 오류가 발생했습니다.' },
-          { status: 502 },
-        );
+      } catch (error) {
+        console.error('OpenAI API 호출 실패:', error);
+        content = `${fromName}의 데이터가 ${toName}에게 안전하게 도달했습니다.`;
       }
 
       const saved = await prisma.voyage_letters.upsert({
@@ -142,7 +194,20 @@ export async function POST() {
 
     return new NextResponse(null, { status: 201 });
   } catch (error) {
-    console.error('Letter generation error:', error);
-    return NextResponse.json({ error: '편지 생성 중 서버 오류가 발생했습니다.' }, { status: 500 });
+    console.error('Letter generation error:', {
+      error,
+      message: error instanceof Error ? error.message : '알 수 없는 오류',
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+    });
+
+    if (error instanceof jwt.JsonWebTokenError) {
+      return NextResponse.json({ error: '유효하지 않은 토큰입니다.' }, { status: 401 });
+    }
+
+    if (error instanceof jwt.TokenExpiredError) {
+      return NextResponse.json({ error: '토큰이 만료되었습니다.' }, { status: 401 });
+    }
+
+    return NextResponse.json({ error: '편지 생성 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

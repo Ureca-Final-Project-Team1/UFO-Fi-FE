@@ -150,9 +150,10 @@ axiosInstance.interceptors.response.use(
     const errorData = error.response?.data as
       | { message?: string; content?: string; error?: string }
       | undefined;
-
+    
     const message =
       errorData?.message || errorData?.content || errorData?.error || API_MESSAGES.REQUEST_ERROR;
+
 
     return Promise.reject(new ApiError(message, statusCode, errorData));
   },
