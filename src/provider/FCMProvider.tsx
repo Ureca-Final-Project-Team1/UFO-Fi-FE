@@ -8,7 +8,7 @@ interface FCMProviderProps {
   children: React.ReactNode;
 }
 
-export default function FCMProvider({ children }: FCMProviderProps) {
+export function FCMProvider({ children }: FCMProviderProps) {
   useEffect(() => {
     setupMessageListener();
   }, []);

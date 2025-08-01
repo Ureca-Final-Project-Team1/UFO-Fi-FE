@@ -1,14 +1,14 @@
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 
 import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// GET 요청: 사용자의 항해 편지 중 현재 최장 경로 편지를 조회
+// GET: 현재 사용자에 대한 최장 경로 편지를 조회
 export async function GET() {
+
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('Authorization')?.value;
@@ -76,7 +76,7 @@ export async function GET() {
   }
 }
 
-// POST 요청: 편지 생성 로직만 수행
+// POST: 사용자 기준으로 새로운 편지를 생성
 export async function POST() {
   try {
     const cookieStore = await cookies();
@@ -108,10 +108,11 @@ export async function POST() {
 
     const maxExistingStep = existingLetters.at(-1)?.step ?? 0;
     if (maxExistingStep >= 5) {
-      return NextResponse.json({ message: 'Already reached max step' }, { status: 200 });
+      // 최대 단계 도달한 경우 새 편지 생성하지 않음
+      return new NextResponse(null, { status: 204 });
     }
 
-    // Step 2: BFS로 최장 경로 찾기
+    // BFS를 이용하여 최장 거래 경로 찾기
     const visited = new Set<bigint>();
     const path: bigint[] = [];
 
@@ -134,7 +135,7 @@ export async function POST() {
     }
 
     await bfs(userId);
-    if (path.length > 6) path.length = 6;
+    if (path.length > 6) path.length = 6; // 최대 편지 수 5개 → 6인 경우 도달자까지 포함
 
     const users = await prisma.users.findMany({
       where: { id: { in: path } },
@@ -142,6 +143,7 @@ export async function POST() {
     });
 
     const newLetters = [];
+
     for (let i = 1; i < path.length; i++) {
       const fromId = path[i - 1];
       const toId = path[i];
@@ -174,24 +176,9 @@ export async function POST() {
       }
 
       const saved = await prisma.voyage_letters.upsert({
-        where: {
-          user_id_step: {
-            user_id: userId,
-            step,
-          },
-        },
-        update: {
-          recipient_id: toId,
-          content,
-          isLongestPath: true,
-        },
-        create: {
-          user_id: userId,
-          step,
-          recipient_id: toId,
-          content,
-          isLongestPath: true,
-        },
+        where: { user_id_step: { user_id: userId, step } },
+        update: { recipient_id: toId, content, isLongestPath: true },
+        create: { user_id: userId, step, recipient_id: toId, content, isLongestPath: true },
       });
 
       newLetters.push(saved);
@@ -199,15 +186,13 @@ export async function POST() {
 
     const currentPathLetterIds = newLetters.map((l) => l.id);
 
+    // 현재 최장 경로에 포함되지 않은 기존 편지들 → isLongestPath를 false로 변경
     await prisma.voyage_letters.updateMany({
-      where: {
-        user_id: userId,
-        id: { notIn: currentPathLetterIds },
-      },
+      where: { user_id: userId, id: { notIn: currentPathLetterIds } },
       data: { isLongestPath: false },
     });
 
-    return NextResponse.json({ message: 'Letters generated successfully' }, { status: 201 });
+    return new NextResponse(null, { status: 201 });
   } catch (error) {
     console.error('Letter generation error:', {
       error,
