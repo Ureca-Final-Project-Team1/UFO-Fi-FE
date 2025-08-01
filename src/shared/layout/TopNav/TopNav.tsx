@@ -96,8 +96,8 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
   const formattedZet = formatZetAmount(zetAsset);
 
   return (
-    <header className="fixed top-0 left-1/2 transform -translate-x-1/2 h-14 z-30 w-full min-w-[375px] max-w-[620px] bg-primary-700 shadow-sm">
-      <div className="flex items-center justify-between h-full px-4 w-full">
+    <header className="top-nav-fixed">
+      <div className="flex items-center justify-between h-14 px-4 w-full">
         {/* 로고 및 타이틀 */}
         <div className="flex items-center gap-3">
           {ICON_PATHS?.UFO_LOGO ? (
