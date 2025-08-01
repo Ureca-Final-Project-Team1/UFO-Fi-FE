@@ -1,26 +1,16 @@
 import { achievements } from '@prisma/client';
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
 
 export async function POST() {
-  const token = (await cookies()).get('Authorization')?.value;
-  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET is not configured');
-
-  let userId: bigint;
-  try {
-    const secret = Buffer.from(process.env.JWT_SECRET, 'base64');
-    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
-    const id = decoded.id ?? decoded.sub;
-    if (!id) throw new Error('User ID missing in token');
-    userId = BigInt(id);
-  } catch {
-    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+  const result = await getUserFromToken();
+  if ('error' in result) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
+
+  const { userId } = result;
 
   try {
     // 유저 상태 계산
