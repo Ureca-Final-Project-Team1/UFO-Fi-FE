@@ -4,6 +4,27 @@ import { cn } from '@/lib/utils';
 
 import { indicatorVariants, basicDotVariants } from './indicatorVariants';
 
+// 스타일 맵 객체들
+const stepStateMap = {
+  completed: 'completed',
+  active: 'active',
+  pending: 'pending',
+} as const;
+
+const hoverStyleMap = {
+  enabled: 'hover:scale-110',
+  disabled: '',
+} as const;
+
+const cursorStyleMap = {
+  clickable: 'cursor-pointer',
+  nonClickable: '',
+} as const;
+
+const ariaLabelMap = {
+  format: (stepNumber: number, totalSteps: number) => `Step ${stepNumber} of ${totalSteps}`,
+} as const;
+
 type BasicDotIndicatorProps = ComponentProps<'div'> & {
   step?: number;
   totalSteps?: number;
@@ -32,9 +53,9 @@ export const Indicator: React.FC<BasicDotIndicatorProps> = (props) => {
   } = props;
 
   const getStepState = (stepIndex: number) => {
-    if (stepIndex < step) return 'completed';
-    if (stepIndex === step) return 'active';
-    return 'pending';
+    if (stepIndex < step) return stepStateMap.completed;
+    if (stepIndex === step) return stepStateMap.active;
+    return stepStateMap.pending;
   };
 
   return (
@@ -49,12 +70,12 @@ export const Indicator: React.FC<BasicDotIndicatorProps> = (props) => {
             key={stepNumber}
             className={cn(
               basicDotVariants({ size, state }),
-              showHover && 'hover:scale-110',
-              isClickable && 'cursor-pointer',
+              showHover ? hoverStyleMap.enabled : hoverStyleMap.disabled,
+              isClickable ? cursorStyleMap.clickable : cursorStyleMap.nonClickable,
             )}
             role={isClickable ? 'button' : undefined}
             tabIndex={isClickable ? 0 : undefined}
-            aria-label={`Step ${stepNumber} of ${totalSteps}`}
+            aria-label={ariaLabelMap.format(stepNumber, totalSteps)}
             onClick={() => isClickable && onStepClick(stepNumber)}
             onKeyDown={(e) => {
               if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
