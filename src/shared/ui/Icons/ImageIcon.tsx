@@ -18,21 +18,14 @@ const isStaticFile = (src: string): boolean => {
  * Next.js Image를 사용한 이미지 아이콘 컴포넌트
  * png 등의 확장자를 가진 이미지 파일을 아이콘으로 사용할 때 활용
  */
-export const ImageIcon: React.FC<ImageIconProps> = ({
-  src,
-  alt,
-  size = 'md',
-  className,
-  priority = false,
-  fallbackIcon = 'ImageOff',
-}) => {
+export const ImageIcon: React.FC<ImageIconProps> = (props) => {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
+  const sizeValue = typeof props.size === 'number' ? props.size : ICON_SIZES[props.size || 'md'];
 
   // src 유효성 검사 및 정적 파일 여부 확인
-  const isValidSrc = src && typeof src === 'string' && src.trim().length > 0;
-  const isStatic = useMemo(() => isValidSrc && isStaticFile(src), [src, isValidSrc]);
+  const isValidSrc = props.src && typeof props.src === 'string' && props.src.trim().length > 0;
+  const isStatic = useMemo(() => isValidSrc && isStaticFile(props.src), [props.src, isValidSrc]);
 
   // 정적 파일이 아닌 경우에만 로딩 상태 초기화
   React.useEffect(() => {
@@ -41,7 +34,7 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
     } else {
       setIsLoading(false);
     }
-  }, [src, isValidSrc, isStatic]);
+  }, [props.src, isValidSrc, isStatic]);
 
   const renderFallback = () => (
     <div
@@ -49,8 +42,8 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
       style={{ width: sizeValue, height: sizeValue }}
     >
       <LucideIcon
-        name={hasError ? fallbackIcon : 'Loader2'}
-        size={size}
+        name={hasError ? props.fallbackIcon || 'ImageOff' : 'Loader2'}
+        size={props.size || 'md'}
         className={hasError ? '' : 'animate-spin'}
       />
     </div>
@@ -58,20 +51,24 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
 
   // src가 유효하지 않은 경우 즉시 에러 fallback
   if (!isValidSrc) {
-    console.warn(`Invalid src prop provided to ImageIcon: "${src}"`);
+    console.warn(`Invalid src prop provided to ImageIcon: "${props.src}"`);
     return (
       <span
-        className={cn('inline-flex items-center justify-center shrink-0', className)}
+        className={cn('inline-flex items-center justify-center shrink-0', props.className)}
         style={{ width: sizeValue, height: sizeValue }}
       >
-        <LucideIcon name={fallbackIcon} size={size} className="text-gray-400" />
+        <LucideIcon
+          name={props.fallbackIcon || 'ImageOff'}
+          size={props.size || 'md'}
+          className="text-gray-400"
+        />
       </span>
     );
   }
 
   return (
     <span
-      className={cn('inline-flex items-center justify-center shrink-0 relative', className)}
+      className={cn('inline-flex items-center justify-center shrink-0 relative', props.className)}
       style={{ width: sizeValue, height: sizeValue }}
     >
       {/* 정적 파일이 아니고 로딩 중이거나 에러가 있을 때만 fallback 표시 */}
@@ -80,11 +77,11 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
       )}
 
       <Image
-        src={src}
-        alt={alt}
+        src={props.src}
+        alt={props.alt}
         width={sizeValue}
         height={sizeValue}
-        priority={priority}
+        priority={props.priority || false}
         className={cn(
           'object-contain transition-opacity duration-200',
           // 정적 파일은 즉시 표시, 외부 파일은 로딩 완료 후 표시
@@ -98,14 +95,14 @@ export const ImageIcon: React.FC<ImageIconProps> = ({
           setHasError(false);
         }}
         onError={(e) => {
-          console.error(`ImageIcon failed to load: ${src}`, e);
+          console.error(`ImageIcon failed to load: ${props.src}`, e);
           setHasError(true);
           if (!isStatic) {
             setIsLoading(false);
           }
         }}
         // 외부 이미지는 최적화 비활성화
-        unoptimized={src.startsWith('http') || src.startsWith('//')}
+        unoptimized={props.src.startsWith('http') || props.src.startsWith('//')}
       />
     </span>
   );
