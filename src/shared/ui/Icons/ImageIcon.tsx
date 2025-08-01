@@ -6,30 +6,8 @@ import React, { useState, useMemo, ComponentProps } from 'react';
 import { ICON_SIZES } from '@/constants/icons';
 import { cn } from '@/lib/utils';
 
+import { fallbackStyleMap, spanStyleMap, imageStyleMap, errorMessages } from './ImageIcon.styles';
 import { LucideIcon } from './LucideIcon';
-
-// 스타일 맵 객체들
-const fallbackStyleMap = {
-  container: 'flex items-center justify-center bg-gray-100 rounded text-gray-400',
-  icon: 'text-gray-400',
-  loading: 'animate-spin',
-} as const;
-
-const spanStyleMap = {
-  base: 'inline-flex items-center justify-center shrink-0',
-  withRelative: 'inline-flex items-center justify-center shrink-0 relative',
-} as const;
-
-const imageStyleMap = {
-  base: 'object-contain transition-opacity duration-200',
-  loading: 'opacity-0',
-  loaded: 'opacity-100',
-} as const;
-
-const errorMessages = {
-  invalidSrc: (src: string) => `Invalid src prop provided to ImageIcon: "${src}"`,
-  loadFailed: (src: string) => `ImageIcon failed to load: ${src}`,
-} as const;
 
 const isStaticFile = (src: string): boolean => {
   // Next.js 정적 파일 경로 패턴 확인
