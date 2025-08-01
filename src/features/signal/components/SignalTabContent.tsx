@@ -12,7 +12,8 @@ interface SignalTabContentProps {
 }
 
 export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(1);
 
   // 전역 상태에서 행성 도달 상태 가져오기
@@ -93,7 +94,21 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, [maxHeight]);
 
-  const scaledHeight = baseLayout.containerHeight * scale;
+  // PC 마우스 휠 → 수평 스크롤 가능하도록 추가
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
+      }
+    };
+
+    container.addEventListener('wheel', onWheel, { passive: false });
+    return () => container.removeEventListener('wheel', onWheel);
+  }, []);
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -102,16 +117,17 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
       </p>
 
       <div
+        ref={scrollContainerRef}
         className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
-        style={{ height: `${scaledHeight}px` }}
+        style={{ height: `${baseLayout.containerHeight * scale}px` }}
       >
         <div
-          ref={wrapperRef}
+          ref={contentRef}
           className="relative"
           style={{
             transform: `scale(${scale})`,
             transformOrigin: 'top left',
-            width: `${860}px`,
+            width: `860px`,
             height: `${baseLayout.containerHeight}px`,
           }}
         >
