@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 export type SpeechBubbleTailDirection = 'left' | 'right' | 'top' | 'bottom';
 
 type SpeechBubbleProps = ComponentProps<'div'> & {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   tailDirection?: SpeechBubbleTailDirection;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'default' | 'secondary';
@@ -19,7 +19,7 @@ type SpeechBubbleProps = ComponentProps<'div'> & {
  */
 export const SpeechBubble: React.FC<SpeechBubbleProps> = (props) => {
   const {
-    children,
+    children = '',
     tailDirection = 'left',
     className,
     size = 'md',
