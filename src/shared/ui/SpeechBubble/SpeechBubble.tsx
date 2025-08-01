@@ -6,6 +6,29 @@ import { cn } from '@/lib/utils';
 
 export type SpeechBubbleTailDirection = 'left' | 'right' | 'top' | 'bottom';
 
+// 크기별 스타일일
+const sizeClasses = {
+  sm: 'p-3 text-xs max-w-[200px]',
+  md: 'p-4 text-sm max-w-[280px]',
+  lg: 'p-5 text-base max-w-[320px]',
+} as const;
+
+const variantClasses = {
+  default: 'bg-white text-black border-gray-100',
+  secondary: 'bg-gray-100 text-gray-900 border-gray-200',
+} as const;
+
+const tailColorMap = {
+  default: { borderColor: '#f3f4f6', fillColor: '#ffffff' },
+  secondary: { borderColor: '#e5e7eb', fillColor: '#f3f4f6' },
+} as const;
+
+const tailSizeMap = {
+  sm: 10,
+  md: 12,
+  lg: 14,
+} as const;
+
 type SpeechBubbleProps = ComponentProps<'div'> & {
   children?: React.ReactNode;
   tailDirection?: SpeechBubbleTailDirection;
@@ -27,35 +50,11 @@ export const SpeechBubble: React.FC<SpeechBubbleProps> = (props) => {
     ...rest
   } = props;
 
-  // 크기별 스타일
-  const sizeClasses = {
-    sm: 'p-3 text-xs max-w-[200px]',
-    md: 'p-4 text-sm max-w-[280px]',
-    lg: 'p-5 text-base max-w-[320px]',
-  };
-
-  // 변형별 스타일
-  const variantClasses = {
-    default: 'bg-white text-black border-gray-100',
-    secondary: 'bg-gray-100 text-gray-900 border-gray-200',
-  };
-
-  // 꼬리 스타일 (variant에 따라 색상 변경)
-  const getTailColors = () => {
-    switch (variant) {
-      case 'secondary':
-        return { borderColor: '#e5e7eb', fillColor: '#f3f4f6' }; // gray-200, gray-100
-      default:
-        return { borderColor: '#f3f4f6', fillColor: '#ffffff' }; // gray-100, white
-    }
-  };
-
-  const tailColors = getTailColors();
+  const tailColors = tailColorMap[variant];
+  const tailSize = tailSizeMap[size];
 
   // 꼬리 렌더링 함수
   const renderTail = () => {
-    const tailSize = size === 'sm' ? 10 : size === 'lg' ? 14 : 12;
-
     switch (tailDirection) {
       case 'left':
         return (
