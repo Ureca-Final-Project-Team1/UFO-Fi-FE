@@ -1,12 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, ComponentProps } from 'react';
 
 import { ICON_SIZES } from '@/constants/icons';
 import { cn } from '@/lib/utils';
 
-import { ImageIconProps } from './Icons.types';
 import { LucideIcon } from './LucideIcon';
 
 const isStaticFile = (src: string): boolean => {
@@ -14,12 +13,28 @@ const isStaticFile = (src: string): boolean => {
   return src.startsWith('/') && !src.startsWith('//');
 };
 
+type ImageIconProps = ComponentProps<'span'> & {
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg' | number;
+  priority?: boolean;
+  fallbackIcon?: 'ImageOff' | 'Loader2';
+};
+
 /**
  * Next.js Image를 사용한 이미지 아이콘 컴포넌트
  * png 등의 확장자를 가진 이미지 파일을 아이콘으로 사용할 때 활용
  */
 export const ImageIcon: React.FC<ImageIconProps> = (props) => {
-  const { src, alt, size = 'md', className, priority = false, fallbackIcon = 'ImageOff' } = props;
+  const {
+    src,
+    alt,
+    size = 'md',
+    className,
+    priority = false,
+    fallbackIcon = 'ImageOff',
+    ...rest
+  } = props;
 
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,6 +73,7 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
       <span
         className={cn('inline-flex items-center justify-center shrink-0', className)}
         style={{ width: sizeValue, height: sizeValue }}
+        {...rest}
       >
         <LucideIcon name={fallbackIcon} size={size} className="text-gray-400" />
       </span>
@@ -68,6 +84,7 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
     <span
       className={cn('inline-flex items-center justify-center shrink-0 relative', className)}
       style={{ width: sizeValue, height: sizeValue }}
+      {...rest}
     >
       {/* 정적 파일이 아니고 로딩 중이거나 에러가 있을 때만 fallback 표시 */}
       {!isStatic && (hasError || isLoading) && (
@@ -75,8 +92,8 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
       )}
 
       <Image
-        src={src}
-        alt={alt}
+        src={src!}
+        alt={alt || ''}
         width={sizeValue}
         height={sizeValue}
         priority={priority}
@@ -100,7 +117,7 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
           }
         }}
         // 외부 이미지는 최적화 비활성화
-        unoptimized={src.startsWith('http') || src.startsWith('//')}
+        unoptimized={src?.startsWith('http') || src?.startsWith('//') || false}
       />
     </span>
   );
