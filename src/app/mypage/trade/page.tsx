@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -13,7 +13,6 @@ import { TradeHistoryCard } from '@/features/mypage/components';
 import { TradeHistoryCardProps } from '@/features/mypage/types/TradeHistoryCard.types';
 import { useTradeHistory } from '@/hooks/useTradeHistory';
 import { BadgeState, Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared';
-import { useTradeTabStore } from '@/stores/useTradeTabStore';
 import { groupByDate } from '@/utils/groupByDate';
 
 type TradeCardItem = TradeHistoryCardProps & {
@@ -51,7 +50,10 @@ const convertToCardProps = (
   }));
 
 const MyTradeHistoryPage = () => {
-  const { tab, setTab } = useTradeTabStore();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const tab = searchParams.get('tab') || 'sell';
+
   const { sellTrade, purchaseTrade, setSellTrade, setPurchaseTrade } = useTradeHistory();
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -85,7 +87,9 @@ const MyTradeHistoryPage = () => {
   }, [tab, fetchedTabs, setSellTrade, setPurchaseTrade]);
 
   const handleTabChange = (value: string) => {
-    setTab(value as 'sell' | 'purchase');
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', value);
+    router.replace(`${pathname}?${params.toString()}`);
     requestAnimationFrame(() => {
       contentRef.current?.scrollTo(0, 0);
     });

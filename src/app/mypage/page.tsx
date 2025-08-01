@@ -11,25 +11,19 @@ import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button, Icon, IconType, Loading } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
-import { useTradeTabStore } from '@/stores/useTradeTabStore';
 
 export default function MyPage() {
   const router = useRouter();
-  const { setTab } = useTradeTabStore();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { data: mypageInfo, error, isLoading, isError, refetch } = useMyInfo();
   const { setToast } = useToastStore();
 
-  const navigateToSalesHistory = useCallback(() => {
-    setTab('sell');
-    router.push('/mypage/trade');
-  }, [setTab, router]);
-
+  const navigateToSellHistory = useCallback(() => {
+    router.push('/mypage/trade?tab=sell');
+  }, [router]);
   const navigateToPurchaseHistory = useCallback(() => {
-    setTab('purchase');
-    router.push('/mypage/trade');
-  }, [setTab, router]);
-
+    router.push('/mypage/trade?tab=purchase');
+  }, [router]);
   const navigateToTerms = useCallback(() => router.push('/mypage/service'), [router]);
   const navigateToPrivacy = useCallback(() => router.push('/mypage/privacy'), [router]);
   const navigateToFollow = useCallback(() => router.push('/mypage/follow'), [router]);
@@ -59,7 +53,7 @@ export default function MyPage() {
 
   // 메뉴 아이템들
   const transactionItems = [
-    { label: '판매 내역', onClick: navigateToSalesHistory },
+    { label: '판매 내역', onClick: navigateToSellHistory },
     { label: '구매 내역', onClick: navigateToPurchaseHistory },
   ];
 
