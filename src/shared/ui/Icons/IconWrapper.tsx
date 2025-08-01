@@ -15,7 +15,7 @@ function isSVGElement(
 // IconWrapperProps를 ComponentProps와 결합하여 span 요소의 onClick 사용
 type IconWrapperProps = ComponentProps<'span'> &
   Omit<IconProps, 'onClick'> & {
-    children: React.ReactNode;
+    children?: React.ReactNode;
   };
 
 /**
@@ -23,7 +23,7 @@ type IconWrapperProps = ComponentProps<'span'> &
  * 일관된 크기, 색상, 스타일링을 제공합니다.
  */
 export const IconWrapper: React.FC<IconWrapperProps> = (props) => {
-  const { size = 'md', color = 'current', className, children, ...rest } = props;
+  const { size = 'md', color = 'current', className = '', children = null, ...rest } = props;
 
   const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
   const colorValue = color in ICON_COLORS ? ICON_COLORS[color as keyof typeof ICON_COLORS] : color;
