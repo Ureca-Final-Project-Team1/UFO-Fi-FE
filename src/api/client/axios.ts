@@ -1,21 +1,25 @@
 import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { toast } from 'sonner';
 
-// 커스텀 에러 클래스 (상태코드 포함)
+import { TIMEOUT, API_BASE_URL, HTTP_STATUS, API_MESSAGES, API_ENDPOINTS } from '@/constants/api';
+
+// 커스텀 에러 클래스 확장변경 (상태코드 포함)
 export class ApiError extends Error {
   public statusCode: number;
+  public response?: unknown;
 
-  constructor(message: string, statusCode: number) {
+  constructor(message: string, statusCode: number, response?: unknown) {
     super(message);
     this.name = 'ApiError';
     this.statusCode = statusCode;
+    this.response = response;
   }
 }
 
 // axios 인스턴스
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080',
-  timeout: 10000,
+  baseURL: API_BASE_URL,
+  timeout: TIMEOUT.DEFAULT,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -25,7 +29,7 @@ const axiosInstance = axios.create({
 // Next.js API 라우트 전용 axios 인스턴스
 const nextAxiosInstance = axios.create({
   baseURL: '',
-  timeout: 10000,
+  timeout: TIMEOUT.NEXT_API, // 30초로 증가 (데이터베이스 쿼리 + OpenAI API 호출을 고려함)
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -71,23 +75,27 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
-    const statusCode = error.response?.status || 500;
+    const statusCode = error.response?.status || HTTP_STATUS.INTERNAL_SERVER_ERROR;
 
-    if (statusCode === 401 && !originalRequest._retry) {
+    if (statusCode === HTTP_STATUS.UNAUTHORIZED && !originalRequest._retry) {
       // 로그인 성공 페이지에서는 리프레시 시도하지 않고 바로 에러 반환
       if (isLoginSuccessPage()) {
-        return Promise.reject(new ApiError('Authentication failed on login success page', 401));
+        return Promise.reject(
+          new ApiError(API_MESSAGES.AUTH_FAILED_LOGIN_PAGE, HTTP_STATUS.UNAUTHORIZED),
+        );
       }
 
       // Refresh 쿠키 없으면 바로 로그인 만료 처리
       if (!hasRefreshCookie()) {
         if (typeof window !== 'undefined') {
-          toast.error('로그인이 만료되었습니다. 다시 로그인해주세요.');
+          toast.error(API_MESSAGES.AUTH_EXPIRED);
           setTimeout(() => {
             window.location.href = '/login';
-          }, 1000);
+          }, TIMEOUT.REDIRECT_DELAY);
         }
-        return Promise.reject(new ApiError('No refresh token', 401));
+        return Promise.reject(
+          new ApiError(API_MESSAGES.NO_REFRESH_TOKEN, HTTP_STATUS.UNAUTHORIZED),
+        );
       }
 
       // 중복 리프레시 방지
@@ -103,19 +111,18 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const refreshResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/refresh`, {
+        const refreshResponse = await axios.get(`${API_BASE_URL}${API_ENDPOINTS.REFRESH}`, {
           withCredentials: true,
-          timeout: 5000,
+          timeout: TIMEOUT.REFRESH,
         });
 
         if (refreshResponse.data?.content?.reissueSuccess) {
           processQueue(null, 'refreshed');
           return axiosInstance(originalRequest);
         } else {
-          throw new Error('Token refresh failed');
+          throw new Error(API_MESSAGES.TOKEN_REFRESH_FAILED);
         }
       } catch (refreshError: unknown) {
-        console.error('Token refresh failed:', refreshError);
         processQueue(refreshError, null);
 
         if (typeof window !== 'undefined') {
@@ -123,53 +130,76 @@ axiosInstance.interceptors.response.use(
               클라이언트에서 쿠키를 삭제해도 HttpOnly 쿠키는 제거되지 않음
               → 브라우저는 같은 이름의 새 쿠키를 생성해 두 개를 따로 저장함 (중복 쿠키 문제 발생)
           */
-          // document.cookie =
-          //   'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
-          // document.cookie =
-          //   'Refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;';
-
-          toast.error('로그인이 만료되었습니다. 다시 로그인해주세요.');
+          // document.cookie = `Authorization=; expires=${COOKIE_CONFIG.EXPIRES_DATE}; path=${COOKIE_CONFIG.PATH}; ${COOKIE_CONFIG.SAME_SITE};`;
+          // document.cookie = `Refresh=; expires=${COOKIE_CONFIG.EXPIRES_DATE}; path=${COOKIE_CONFIG.PATH}; ${COOKIE_CONFIG.SAME_SITE};`;
+          toast.error(API_MESSAGES.AUTH_EXPIRED);
           setTimeout(() => {
             window.location.href = '/login';
-          }, 1000);
+          }, TIMEOUT.REDIRECT_DELAY);
         }
 
-        return Promise.reject(new ApiError('Authentication expired', 401));
+        return Promise.reject(
+          new ApiError(API_MESSAGES.AUTHENTICATION_EXPIRED, HTTP_STATUS.UNAUTHORIZED),
+        );
       } finally {
         isRefreshing = false;
       }
     }
 
-    // 일반 오류 처리
-    const errorData = error.response?.data as { message?: string; content?: string } | undefined;
-    const message = errorData?.message || errorData?.content || '요청 처리 중 오류가 발생했습니다.';
-    return Promise.reject(new ApiError(message, statusCode));
+    // 에러 메시지 파싱 개선
+    const errorData = error.response?.data as
+      | { message?: string; content?: string; error?: string }
+      | undefined;
+
+    const message =
+      errorData?.message || errorData?.content || errorData?.error || API_MESSAGES.REQUEST_ERROR;
+
+    return Promise.reject(new ApiError(message, statusCode, errorData));
   },
 );
 
-// nextAxiosInstance 응답 인터셉터 (변경 없음)
+// nextAxiosInstance 응답 인터셉터 확장
 nextAxiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   async (error: AxiosError) => {
-    const statusCode = error.response?.status || 500;
+    const statusCode = error.response?.status || HTTP_STATUS.INTERNAL_SERVER_ERROR;
 
-    if (statusCode === 401) {
+    if (statusCode === HTTP_STATUS.UNAUTHORIZED) {
       if (typeof window !== 'undefined') {
-        toast.error('인증이 만료되었습니다.');
+        toast.error(API_MESSAGES.AUTH_FAILED);
         setTimeout(() => {
           window.location.href = '/login';
-        }, 1000);
+        }, TIMEOUT.REDIRECT_DELAY);
       }
-      return Promise.reject(new ApiError('인증 오류', 401));
+      return Promise.reject(new ApiError(API_MESSAGES.AUTH_ERROR, HTTP_STATUS.UNAUTHORIZED));
     }
 
-    const errorData = error.response?.data as { message?: string; content?: string } | undefined;
-    const message = errorData?.message || errorData?.content || '요청 처리 중 오류가 발생했습니다.';
-    return Promise.reject(new ApiError(message, statusCode));
+    // 에러 응답 데이터 더 안전하게 처리
+    const errorData = error.response?.data as
+      | { message?: string; content?: string; error?: string }
+      | string
+      | undefined;
+
+    let message: string;
+
+    // 타임아웃 에러 특별 처리
+    if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      message = API_MESSAGES.TIMEOUT_ERROR;
+    } else if (typeof errorData === 'string') {
+      message = errorData;
+    } else if (errorData && typeof errorData === 'object') {
+      message = errorData.message || errorData.content || errorData.error || error.message;
+    } else {
+      message = error.message || API_MESSAGES.REQUEST_ERROR;
+    }
+
+    return Promise.reject(new ApiError(message, statusCode, errorData));
   },
 );
 
-// API 요청 함수들 (변경 없음)
+// API 요청 함수들
 export const apiRequest = {
   get: <T>(url: string, config?: AxiosRequestConfig) => axiosInstance.get<T>(url, config),
   post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
