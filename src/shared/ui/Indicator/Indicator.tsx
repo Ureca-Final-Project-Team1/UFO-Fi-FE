@@ -2,28 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import { stepStateMap, hoverStyleMap, cursorStyleMap, ariaLabelMap } from './Indicator.styles';
 import { indicatorVariants, basicDotVariants } from './indicatorVariants';
-
-// 스타일 맵 객체들
-const stepStateMap = {
-  completed: 'completed',
-  active: 'active',
-  pending: 'pending',
-} as const;
-
-const hoverStyleMap = {
-  enabled: 'hover:scale-110',
-  disabled: '',
-} as const;
-
-const cursorStyleMap = {
-  clickable: 'cursor-pointer',
-  nonClickable: '',
-} as const;
-
-const ariaLabelMap = {
-  format: (stepNumber: number, totalSteps: number) => `Step ${stepNumber} of ${totalSteps}`,
-} as const;
 
 type BasicDotIndicatorProps = ComponentProps<'div'> & {
   step?: number;
