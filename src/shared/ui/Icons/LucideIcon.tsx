@@ -5,18 +5,7 @@ import { ICON_SIZES } from '@/constants/icons';
 
 import { IconProps, LucideIconType } from './Icons.types';
 import { IconWrapper } from './IconWrapper';
-
-// 스타일 맵 객체들
-const errorMessages = {
-  notFound: (name: string) => `Not found "${name}"`,
-} as const;
-
-const defaultValues = {
-  name: 'HelpCircle' as LucideIconType,
-  size: 'md',
-  color: 'current',
-  className: '',
-} as const;
+import { errorMessages, defaultValues } from './LucideIcon.styles';
 
 type LucideIconProps = ComponentProps<'span'> &
   IconProps & {
