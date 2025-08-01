@@ -21,13 +21,13 @@ const getIconName = (variant: TitleIconVariant | undefined): IconType | null => 
 };
 
 type TitleWithoutRouterProps = ComponentProps<'div'> & {
-  title: string;
+  title?: string;
   iconVariant?: TitleIconVariant;
   onIconClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const TitleWithoutRouter: React.FC<TitleWithoutRouterProps> = (props) => {
-  const { title, iconVariant = 'none', onIconClick, className, ...rest } = props;
+  const { title = '제목', iconVariant = 'none', onIconClick, className, ...rest } = props;
 
   const iconName = getIconName(iconVariant);
   const hasIcon = iconName !== null;
