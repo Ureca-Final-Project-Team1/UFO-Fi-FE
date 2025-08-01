@@ -151,7 +151,7 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     <div className="relative w-full overflow-hidden">
       {/* 로딩 오버레이로 변경 */}
       {isLoading && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60">
+        <div className="absolute inset-0 z-50 flex items-center justify-center">
           <Loading variant="signal" message="탐사 기록을 불러오는 중..." className="p-8" />
         </div>
       )}
@@ -160,87 +160,90 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
         {completedPlanets}번째 은하까지 탐사 완료...
       </p>
 
-      {/* 스크롤 버튼 */}
-      {canScrollLeft && (
-        <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
-          <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
-            ◀
-          </button>
-        </div>
-      )}
-      {canScrollRight && (
-        <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
-          <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
-            ▶
-          </button>
-        </div>
-      )}
+      {/* 하단 컨텐츠 전체를 감싸는 div */}
+      <div className={`${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+        {/* 스크롤 버튼 */}
+        {canScrollLeft && (
+          <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
+            <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
+              ◀
+            </button>
+          </div>
+        )}
+        {canScrollRight && (
+          <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
+            <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
+              ▶
+            </button>
+          </div>
+        )}
 
-      <div
-        ref={scrollContainerRef}
-        className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
-        style={{ height: `${baseLayout.containerHeight * scale}px` }}
-      >
         <div
-          ref={contentRef}
-          className="relative"
-          style={{
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-            width: `860px`,
-            height: `${baseLayout.containerHeight}px`,
-          }}
+          ref={scrollContainerRef}
+          className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
+          style={{ height: `${baseLayout.containerHeight * scale}px` }}
         >
-          {/* SVG 점선 - 각 연결선별로 개별 색상 */}
-          <svg
-            className="absolute top-0 left-0 pointer-events-none"
-            width="860"
-            height={baseLayout.containerHeight}
+          <div
+            ref={contentRef}
+            className="relative"
+            style={{
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+              width: `860px`,
+              height: `${baseLayout.containerHeight}px`,
+            }}
           >
-            {baseLayout.planets.map((from, i) => {
-              const to = baseLayout.planets[i + 1];
-              if (!to) return null;
-
-              const fromPoint = {
-                x: from.left + planetSizes[i] / 2,
-                y: from.top + planetSizes[i] / 2,
-              };
-              const toPoint = {
-                x: to.left + planetSizes[i + 1] / 2,
-                y: to.top + planetSizes[i + 1] / 2,
-              };
-
-              return (
-                <path
-                  key={i}
-                  d={getCurvePath(fromPoint, toPoint, i)}
-                  fill="none"
-                  stroke={getConnectionColor(i, i + 1)}
-                  strokeWidth="2"
-                  strokeDasharray="8 6"
-                />
-              );
-            })}
-          </svg>
-
-          {/* 행성들 */}
-          {baseLayout.planets.map((planet, index) => (
-            <div
-              key={index}
-              className="absolute"
-              style={{
-                top: `${planet.top}px`,
-                left: `${planet.left}px`,
-              }}
+            {/* SVG 점선 - 각 연결선별로 개별 색상 */}
+            <svg
+              className="absolute top-0 left-0 pointer-events-none"
+              width="860"
+              height={baseLayout.containerHeight}
             >
-              <PlanetComponent
-                planetSrc={PLANETS[index]}
-                satelliteSrc={SATELLITES[index]}
-                planetSize={planetSizes[index]}
-                isArrived={planetStatus[index]}
-              />
-            </div>
-          ))}
+              {baseLayout.planets.map((from, i) => {
+                const to = baseLayout.planets[i + 1];
+                if (!to) return null;
+
+                const fromPoint = {
+                  x: from.left + planetSizes[i] / 2,
+                  y: from.top + planetSizes[i] / 2,
+                };
+                const toPoint = {
+                  x: to.left + planetSizes[i + 1] / 2,
+                  y: to.top + planetSizes[i + 1] / 2,
+                };
+
+                return (
+                  <path
+                    key={i}
+                    d={getCurvePath(fromPoint, toPoint, i)}
+                    fill="none"
+                    stroke={getConnectionColor(i, i + 1)}
+                    strokeWidth="2"
+                    strokeDasharray="8 6"
+                  />
+                );
+              })}
+            </svg>
+
+            {/* 행성들 */}
+            {baseLayout.planets.map((planet, index) => (
+              <div
+                key={index}
+                className="absolute"
+                style={{
+                  top: `${planet.top}px`,
+                  left: `${planet.left}px`,
+                }}
+              >
+                <PlanetComponent
+                  planetSrc={PLANETS[index]}
+                  satelliteSrc={SATELLITES[index]}
+                  planetSize={planetSizes[index]}
+                  isArrived={planetStatus[index]}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
