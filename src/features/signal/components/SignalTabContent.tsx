@@ -156,12 +156,11 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
         </div>
       )}
 
-      <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
-        {completedPlanets}번째 은하까지 탐사 완료...
-      </p>
-
       {/* 하단 컨텐츠 전체를 감싸는 div */}
       <div className={`${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+        <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
+          {completedPlanets}번째 은하까지 탐사 완료...
+        </p>
         {/* 스크롤 버튼 */}
         {canScrollLeft && (
           <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
