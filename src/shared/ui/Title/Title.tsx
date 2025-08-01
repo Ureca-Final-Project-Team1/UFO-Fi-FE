@@ -54,10 +54,10 @@ export const Title: React.FC<TitleProps> = (props) => {
         <button
           type="button"
           onClick={handleClick}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center size-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
           aria-label={`${iconVariant} 버튼`}
         >
-          <Icon name={iconName} size="md" color="white" className="w-6 h-6 text-white" />
+          <Icon name={iconName} size="md" color="white" className="size-6 text-white" />
         </button>
       )}
 
