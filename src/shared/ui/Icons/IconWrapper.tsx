@@ -5,6 +5,18 @@ import { cn } from '@/lib/utils';
 
 import { IconProps } from './Icons.types';
 
+// 스타일 맵 객체들
+const spanStyleMap = {
+  base: 'inline-flex items-center justify-center shrink-0',
+} as const;
+
+const defaultValues = {
+  size: 'md',
+  color: 'current',
+  className: '',
+  children: null,
+} as const;
+
 // SVG 요소인지 확인하는 타입 가드
 function isSVGElement(
   child: React.ReactNode,
@@ -23,14 +35,20 @@ type IconWrapperProps = ComponentProps<'span'> &
  * 일관된 크기, 색상, 스타일링을 제공합니다.
  */
 export const IconWrapper: React.FC<IconWrapperProps> = (props) => {
-  const { size = 'md', color = 'current', className = '', children = null, ...rest } = props;
+  const {
+    size = defaultValues.size,
+    color = defaultValues.color,
+    className = defaultValues.className,
+    children = defaultValues.children,
+    ...rest
+  } = props;
 
   const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
   const colorValue = color in ICON_COLORS ? ICON_COLORS[color as keyof typeof ICON_COLORS] : color;
 
   return (
     <span
-      className={cn('inline-flex items-center justify-center shrink-0', className)}
+      className={cn(spanStyleMap.base, className)}
       style={{
         width: sizeValue,
         height: sizeValue,
