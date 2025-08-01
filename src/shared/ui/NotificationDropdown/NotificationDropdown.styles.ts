@@ -14,12 +14,12 @@ export const headerStyle = {
 export const contentStyle = {
   container: 'max-h-96 overflow-y-auto overscroll-contain',
   loadingContainer: 'flex flex-col items-center justify-center py-12',
-  loadingIcon: 'w-8 h-8 animate-spin text-blue-500 mb-3',
+  loadingIcon: 'size-8 animate-spin text-blue-500 mb-3',
   loadingText: 'text-sm text-gray-500 font-medium',
   emptyContainer: 'py-12 px-6 text-center',
   emptyIconContainer:
-    'w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4',
-  emptyIcon: 'w-8 h-8 text-gray-400',
+    'size-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4',
+  emptyIcon: 'size-8 text-gray-400',
   emptyTitle: 'text-sm font-semibold text-gray-900 mb-2',
   emptyDescription: 'text-xs text-gray-500',
   listContainer: 'divide-y divide-gray-50',
