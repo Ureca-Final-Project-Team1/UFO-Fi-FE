@@ -16,11 +16,7 @@ interface CompleteModalProps {
 export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
   return (
     <Modal
-      isOpen={props.isOpen}
-      onClose={props.onClose}
       headerAlign="left"
-      title={props.title}
-      description={props.description}
       imageSrc={IMAGE_PATHS['AL_COMPLETE']}
       imageAlt="신고"
       imagePosition={{ x: 90, y: 50 }}
@@ -28,6 +24,7 @@ export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
       type="single"
       closeOnPrimary
       hasCloseButton={false}
+      {...props}
     />
   );
 };
