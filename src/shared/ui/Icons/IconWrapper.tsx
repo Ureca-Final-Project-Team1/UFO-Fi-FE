@@ -4,18 +4,7 @@ import { ICON_SIZES, ICON_COLORS } from '@/constants/icons';
 import { cn } from '@/lib/utils';
 
 import { IconProps } from './Icons.types';
-
-// 스타일 맵 객체들
-const spanStyleMap = {
-  base: 'inline-flex items-center justify-center shrink-0',
-} as const;
-
-const defaultValues = {
-  size: 'md',
-  color: 'current',
-  className: '',
-  children: null,
-} as const;
+import { spanStyleMap, defaultValues } from './IconWrapper.styles';
 
 // SVG 요소인지 확인하는 타입 가드
 function isSVGElement(
