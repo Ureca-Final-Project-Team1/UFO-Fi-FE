@@ -1,20 +1,11 @@
 import React, { ComponentProps } from 'react';
 
+import { sizeVariants, unitVariants } from './ZetDisplayVariants';
+
 type ZetDisplayProps = ComponentProps<'span'> & {
   amount?: number;
   showUnit?: boolean;
   size?: 'sm' | 'md' | 'lg';
-};
-
-// 조건부 스타일링을 위한 객체들
-const sizeClassesMap = {
-  sm: 'text-sm',
-  md: 'text-base',
-  lg: 'text-lg',
-};
-
-const unitStyleMap = {
-  base: 'ml-1',
 };
 
 export const formatZetAmount = (amount: number): string => {
@@ -30,9 +21,9 @@ export const ZetDisplay: React.FC<ZetDisplayProps> = (props) => {
   const formattedAmount = formatZetAmount(amount);
 
   return (
-    <span className={`${sizeClassesMap[size]} ${rest.className || ''}`} {...rest}>
+    <span className={`${sizeVariants({ size })} ${rest.className || ''}`} {...rest}>
       {formattedAmount}
-      {showUnit && <span className={unitStyleMap.base}>ZET</span>}
+      {showUnit && <span className={unitVariants()}>ZET</span>}
     </span>
   );
 };
