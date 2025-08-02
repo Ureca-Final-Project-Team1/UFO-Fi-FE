@@ -2,7 +2,13 @@ import React, { ComponentProps } from 'react';
 
 import { DotBadge, Icon } from '@/shared';
 
-import { buttonStyle, iconStyle, badgeStyle, ariaLabelMap } from './NotificationTrigger.styles';
+import {
+  buttonVariants,
+  iconVariants,
+  badgeContainerVariants,
+  badgeVariants,
+  ariaLabelMap,
+} from './NotificationTriggerVariants';
 
 type NotificationTriggerProps = ComponentProps<'button'> & {
   unreadCount?: number;
@@ -17,17 +23,17 @@ export const NotificationTrigger: React.FC<NotificationTriggerProps> = (props) =
 
   return (
     <button
-      className={`${buttonStyle.base} ${className}`}
+      className={`${buttonVariants()} ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
       {...rest}
     >
-      <Icon name="Bell" className={iconStyle.bell} color="white" />
+      <Icon name="Bell" className={iconVariants()} color="white" />
 
       {/* 읽지 않은 알림이 있을 때만 표시 */}
       {unreadCount > 0 && (
-        <div className={badgeStyle.container}>
-          <DotBadge color="red" size="default" className={badgeStyle.badge} />
+        <div className={badgeContainerVariants()}>
+          <DotBadge color="red" size="default" className={badgeVariants()} />
         </div>
       )}
     </button>
