@@ -10,7 +10,13 @@ import { RadioGroup } from '../Radio';
 import { CompleteModal } from './CompleteModal';
 import { ReportReason } from './Modal.types';
 import { Input } from '../Input';
-import { modalConfig, inputStyle, completeModalConfig, errorMessages } from './ReportModal.styles';
+import {
+  modalConfig,
+  inputVariants,
+  inputConfig,
+  completeModalConfig,
+  errorMessages,
+} from './ReportModalVariants';
 import '@/styles/globals.css';
 
 type ReportedModalProps = ComponentProps<'div'> & {
@@ -115,8 +121,8 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
 
         {selectedOption === 'ETC' && (
           <Input
-            className={inputStyle.className}
-            placeholder={inputStyle.placeholder}
+            className={inputVariants()}
+            placeholder={inputConfig.placeholder}
             value={customReason}
             onChange={(e) => setCustomReason(e.target.value)}
           />

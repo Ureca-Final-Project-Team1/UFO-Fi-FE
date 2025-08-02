@@ -1,6 +1,8 @@
+import { cva } from 'class-variance-authority';
+
 import { IMAGE_PATHS } from '@/constants/images';
 
-// ReportModal 컴포넌트 스타일 맵
+// 모달 설정
 export const modalConfig = {
   headerAlign: 'left' as const,
   title: '게시글을 신고하시겠습니까?',
@@ -14,11 +16,24 @@ export const modalConfig = {
   color: 'black' as const,
 } as const;
 
-export const inputStyle = {
-  className: 'w-full border p-2 mt-2 rounded bg-white caption-14-regular',
+// 입력 필드 variants
+export const inputVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'w-full border p-2 mt-2 rounded bg-white caption-14-regular',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+// 입력 필드 설정
+export const inputConfig = {
   placeholder: '신고 사유를 입력해주세요.',
 } as const;
 
+// 완료 모달 설정
 export const completeModalConfig = {
   success: {
     title: '신고 접수가 완료되었어요!',
@@ -30,6 +45,7 @@ export const completeModalConfig = {
   },
 } as const;
 
+// 에러 메시지 맵
 export const errorMessages = {
   default: '신고 요청에 실패했습니다.',
   unknown: '알 수 없는 오류가 발생했습니다.',
