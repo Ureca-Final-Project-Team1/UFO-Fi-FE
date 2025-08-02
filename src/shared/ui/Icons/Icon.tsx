@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -7,11 +7,12 @@ import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.typ
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
-interface IconComponentProps extends IconProps {
-  name?: IconType;
-  src?: string;
-  alt?: string;
-}
+type IconComponentProps = ComponentProps<'span'> &
+  IconProps & {
+    name?: IconType;
+    src?: string;
+    alt?: string;
+  };
 
 /**
  * 통합 아이콘 컴포넌트
