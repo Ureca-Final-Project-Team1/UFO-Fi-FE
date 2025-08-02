@@ -14,7 +14,6 @@ export const IMAGE_PATHS = {
   STONE: '/images/exchange/stone.svg',
   NEXT_BTN_ONBOARDING: '/images/next-btn.png',
   FIRE_BTN_ONBOARDING: '/images/fire-btn.png',
-  BG_ONBOARDING: '/images/background-onboarding.png',
   BG_LOGIN: '/images/background-login.png',
   BG_BASIC: '/images/background-basic.png',
   BLACKHOLE_REAL: '/images/blackhole-real.png',
@@ -60,6 +59,10 @@ export const IMAGE_PATHS = {
   MY_PLANET_HALF: '/images/myplanet-half.svg',
   RECEIPT: '/images/receipt.svg',
   CLOUD: '/images/cloud.svg',
+  WINDOW: '/images/onboarding/window.svg',
+  WINDOW_BORDER: '/images/onboarding/window-border.svg',
+  WINDOW_MASK: '/images/onboarding/window-mask.svg',
+  WINDOW_BOTTOM: '/images/onboarding/window-bottom.svg',
 } as const;
 
 export const BADGE_ICONS: Record<string, string> = {};

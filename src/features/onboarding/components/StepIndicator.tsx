@@ -11,7 +11,7 @@ export const StepIndicator = ({
   total: number;
   onClick: (step: number) => void;
 }) => (
-  <div className="flex justify-center py-8">
+  <div className="flex justify-center py-2">
     <Indicator
       step={step + 1}
       totalSteps={total}

@@ -1,16 +1,49 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 
-export const OnboardingImageFrame = ({ src }: { src: string }) => (
-  <div className="w-full max-w-md mx-auto aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative">
-    <Image
-      src={src}
-      alt="온보딩 이미지"
-      fill
-      className="object-cover rounded-3xl"
-      sizes="(max-width: 768px) 100vw, 400px"
-      priority
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
-  </div>
-);
+import { IMAGE_PATHS } from '@/constants';
+
+interface OnboardingImageFrameProps {
+  onboardingSrc: string; // 온보딩 콘텐츠 이미지
+}
+
+export const OnboardingImageFrame = ({ onboardingSrc }: OnboardingImageFrameProps) => {
+  return (
+    <div className="relative w-full h-auto">
+      <Image
+        src={IMAGE_PATHS.WINDOW_BORDER}
+        alt="창문 테두리"
+        width={300}
+        height={300}
+        className="w-full h-auto z-0"
+        priority
+      />
+
+      {/* 창문 모양 마스크 적용된 콘텐츠 */}
+      <div
+        className="absolute inset-0 z-10 scale-[0.83]"
+        style={{
+          WebkitMaskImage: `url(${IMAGE_PATHS.WINDOW_MASK})`,
+          WebkitMaskRepeat: 'no-repeat',
+          WebkitMaskSize: '100% 100%',
+          WebkitMaskPosition: 'center',
+          maskImage: `url(${IMAGE_PATHS.WINDOW_MASK})`,
+          maskRepeat: 'no-repeat',
+          maskSize: '100% 100%',
+          maskPosition: 'center',
+          maskType: 'alpha',
+        }}
+      >
+        <Image src={IMAGE_PATHS.WINDOW} alt="우주 배경" fill className="object-cover" />
+        <Image
+          src={onboardingSrc}
+          alt="온보딩 콘텐츠"
+          fill
+          className="object-cover object-center"
+        />
+      </div>
+    </div>
+  );
+};
