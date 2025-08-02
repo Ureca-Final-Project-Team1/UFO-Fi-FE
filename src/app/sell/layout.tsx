@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function OnboardingLayout({ children }: { children: React.ReactNode }) {
-  return <div className="w-full min-h-full">{children}</div>;
+  return <div>{children}</div>;
 }

@@ -10,7 +10,7 @@ import { LogoutModal } from '@/features/mypage/components';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Icon, IconType, Loading } from '@/shared';
+import { Button, Icon, IconType, Loading, Title } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
 import { Honorific } from '@/types/Achievement';
 
@@ -104,7 +104,7 @@ export default function MyPage() {
     }
 
     return (
-      <div className="w-full min-h-full flex flex-1 items-center justify-center">
+      <>
         <div className="text-center">
           <div className="text-red-400 mb-4">
             <Icon name="AlertCircle" size={48} className="mx-auto mb-2" />
@@ -120,14 +120,14 @@ export default function MyPage() {
             다시 시도
           </Button>
         </div>
-      </div>
+      </>
     );
   }
 
   // 데이터가 없는 경우
   if (!mypageInfo) {
     return (
-      <div className="w-full min-h-full flex flex-1 items-center justify-center">
+      <>
         <div className="text-center text-white">
           <p>프로필 정보가 없습니다</p>
           <button
@@ -138,12 +138,13 @@ export default function MyPage() {
             새로고침
           </button>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="w-full text-white py-6">
+    <div>
+      <Title title="마이페이지" />
       {/* Signal Card */}
       <SignalCard
         userId={mypageInfo.nickname || '사용자'}

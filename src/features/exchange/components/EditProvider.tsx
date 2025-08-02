@@ -117,7 +117,7 @@ export const EditProvider = ({ children }: EditProviderProps) => {
   // 로딩 중
   if (isUserLoading || isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-full">
+      <div className="flex items-center justify-center h-full">
         <div className="text-white">권한을 확인하는 중...</div>
       </div>
     );

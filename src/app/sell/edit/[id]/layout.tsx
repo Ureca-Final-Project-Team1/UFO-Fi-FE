@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function EditLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-full w-full">
+    <div className="h-full w-full">
       <EditProvider>{children}</EditProvider>
     </div>
   );

@@ -51,7 +51,7 @@ export function Loading({
 
       default:
         return (
-          <div className="text-center">
+          <div className="text-center h-full">
             <div className="relative mb-4">
               <Image
                 src={IMAGE_PATHS.AL_SUCCESS}

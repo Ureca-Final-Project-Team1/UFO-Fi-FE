@@ -37,51 +37,49 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
   };
 
   return (
-    <footer className="fixed bottom-0 left-1/2 transform -translate-x-1/2 h-16 z-30 w-full min-w-[375px] max-w-[620px]">
-      <div className="w-full h-16 bg-primary-700 border-t border-white/10">
-        <nav className="flex items-center justify-around h-16 w-full">
-          {navItems.map((item) => {
-            const isActive = activeTab === item.id;
-            const isHome = item.id === 'home';
+    <footer className="bottom-nav-fixed">
+      <nav className="flex items-center justify-around h-16 w-full">
+        {navItems.map((item) => {
+          const isActive = activeTab === item.id;
+          const isHome = item.id === 'home';
 
-            return (
-              <div
-                key={item.id}
-                className={cn('flex justify-center items-end h-16', {
-                  'relative z-10 w-18 mt-0': isHome,
-                  'flex-1': !isHome,
-                })}
+          return (
+            <div
+              key={item.id}
+              className={cn('flex justify-center items-end h-16', {
+                'relative z-10 w-18 mt-0': isHome,
+                'flex-1': !isHome,
+              })}
+            >
+              <button
+                onClick={() => handleTabClick(item.id)}
+                className={cn(
+                  'flex flex-col items-center justify-center gap-1 transition-all duration-200 cursor-pointer',
+                  isHome
+                    ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
+                    : 'w-full h-16 hover:bg-white/5 active:scale-95',
+                  isActive ? 'text-secondary-yellow' : 'text-white/70',
+                )}
+                aria-label={item.label}
               >
-                <button
-                  onClick={() => handleTabClick(item.id)}
+                <Icon
+                  name={item.icon}
+                  size={isHome ? 'lg' : 'md'}
+                  color={isActive ? 'rgb(var(--color-secondary-yellow))' : 'white'}
+                />
+                <span
                   className={cn(
-                    'flex flex-col items-center justify-center gap-1 transition-all duration-200 cursor-pointer',
-                    isHome
-                      ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
-                      : 'w-full h-16 hover:bg-white/5 active:scale-95',
+                    'text-xs font-bold leading-none',
                     isActive ? 'text-secondary-yellow' : 'text-white/70',
                   )}
-                  aria-label={item.label}
                 >
-                  <Icon
-                    name={item.icon}
-                    size={isHome ? 'lg' : 'md'}
-                    color={isActive ? 'rgb(var(--color-secondary-yellow))' : 'white'}
-                  />
-                  <span
-                    className={cn(
-                      'text-xs font-bold leading-none',
-                      isActive ? 'text-secondary-yellow' : 'text-white/70',
-                    )}
-                  >
-                    {item.label}
-                  </span>
-                </button>
-              </div>
-            );
-          })}
-        </nav>
-      </div>
+                  {item.label}
+                </span>
+              </button>
+            </div>
+          );
+        })}
+      </nav>
     </footer>
   );
 };

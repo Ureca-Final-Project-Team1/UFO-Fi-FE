@@ -28,7 +28,7 @@ function PaymentFailContent() {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <div className="flex flex-col h-full w-full">
       <Title title="" iconVariant="close" />
 
       {/* 메인 컨텐츠 영역 */}

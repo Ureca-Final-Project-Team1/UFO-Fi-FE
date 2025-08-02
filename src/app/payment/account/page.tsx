@@ -65,7 +65,7 @@ export default function AccountConnectPage() {
   const isButtonActive = account.trim().length > 0 && selectedBank !== null;
 
   return (
-    <div className="relative min-h-full flex flex-col bg-transparent pb-24">
+    <div className="relative h-full flex flex-col bg-transparent pb-24">
       <button
         type="button"
         onClick={() => router.back()}
