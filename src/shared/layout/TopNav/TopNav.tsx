@@ -128,7 +128,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
                 </span>
                 <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
               </div>
-              <div className="w-5 h-5 bg-cyan-400 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+              <div className="size-5 bg-cyan-400 rounded-full flex items-center justify-center">
                 <Icon
                   name="Plus"
                   size="sm"
