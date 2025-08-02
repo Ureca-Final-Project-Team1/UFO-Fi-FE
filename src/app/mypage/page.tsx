@@ -193,9 +193,9 @@ interface MenuIconButtonProps {
 function MenuIconButton({ icon, label, onClick }: MenuIconButtonProps) {
   return (
     <button
+      type="button"
       className="group p-2 rounded-lg transition-all duration-200 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 cursor-pointer"
       onClick={onClick}
-      type="button"
     >
       <Icon
         name={icon as IconType}

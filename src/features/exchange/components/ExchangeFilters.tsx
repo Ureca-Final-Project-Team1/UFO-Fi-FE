@@ -22,7 +22,7 @@ export const ExchangeFilters = () => {
 
       {/* 일괄구매 버튼 */}
       <div className="ml-auto sm:absolute sm:right-0 sm:top-0">
-        <Button size="sm" variant="exploration-button" onClick={handleBulkPurchase}>
+        <Button type="button" size="sm" variant="exploration-button" onClick={handleBulkPurchase}>
           <Icon name="box" className="w-3 h-3 pr-1" />
           <span className="caption-14-bold"> 일괄구매</span>
         </Button>

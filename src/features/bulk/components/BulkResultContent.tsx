@@ -199,6 +199,7 @@ function BulkResultDisplay({
       )}
       <div className="flex justify-start">
         <Button
+          type="button"
           size="full-width"
           onClick={onPurchase}
           variant="exploration-button"
