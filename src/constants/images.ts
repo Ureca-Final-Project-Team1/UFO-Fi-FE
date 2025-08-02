@@ -14,7 +14,6 @@ export const IMAGE_PATHS = {
   STONE: '/images/exchange/stone.svg',
   NEXT_BTN_ONBOARDING: '/images/next-btn.png',
   FIRE_BTN_ONBOARDING: '/images/fire-btn.png',
-  BG_ONBOARDING: '/images/background-onboarding.png',
   BG_LOGIN: '/images/background-login.png',
   BG_BASIC: '/images/background-basic.png',
   BLACKHOLE_REAL: '/images/blackhole-real.png',

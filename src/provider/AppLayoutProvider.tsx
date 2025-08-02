@@ -63,7 +63,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
       return IMAGE_PATHS.BG_LOGIN;
     }
     if (pathname.startsWith('/onboarding')) {
-      return IMAGE_PATHS.BG_ONBOARDING;
+      return '';
     }
     if (isPasswordPage) {
       return '';
@@ -73,14 +73,16 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
 
   const containerStyle = isPasswordPage
     ? { backgroundColor: 'var(--color-password-bg)' }
-    : backgroundImageUrl
-      ? {
-          backgroundImage: `url(${backgroundImageUrl})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center', // 배경 이미지 중앙 정렬
-        }
-      : {};
+    : pathname.startsWith('/onboarding')
+      ? { backgroundColor: 'var(--color-onboarding-bg)' }
+      : backgroundImageUrl
+        ? {
+            backgroundImage: `url(${backgroundImageUrl})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }
+        : {};
 
   if (isAdminRoute) {
     return (
