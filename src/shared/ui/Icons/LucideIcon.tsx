@@ -2,14 +2,16 @@ import * as LucideIcons from 'lucide-react';
 import React, { ComponentProps } from 'react';
 
 import { ICON_SIZES } from '@/constants/icons';
+import { cn } from '@/lib/utils';
 
 import { IconProps, LucideIconType } from './Icons.types';
 import { IconWrapper } from './IconWrapper';
-import { errorMessages, defaultValues } from './LucideIcon.styles';
+import { lucideIconVariants, errorMessages, defaultValues } from './LucideIconVariants';
 
 type LucideIconProps = ComponentProps<'span'> &
   IconProps & {
     name?: LucideIconType;
+    animation?: 'none' | 'spin' | 'pulse' | 'bounce';
   };
 
 /**
@@ -21,6 +23,7 @@ export const LucideIcon: React.FC<LucideIconProps> = (props) => {
     size = defaultValues.size,
     color = defaultValues.color,
     className = defaultValues.className,
+    animation = 'none',
     ...rest
   } = props;
 
@@ -33,7 +36,12 @@ export const LucideIcon: React.FC<LucideIconProps> = (props) => {
   }
 
   return (
-    <IconWrapper size={size} color={color} className={className} {...rest}>
+    <IconWrapper
+      size={size}
+      color={color}
+      className={cn(lucideIconVariants({ animation }), className)}
+      {...rest}
+    >
       <IconComponent size={sizeValue} />
     </IconWrapper>
   );
