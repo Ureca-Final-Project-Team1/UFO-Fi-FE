@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { fetchAndCreateLetters, type LetterDisplay } from '@/api/services/story/letters';
+import { fetchLetters, type LetterDisplay } from '@/api/services/story/letters';
 import { Button, Loading } from '@/shared';
 import { useLetterStore } from '@/stores/useLetterStore';
 
@@ -21,7 +21,7 @@ export default function LetterComponent() {
       setIsLoading(true);
       setError(null);
 
-      const { letters: fetchedLetters, count } = await fetchAndCreateLetters();
+      const { letters: fetchedLetters, count } = await fetchLetters();
       // 편지 불러오기 성공해서 상태 업데이트
       setLetters(fetchedLetters);
       setLetterCount(count);

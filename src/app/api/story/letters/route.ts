@@ -1,35 +1,22 @@
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 
 import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // GET: 현재 사용자에 대한 최장 경로 편지를 조회
 export async function GET() {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('Authorization')?.value;
-
-    console.warn('JWT Token 확인:', !!token);
-
-    if (!token) {
-      console.warn('JWT Token이 없습니다');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // STEP 1. 인증
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
     }
 
-    if (!process.env.JWT_SECRET) {
-      console.error('JWT_SECRET이 설정되지 않았습니다');
-      throw new Error('JWT_SECRET is not configured');
-    }
-
-    const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
-    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
-    const userId = BigInt(decoded.id ?? decoded.sub);
-
-    console.warn('사용자 ID:', userId.toString());
+    const { userId } = result;
 
     // 데이터베이스 쿼리 타임아웃 설정
     const queryStartTime = Date.now();
@@ -79,45 +66,34 @@ export async function GET() {
 // POST: 사용자 기준으로 새로운 편지를 생성
 export async function POST() {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('Authorization')?.value;
-
-    console.warn('POST JWT Token 확인:', !!token);
-
-    if (!token) {
-      console.warn('POST JWT Token이 없습니다');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // STEP 1. 인증
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
     }
 
-    if (!process.env.JWT_SECRET) {
-      console.error('POST JWT_SECRET이 설정되지 않았습니다');
-      throw new Error('JWT_SECRET is not configured');
-    }
+    const { userId } = result;
 
-    const secret = Buffer.from(process.env.JWT_SECRET!, 'base64');
-    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
-    const userId = BigInt(decoded.id ?? decoded.sub);
-
-    console.warn('POST 사용자 ID:', userId.toString());
-
-    // Step 1: 기존 편지 조회
+    // STEP 2. 기존 편지 조회
     const existingLetters = await prisma.voyage_letters.findMany({
       where: { user_id: userId },
       orderBy: { step: 'asc' },
     });
-
     const maxExistingStep = existingLetters.at(-1)?.step ?? 0;
+
     if (maxExistingStep >= 5) {
-      // 최대 단계 도달한 경우 새 편지 생성하지 않음
+      console.log('편지 최대 5단계 도달 → 생성 생략');
       return new NextResponse(null, { status: 204 });
     }
 
-    // BFS를 이용하여 최장 거래 경로 찾기
+    // STEP 3. BFS로 최장 거래 경로 계산
     const visited = new Set<bigint>();
     const path: bigint[] = [];
 
     async function bfs(currentId: bigint) {
-      if (visited.has(currentId)) return;
+      if (visited.has(currentId)) {
+        return;
+      }
       visited.add(currentId);
       path.push(currentId);
 
@@ -135,8 +111,15 @@ export async function POST() {
     }
 
     await bfs(userId);
-    if (path.length > 6) path.length = 6; // 최대 편지 수 5개 → 6인 경우 도달자까지 포함
+    if (path.length > 6) path.length = 6;
 
+    const bfsStep = path.length - 1;
+    if (bfsStep <= maxExistingStep) {
+      console.log(`BFS 경로(${bfsStep}) <= 기존 편지 최대 단계(${maxExistingStep}) → 생성 생략`);
+      return new NextResponse(null, { status: 204 });
+    }
+
+    // STEP 4. 사용자 이름 조회
     const users = await prisma.users.findMany({
       where: { id: { in: path } },
       select: { id: true, name: true },
@@ -144,6 +127,7 @@ export async function POST() {
 
     const newLetters = [];
 
+    // STEP 5. 경로에 따라 GPT 편지 생성 및 저장
     for (let i = 1; i < path.length; i++) {
       const fromId = path[i - 1];
       const toId = path[i];
@@ -165,13 +149,11 @@ export async function POST() {
           new Promise((_, reject) =>
             setTimeout(() => reject(new Error('OpenAI API timeout')), 15000),
           ),
-        ])) as {
-          choices: { message: { content: string } }[];
-        };
+        ])) as { choices: { message: { content: string } }[] };
 
         content = completion.choices[0].message.content ?? '[편지 없음]';
       } catch (error) {
-        console.error('OpenAI API 호출 실패:', error);
+        console.error('OpenAI 호출 실패:', error);
         content = `${fromName}의 데이터가 ${toName}에게 안전하게 도달했습니다.`;
       }
 
@@ -184,9 +166,9 @@ export async function POST() {
       newLetters.push(saved);
     }
 
+    // STEP 6. 기존 편지 중 새 경로에 포함되지 않은 것들 → isLongestPath: false 처리
     const currentPathLetterIds = newLetters.map((l) => l.id);
 
-    // 현재 최장 경로에 포함되지 않은 기존 편지들 → isLongestPath를 false로 변경
     await prisma.voyage_letters.updateMany({
       where: { user_id: userId, id: { notIn: currentPathLetterIds } },
       data: { isLongestPath: false },
@@ -194,20 +176,11 @@ export async function POST() {
 
     return new NextResponse(null, { status: 201 });
   } catch (error) {
-    console.error('Letter generation error:', {
-      error,
-      message: error instanceof Error ? error.message : '알 수 없는 오류',
-      stack: error instanceof Error ? error.stack : 'No stack trace',
-    });
-
-    if (error instanceof jwt.JsonWebTokenError) {
+    console.error('편지 생성 오류:', error);
+    if (error instanceof jwt.JsonWebTokenError)
       return NextResponse.json({ error: '유효하지 않은 토큰입니다.' }, { status: 401 });
-    }
-
-    if (error instanceof jwt.TokenExpiredError) {
+    if (error instanceof jwt.TokenExpiredError)
       return NextResponse.json({ error: '토큰이 만료되었습니다.' }, { status: 401 });
-    }
-
     return NextResponse.json({ error: '편지 생성 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }
