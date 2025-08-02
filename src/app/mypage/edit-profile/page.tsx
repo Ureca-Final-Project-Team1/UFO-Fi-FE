@@ -46,7 +46,7 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <div>
       <Title title="프로필 수정" iconVariant="back" />
 
       <div className="mt-6 flex flex-col gap-8">

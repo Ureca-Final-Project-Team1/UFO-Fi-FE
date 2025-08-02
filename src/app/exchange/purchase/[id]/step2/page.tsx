@@ -7,7 +7,7 @@ import { exchangeAPI, purchaseHistory } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useUserRole } from '@/features/signup/hooks/useUserRole';
-import { Button, Title } from '@/shared';
+import { Button, Loading, Title } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
 export default function Step2Page() {
@@ -84,32 +84,25 @@ export default function Step2Page() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center h-full px-4">
-        <Title title="데이터 구매하기" iconVariant="back" />
-        <div className="flex items-center justify-center flex-1">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (!productData) {
     return (
-      <div className="flex flex-col justify-center items-center w-full min-h-full px-4">
+      <>
         <Title title="데이터 구매하기" iconVariant="back" />
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col">
           <p className="text-red-400 text-center mb-4">상품 정보를 불러올 수 없습니다.</p>
-          <Button variant="secondary" onClick={() => router.back()}>
+          <Button type="button" variant="secondary" onClick={() => router.back()}>
             돌아가기
           </Button>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="flex flex-col items-center h-full px-4">
+    <>
       <Title title="데이터 구매하기" iconVariant="back" />
 
       {/* 데이터 큐브 이미지 */}
@@ -193,16 +186,18 @@ export default function Step2Page() {
         </div>
       </div>
 
-      {/* 다음 버튼 */}
-      <Button
-        size="full-width"
-        variant="primary"
-        onClick={handleNext}
-        disabled={!isChecked}
-        className={`mt-auto mb-8 ${!isChecked ? 'opacity-50 cursor-not-allowed' : ''}`}
-      >
-        다음
-      </Button>
-    </div>
+      <div className="py-4 flex-shrink-0">
+        {/* 다음 버튼 */}
+        <Button
+          size="full-width"
+          variant="primary"
+          onClick={handleNext}
+          disabled={!isChecked}
+          className={`mt-auto mb-8 ${!isChecked ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          다음
+        </Button>
+      </div>
+    </>
   );
 }

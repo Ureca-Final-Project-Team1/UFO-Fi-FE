@@ -25,3 +25,10 @@ export interface FollowActionResponse {
 export interface FollowActionRequest {
   targetUserId: number;
 }
+
+// 추천 친구 조회 응답
+export interface FindRecommendUsersResponse {
+  id: number;
+  nickname: string;
+  profile: string;
+}

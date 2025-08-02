@@ -47,7 +47,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return null;
   }
 
-  const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
+  const customIconComponents: Record<CustomIconType, React.ComponentType<CustomIconProps>> = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,

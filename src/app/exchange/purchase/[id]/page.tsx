@@ -57,7 +57,7 @@ export default function PurchasePage() {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-full px-4">
+    <div>
       <Title title="데이터 구매하기" iconVariant="back" />
 
       {/* 안내 텍스트 */}
