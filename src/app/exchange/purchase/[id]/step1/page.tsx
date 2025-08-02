@@ -7,7 +7,7 @@ import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
 import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
-import { Button, Title } from '@/shared';
+import { Button, Loading, Title } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
 export default function Step1Page() {
@@ -92,14 +92,7 @@ export default function Step1Page() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col h-full px-4">
-        <Title title="데이터 구매하기" iconVariant="back" />
-        <div className="flex items-center justify-center flex-1">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error || !productData) {
@@ -117,10 +110,10 @@ export default function Step1Page() {
   const hasEnoughZet = userZet >= productData.totalPrice;
 
   return (
-    <div className="flex flex-col h-full px-4">
+    <div>
       <Title title="데이터 구매하기" iconVariant="back" />
 
-      <div className="flex flex-col items-center justify-center flex-1">
+      <div>
         {/* 코인 이미지 */}
         <div className="flex justify-center mb-8">
           <Image src={IMAGE_PATHS['PURCHASE_COIN']} width={150} height={150} alt="zet-coin" />
@@ -136,7 +129,7 @@ export default function Step1Page() {
         </div>
 
         {/* 가격 정보 */}
-        <div className="text-3xl text-center text-white mb-8">
+        <div className="text-3xl text-center text-white mb-6">
           <p className="mb-2">이 데이터의 가격은</p>
           <p className="mb-6">
             <span className="font-bold text-cyan-300">{productData.totalPrice}ZET</span>
@@ -145,7 +138,7 @@ export default function Step1Page() {
         </div>
 
         {/* ZET 잔액 정보 */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-4">
           <p className="text-sm text-gray-300 mb-2">내 ZET 잔액</p>
           <p className={`text-lg font-bold ${hasEnoughZet ? 'text-green-400' : 'text-red-400'}`}>
             {userZet}ZET
@@ -172,16 +165,19 @@ export default function Step1Page() {
         </div>
       </div>
 
-      {/* 다음 버튼 */}
-      <Button
-        size="full-width"
-        variant="primary"
-        onClick={handleNext}
-        className="mt-auto my-8"
-        disabled={!hasEnoughZet}
-      >
-        {hasEnoughZet ? '다음' : 'ZET 충전하기'}
-      </Button>
+      <div className="my-6">
+        {/* 다음 버튼 */}
+        <Button
+          size="full-width"
+          type="button"
+          variant="primary"
+          onClick={handleNext}
+          className="mt-auto"
+          disabled={!hasEnoughZet}
+        >
+          {hasEnoughZet ? '다음' : 'ZET 충전하기'}
+        </Button>
+      </div>
 
       <InsufficientZetModal
         isOpen={showZetModal}

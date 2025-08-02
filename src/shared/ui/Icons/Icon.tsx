@@ -1,13 +1,16 @@
-import React from 'react';
+'use client';
+
+import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import * as CustomIcons from './CustomIcons';
 import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
+import { iconVariants, errorMessages, defaultValues } from './IconVariants';
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
-interface IconComponentProps extends IconProps {
+interface IconComponentProps extends Omit<ComponentProps<'span'>, 'onClick'>, IconProps {
   name?: IconType;
   src?: string;
   alt?: string;
@@ -17,32 +20,46 @@ interface IconComponentProps extends IconProps {
  * 통합 아이콘 컴포넌트
  * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
  */
-export const Icon: React.FC<IconComponentProps> = ({
-  name,
-  src,
-  alt,
-  onClick,
-  className,
-  ...props
-}) => {
+export const Icon: React.FC<IconComponentProps> = (props) => {
+  const {
+    name = defaultValues.name,
+    src = defaultValues.src,
+    alt = defaultValues.alt,
+    onClick = defaultValues.onClick,
+    className = defaultValues.className,
+    size,
+    ...rest
+  } = props;
+
+  // ImageIcon용 size 변환 (xs, xl, 2xl, 3xl 제외)
+  const getImageIconSize = (size: IconProps['size']) => {
+    if (typeof size === 'number') return size;
+    if (size === 'xs' || size === 'xl' || size === '2xl' || size === '3xl') return 'md';
+    return size;
+  };
+
   if (src) {
     return (
       <ImageIcon
         src={src}
         alt={alt || name || 'icon'}
+        size={getImageIconSize(size)}
         onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        {...rest}
       />
     );
   }
 
   if (!name) {
-    console.warn('Icon error');
+    console.warn(errorMessages.iconError);
     return null;
   }
 
-  const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
+  const customIconComponents: Record<
+    CustomIconType,
+    React.ComponentType<ComponentProps<'span'> & Omit<IconProps, 'onClick'>>
+  > = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,
@@ -61,31 +78,34 @@ export const Icon: React.FC<IconComponentProps> = ({
     const CustomIconComponent = customIconComponents[name as CustomIconType];
     return (
       <CustomIconComponent
-        onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
+        size={size}
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        {...rest}
       />
     );
   }
 
+  // ✅ LucideIcon을 IconWrapper로 감싸기
   try {
     return (
-      <LucideIcon
-        name={name as LucideIconType}
+      <span
         onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
-      />
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        {...rest}
+      >
+        <LucideIcon name={name as LucideIconType} size={size} />
+      </span>
     );
   } catch (error) {
-    console.warn(`${name}`, error);
+    console.warn(errorMessages.iconNotFound(name), error);
     return (
-      <LucideIcon
-        name="AlertCircle"
+      <span
         onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
-        {...props}
-      />
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        {...rest}
+      >
+        <LucideIcon name="AlertCircle" size={size} />
+      </span>
     );
   }
 };

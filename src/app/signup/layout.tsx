@@ -24,5 +24,5 @@ export default function SignupLayout({ children }: { children: React.ReactNode }
     }
   }, [userRole, isLoading, router]);
 
-  return <div className="flex flex-col w-full h-full pb-6">{children}</div>;
+  return <>{children}</>;
 }
