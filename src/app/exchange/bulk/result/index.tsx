@@ -76,6 +76,7 @@ function BulkResultContent() {
         {/* 구매하기 버튼 */}
         <div className="flex justify-start">
           <Button
+            type="button"
             size={isMobile ? 'default' : 'lg'}
             onClick={handlePurchase}
             variant="exploration-button"
