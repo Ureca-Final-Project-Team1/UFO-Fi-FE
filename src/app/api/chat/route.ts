@@ -7,9 +7,18 @@ const openai = new OpenAI({
 });
 
 export const POST = async (req: Request) => {
-  try {
-    const request: { message: string; prompt: string } = await req.json();
+  let request: { message: string; prompt: string };
 
+  try {
+    request = await req.json();
+  } catch {
+    return NextResponse.json(
+      { error: '잘못된 요청 형식입니다. JSON 형식으로 메시지를 보내주세요.' },
+      { status: 400 },
+    );
+  }
+
+  try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [
@@ -20,10 +29,17 @@ export const POST = async (req: Request) => {
 
     const full = completion.choices[0].message?.content ?? '';
     let parsed;
+
     try {
       parsed = JSON.parse(full);
-    } catch (e) {
-      return NextResponse.json({ error: `Invalid response format: ${e}` });
+    } catch {
+      return NextResponse.json(
+        {
+          error: 'GPT 응답을 JSON으로 변환할 수 없습니다. 응답 형식을 확인해주세요.',
+          detail: full,
+        },
+        { status: 400 },
+      );
     }
 
     return new Response(JSON.stringify(parsed), {
@@ -32,8 +48,10 @@ export const POST = async (req: Request) => {
         'Cache-Control': 'no-cache',
       },
     });
-  } catch (error) {
-    console.error('GPT 처리 오류:', error);
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: '서버에서 요청을 처리하는 중 오류가 발생했습니다.' },
+      { status: 500 },
+    );
   }
 };

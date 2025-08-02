@@ -1,9 +1,12 @@
+'use client';
+
 import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { IconProps, IconType, LucideIconType } from './Icons.types';
+import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
 import { iconVariants, errorMessages, defaultValues } from './IconVariants';
+import * as CustomIcons from './CustomIcons';
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
@@ -24,14 +27,23 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     alt = defaultValues.alt,
     onClick = defaultValues.onClick,
     className = defaultValues.className,
+    size,
     ...rest
   } = props;
+
+  // ImageIcon용 size 변환 (xs, xl, 2xl, 3xl 제외)
+  const getImageIconSize = (size: IconProps['size']) => {
+    if (typeof size === 'number') return size;
+    if (size === 'xs' || size === 'xl' || size === '2xl' || size === '3xl') return 'md';
+    return size;
+  };
 
   if (src) {
     return (
       <ImageIcon
         src={src}
         alt={alt || name || 'icon'}
+        size={getImageIconSize(size)}
         onClick={onClick}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
@@ -44,10 +56,40 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return null;
   }
 
+  // CustomIcons 처리
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const customIconComponents: Record<CustomIconType, React.ComponentType<any>> = {
+    ufo: CustomIcons.UFOIcon,
+    planet: CustomIcons.PlanetIcon,
+    trending: CustomIcons.TrendingIcon,
+    astronaut: CustomIcons.AstronautIcon,
+    satellite: CustomIcons.SatelliteIcon,
+    box: CustomIcons.BoxIcon,
+    rotate: CustomIcons.RotateIcon,
+    graph: CustomIcons.GraphIcon,
+    'circle-minus': CustomIcons.CircleMinusIcon,
+    return: CustomIcons.ReturnIcon,
+    emblaprev: CustomIcons.EmblaPrevIcon,
+    emblanext: CustomIcons.EmblaNextIcon,
+  };
+
+  if (name in customIconComponents) {
+    const CustomIconComponent = customIconComponents[name as CustomIconType];
+    return (
+      <CustomIconComponent
+        size={size}
+        onClick={onClick}
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        {...rest}
+      />
+    );
+  }
+
   try {
     return (
       <LucideIcon
         name={name as LucideIconType}
+        size={size}
         onClick={onClick}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
@@ -58,6 +100,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return (
       <LucideIcon
         name="AlertCircle"
+        size={size}
         onClick={onClick}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}

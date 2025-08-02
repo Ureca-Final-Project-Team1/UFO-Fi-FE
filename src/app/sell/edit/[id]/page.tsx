@@ -38,7 +38,7 @@ export default function SellEditPage() {
   // postData가 없으면 로딩 상태
   if (!postData) {
     return (
-      <div className="flex items-center justify-center min-h-full">
+      <div className="flex items-center justify-center h-full">
         <div className="text-white">게시글 정보를 불러오는 중...</div>
       </div>
     );
@@ -79,7 +79,7 @@ export default function SellEditPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full w-full justify-center">
+    <div className="flex flex-col">
       <Title title="데이터 판매 수정" iconVariant="back" />
       <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
         {/* 거래명세서 타이틀 */}

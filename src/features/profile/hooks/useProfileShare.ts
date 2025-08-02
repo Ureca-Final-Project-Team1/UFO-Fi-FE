@@ -3,19 +3,16 @@ import { useState } from 'react';
 import type { ProfileUser } from '@/api/types/profile';
 
 import { useWebShare } from './useWebShare';
+import { generateProfileUrl, generateShareText, generateShareTitle } from '../utils/shareUtils';
 
 export function useProfileShare(profile: ProfileUser) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { share, copyToClipboard, canShare } = useWebShare();
-
-  const profileUrl =
-    typeof window !== 'undefined'
-      ? `${window.location.origin}/profile/${profile.userId}`
-      : `${process.env.NEXT_PUBLIC_BASE_URL || 'https://ufo-fi.com'}/profile/${profile.userId}`;
+  const profileUrl = generateProfileUrl(profile.userId);
 
   const shareData = {
-    title: `${profile.nickname}의 프로필`,
-    text: `${profile.nickname}님의 UFO-Fi 프로필을 확인해보세요!`,
+    title: generateShareTitle(profile.nickname),
+    text: generateShareText(profile.nickname),
     url: profileUrl,
   };
 

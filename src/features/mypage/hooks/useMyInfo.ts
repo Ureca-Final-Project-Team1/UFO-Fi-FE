@@ -5,7 +5,7 @@ import { ApiError } from '@/api/client/axios';
 import { MyInfoResponse } from '@/api/types/myInfo';
 import { queryKeys } from '@/utils';
 
-export function useMyInfo() {
+export function useMyInfo(enabled: boolean = true) {
   return useQuery<MyInfoResponse['content'] | null, unknown>({
     queryKey: queryKeys.myInfo(),
     queryFn: async () => {
@@ -37,5 +37,6 @@ export function useMyInfo() {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retryOnMount: true,
+    enabled,
   });
 }

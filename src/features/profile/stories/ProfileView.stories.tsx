@@ -97,7 +97,7 @@ const MockProfileView = ({
   const profile = getMockProfileById(userId);
 
   return (
-    <div className="flex flex-col min-h-full w-full pb-6">
+    <div className="flex flex-col w-full pb-6">
       <div className="flex items-center p-4 border-b border-white/10">
         <button className="text-white mr-4">←</button>
         <h1 className="text-white text-lg font-bold">{profile.nickname}의 프로필</h1>

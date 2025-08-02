@@ -1,5 +1,5 @@
 export interface LoadingProps {
-  variant?: 'default' | 'spinner' | 'dots' | 'pulse';
+  variant?: 'default' | 'spinner' | 'dots' | 'pulse' | 'signal';
   size?: 'sm' | 'md' | 'lg';
   message?: string;
   className?: string;
