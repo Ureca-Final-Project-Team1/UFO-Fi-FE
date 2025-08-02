@@ -24,7 +24,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen pb-[20px]">
+    <div className="flex flex-col justify-center items-center w-full h-full pb-[20px]">
       <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-5 w-full h-full pb-16">
         <div className="flex flex-col justify-center items-center w-[300px] h-[80px] gap-8">
           <Image src={ICON_PATHS['UFO_LOGO']} width={134.5} height={136} alt="ufo" />

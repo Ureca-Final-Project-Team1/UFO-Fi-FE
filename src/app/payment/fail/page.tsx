@@ -4,23 +4,29 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 
-import { IMAGE_PATHS } from '@/constants';
-import { Button, Icon, Loading, Title } from '@/shared';
+import { IMAGE_PATHS } from '@/constants/images';
+import { Button, Loading, Title, Icon } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
+
+interface ErrorInfo {
+  code: string;
+  message: string;
+  orderId: string;
+}
 
 function PaymentFailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isMobile = useViewportStore((state) => state.isMobile);
 
-  const [errorInfo, setErrorInfo] = useState({
+  const [errorInfo, setErrorInfo] = useState<ErrorInfo>({
     code: '',
-    message: '',
+    message: '결제 중 오류가 발생했습니다.',
     orderId: '',
   });
 
   useEffect(() => {
-    const code = searchParams.get('code') || '알 수 없는 오류';
+    const code = searchParams.get('code') || '';
     const message = searchParams.get('message') || '결제 중 오류가 발생했습니다.';
     const orderId = searchParams.get('orderId') || '';
 
@@ -28,13 +34,13 @@ function PaymentFailContent() {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <div className="bg-gradient-to-b from-primary-900 to-primary-800 flex flex-col">
       <Title title="" iconVariant="close" />
 
-      {/* 메인 컨텐츠 영역 */}
-      <div className="flex-1 flex flex-col items-center justify-center space-y-4">
+      {/* 메인 컨텐츠 영역 - 완전한 중앙정렬 */}
+      <div className="flex-1 flex items-center justify-center px-6">
         <div
-          className={`flex flex-col items-center text-center ${isMobile ? 'space-y-4' : 'space-y-6'}`}
+          className={`flex flex-col items-center text-center ${isMobile ? 'space-y-4' : 'space-y-6'} max-w-sm w-full`}
         >
           <div className="relative mb-4">
             <Image
@@ -45,6 +51,7 @@ function PaymentFailContent() {
               className="drop-shadow-2xl"
             />
           </div>
+
           {/* 메인 메시지 */}
           <div className="space-y-3 w-full">
             <h2 className="heading-24-bold text-white">결제가 취소되었습니다 😔</h2>
@@ -70,8 +77,7 @@ function PaymentFailContent() {
         </div>
       </div>
 
-      {/* 하단 버튼 영역 */}
-      <div className="flex-shrink-0 py-8 space-y-3">
+      <div className="flex-shrink-0 py-4 space-y-3">
         <Button size="full-width" variant="secondary" onClick={() => router.push('/charge')}>
           다시 시도하기
         </Button>

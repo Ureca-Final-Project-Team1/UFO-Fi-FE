@@ -4,6 +4,8 @@
 @import './components/background.css';
 @import './components/typography.css';
 @import './components/buttons.css';
+@import './components/navigation.css';
+@import './components/toast.css';
 @import './utils/layout.css';
 @import './utils/mobile.css';
 
@@ -242,8 +244,6 @@
   --color-border-zet: #1379c8;
 
   --color-password-bg: #070d24;
-  --width-mobile-min: 375px;
-  --width-mobile-max: 620px;
 
   --color-hr-border: #777777;
   --color-badge-border: #d9d9d9;

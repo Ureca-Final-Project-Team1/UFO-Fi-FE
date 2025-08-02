@@ -91,27 +91,27 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
 
   if (error || !resultData) {
     return (
-      <div className="flex flex-col min-h-full">
+      <>
         <Title title="매칭된 데이터" iconVariant="back" />
         <div className="flex items-center justify-center text-white">
           검색 결과를 찾을 수 없습니다.
         </div>
-      </div>
+      </>
     );
   }
 
   // 정상 상태
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <>
       <Title title="매칭된 데이터" iconVariant="back" />
-      <div className="px-4">
-        <BulkResultDisplay
-          data={resultData}
-          onPurchase={handlePurchase}
-          isPurchasing={isPurchasing}
-          isMobile={isMobile}
-        />
-      </div>
+
+      <BulkResultDisplay
+        data={resultData}
+        onPurchase={handlePurchase}
+        isPurchasing={isPurchasing}
+        isMobile={isMobile}
+      />
+
       <InsufficientZetModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -121,7 +121,7 @@ export function BulkResultContent({ initialData }: BulkResultContentProps) {
           router.push('/charge');
         }}
       />
-    </div>
+    </>
   );
 }
 
@@ -155,7 +155,7 @@ function BulkResultDisplay({
   const shortfall = capacityValue[0] - totalGb;
 
   return (
-    <div className="relative rounded-[20px] space-y-6 pb-12">
+    <div className="flex flex-col space-y-6 mb-6">
       {/* 매칭 결과 */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
@@ -199,6 +199,7 @@ function BulkResultDisplay({
       )}
       <div className="flex justify-start">
         <Button
+          type="button"
           size="full-width"
           onClick={onPurchase}
           variant="exploration-button"

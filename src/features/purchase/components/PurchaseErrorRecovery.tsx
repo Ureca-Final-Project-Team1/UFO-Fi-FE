@@ -1,19 +1,38 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, ComponentProps, memo } from 'react';
 
 import { PurchaseErrorType } from '@/api/types/exchange';
 import { Button } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
-interface SimpleErrorRecoveryProps {
-  error: string;
-  errorType: PurchaseErrorType;
-  postId: string;
+import {
+  overlayVariants,
+  modalVariants,
+  iconContainerVariants,
+  iconVariants,
+  titleVariants,
+  messageVariants,
+  errorDetailVariants,
+  errorDetailTextVariants,
+  retryWarningVariants,
+  retryWarningTextVariants,
+  actionContainerVariants,
+  primaryButtonVariants,
+  secondaryButtonContainerVariants,
+  secondaryButtonVariants,
+  footerVariants,
+  footerTextVariants,
+} from './PurchaseErrorRecoveryVariants';
+
+type SimpleErrorRecoveryProps = ComponentProps<'div'> & {
+  error?: string;
+  errorType?: PurchaseErrorType;
+  postId?: string;
   onRetry?: () => void;
-  canRetry: boolean;
-}
+  canRetry?: boolean;
+};
 
 const getErrorConfig = (errorType: PurchaseErrorType) => {
   switch (errorType) {
@@ -74,13 +93,16 @@ const getErrorConfig = (errorType: PurchaseErrorType) => {
   }
 };
 
-export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = ({
-  error,
-  errorType,
-  postId,
-  onRetry,
-  canRetry,
-}) => {
+export const PurchaseErrorRecovery = memo<SimpleErrorRecoveryProps>((props) => {
+  const {
+    error = '알 수 없는 오류가 발생했습니다.',
+    errorType = PurchaseErrorType.NETWORK_ERROR,
+    postId = '',
+    onRetry = () => {},
+    canRetry = false,
+    ...rest
+  } = props;
+
   const router = useRouter();
   const config = getErrorConfig(errorType);
 
@@ -127,45 +149,43 @@ export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-800 rounded-2xl p-8 max-w-sm w-full mx-4 relative">
+    <div className={overlayVariants()} {...rest}>
+      <div className={modalVariants()}>
         {/* 에러 아이콘 */}
-        <div className="text-center mb-6">
-          <div className="text-5xl mb-4">{config.icon}</div>
-          <h2 className="text-xl font-bold text-white mb-2">{config.title}</h2>
-          <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
-            {config.message}
-          </p>
+        <div className={iconContainerVariants()}>
+          <div className={iconVariants()}>{config.icon}</div>
+          <h2 className={titleVariants()}>{config.title}</h2>
+          <p className={messageVariants()}>{config.message}</p>
         </div>
         {/* 에러 상세 정보 */}
-        <div className={`${config.bgColor} ${config.borderColor} border rounded-lg p-3 mb-6`}>
-          <p className="text-xs text-gray-400 text-center">오류 내용: {error}</p>
+        <div className={`${config.bgColor} ${config.borderColor} ${errorDetailVariants()}`}>
+          <p className={errorDetailTextVariants()}>오류 내용: {error}</p>
         </div>
         {/* 재시도 불가능한 경우 추가 안내 */}
         {!canRetry && (
-          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6">
-            <p className="text-red-300 text-sm text-center">이 오류는 고객 센터에 문의해주세요!</p>
+          <div className={retryWarningVariants()}>
+            <p className={retryWarningTextVariants()}>이 오류는 고객 센터에 문의해주세요!</p>
           </div>
         )}
         {/* 액션 버튼들 */}
-        <div className="space-y-3">
+        <div className={actionContainerVariants()}>
           {/* 주요 액션 */}
           <Button
             size="full-width"
             variant="primary"
             onClick={handlePrimaryAction}
-            className="py-3 text-base font-semibold"
+            className={primaryButtonVariants()}
           >
             {config.primaryLabel}
           </Button>
 
           {/* 보조 액션들 */}
-          <div className="flex gap-3">
+          <div className={secondaryButtonContainerVariants()}>
             <Button
               size="default"
               variant="secondary"
               onClick={() => handleSecondaryAction('back')}
-              className="flex-1 py-2 text-sm"
+              className={secondaryButtonVariants()}
             >
               이전으로
             </Button>
@@ -174,17 +194,19 @@ export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = ({
               size="default"
               variant="secondary"
               onClick={() => handleSecondaryAction('main')}
-              className="flex-1 py-2 text-sm"
+              className={secondaryButtonVariants()}
             >
               메인으로
             </Button>
           </div>
         </div>
 
-        <div className="mt-4 text-center">
-          <p className="text-xs text-gray-500">문제가 지속되면 고객센터로 문의해주세요.</p>
+        <div className={footerVariants()}>
+          <p className={footerTextVariants()}>문제가 지속되면 고객센터로 문의해주세요.</p>
         </div>
       </div>
     </div>
   );
-};
+});
+
+PurchaseErrorRecovery.displayName = 'PurchaseErrorRecovery';

@@ -9,7 +9,7 @@ import { Button } from '@/shared';
 export default function NotFound() {
   const router = useRouter();
   return (
-    <div className="flex flex-col h-full w-full text-center">
+    <>
       <div className="flex-1 flex flex-col items-center justify-center px-4">
         <Image
           src={IMAGE_PATHS.NOT_FOUND}
@@ -32,6 +32,6 @@ export default function NotFound() {
           홈으로 돌아가기
         </Button>
       </div>
-    </div>
+    </>
   );
 }

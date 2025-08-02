@@ -12,7 +12,7 @@ function BlackholePageInner() {
   const mode = searchParams.get('mode') || 'self';
 
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <div className="flex flex-col items-center justify-center">
       <Title title="홈" iconVariant="back" />
       <div className="flex flex-col items-center justify-center flex-1 w-full px-4">
         <div className="flex flex-col items-center">

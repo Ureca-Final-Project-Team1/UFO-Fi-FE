@@ -10,21 +10,11 @@ export default function ProfilePage() {
   const userId = Number(params.userId);
 
   if (!userId || isNaN(userId)) {
-    return (
-      <div className="flex items-center justify-center min-h-full">
-        <div className="text-white">잘못된 사용자 ID입니다.</div>
-      </div>
-    );
+    return <div className="text-white">잘못된 사용자 ID입니다.</div>;
   }
 
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center min-h-full">
-          <div className="text-white">프로필을 불러오는 중...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<div className="text-white">프로필을 불러오는 중...</div>}>
       <ProfileView userId={userId} />
     </Suspense>
   );
