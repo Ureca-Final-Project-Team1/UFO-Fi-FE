@@ -9,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function EditLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="h-full w-full">
-      <EditProvider>{children}</EditProvider>
-    </div>
-  );
+  return <EditProvider>{children}</EditProvider>;
 }

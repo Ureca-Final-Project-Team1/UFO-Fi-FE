@@ -89,8 +89,8 @@ const PlanPage = () => {
   };
 
   return (
-    <div className="w-full min-h-[calc(100dvh - 120px)] flex flex-col">
-      <div className="flex-1 flex flex-col justify-start items-start">
+    <div>
+      <div>
         <Title title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
         <div className="flex flex-col items-start gap-6 w-full">
           <Stepper step={2} content="가입 신청" className="mb-5" />
@@ -136,7 +136,7 @@ const PlanPage = () => {
         )}
       </div>
 
-      <div className="sticky bottom-0 bg-inherit pb-4">
+      <div className="pb-4">
         <Button
           onClick={handleSubmit(onSubmit)}
           type="submit"

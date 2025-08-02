@@ -1,31 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
 
 import { Modal } from './Modal';
 
-interface CompleteModalProps {
-  title: string;
-  description: string;
-  isOpen: boolean;
-  onClose: () => void;
-}
+type CompleteModalProps = ComponentProps<typeof Modal>;
 
-export const CompleteModal: React.FC<CompleteModalProps> = ({
-  title,
-  description,
-  isOpen,
-  onClose,
-}) => {
+export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
+  const { title = '완료', description, isOpen = false, onClose = () => {}, ...rest } = props;
+
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
       headerAlign="left"
-      title={title}
-      description={description}
       imageSrc={IMAGE_PATHS['AL_COMPLETE']}
       imageAlt="신고"
       imagePosition={{ x: 90, y: 50 }}
@@ -33,6 +21,11 @@ export const CompleteModal: React.FC<CompleteModalProps> = ({
       type="single"
       closeOnPrimary
       hasCloseButton={false}
+      title={title}
+      description={description}
+      isOpen={isOpen}
+      onClose={onClose}
+      {...rest}
     />
   );
 };
