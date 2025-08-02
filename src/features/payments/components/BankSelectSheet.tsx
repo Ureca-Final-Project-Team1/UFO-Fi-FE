@@ -13,7 +13,7 @@ import {
   bankLabelStyleMap,
 } from './BankSelectSheet.styles';
 
-type BankSelectSheetProps = ComponentProps<'div'> & {
+type BankSelectSheetProps = Omit<ComponentProps<'div'>, 'onDragStart' | 'onDragMove'> & {
   isVisible?: boolean;
   isOpen?: boolean;
   dragTranslateY?: number;
