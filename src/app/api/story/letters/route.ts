@@ -177,10 +177,6 @@ export async function POST() {
     return new NextResponse(null, { status: 201 });
   } catch (error) {
     console.error('편지 생성 오류:', error);
-    if (error instanceof jwt.JsonWebTokenError)
-      return NextResponse.json({ error: '유효하지 않은 토큰입니다.' }, { status: 401 });
-    if (error instanceof jwt.TokenExpiredError)
-      return NextResponse.json({ error: '토큰이 만료되었습니다.' }, { status: 401 });
     return NextResponse.json({ error: '편지 생성 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }
