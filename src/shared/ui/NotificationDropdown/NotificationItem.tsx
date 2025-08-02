@@ -53,7 +53,8 @@ const notificationConfig = {
   },
 } as const;
 
-export const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClick }) => {
+export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
+  const { notification, onClick } = props;
   const config = notificationConfig[notification.type];
   const isUnread = !notification.isRead;
 
