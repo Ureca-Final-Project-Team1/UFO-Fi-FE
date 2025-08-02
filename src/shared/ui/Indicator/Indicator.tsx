@@ -2,8 +2,14 @@ import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { stepStateMap, hoverStyleMap, cursorStyleMap, ariaLabelMap } from './Indicator.styles';
-import { indicatorVariants, basicDotVariants } from './indicatorVariants';
+import {
+  indicatorVariants,
+  basicDotVariants,
+  hoverVariants,
+  cursorVariants,
+  stepStateMap,
+  ariaLabelMap,
+} from './IndicatorVariants';
 
 type BasicDotIndicatorProps = ComponentProps<'div'> & {
   step?: number;
@@ -50,8 +56,8 @@ export const Indicator: React.FC<BasicDotIndicatorProps> = (props) => {
             key={stepNumber}
             className={cn(
               basicDotVariants({ size, state }),
-              showHover ? hoverStyleMap.enabled : hoverStyleMap.disabled,
-              isClickable ? cursorStyleMap.clickable : cursorStyleMap.nonClickable,
+              hoverVariants({ enabled: showHover }),
+              cursorVariants({ clickable: isClickable }),
             )}
             role={isClickable ? 'button' : undefined}
             tabIndex={isClickable ? 0 : undefined}
