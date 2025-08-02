@@ -23,15 +23,33 @@ export type SellDataResponse = SuccessApiResponse<SellDataContent>;
 
 // 거래 게시물 조회
 export interface ExchangeItem {
-  id: number;
+  postId: number;
   title: string;
   carrier: string;
-  networkType: string;
-  sellMobileDataAmountGb: number;
-  zetPerUnit: number;
-  totalZet: number;
+  mobileDataType: string;
+  sellMobileDataCapacityGb: number;
+  pricePerUnit: number;
+  totalPrice: number;
   status: string;
   createdAt: string;
-  userId: number;
-  isOwner: boolean;
+  sellerId: number;
+  sellerNickname: string;
+  sellerProfileUrl: string;
 }
+
+// 게시물 상세 조회 응답
+export type PostDetailResponse = SuccessApiResponse<ExchangeItem>;
+
+// 무한스크롤용 커서
+export interface NextCursor {
+  createdAt: string;
+  id: number;
+}
+
+// 게시물 목록 조회 응답
+export interface GetPostsContent {
+  posts: ExchangeItem[];
+  nextCursor: NextCursor;
+}
+
+export type GetPostsResponse = SuccessApiResponse<GetPostsContent>;
