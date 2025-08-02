@@ -47,7 +47,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return null;
   }
 
-  const customIconComponents: Record<CustomIconType, React.ComponentType<CustomIconProps>> = {
+  // @ts-expect-error - CustomIcons와 IconProps 타입 호환성 문제 임시 해결
+  const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,

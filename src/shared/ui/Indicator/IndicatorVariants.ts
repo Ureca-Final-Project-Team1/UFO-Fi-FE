@@ -1,36 +1,50 @@
 import { cva } from 'class-variance-authority';
 
-// 메인 인디케이터 컨테이너 variants
-export const indicatorVariants = cva('flex items-center justify-center', {
-  variants: {
-    orientation: {
-      horizontal: 'flex-row',
-      vertical: 'flex-col',
+export const indicatorVariants = cva(
+  'inline-flex items-center justify-center rounded-full border-2 border-current',
+  {
+    variants: {
+      size: {
+        sm: 'h-2 w-2',
+        md: 'h-3 w-3',
+        lg: 'h-4 w-4',
+      },
+      variant: {
+        default: 'bg-primary text-primary-foreground',
+        secondary: 'bg-secondary text-secondary-foreground',
+        destructive: 'bg-destructive text-destructive-foreground',
+        outline: 'text-foreground',
+      },
+      orientation: {
+        horizontal: 'flex-row',
+        vertical: 'flex-col',
+      },
+      spacing: {
+        tight: 'gap-1',
+        normal: 'gap-2',
+        wide: 'gap-3',
+      },
     },
-    spacing: {
-      tight: 'gap-1',
-      normal: 'gap-2',
-      wide: 'gap-3',
+    defaultVariants: {
+      size: 'md',
+      variant: 'default',
+      orientation: 'horizontal',
+      spacing: 'normal',
     },
   },
-  defaultVariants: {
-    orientation: 'horizontal',
-    spacing: 'normal',
-  },
-});
+);
 
-// 원형 점 variants
-export const basicDotVariants = cva('rounded-full transition-all duration-300 ease-in-out', {
+export const basicDotVariants = cva('inline-block rounded-full', {
   variants: {
     size: {
-      sm: 'w-2 h-2',
-      md: 'w-3 h-3',
-      lg: 'w-4 h-4',
+      sm: 'h-2 w-2',
+      md: 'h-3 w-3',
+      lg: 'h-4 w-4',
     },
     state: {
-      pending: 'bg-gray-300 scale-75 opacity-60',
-      active: 'bg-primary-500 scale-125 shadow-lg',
-      completed: 'bg-primary-400 scale-100',
+      completed: 'bg-green-500',
+      active: 'bg-blue-500',
+      pending: 'bg-gray-300',
     },
   },
   defaultVariants: {
@@ -39,25 +53,23 @@ export const basicDotVariants = cva('rounded-full transition-all duration-300 ea
   },
 });
 
-// 호버 스타일 variants
 export const hoverVariants = cva('', {
   variants: {
     enabled: {
-      true: 'hover:scale-110',
+      true: 'hover:scale-110 transition-transform duration-200',
       false: '',
     },
   },
   defaultVariants: {
-    enabled: false,
+    enabled: true,
   },
 });
 
-// 커서 스타일 variants
 export const cursorVariants = cva('', {
   variants: {
     clickable: {
       true: 'cursor-pointer',
-      false: '',
+      false: 'cursor-default',
     },
   },
   defaultVariants: {
@@ -65,14 +77,12 @@ export const cursorVariants = cva('', {
   },
 });
 
-// 단계 상태 맵
 export const stepStateMap = {
   completed: 'completed',
   active: 'active',
   pending: 'pending',
 } as const;
 
-// aria-label 맵
 export const ariaLabelMap = {
-  format: (stepNumber: number, totalSteps: number) => `Step ${stepNumber} of ${totalSteps}`,
+  format: (step: number, total: number) => `Step ${step} of ${total}`,
 } as const;
