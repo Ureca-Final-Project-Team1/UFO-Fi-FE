@@ -74,13 +74,9 @@ const getErrorConfig = (errorType: PurchaseErrorType) => {
   }
 };
 
-export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = ({
-  error,
-  errorType,
-  postId,
-  onRetry,
-  canRetry,
-}) => {
+export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = (props) => {
+  const { error, errorType, postId, onRetry, canRetry } = props;
+
   const router = useRouter();
   const config = getErrorConfig(errorType);
 
