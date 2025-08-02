@@ -4,30 +4,14 @@ import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import {
+  sizeVariants,
+  variantVariants,
+  tailColorVariants,
+  tailSizeVariants,
+} from './SpeechBubbleVariants';
+
 export type SpeechBubbleTailDirection = 'left' | 'right' | 'top' | 'bottom';
-
-// 크기별 스타일일
-const sizeClasses = {
-  sm: 'p-3 text-xs max-w-[200px]',
-  md: 'p-4 text-sm max-w-[280px]',
-  lg: 'p-5 text-base max-w-[320px]',
-} as const;
-
-const variantClasses = {
-  default: 'bg-white text-black border-gray-100',
-  secondary: 'bg-gray-100 text-gray-900 border-gray-200',
-} as const;
-
-const tailColorMap = {
-  default: { borderColor: '#f3f4f6', fillColor: '#ffffff' },
-  secondary: { borderColor: '#e5e7eb', fillColor: '#f3f4f6' },
-} as const;
-
-const tailSizeMap = {
-  sm: 10,
-  md: 12,
-  lg: 14,
-} as const;
 
 export type SpeechBubbleProps = ComponentProps<'div'> & {
   children?: React.ReactNode;
@@ -50,8 +34,8 @@ export const SpeechBubble: React.FC<SpeechBubbleProps> = (props) => {
     ...rest
   } = props;
 
-  const tailColors = tailColorMap[variant];
-  const tailSize = tailSizeMap[size];
+  const tailColors = tailColorVariants[variant];
+  const tailSize = tailSizeVariants[size];
 
   // 꼬리 렌더링 함수
   const renderTail = () => {
@@ -159,12 +143,7 @@ export const SpeechBubble: React.FC<SpeechBubbleProps> = (props) => {
 
   return (
     <div
-      className={cn(
-        'relative rounded-2xl shadow-lg border-2 font-medium leading-relaxed',
-        sizeClasses[size],
-        variantClasses[variant],
-        className,
-      )}
+      className={cn('relative', sizeVariants({ size }), variantVariants({ variant }), className)}
       {...rest}
     >
       <div className="whitespace-pre-line">{children}</div>
