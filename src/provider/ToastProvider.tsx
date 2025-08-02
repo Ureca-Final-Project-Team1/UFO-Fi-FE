@@ -4,31 +4,40 @@ import { useEffect } from 'react';
 import { Toaster } from 'sonner';
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
-  // DOM 조작으로 강제 위치 조정
   useEffect(() => {
     const adjustToasterPosition = () => {
-      const toaster = document.querySelector('[data-sonner-toaster]') as HTMLElement;
-      if (toaster && window.innerWidth <= 768) {
-        // 모바일에서 강제로 bottom 위치 조정
-        toaster.style.bottom = '100px';
-        toaster.style.position = 'fixed';
-        toaster.style.zIndex = '9999';
-      }
+      const toaster = document.querySelector('[data-sonner-toaster]') as HTMLElement | null;
+      if (!toaster) return;
+
+      toaster.style.bottom = '100px';
+      toaster.style.position = 'fixed';
+      toaster.style.zIndex = '9999';
     };
 
-    // 초기 실행
-    setTimeout(adjustToasterPosition, 100);
+    // 최초 렌더 완료 대기 후 적용
+    const waitForToaster = () => {
+      const toaster = document.querySelector('[data-sonner-toaster]');
+      if (toaster) {
+        adjustToasterPosition();
+      } else {
+        requestAnimationFrame(waitForToaster);
+      }
+    };
+    waitForToaster();
 
-    // 리사이즈 시에도 실행
+    // 리사이즈 시 보정
     window.addEventListener('resize', adjustToasterPosition);
 
-    // MutationObserver로 DOM 변경 감지
-    const observer = new MutationObserver(adjustToasterPosition);
-    observer.observe(document.body, { childList: true, subtree: true });
+    // 부모 DOM 변경 시 위치 보정
+    const toasterContainer = document.querySelector('[data-sonner-toaster]')?.parentElement;
+    const observer = toasterContainer ? new MutationObserver(adjustToasterPosition) : null;
+    if (observer && toasterContainer) {
+      observer.observe(toasterContainer, { childList: true });
+    }
 
     return () => {
       window.removeEventListener('resize', adjustToasterPosition);
-      observer.disconnect();
+      observer?.disconnect();
     };
   }, []);
 
@@ -37,9 +46,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       <Toaster
         position="bottom-center"
-        expand={true}
-        richColors={true}
-        closeButton={true}
+        expand
+        richColors
+        closeButton
         duration={3000}
         visibleToasts={1}
         containerAriaLabel="알림"
