@@ -1,0 +1,10 @@
+[data-sonner-toaster] {
+  bottom: calc(120px + env(safe-area-inset-bottom));
+  position: fixed;
+  z-index: 9999;
+
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    bottom: 120px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

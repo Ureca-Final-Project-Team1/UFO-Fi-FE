@@ -57,7 +57,7 @@ const MypageNotificationPage = () => {
   };
 
   return (
-    <div className="body-16-semibold w-full h-full flex flex-col items-center pt-4 gap-4 text-white">
+    <div className="body-16-semibold flex flex-col items-center pt-4 pb-6 gap-4 text-white">
       <Title title="알림 설정하기" iconVariant="back" />
 
       <div className="w-full flex flex-col gap-6">

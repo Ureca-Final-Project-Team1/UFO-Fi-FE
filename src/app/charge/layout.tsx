@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function ChargeLayout({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-full w-full">{children}</div>;
+  return <>{children}</>;
 }

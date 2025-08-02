@@ -123,6 +123,7 @@ function PurchaseButton({ onClick }: { onClick: () => void }) {
   return (
     <div className="absolute bottom-3 right-5">
       <Button
+        type="button"
         variant="exploration-button"
         size="sm"
         onClick={onClick}

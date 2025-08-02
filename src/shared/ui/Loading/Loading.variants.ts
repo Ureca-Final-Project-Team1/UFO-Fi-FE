@@ -11,6 +11,7 @@ export const loadingContainerVariants = cva('flex items-center justify-center', 
       spinner: 'flex-col gap-2',
       dots: 'flex-col gap-2',
       pulse: 'flex-col gap-2',
+      signal: 'flex-col gap-2',
     },
   },
   defaultVariants: {

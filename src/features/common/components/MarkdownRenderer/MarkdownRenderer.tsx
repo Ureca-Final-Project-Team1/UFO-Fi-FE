@@ -4,7 +4,7 @@ import React from 'react';
  * 약관/정책 텍스트를 heading, 리스트, 링크 등으로 변환하여 렌더링하는 함수
  * @param text - 마크다운 스타일의 약관/정책 원본 텍스트
  */
-export function renderTermsWithHeadingsAndLinks(text: string) {
+export function MarkdownRenderer(text: string) {
   const lines = text.split('\n');
   const result: React.ReactNode[] = [];
   let olBuffer: string[] = [];

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef, ComponentProps } from 'react';
 
 import { Icon } from '@/shared';
 import type { IconType } from '@/shared';
@@ -64,11 +64,36 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-interface AdminSideMenuProps {
-  className?: string;
-}
+// 스타일 맵 객체들
+const menuItemStyleMap = {
+  active: 'bg-blue-50 text-blue-700 border-l-4 border-blue-700',
+  inactive: 'text-gray-700 hover:bg-gray-50 hover:text-gray-900',
+};
 
-export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
+const iconColorMap = {
+  active: 'text-blue-700',
+  inactive: 'text-gray-500 group-hover:text-gray-700',
+};
+
+const chevronColorMap = {
+  active: 'text-blue-700',
+  inactive: 'text-gray-400 group-hover:text-gray-600',
+};
+
+const overlayStyleMap = {
+  closing: 'bg-black/0',
+  open: 'bg-black/40',
+};
+
+const navStyleMap = {
+  closing: 'transform translate-x-full',
+  open: 'transform translate-x-0',
+};
+
+type AdminSideMenuProps = ComponentProps<'div'>;
+
+export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
+  const { className } = props;
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
@@ -157,16 +182,14 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
             <Link
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group ${
-                isActive
-                  ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                isActive ? menuItemStyleMap.active : menuItemStyleMap.inactive
               } ${level > 0 ? 'ml-6 py-2' : ''}`}
               onClick={handleClose}
             >
               <Icon
-                name={item.icon as IconType}
-                className={`w-5 h-5 transition-colors ${
-                  isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
+                name={item.icon}
+                className={` size-5 transition-colors ${
+                  isActive ? iconColorMap.active : iconColorMap.inactive
                 }`}
               />
               <span className="flex-1">{item.label}</span>
@@ -175,15 +198,13 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
             <button
               onClick={() => hasChildren && toggleMenu(item.id)}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 w-full group ${
-                isActive
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                isActive ? menuItemStyleMap.active : menuItemStyleMap.inactive
               }`}
             >
               <Icon
-                name={item.icon as IconType}
-                className={`w-5 h-5 transition-colors ${
-                  isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
+                name={item.icon}
+                className={`size-5 transition-colors ${
+                  isActive ? iconColorMap.active : iconColorMap.inactive
                 }`}
               />
               <span className="flex-1 text-left">{item.label}</span>
@@ -191,7 +212,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
                 <Icon
                   name={isOpen ? 'ChevronUp' : 'ChevronDown'}
                   className={`w-4 h-4 transition-all duration-200 ${
-                    isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-600'
+                    isActive ? chevronColorMap.active : chevronColorMap.inactive
                   }`}
                 />
               )}
@@ -222,21 +243,21 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
   }, [renderMenuItem]);
 
   return (
-    <>
+    <div {...props}>
       {/* 햄버거 버튼 - 테블릿 이하에서 표시 */}
       <button
-        className={`lg:hidden p-2 hover:bg-gray-100 transition-colors rounded flex items-center justify-center ${className || ''}`}
+        className={`lg:hidden p-2 hover:bg-gray-100 transition-colors rounded flex items-center justify-center ${className ?? ''}`}
         onClick={handleOpen}
         aria-label="메뉴 열기"
       >
-        <Icon name="Menu" className="w-5 h-5 text-gray-700" />
+        <Icon name="Menu" className="size-5 text-gray-700" />
       </button>
 
       {/* 오버레이 메뉴 (모바일/테블릿) */}
       {(open || isClosing) && (
         <div
           className={`fixed inset-0 z-[9998] flex transition-opacity duration-200 ${
-            isClosing ? 'bg-black/0' : 'bg-black/40'
+            isClosing ? overlayStyleMap.closing : overlayStyleMap.open
           }`}
           role="dialog"
           aria-modal="true"
@@ -247,7 +268,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
           <nav
             ref={menuRef}
             className={`w-72 bg-white h-full flex flex-col shadow-lg transition-transform duration-200 ease-out ${
-              isClosing ? 'transform translate-x-full' : 'transform translate-x-0'
+              isClosing ? navStyleMap.closing : navStyleMap.open
             } ${open && !isClosing ? 'animate-slide-in-right' : ''}`}
             role="navigation"
             aria-label="관리자 메뉴"
@@ -282,7 +303,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
               >
                 <Icon
                   name="HelpCircle"
-                  className="w-5 h-5 text-gray-500 group-hover:text-gray-700"
+                  className="size-5 text-gray-500 group-hover:text-gray-700"
                 />
                 <span>도움말</span>
               </Link>
@@ -303,6 +324,6 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = ({ className }) => {
           animation: slide-in-right 0.2s ease-out;
         }
       `}</style>
-    </>
+    </div>
   );
 };

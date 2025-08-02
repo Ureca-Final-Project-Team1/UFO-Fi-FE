@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { recommendAPI } from '@/api/services/follow/recommend';
 import EmblaCarousel from '@/features/profile/components/Carousel/EmblaCarousel';
 import { Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
@@ -31,25 +32,9 @@ const TestPage = () => {
         setLoading(true);
         setError(null);
 
-        // 1. UPDATE
-        const postRes = await fetch('/api/collections', { method: 'POST' });
-        if (!postRes.ok) {
-          const errorText = await postRes.text();
-          console.error('Qdrant 실패 응답:', errorText);
-          throw new Error('컬렉션 생성 또는 시딩 실패');
-        }
-        // 2. GET
-        const searchRes = await fetch('/api/collections/search', { method: 'GET' });
-
-        if (!searchRes.ok) {
-          const errorData = await searchRes.json().catch(() => ({}));
-          throw new Error(
-            `유사 사용자 검색 실패: ${searchRes.status} ${errorData.error || searchRes.statusText}`,
-          );
-        }
-
-        const data = await searchRes.json();
-        setNeighbors(data.neighbors ?? []);
+        await recommendAPI.updateQdrantCollection(); // POST
+        const data = await recommendAPI.findRecommendUsers(); // GET
+        setNeighbors(data);
       } catch (err) {
         setError(`에러 발생: ${err instanceof Error ? err.message : '알 수 없는 오류'}`);
       } finally {
@@ -67,11 +52,11 @@ const TestPage = () => {
       {loading && <p className="text-blue-500">로딩 중...</p>}
       {error && <p className="text-red-600 mb-2">{error}</p>}
 
-      {!loading && neighbors.length === 0 && !error && (
+      {!loading && Array.isArray(neighbors) && neighbors.length === 0 && !error && (
         <p className="text-gray-500">유사한 사용자가 없습니다.</p>
       )}
 
-      {!loading && neighbors.length > 0 && (
+      {!loading && Array.isArray(neighbors) && neighbors.length > 0 && (
         <div className="overflow-x-auto">
           <EmblaCarousel
             options={{

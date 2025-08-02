@@ -9,7 +9,7 @@ export default function ZetChargePage() {
   const { handleChargePackage, isProcessing } = useZetCharge();
 
   return (
-    <div className="min-h-full flex flex-col">
+    <div className="h-full flex flex-col">
       <div className="px-4 pt-4">
         <div className="flex items-center justify-between mb-2">
           <Title title="ZET 코인 충전소" iconVariant="back" />

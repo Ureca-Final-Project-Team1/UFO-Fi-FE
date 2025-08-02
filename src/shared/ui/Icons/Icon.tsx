@@ -7,6 +7,9 @@ import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.typ
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
+// CustomIconProps 타입 정의 (CustomIcons.tsx와 동일)
+type CustomIconProps = ComponentProps<'span'> & Omit<IconProps, 'onClick'>;
+
 type IconComponentProps = ComponentProps<'span'> &
   IconProps & {
     name?: IconType;
@@ -46,7 +49,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return null;
   }
 
-  const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
+  const customIconComponents: Record<CustomIconType, React.ComponentType<CustomIconProps>> = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,
