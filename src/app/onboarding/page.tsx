@@ -43,9 +43,9 @@ export default function OnboardingPage() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen w-full">
+      <div className="flex flex-col items-center justify-center h-screen w-full">
         <div
-          className={`transition-all duration-500 ease-in-out w-full ${
+          className={`transition-all duration-500 ease-in-out w-full h-full flex flex-col justify-center ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
@@ -58,18 +58,20 @@ export default function OnboardingPage() {
               alt="창문 하단"
               width={0}
               height={0}
-              sizes="100vw"
+              sizes="100%"
               className="w-full h-auto"
             />
-          </div>
 
-          <AlienWithSpeech message={step.alienMessage} />
-          <StepIndicator
-            step={currentStep}
-            total={ONBOARDING_STEPS.length}
-            onClick={handleStepClick}
-          />
-          <NextButton isLast={step.isLastStep} onClick={handleNext} />
+            <div className="absolute inset-0 flex flex-col justify-center items-center space-y-4">
+              <AlienWithSpeech message={step.alienMessage} />
+              <StepIndicator
+                step={currentStep}
+                total={ONBOARDING_STEPS.length}
+                onClick={handleStepClick}
+              />
+              <NextButton isLast={step.isLastStep} onClick={handleNext} />
+            </div>
+          </div>
         </div>
       </div>
     </>
