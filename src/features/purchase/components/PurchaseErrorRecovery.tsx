@@ -15,6 +15,71 @@ type SimpleErrorRecoveryProps = ComponentProps<'div'> & {
   canRetry?: boolean;
 };
 
+// 조건부 스타일링을 위한 객체들
+const overlayStyleMap = {
+  base: 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4',
+};
+
+const modalStyleMap = {
+  base: 'bg-gray-800 rounded-2xl p-8 max-w-sm w-full mx-4 relative',
+};
+
+const iconContainerStyleMap = {
+  base: 'text-center mb-6',
+};
+
+const iconStyleMap = {
+  base: 'text-5xl mb-4',
+};
+
+const titleStyleMap = {
+  base: 'text-xl font-bold text-white mb-2',
+};
+
+const messageStyleMap = {
+  base: 'text-gray-300 text-sm leading-relaxed whitespace-pre-line',
+};
+
+const errorDetailStyleMap = {
+  base: 'border rounded-lg p-3 mb-6',
+};
+
+const errorDetailTextStyleMap = {
+  base: 'text-xs text-gray-400 text-center',
+};
+
+const retryWarningStyleMap = {
+  base: 'bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6',
+};
+
+const retryWarningTextStyleMap = {
+  base: 'text-red-300 text-sm text-center',
+};
+
+const actionContainerStyleMap = {
+  base: 'space-y-3',
+};
+
+const primaryButtonStyleMap = {
+  base: 'py-3 text-base font-semibold',
+};
+
+const secondaryButtonContainerStyleMap = {
+  base: 'flex gap-3',
+};
+
+const secondaryButtonStyleMap = {
+  base: 'flex-1 py-2 text-sm',
+};
+
+const footerStyleMap = {
+  base: 'mt-4 text-center',
+};
+
+const footerTextStyleMap = {
+  base: 'text-xs text-gray-500',
+};
+
 const getErrorConfig = (errorType: PurchaseErrorType) => {
   switch (errorType) {
     case PurchaseErrorType.PRODUCT_UNAVAILABLE:
@@ -130,48 +195,43 @@ export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = (props)
   };
 
   return (
-    <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      {...rest}
-    >
-      <div className="bg-gray-800 rounded-2xl p-8 max-w-sm w-full mx-4 relative">
+    <div className={overlayStyleMap.base} {...rest}>
+      <div className={modalStyleMap.base}>
         {/* 에러 아이콘 */}
-        <div className="text-center mb-6">
-          <div className="text-5xl mb-4">{config.icon}</div>
-          <h2 className="text-xl font-bold text-white mb-2">{config.title}</h2>
-          <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line">
-            {config.message}
-          </p>
+        <div className={iconContainerStyleMap.base}>
+          <div className={iconStyleMap.base}>{config.icon}</div>
+          <h2 className={titleStyleMap.base}>{config.title}</h2>
+          <p className={messageStyleMap.base}>{config.message}</p>
         </div>
         {/* 에러 상세 정보 */}
-        <div className={`${config.bgColor} ${config.borderColor} border rounded-lg p-3 mb-6`}>
-          <p className="text-xs text-gray-400 text-center">오류 내용: {error}</p>
+        <div className={`${config.bgColor} ${config.borderColor} ${errorDetailStyleMap.base}`}>
+          <p className={errorDetailTextStyleMap.base}>오류 내용: {error}</p>
         </div>
         {/* 재시도 불가능한 경우 추가 안내 */}
         {!canRetry && (
-          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6">
-            <p className="text-red-300 text-sm text-center">이 오류는 고객 센터에 문의해주세요!</p>
+          <div className={retryWarningStyleMap.base}>
+            <p className={retryWarningTextStyleMap.base}>이 오류는 고객 센터에 문의해주세요!</p>
           </div>
         )}
         {/* 액션 버튼들 */}
-        <div className="space-y-3">
+        <div className={actionContainerStyleMap.base}>
           {/* 주요 액션 */}
           <Button
             size="full-width"
             variant="primary"
             onClick={handlePrimaryAction}
-            className="py-3 text-base font-semibold"
+            className={primaryButtonStyleMap.base}
           >
             {config.primaryLabel}
           </Button>
 
           {/* 보조 액션들 */}
-          <div className="flex gap-3">
+          <div className={secondaryButtonContainerStyleMap.base}>
             <Button
               size="default"
               variant="secondary"
               onClick={() => handleSecondaryAction('back')}
-              className="flex-1 py-2 text-sm"
+              className={secondaryButtonStyleMap.base}
             >
               이전으로
             </Button>
@@ -180,15 +240,15 @@ export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = (props)
               size="default"
               variant="secondary"
               onClick={() => handleSecondaryAction('main')}
-              className="flex-1 py-2 text-sm"
+              className={secondaryButtonStyleMap.base}
             >
               메인으로
             </Button>
           </div>
         </div>
 
-        <div className="mt-4 text-center">
-          <p className="text-xs text-gray-500">문제가 지속되면 고객센터로 문의해주세요.</p>
+        <div className={footerStyleMap.base}>
+          <p className={footerTextStyleMap.base}>문제가 지속되면 고객센터로 문의해주세요.</p>
         </div>
       </div>
     </div>
