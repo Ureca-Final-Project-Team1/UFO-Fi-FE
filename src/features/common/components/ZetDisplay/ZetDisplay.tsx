@@ -14,12 +14,9 @@ export const formatZetAmount = (amount: number): string => {
   return amount.toLocaleString();
 };
 
-export const ZetDisplay: React.FC<ZetDisplayProps> = ({
-  amount,
-  className = '',
-  showUnit = true,
-  size = 'md',
-}) => {
+export const ZetDisplay: React.FC<ZetDisplayProps> = (props) => {
+  const { amount, className = '', showUnit = true, size = 'md' } = props;
+
   const sizeClasses = {
     sm: 'text-sm',
     md: 'text-base',
