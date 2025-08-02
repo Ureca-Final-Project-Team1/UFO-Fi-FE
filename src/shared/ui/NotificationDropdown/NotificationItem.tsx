@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { DotBadge, Icon } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
@@ -15,10 +15,10 @@ interface NotificationItem {
   isRead?: boolean;
 }
 
-interface NotificationItemProps {
+type NotificationItemProps = ComponentProps<'div'> & {
   notification: NotificationItem;
   onClick: () => void;
-}
+};
 
 const notificationConfig = {
   BENEFIT: {
@@ -54,7 +54,7 @@ const notificationConfig = {
 } as const;
 
 export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
-  const { notification, onClick } = props;
+  const { notification, onClick, ...rest } = props;
   const config = notificationConfig[notification.type];
   const isUnread = !notification.isRead;
 
@@ -66,6 +66,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
           : 'border-transparent hover:bg-gray-50'
       }`}
       onClick={onClick}
+      {...rest}
     >
       {/* 아이콘 */}
       <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center relative">
