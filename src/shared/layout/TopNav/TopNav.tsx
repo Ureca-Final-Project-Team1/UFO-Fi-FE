@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { nextApiRequest } from '@/api/client/axios';
@@ -20,7 +20,9 @@ interface TopNavProps {
 
 const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }) => {
   const router = useRouter();
-  const { data: myInfo, isLoading: isMyInfoLoading } = useMyInfo();
+  const pathname = usePathname();
+  const isSignupPage = pathname.startsWith('/signup');
+  const { data: myInfo, isLoading: isMyInfoLoading } = useMyInfo(!isSignupPage);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
