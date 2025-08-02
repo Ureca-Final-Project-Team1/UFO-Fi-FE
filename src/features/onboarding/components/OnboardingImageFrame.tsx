@@ -11,12 +11,13 @@ interface OnboardingImageFrameProps {
 
 export const OnboardingImageFrame = ({ onboardingSrc }: OnboardingImageFrameProps) => {
   return (
-    <div className="relative aspect-square">
+    <div className="relative w-full h-auto">
       <Image
         src={IMAGE_PATHS.WINDOW_BORDER}
         alt="창문 테두리"
-        fill
-        className="object-contain z-0"
+        width={300}
+        height={300}
+        className="w-full h-auto z-0"
         priority
       />
 
