@@ -32,7 +32,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
       <ImageIcon
         src={src}
         alt={alt || name || 'icon'}
-        onClick={onClick}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onClick={onClick as any}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
@@ -48,7 +49,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return (
       <LucideIcon
         name={name as LucideIconType}
-        onClick={onClick}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onClick={onClick as any}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
@@ -58,7 +60,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return (
       <LucideIcon
         name="AlertCircle"
-        onClick={onClick}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onClick={onClick as any}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
