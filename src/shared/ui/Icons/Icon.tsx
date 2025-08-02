@@ -19,7 +19,14 @@ type IconComponentProps = ComponentProps<'span'> &
  * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
  */
 export const Icon: React.FC<IconComponentProps> = (props) => {
-  const { name, src, alt, onClick, className, ...rest } = props;
+  const {
+    name = undefined,
+    src = '',
+    alt = '',
+    onClick = undefined,
+    className = '',
+    ...rest
+  } = props;
 
   if (src) {
     return (
