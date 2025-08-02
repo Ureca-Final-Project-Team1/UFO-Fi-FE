@@ -23,9 +23,9 @@ interface NotificationItem {
   isRead?: boolean;
 }
 
-type NotificationItemProps = ComponentProps<'div'> & {
+type NotificationItemProps = ComponentProps<'button'> & {
   notification: NotificationItem;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
@@ -34,9 +34,11 @@ export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
   const isUnread = !notification.isRead;
 
   return (
-    <div
+    <button
+      type="button"
       className={containerVariants({ variant: isUnread ? 'unread' : 'read' })}
       onClick={onClick}
+      aria-label={`${notification.title} - ${notification.content}`}
       {...rest}
     >
       {/* 아이콘 */}
@@ -76,6 +78,6 @@ export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
           </div>
         )}
       </div>
-    </div>
+    </button>
   );
 };

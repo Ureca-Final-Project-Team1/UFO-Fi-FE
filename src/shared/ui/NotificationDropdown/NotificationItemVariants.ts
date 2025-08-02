@@ -25,7 +25,7 @@ export const notificationConfig = {
 
 // 기본값 설정
 export const defaultValues = {
-  onClick: (() => {}) as React.MouseEventHandler<HTMLDivElement>,
+  onClick: (() => {}) as React.MouseEventHandler<HTMLButtonElement>,
 } as const;
 
 // 컨테이너 variants
