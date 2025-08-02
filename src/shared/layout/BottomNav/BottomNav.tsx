@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -11,6 +12,7 @@ interface NavItem {
   id: string;
   label: string;
   icon: IconType;
+  href: string;
 }
 
 interface BottomNavProps {
@@ -18,27 +20,26 @@ interface BottomNavProps {
 }
 
 const navItems: NavItem[] = [
-  { id: 'sell', label: '판매등록', icon: 'CirclePlus' as IconType },
-  { id: 'exchange', label: '전파 거래소', icon: 'RadioTower' as IconType },
-  { id: 'home', label: '홈', icon: 'planet' as IconType },
-  { id: 'signal', label: '전파 거리', icon: 'graph' as IconType },
-  { id: 'mypage', label: '마이페이지', icon: 'astronaut' as IconType },
+  { id: 'sell', label: '판매등록', icon: 'CirclePlus' as IconType, href: '/sell' },
+  { id: 'exchange', label: '전파 거래소', icon: 'RadioTower' as IconType, href: '/exchange' },
+  { id: 'home', label: '홈', icon: 'planet' as IconType, href: '/' },
+  { id: 'signal', label: '전파 거리', icon: 'graph' as IconType, href: '/signal' },
+  { id: 'mypage', label: '마이페이지', icon: 'astronaut' as IconType, href: '/mypage' },
 ];
 
 const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
-  const { activeTab, navigateToTab } = useNavigation();
+  const { activeTab } = useNavigation();
 
   const handleTabClick = (tab: string) => {
     // 외부에서 전달된 onTabChange 콜백이 있으면 먼저 실행
     if (onTabChange && typeof onTabChange === 'function') {
       onTabChange(tab);
     }
-    navigateToTab(tab);
   };
 
   return (
-    <footer className="bottom-nav-fixed">
-      <nav className="flex items-center justify-around h-16 w-full">
+    <nav className="bottom-nav-fixed" role="navigation" aria-label="주요 네비게이션">
+      <div className="flex items-center justify-around h-16 w-full">
         {navItems.map((item) => {
           const isActive = activeTab === item.id;
           const isHome = item.id === 'home';
@@ -51,16 +52,18 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
                 'flex-1': !isHome,
               })}
             >
-              <button
+              <Link
+                href={item.href}
                 onClick={() => handleTabClick(item.id)}
                 className={cn(
-                  'flex flex-col items-center justify-center gap-1 transition-all duration-200 cursor-pointer',
+                  'flex flex-col items-center justify-center gap-1 transition-all duration-200 cursor-pointer no-underline',
                   isHome
                     ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
                     : 'w-full h-16 hover:bg-white/5 active:scale-95',
                   isActive ? 'text-secondary-yellow' : 'text-white/70',
                 )}
                 aria-label={item.label}
+                aria-current={isActive ? 'page' : undefined}
               >
                 <Icon
                   name={item.icon}
@@ -75,12 +78,12 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
                 >
                   {item.label}
                 </span>
-              </button>
+              </Link>
             </div>
           );
         })}
-      </nav>
-    </footer>
+      </div>
+    </nav>
   );
 };
 
