@@ -6,12 +6,7 @@ import { IMAGE_PATHS } from '@/constants/images';
 
 import { Modal } from './Modal';
 
-type CompleteModalProps = ComponentProps<typeof Modal> & {
-  title?: string;
-  description?: string;
-  isOpen?: boolean;
-  onClose?: () => void;
-};
+type CompleteModalProps = ComponentProps<typeof Modal>;
 
 export const CompleteModal: React.FC<CompleteModalProps> = (props) => {
   const {
