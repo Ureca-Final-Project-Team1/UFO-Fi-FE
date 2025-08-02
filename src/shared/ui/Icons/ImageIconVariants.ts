@@ -25,7 +25,7 @@ export const fallbackIconVariants = cva('', {
   },
 });
 
-// span 컨테이너 variants
+// span 컨테이너 variants - 중앙정렬 수정
 export const spanVariants = cva('', {
   variants: {
     variant: {
@@ -38,13 +38,15 @@ export const spanVariants = cva('', {
   },
 });
 
-// 이미지 variants
+// 이미지 variants - 중앙정렬 추가
 export const imageVariants = cva('', {
   variants: {
     variant: {
-      base: 'object-contain transition-opacity duration-200',
-      loading: 'object-contain transition-opacity duration-200 opacity-0',
-      loaded: 'object-contain transition-opacity duration-200 opacity-100',
+      base: 'object-contain transition-opacity duration-200 flex items-center justify-center',
+      loading:
+        'object-contain transition-opacity duration-200 opacity-0 flex items-center justify-center',
+      loaded:
+        'object-contain transition-opacity duration-200 opacity-100 flex items-center justify-center',
     },
   },
   defaultVariants: {
