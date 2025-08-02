@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 
 import * as CustomIcons from './CustomIcons';
 import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
-import { iconVariants, errorMessages, defaultValues } from './IconVariants';
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
@@ -21,15 +20,7 @@ interface IconComponentProps extends Omit<ComponentProps<'span'>, 'onClick'>, Ic
  * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
  */
 export const Icon: React.FC<IconComponentProps> = (props) => {
-  const {
-    name = defaultValues.name,
-    src = defaultValues.src,
-    alt = defaultValues.alt,
-    onClick = defaultValues.onClick,
-    className = defaultValues.className,
-    size,
-    ...rest
-  } = props;
+  const { name, src, alt, onClick, className, size, ...rest } = props;
 
   // ImageIcon용 size 변환 (xs, xl, 2xl, 3xl 제외)
   const getImageIconSize = (size: IconProps['size']) => {
@@ -46,14 +37,14 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
         size={getImageIconSize(size)}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onClick={onClick as any}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
       />
     );
   }
 
   if (!name) {
-    console.warn(errorMessages.iconError);
+    console.warn('Icon error');
     return null;
   }
 
@@ -81,7 +72,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
         size={size}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onClick={onClick as any}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
       />
     );
@@ -94,19 +85,19 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
         size={size}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onClick={onClick as any}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
       />
     );
   } catch (error) {
-    console.warn(errorMessages.iconNotFound(name), error);
+    console.warn(`${name}`, error);
     return (
       <LucideIcon
         name="AlertCircle"
         size={size}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onClick={onClick as any}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
       />
     );
