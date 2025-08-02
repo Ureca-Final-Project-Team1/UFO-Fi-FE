@@ -1,16 +1,15 @@
 'use client';
 
-import React, { ComponentProps } from 'react';
+import React from 'react';
 
 import { cn } from '@/lib/utils';
 
 import * as CustomIcons from './CustomIcons';
 import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
-import { iconVariants, errorMessages, defaultValues } from './IconVariants';
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
-interface IconComponentProps extends Omit<ComponentProps<'span'>, 'onClick'>, IconProps {
+interface IconComponentProps extends IconProps {
   name?: IconType;
   src?: string;
   alt?: string;
@@ -18,18 +17,10 @@ interface IconComponentProps extends Omit<ComponentProps<'span'>, 'onClick'>, Ic
 
 /**
  * 통합 아이콘 컴포넌트
- * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
+ * 완전히 통일된 타입 시스템으로 Lucide, 커스텀 SVG, 이미지 아이콘을 지원
  */
 export const Icon: React.FC<IconComponentProps> = (props) => {
-  const {
-    name = defaultValues.name,
-    src = defaultValues.src,
-    alt = defaultValues.alt,
-    onClick = defaultValues.onClick,
-    className = defaultValues.className,
-    size,
-    ...rest
-  } = props;
+  const { name, src, alt, size = 'md', color = 'current', className, onClick, ...rest } = props;
 
   // ImageIcon용 size 변환 (xs, xl, 2xl, 3xl 제외)
   const getImageIconSize = (size: IconProps['size']) => {
@@ -38,28 +29,35 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return size;
   };
 
+  // 이미지 아이콘인 경우
   if (src) {
     return (
       <ImageIcon
         src={src}
         alt={alt || name || 'icon'}
         size={getImageIconSize(size)}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onClick={onClick as any}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        onClick={onClick}
+        className={cn(
+          'cursor-pointer hover:opacity-80 transition-opacity',
+          onClick && 'cursor-pointer',
+          className,
+        )}
         {...rest}
       />
     );
   }
 
+  // name이 없는 경우
   if (!name) {
-    console.warn(errorMessages.iconError);
+    console.warn('Icon 컴포넌트에 name 또는 src가 필요합니다.');
     return null;
   }
 
-  // CustomIcons 처리
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const customIconComponents: Record<CustomIconType, React.ComponentType<any>> = {
+  // 커스텀 아이콘 컴포넌트 매핑 (완전한 타입 안전성)
+  const customIconComponents: Record<
+    CustomIconType,
+    React.ComponentType<typeof CustomIcons.UFOIcon extends React.ComponentType<infer P> ? P : never>
+  > = {
     ufo: CustomIcons.UFOIcon,
     planet: CustomIcons.PlanetIcon,
     trending: CustomIcons.TrendingIcon,
@@ -74,38 +72,41 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     emblanext: CustomIcons.EmblaNextIcon,
   };
 
+  // 커스텀 아이콘인 경우
   if (name in customIconComponents) {
     const CustomIconComponent = customIconComponents[name as CustomIconType];
     return (
       <CustomIconComponent
         size={size}
+        color={color}
         onClick={onClick}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        className={cn(onClick && 'cursor-pointer hover:opacity-80 transition-opacity', className)}
         {...rest}
       />
     );
   }
 
+  // Lucide 아이콘인 경우
   try {
     return (
       <LucideIcon
         name={name as LucideIconType}
         size={size}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onClick={onClick as any}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        color={color}
+        onClick={onClick}
+        className={cn(onClick && 'cursor-pointer hover:opacity-80 transition-opacity', className)}
         {...rest}
       />
     );
   } catch (error) {
-    console.warn(errorMessages.iconNotFound(name), error);
+    console.warn(`아이콘 "${name}"을 찾을 수 없습니다:`, error);
     return (
       <LucideIcon
         name="AlertCircle"
         size={size}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onClick={onClick as any}
-        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
+        color={color}
+        onClick={onClick}
+        className={cn(onClick && 'cursor-pointer hover:opacity-80 transition-opacity', className)}
         {...rest}
       />
     );

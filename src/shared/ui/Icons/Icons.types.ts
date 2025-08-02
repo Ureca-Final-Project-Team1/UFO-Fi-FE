@@ -1,24 +1,35 @@
+import { ComponentProps } from 'react';
+
 import { ICON_SIZES, ICON_COLORS } from '@/constants/icons';
 
-export interface IconProps {
+// 기본 아이콘 Props - HTMLSpanElement 기반
+export interface BaseIconProps extends ComponentProps<'span'> {
   size?: keyof typeof ICON_SIZES | number;
   color?: keyof typeof ICON_COLORS | string;
-  className?: string;
-  onClick?: React.MouseEventHandler<SVGElement>;
 }
 
-export interface ImageIconProps extends Omit<IconProps, 'color'> {
+export interface IconProps extends BaseIconProps {
+  name?: IconType;
+}
+
+export interface ImageIconProps extends Omit<BaseIconProps, 'color'> {
   src: string;
   alt: string;
   priority?: boolean;
   fallbackIcon?: LucideIconType;
 }
 
-export interface IconWrapperProps extends IconProps {
+export interface LucideIconProps extends BaseIconProps {
+  name: LucideIconType;
+}
+
+export type CustomIconProps = BaseIconProps;
+
+export interface IconWrapperProps extends BaseIconProps {
   children: React.ReactNode;
 }
 
-// Lucide 아이콘 타입
+// Lucide 아이콘 타입 정의
 export type LucideIconType =
   | 'Plus'
   | 'Bell'
@@ -26,7 +37,7 @@ export type LucideIconType =
   | 'Home'
   | 'Search'
   | 'Settings'
-  | 'FilePenLine' // 거래명세서 아이콘
+  | 'FilePenLine'
   | 'Menu'
   | 'Sparkles'
   | 'Database'
@@ -41,11 +52,11 @@ export type LucideIconType =
   | 'Heart'
   | 'Star'
   | 'Package'
-  | 'TriangleAlert' // 경고
-  | 'Siren' // 신고 버튼
+  | 'TriangleAlert'
+  | 'Siren'
   | 'Download'
-  | 'CirclePlus' // 판매 등록
-  | 'RadioTower' // 전파 거래소
+  | 'CirclePlus'
+  | 'RadioTower'
   | 'Upload'
   | 'Edit'
   | 'Trash2'
@@ -56,10 +67,10 @@ export type LucideIconType =
   | 'Dot'
   | 'ChartNoAxesColumn'
   | 'BellRing'
-  | 'AlertCircle' // 에러용
-  | 'ImageOff' // 이미지 에러용
-  | 'Loader2' // 로딩용
-  | 'Signal' // 신호 아이콘 추가
+  | 'AlertCircle'
+  | 'ImageOff'
+  | 'Loader2'
+  | 'Signal'
   | 'RotateCw'
   | 'HelpCircle'
   | 'Link'
@@ -80,7 +91,7 @@ export type LucideIconType =
   | 'Focus'
   | 'ArrowUp';
 
-// 커스텀 아이콘 타입
+// 커스텀 아이콘 타입 정의
 export type CustomIconType =
   | 'ufo'
   | 'planet'

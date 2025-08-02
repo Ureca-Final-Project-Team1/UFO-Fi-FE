@@ -1,10 +1,9 @@
-import React, { ComponentProps } from 'react';
+import React from 'react';
 
 import { ICON_SIZES, ICON_COLORS } from '@/constants/icons';
 import { cn } from '@/lib/utils';
 
-import { IconProps } from './Icons.types';
-import { spanVariants, defaultValues } from './IconWrapperVariants';
+import { IconWrapperProps } from './Icons.types';
 
 // SVG 요소인지 확인하는 타입 가드
 function isSVGElement(
@@ -13,31 +12,19 @@ function isSVGElement(
   return React.isValidElement(child) && child.type === 'svg';
 }
 
-// IconWrapperProps를 ComponentProps와 결합하여 span 요소의 onClick 사용
-type IconWrapperProps = ComponentProps<'span'> &
-  Omit<IconProps, 'onClick'> & {
-    children?: React.ReactNode;
-  };
-
 /**
  * 아이콘을 감싸는 공통 래퍼 컴포넌트
  * 일관된 크기, 색상, 스타일링을 제공합니다.
  */
 export const IconWrapper: React.FC<IconWrapperProps> = (props) => {
-  const {
-    size = defaultValues.size,
-    color = defaultValues.color,
-    className = defaultValues.className,
-    children = defaultValues.children,
-    ...rest
-  } = props;
+  const { size = 'md', color = 'current', className, children, ...rest } = props;
 
   const sizeValue = typeof size === 'number' ? size : ICON_SIZES[size];
   const colorValue = color in ICON_COLORS ? ICON_COLORS[color as keyof typeof ICON_COLORS] : color;
 
   return (
     <span
-      className={cn(spanVariants(), className)}
+      className={cn('inline-flex items-center justify-center', className)}
       style={{
         width: sizeValue,
         height: sizeValue,
