@@ -1,19 +1,19 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, ComponentProps } from 'react';
 
 import { PurchaseErrorType } from '@/api/types/exchange';
 import { Button } from '@/shared';
 import { analytics } from '@/utils/analytics';
 
-interface SimpleErrorRecoveryProps {
-  error: string;
-  errorType: PurchaseErrorType;
-  postId: string;
+type SimpleErrorRecoveryProps = ComponentProps<'div'> & {
+  error?: string;
+  errorType?: PurchaseErrorType;
+  postId?: string;
   onRetry?: () => void;
-  canRetry: boolean;
-}
+  canRetry?: boolean;
+};
 
 const getErrorConfig = (errorType: PurchaseErrorType) => {
   switch (errorType) {
@@ -75,7 +75,14 @@ const getErrorConfig = (errorType: PurchaseErrorType) => {
 };
 
 export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = (props) => {
-  const { error, errorType, postId, onRetry, canRetry } = props;
+  const {
+    error = '알 수 없는 오류가 발생했습니다.',
+    errorType = PurchaseErrorType.NETWORK_ERROR,
+    postId = '',
+    onRetry = () => {},
+    canRetry = false,
+    ...rest
+  } = props;
 
   const router = useRouter();
   const config = getErrorConfig(errorType);
@@ -123,7 +130,10 @@ export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = (props)
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      {...rest}
+    >
       <div className="bg-gray-800 rounded-2xl p-8 max-w-sm w-full mx-4 relative">
         {/* 에러 아이콘 */}
         <div className="text-center mb-6">
