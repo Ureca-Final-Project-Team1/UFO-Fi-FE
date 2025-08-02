@@ -7,11 +7,11 @@ import { NotificationType } from './NotificationDropdown.types';
 import {
   notificationConfig,
   defaultValues,
-  containerStyleMap,
-  titleStyleMap,
-  contentStyleMap,
-  badgeStyleMap,
-} from './NotificationItem.styles';
+  containerVariants,
+  titleVariants,
+  contentVariants,
+  badgeVariants,
+} from './NotificationItemVariants';
 
 interface NotificationItem {
   id?: string;
@@ -35,9 +35,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
 
   return (
     <div
-      className={`${containerStyleMap.base} ${
-        isUnread ? containerStyleMap.unread : containerStyleMap.read
-      }`}
+      className={containerVariants({ variant: isUnread ? 'unread' : 'read' })}
       onClick={onClick}
       {...rest}
     >
@@ -56,11 +54,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
       {/* 콘텐츠 */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between mb-1">
-          <h4
-            className={`${titleStyleMap.base} ${
-              isUnread ? titleStyleMap.unread : titleStyleMap.read
-            }`}
-          >
+          <h4 className={titleVariants({ variant: isUnread ? 'unread' : 'read' })}>
             {notification.title}
             {isUnread && (
               <span className="inline-block ml-1 size-2 bg-blue-500 rounded-full"></span>
@@ -71,18 +65,14 @@ export const NotificationItem: React.FC<NotificationItemProps> = (props) => {
           </span>
         </div>
 
-        <p
-          className={`${contentStyleMap.base} ${
-            isUnread ? contentStyleMap.unread : contentStyleMap.read
-          }`}
-        >
+        <p className={contentVariants({ variant: isUnread ? 'unread' : 'read' })}>
           {notification.content}
         </p>
 
         {/* 읽지 않은 상태 텍스트 표시 */}
         {isUnread && (
           <div className="mt-2">
-            <span className={`${badgeStyleMap.container} ${badgeStyleMap.unread}`}>새 알림</span>
+            <span className={badgeVariants({ variant: 'unread' })}>새 알림</span>
           </div>
         )}
       </div>
