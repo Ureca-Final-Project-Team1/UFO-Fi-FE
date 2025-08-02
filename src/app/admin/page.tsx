@@ -119,43 +119,41 @@ export default function AdminPage() {
 
             <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">최근 활동</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">새로운 사용자 가입</span>
-                    <span className="text-sm text-gray-500">2분 전</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">게시물 신고 접수</span>
-                    <span className="text-sm text-gray-500">15분 전</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">시스템 업데이트 완료</span>
-                    <span className="text-sm text-gray-500">1시간 전</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">시스템 상태</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">서버 상태</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                      정상
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">데이터베이스</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                      정상
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">API 응답시간</span>
-                    <span className="text-sm text-gray-500">120ms</span>
-                  </div>
-                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Analytics 도구 대시보드 바로가기
+                </h3>
+                <ul className="space-y-3 text-sm text-blue-600">
+                  <li>
+                    🔗{' '}
+                    <a
+                      href="https://analytics.google.com/analytics/web/#/p495848233/reports/intelligenthome"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      GA4 실시간 이벤트 보기 (DebugView)
+                    </a>
+                  </li>
+                  <li>
+                    🔗{' '}
+                    <a
+                      href="https://tagmanager.google.com/#/container/accounts/6305283340/containers/225676690/workspaces/2"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      GTM 태그 설정 (Google Tag Manager)
+                    </a>
+                  </li>
+                  <li>
+                    🔗{' '}
+                    <a
+                      href="https://clarity.microsoft.com/projects/view/sjrq4d676b/dashboard?date=Last%203%20days"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Microsoft Clarity 세션 보기
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
