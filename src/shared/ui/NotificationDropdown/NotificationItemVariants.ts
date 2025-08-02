@@ -28,27 +28,29 @@ export const defaultValues = {
 } as const;
 
 // 컨테이너 variants
-export const containerVariants = cva('', {
-  variants: {
-    variant: {
-      base: 'flex items-start gap-3 p-4 w-full cursor-pointer transition-colors border-l-4',
-      unread:
-        'flex items-start gap-3 p-4 w-full cursor-pointer transition-colors border-l-4 bg-blue-50/50 border-blue-200 hover:bg-blue-50',
-      read: 'flex items-start gap-3 p-4 w-full cursor-pointer transition-colors border-l-4 border-transparent hover:bg-gray-50',
+export const containerVariants = cva(
+  'flex items-start gap-3 p-4 w-full cursor-pointer transition-colors border-l-4',
+  {
+    variants: {
+      variant: {
+        base: '',
+        unread: 'bg-blue-50/50 border-blue-200 hover:bg-blue-50',
+        read: 'border-transparent hover:bg-gray-50',
+      },
+    },
+    defaultVariants: {
+      variant: 'base',
     },
   },
-  defaultVariants: {
-    variant: 'base',
-  },
-});
+);
 
 // 제목 variants
-export const titleVariants = cva('', {
+export const titleVariants = cva('text-sm leading-5', {
   variants: {
     variant: {
-      base: 'text-sm leading-5',
-      unread: 'text-sm leading-5 font-bold text-gray-900',
-      read: 'text-sm leading-5 font-semibold text-gray-700',
+      base: '',
+      unread: 'font-bold text-gray-900',
+      read: 'font-semibold text-gray-700',
     },
   },
   defaultVariants: {
@@ -57,12 +59,12 @@ export const titleVariants = cva('', {
 });
 
 // 내용 variants
-export const contentVariants = cva('', {
+export const contentVariants = cva('text-sm leading-5 line-clamp-2', {
   variants: {
     variant: {
-      base: 'text-sm leading-5 line-clamp-2',
-      unread: 'text-sm leading-5 line-clamp-2 text-gray-800',
-      read: 'text-sm leading-5 line-clamp-2 text-gray-600',
+      base: '',
+      unread: 'text-gray-800',
+      read: 'text-gray-600',
     },
   },
   defaultVariants: {
@@ -71,15 +73,17 @@ export const contentVariants = cva('', {
 });
 
 // 배지 variants
-export const badgeVariants = cva('', {
-  variants: {
-    variant: {
-      base: 'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium',
-      unread:
-        'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800',
+export const badgeVariants = cva(
+  'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium',
+  {
+    variants: {
+      variant: {
+        base: '',
+        unread: 'bg-blue-100 text-blue-800',
+      },
+    },
+    defaultVariants: {
+      variant: 'base',
     },
   },
-  defaultVariants: {
-    variant: 'base',
-  },
-});
+);
