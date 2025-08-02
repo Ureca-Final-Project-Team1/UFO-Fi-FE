@@ -27,7 +27,7 @@ export default function MyPage() {
       try {
         const response = await achievementsAPI.getHonorifics();
         if (isMounted) {
-          setHonorifics(response.honorifics);
+          setHonorifics(response);
         }
       } catch (error) {
         if (!isMounted) return;

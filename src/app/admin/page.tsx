@@ -6,6 +6,27 @@ import { statisticsService } from '@/api/services/admin/statistics';
 import type { StatisticsData } from '@/api/types';
 import { Header, Sidebar, Skeleton } from '@/shared';
 
+const ANALYTICS_LINKS = [
+  {
+    id: 'ga4',
+    title: 'GA4 실시간 이벤트 보기 (DebugView)',
+    url: process.env.NEXT_PUBLIC_GA4_URL || '#',
+    icon: '📊',
+  },
+  {
+    id: 'gtm',
+    title: 'GTM 태그 설정 (Google Tag Manager)',
+    url: process.env.NEXT_PUBLIC_GTM_URL || '#',
+    icon: '🏷️',
+  },
+  {
+    id: 'clarity',
+    title: 'Microsoft Clarity 세션 보기',
+    url: process.env.NEXT_PUBLIC_CLARITY_URL || '#',
+    icon: '🔍',
+  },
+];
+
 export default function AdminPage() {
   const [statistics, setStatistics] = useState<StatisticsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -119,43 +140,24 @@ export default function AdminPage() {
 
             <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">최근 활동</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">새로운 사용자 가입</span>
-                    <span className="text-sm text-gray-500">2분 전</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">게시물 신고 접수</span>
-                    <span className="text-sm text-gray-500">15분 전</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">시스템 업데이트 완료</span>
-                    <span className="text-sm text-gray-500">1시간 전</span>
-                  </div>
-                </div>
-              </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Analytics 도구 대시보드 바로가기
+                </h3>
 
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">시스템 상태</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">서버 상태</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                      정상
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">데이터베이스</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                      정상
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">API 응답시간</span>
-                    <span className="text-sm text-gray-500">120ms</span>
-                  </div>
-                </div>
+                <ul className="space-y-3 text-sm">
+                  {ANALYTICS_LINKS.map((link) => (
+                    <li key={link.id}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        {link.icon} {link.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

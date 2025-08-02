@@ -27,7 +27,6 @@ const menuItems: MenuItem[] = [
     label: '사용자 관리',
     icon: 'User',
     children: [
-      { id: 'all-users', label: '전체 사용자', icon: 'Users', href: '/admin/user' },
       {
         id: 'inactive-users',
         label: '비활성화된 사용자',
@@ -41,7 +40,6 @@ const menuItems: MenuItem[] = [
     label: '게시물 관리',
     icon: 'FileText',
     children: [
-      { id: 'all-posts', label: '전체 게시물', icon: 'File', href: '/admin/posts' },
       {
         id: 'reported-posts',
         label: '신고된 게시물',
@@ -169,17 +167,6 @@ const Sidebar = () => {
       <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
         {menuItems.map((item) => renderMenuItem(item))}
       </nav>
-
-      {/* 사이드바 푸터 */}
-      <div className="p-4 border-t border-gray-200">
-        <Link
-          href="/admin/help"
-          className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group"
-        >
-          <Icon name="HelpCircle" className="w-5 h-5 text-gray-500 group-hover:text-gray-700" />
-          <span>도움말</span>
-        </Link>
-      </div>
     </aside>
   );
 };

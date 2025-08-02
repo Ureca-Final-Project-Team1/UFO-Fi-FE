@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { nextApiRequest } from '@/api/client/axios';
@@ -20,7 +20,9 @@ interface TopNavProps {
 
 const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }) => {
   const router = useRouter();
-  const { data: myInfo, isLoading: isMyInfoLoading } = useMyInfo();
+  const pathname = usePathname();
+  const isSignupPage = pathname.startsWith('/signup');
+  const { data: myInfo, isLoading: isMyInfoLoading } = useMyInfo(!isSignupPage);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -126,7 +128,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
                 </span>
                 <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
               </div>
-              <div className="w-5 h-5 bg-cyan-400 rounded-full flex items-center justify-center ml-2 flex-shrink-0">
+              <div className="size-5 bg-cyan-400 rounded-full flex items-center justify-center">
                 <Icon
                   name="Plus"
                   size="sm"

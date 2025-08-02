@@ -4,9 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants';
-import { ICON_PATHS } from '@/constants/icons';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Chip, Icon } from '@/shared';
+import { Button, Icon } from '@/shared';
 import { SpeechBubble, Progress } from '@/shared';
 
 export const ExchangeHeader = () => {
@@ -76,7 +75,7 @@ export const ExchangeHeader = () => {
               <span className="caption-14-bold">일괄구매</span>
             </Button>
             <div className="flex items-center gap-2">
-              <Icon src={ICON_PATHS['COIN']} className="w-4 h-4" />
+              <Icon src={IMAGE_PATHS['PACKAGE_A']} className="size-8" />
               <span className="text-lg font-bold text-cyan-400">{renderZetBalance()}</span>
               <Button
                 size="sm"
@@ -105,12 +104,12 @@ export const ExchangeHeader = () => {
             className="mb-4"
           />
 
-          {/* 필터 버튼들 */}
-          <div className="flex flex-wrap gap-2">
-            <Chip rightIcon={<Icon name="ChevronDown" />}>통신사</Chip>
-            <Chip rightIcon={<Icon name="ChevronDown" />}>용량</Chip>
-            <Chip rightIcon={<Icon name="ChevronDown" />}>가격</Chip>
-          </div>
+          {/* TODO: 필터 버튼들 */}
+          {/* <div className="flex flex-wrap gap-2">
+            <Chip>통신사</Chip>
+            <Chip>용량</Chip>
+            <Chip>가격</Chip>
+          </div> */}
         </div>
       </div>
 
@@ -151,7 +150,7 @@ export const ExchangeHeader = () => {
             <span className="text-xs font-bold">일괄구매</span>
           </Button>
           <div className="flex items-center gap-2 min-w-0">
-            <Icon src={ICON_PATHS['COIN']} className="w-4 h-4 flex-shrink-0" />
+            <Icon src={IMAGE_PATHS['PACKAGE_A']} className="size-6" />
             <span className="text-sm font-bold text-cyan-400 truncate">{renderZetBalance()}</span>
             <Button
               size="sm"
@@ -177,12 +176,12 @@ export const ExchangeHeader = () => {
           />
         </div>
 
-        {/* 필터 버튼들 (통신사/용량/가격) */}
-        <div className="flex flex-wrap gap-2">
-          <Chip rightIcon={<Icon name="ChevronDown" />}>통신사</Chip>
+        {/* TODO: 필터 버튼들 API 다 안되면 지워야됨 */}
+        {/* <div className="flex flex-wrap gap-2">
+          <Chip>통신사</Chip>
           <Chip>용량</Chip>
           <Chip>가격</Chip>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -58,7 +58,7 @@ export default function SellingItem({
   return (
     <div className="relative w-[10rem] mb-5">
       {/* 카드 본체 */}
-      <div className="relative z-10 p-4 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col">
+      <div className="relative z-10 p-4 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col min-h-[186px]">
         <div className="flex flex-row gap-2 justify-between">
           <div>
             {/* 판매자 프로필 이미지 */}

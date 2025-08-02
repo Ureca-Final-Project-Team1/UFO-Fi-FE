@@ -74,7 +74,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
         <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/80 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <Icon name="Bell" className="w-4 h-4" />
+              <Icon name="Bell" className="w-4 h-4" color="white" />
               알림
               {unreadCount > 0 && (
                 <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
@@ -95,15 +95,10 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
 
         {/* 알림 목록 */}
         <div className="max-h-96 overflow-y-auto overscroll-contain">
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <Icon name="Loader2" className="w-8 h-8 animate-spin text-blue-500 mb-3" />
-              <span className="text-sm text-gray-500 font-medium">알림을 불러오는 중...</span>
-            </div>
-          ) : notifications.length === 0 ? (
+          {isLoading ? null : notifications.length === 0 ? (
             <div className="py-12 px-6 text-center">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Icon name="Bell" className="w-8 h-8 text-gray-400" />
+                <Icon name="Bell" className="w-8 h-8 text-gray-400" color="white" />
               </div>
               <h4 className="text-sm font-semibold text-gray-900 mb-2">알림이 없습니다</h4>
               <p className="text-xs text-gray-500">새로운 알림이 도착하면 여기에 표시됩니다</p>

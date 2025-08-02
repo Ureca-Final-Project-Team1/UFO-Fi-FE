@@ -4,7 +4,7 @@ import React from 'react';
 import { AdminSideMenu } from './AdminSideMenu';
 
 const meta: Meta<typeof AdminSideMenu> = {
-  title: 'Admin/AdminSideMenu',
+  title: 'Components/Admin/AdminSideMenu',
   component: AdminSideMenu,
   parameters: {
     layout: 'fullscreen',

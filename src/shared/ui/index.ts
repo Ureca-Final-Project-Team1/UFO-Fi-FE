@@ -22,7 +22,6 @@ export * from './Table';
 export * from './NotificationDropdown';
 export * from './Loading';
 export * from './SpeechBubble';
-export * from './AdminSideMenu';
 export * from './Header';
 export * from './Sidebar';
 export * from './Switch';
