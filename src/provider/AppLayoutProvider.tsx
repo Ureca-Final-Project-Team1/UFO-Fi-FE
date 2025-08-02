@@ -36,9 +36,10 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
 
   const isAdminRoute = pathname.startsWith('/admin');
   const isPasswordPage = pathname.includes('password');
+  const isOnboardingPage = pathname.startsWith('/onboarding');
   const isNavigationHidden =
     pathname.startsWith('/login') ||
-    pathname.startsWith('/onboarding') ||
+    isOnboardingPage ||
     pathname.startsWith('/blackhole') ||
     pathname.startsWith('/signup/privacy');
 
@@ -62,7 +63,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     ) {
       return IMAGE_PATHS.BG_LOGIN;
     }
-    if (pathname.startsWith('/onboarding')) {
+    if (isOnboardingPage) {
       return '';
     }
     if (isPasswordPage) {
@@ -73,7 +74,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
 
   const containerStyle = isPasswordPage
     ? { backgroundColor: 'var(--color-password-bg)' }
-    : pathname.startsWith('/onboarding')
+    : isOnboardingPage
       ? { backgroundColor: 'var(--color-onboarding-bg)' }
       : backgroundImageUrl
         ? {
@@ -111,7 +112,11 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
             style={{
               minHeight: '100dvh',
               paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
-              paddingBottom: isNavigationHidden ? '32px' : `${BOTTOM_NAV_HEIGHT}px`,
+              paddingBottom: isNavigationHidden
+                ? isOnboardingPage
+                  ? '0px'
+                  : '32px'
+                : `${BOTTOM_NAV_HEIGHT}px`,
               height: isNavigationHidden
                 ? '100dvh'
                 : `calc(100dvh - ${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px)`,
