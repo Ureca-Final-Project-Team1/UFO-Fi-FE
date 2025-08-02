@@ -130,22 +130,20 @@ export function Loading({
 
       default:
         return (
-          <div className="text-center h-full">
-            <div className="relative mb-4">
-              <Image
-                src={IMAGE_PATHS.AL_SUCCESS}
-                alt="로딩 중..."
-                width={size === 'sm' ? 24 : size === 'md' ? 64 : 128}
-                height={size === 'sm' ? 24 : size === 'md' ? 64 : 128}
-                className={cn('mx-auto animate-bounce')}
-                priority
-              />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full animate-ping opacity-75" />
-              <div
-                className="absolute -bottom-1 -left-1 w-2 h-2 bg-purple-400 rounded-full animate-ping opacity-75"
-                style={{ animationDelay: '0.5s' }}
-              />
-            </div>
+          <div className="relative">
+            <Image
+              src={IMAGE_PATHS.AL_SUCCESS}
+              alt="로딩 중..."
+              width={size === 'sm' ? 36 : size === 'md' ? 64 : 128}
+              height={size === 'sm' ? 36 : size === 'md' ? 64 : 128}
+              className={cn('mx-auto animate-bounce')}
+              priority
+            />
+            <div className="absolute -top-1 -right-1 size-3 bg-cyan-400 rounded-full animate-ping opacity-75" />
+            <div
+              className="absolute -bottom-1 -left-1 size-2 bg-purple-400 rounded-full animate-ping opacity-75"
+              style={{ animationDelay: '0.5s' }}
+            />
           </div>
         );
     }
