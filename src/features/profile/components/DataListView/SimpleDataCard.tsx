@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import type { TradePost } from '@/api/types/profile';
@@ -30,6 +31,7 @@ const getCarrierIcon = (carrier: string) => {
 
 export function SimpleDataCard({ post, sellerNickname }: SimpleDataCardProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const carrierIcon = getCarrierIcon(post.carrier);
   const timeAgo = formatTimeAgo(post.createdAt);
   const networkType = getMobileDataTypeDisplay(post.mobileDataType);
@@ -37,10 +39,9 @@ export function SimpleDataCard({ post, sellerNickname }: SimpleDataCardProps) {
   const handlePurchase = async () => {
     setIsLoading(true);
     try {
-      // TODO: 구매 API
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 임시 대기
+      router.push(`/exchange/purchase/${post.postId}/step1`);
     } catch (error) {
-      console.error('구매 실패:', error);
+      console.error('구매 페이지 이동 실패:', error);
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +74,6 @@ export function SimpleDataCard({ post, sellerNickname }: SimpleDataCardProps) {
           {/* 용량 + 가격 */}
           <div className="flex gap-2 items-baseline">
             <span className="text-white text-xl font-bold">{post.sellMobileDataAmountGB}GB</span>
-            <span className="text-cyan-300 text-xl font-bold">250ZET</span>
           </div>
 
           {/* 판매자 닉네임 */}
@@ -89,7 +89,7 @@ export function SimpleDataCard({ post, sellerNickname }: SimpleDataCardProps) {
               disabled={isLoading}
               className="text-white shadow-lg px-4 py-2 caption-14-bold"
             >
-              {isLoading ? '구매 중...' : '구매하기'}
+              {isLoading ? '이동 중...' : '구매하기'}
             </Button>
           </div>
         </div>

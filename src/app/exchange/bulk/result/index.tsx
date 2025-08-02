@@ -20,10 +20,10 @@ function BulkResultContent() {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
-    <div className="justify-center items-center">
+    <>
       <Title title="매칭된 데이터" iconVariant="back" />
 
-      <div className="relative rounded-[20px] space-y-6 pb-12 px-4">
+      <div className="relative rounded-[20px]">
         {/* 매칭 결과 */}
         <div className="space-y-4">
           <div className="flex justify-between items-center">
@@ -88,7 +88,7 @@ function BulkResultContent() {
         </div>
 
         {/* 데이터 목록 */}
-        <div className="space-y-4">
+        <div className="space-y-4 mb-6">
           <h3 className="text-white font-bold text-lg flex items-center gap-2">데이터 목록</h3>
 
           {/* 그리드 레이아웃 반응형 */}
@@ -107,7 +107,7 @@ function BulkResultContent() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

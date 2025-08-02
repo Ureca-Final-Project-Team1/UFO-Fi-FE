@@ -79,7 +79,7 @@ export default function SellEditPage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full justify-center">
+    <div className="flex flex-col">
       <Title title="데이터 판매 수정" iconVariant="back" />
       <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
         {/* 거래명세서 타이틀 */}

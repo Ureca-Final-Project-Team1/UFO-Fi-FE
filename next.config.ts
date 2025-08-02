@@ -4,6 +4,8 @@ const imageHostname =
   process.env.NEXT_PUBLIC_IMAGE_DOMAIN || 'ufo-fi-service-bucket.s3.ap-northeast-2.amazonaws.com';
 
 const nextConfig: NextConfig = {
+  turbopack: {},
+
   images: {
     remotePatterns: imageHostname
       ? [
@@ -15,14 +17,6 @@ const nextConfig: NextConfig = {
           },
         ]
       : [],
-  },
-
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.md$/,
-      use: 'raw-loader',
-    });
-    return config;
   },
 };
 
