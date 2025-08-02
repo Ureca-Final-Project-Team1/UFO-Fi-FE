@@ -13,7 +13,6 @@ import { StepIndicator } from '@/features/onboarding/components';
 import { ONBOARDING_STEPS } from '@/features/onboarding/utils/onboarding';
 
 export default function OnboardingPage() {
-  const [scale, setScale] = useState(1);
   const [currentStep, setCurrentStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
@@ -26,16 +25,6 @@ export default function OnboardingPage() {
     const timer = setTimeout(() => setIsVisible(true), 150);
     return () => clearTimeout(timer);
   }, [currentStep]);
-
-  // scale 계산
-  useEffect(() => {
-    const handleResize = () => {
-      setScale(1); // 반응형이므로 scale은 항상 1
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handleNext = useCallback(() => {
     if (currentStep < ONBOARDING_STEPS.length - 1) {
@@ -53,13 +42,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="w-full h-screen flex items-center justify-center overflow-hidden">
-      <div
-        className="relative w-full h-full"
-        style={{
-          transform: `scale(${scale})`,
-          transformOrigin: 'center center',
-        }}
-      >
+      <div className="relative w-full h-full">
         <div className="flex flex-col items-center justify-center w-full h-full">
           <div
             className={`transition-all duration-500 ease-in-out w-full h-full flex flex-col justify-center ${
