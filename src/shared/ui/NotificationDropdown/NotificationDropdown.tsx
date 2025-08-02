@@ -8,11 +8,23 @@ import { Icon, NotificationTrigger, NotificationItem } from '@/shared';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';
 import {
-  dropdownContentStyle,
-  headerStyle,
-  contentStyle,
+  dropdownContentVariants,
+  headerVariants,
+  headerTitleVariants,
+  headerBadgeVariants,
+  markAllButtonVariants,
+  contentVariants,
+  loadingContainerVariants,
+  loadingIconVariants,
+  loadingTextVariants,
+  emptyContainerVariants,
+  emptyIconContainerVariants,
+  emptyIconVariants,
+  emptyTitleVariants,
+  emptyDescriptionVariants,
+  listContainerVariants,
   messageMap,
-} from './NotificationDropdown.styles';
+} from './NotificationDropdownVariants';
 
 type NotificationDropdownProps = Omit<ComponentProps<'div'>, 'onClick'> & {
   isOpen?: boolean;
@@ -90,20 +102,20 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
 
         <DropdownMenuContent
           align="end"
-          className={dropdownContentStyle.base}
+          className={dropdownContentVariants()}
           sideOffset={12}
           avoidCollisions={true}
         >
           {/* 헤더 */}
-          <div className={headerStyle.container}>
+          <div className={headerVariants()}>
             <div className="flex items-center justify-between">
-              <h3 className={headerStyle.title}>
+              <h3 className={headerTitleVariants()}>
                 <Icon name="Bell" className="w-4 h-4" />
                 알림
-                {unreadCount > 0 && <span className={headerStyle.badge}>{unreadCount}</span>}
+                {unreadCount > 0 && <span className={headerBadgeVariants()}>{unreadCount}</span>}
               </h3>
               {unreadCount > 0 && (
-                <button onClick={handleMarkAllRead} className={headerStyle.markAllButton}>
+                <button onClick={handleMarkAllRead} className={markAllButtonVariants()}>
                   {messageMap.markAllRead}
                 </button>
               )}
@@ -111,22 +123,22 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = (props)
           </div>
 
           {/* 알림 목록 */}
-          <div className={contentStyle.container}>
+          <div className={contentVariants()}>
             {isLoading ? (
-              <div className={contentStyle.loadingContainer}>
-                <Icon name="Loader2" className={contentStyle.loadingIcon} />
-                <span className={contentStyle.loadingText}>{messageMap.loading}</span>
+              <div className={loadingContainerVariants()}>
+                <Icon name="Loader2" className={loadingIconVariants()} />
+                <span className={loadingTextVariants()}>{messageMap.loading}</span>
               </div>
             ) : notifications.length === 0 ? (
-              <div className={contentStyle.emptyContainer}>
-                <div className={contentStyle.emptyIconContainer}>
-                  <Icon name="Bell" className={contentStyle.emptyIcon} />
+              <div className={emptyContainerVariants()}>
+                <div className={emptyIconContainerVariants()}>
+                  <Icon name="Bell" className={emptyIconVariants()} />
                 </div>
-                <h4 className={contentStyle.emptyTitle}>{messageMap.empty.title}</h4>
-                <p className={contentStyle.emptyDescription}>{messageMap.empty.description}</p>
+                <h4 className={emptyTitleVariants()}>{messageMap.empty.title}</h4>
+                <p className={emptyDescriptionVariants()}>{messageMap.empty.description}</p>
               </div>
             ) : (
-              <div className={contentStyle.listContainer}>
+              <div className={listContainerVariants()}>
                 {notifications.map((notification) => (
                   <NotificationItem
                     key={
