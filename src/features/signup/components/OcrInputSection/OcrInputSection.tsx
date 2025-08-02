@@ -98,9 +98,14 @@ export const OCRInputSection = ({
       });
 
       const selected = plans.find((p) => p.planName === planNameOCR);
+
       if (selected) {
         setMaxData(selected.sellMobileDataCapacityGB);
         setNetworkType(selected.mobileDataType.replace(/^_/, ''));
+      } else {
+        setMaxData(null);
+        setNetworkType('');
+        toast.error('요금제를 찾을 수 없습니다. 직접 선택해주세요.');
       }
     }
   }, [carrierOCR, planNameOCR, plans, setValue, setForm, setMaxData, setNetworkType]);

@@ -89,9 +89,9 @@ const PlanPage = () => {
   };
 
   return (
-    <div>
-      <div>
-        <Title title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
+    <>
+      <div className="flex flex-1 flex-col">
+        <Title iconVariant="back" title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
         <div className="flex flex-col items-start gap-6 w-full">
           <Stepper step={2} content="가입 신청" className="mb-5" />
           <p className="heading-24-bold ml-2">
@@ -136,7 +136,8 @@ const PlanPage = () => {
         )}
       </div>
 
-      <div className="pb-4">
+      {/* 고정된 하단 버튼 */}
+      <div className="sticky bottom-0 bg-inherit pb-4">
         <Button
           onClick={handleSubmit(onSubmit)}
           type="submit"
@@ -147,7 +148,7 @@ const PlanPage = () => {
           {isLoading ? '처리 중...' : '회원가입'}
         </Button>
       </div>
-    </div>
+    </>
   );
 };
 
