@@ -91,9 +91,9 @@ export default function Step2Page() {
     return (
       <>
         <Title title="데이터 구매하기" iconVariant="back" />
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col">
           <p className="text-red-400 text-center mb-4">상품 정보를 불러올 수 없습니다.</p>
-          <Button variant="secondary" onClick={() => router.back()}>
+          <Button type="button" variant="secondary" onClick={() => router.back()}>
             돌아가기
           </Button>
         </div>
@@ -186,16 +186,18 @@ export default function Step2Page() {
         </div>
       </div>
 
-      {/* 다음 버튼 */}
-      <Button
-        size="full-width"
-        variant="primary"
-        onClick={handleNext}
-        disabled={!isChecked}
-        className={`mt-auto mb-8 ${!isChecked ? 'opacity-50 cursor-not-allowed' : ''}`}
-      >
-        다음
-      </Button>
+      <div className="py-4 flex-shrink-0">
+        {/* 다음 버튼 */}
+        <Button
+          size="full-width"
+          variant="primary"
+          onClick={handleNext}
+          disabled={!isChecked}
+          className={`mt-auto mb-8 ${!isChecked ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          다음
+        </Button>
+      </div>
     </>
   );
 }
