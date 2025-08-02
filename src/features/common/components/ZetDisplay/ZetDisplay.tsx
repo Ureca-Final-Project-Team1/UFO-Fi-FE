@@ -6,6 +6,17 @@ type ZetDisplayProps = ComponentProps<'span'> & {
   size?: 'sm' | 'md' | 'lg';
 };
 
+// 조건부 스타일링을 위한 객체들
+const sizeClassesMap = {
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-lg',
+};
+
+const unitStyleMap = {
+  base: 'ml-1',
+};
+
 export const formatZetAmount = (amount: number): string => {
   if (amount >= 99999) {
     return '99,999+';
@@ -16,18 +27,12 @@ export const formatZetAmount = (amount: number): string => {
 export const ZetDisplay: React.FC<ZetDisplayProps> = (props) => {
   const { amount = 0, showUnit = true, size = 'md', ...rest } = props;
 
-  const sizeClasses = {
-    sm: 'text-sm',
-    md: 'text-base',
-    lg: 'text-lg',
-  };
-
   const formattedAmount = formatZetAmount(amount);
 
   return (
-    <span className={`${sizeClasses[size]} ${rest.className || ''}`} {...rest}>
+    <span className={`${sizeClassesMap[size]} ${rest.className || ''}`} {...rest}>
       {formattedAmount}
-      {showUnit && <span className="ml-1">ZET</span>}
+      {showUnit && <span className={unitStyleMap.base}>ZET</span>}
     </span>
   );
 };
