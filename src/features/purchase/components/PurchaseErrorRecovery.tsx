@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, ComponentProps } from 'react';
+import { useEffect, ComponentProps, memo } from 'react';
 
 import { PurchaseErrorType } from '@/api/types/exchange';
 import { Button } from '@/shared';
@@ -93,7 +93,7 @@ const getErrorConfig = (errorType: PurchaseErrorType) => {
   }
 };
 
-export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = (props) => {
+export const PurchaseErrorRecovery = memo<SimpleErrorRecoveryProps>((props) => {
   const {
     error = '알 수 없는 오류가 발생했습니다.',
     errorType = PurchaseErrorType.NETWORK_ERROR,
@@ -207,4 +207,6 @@ export const PurchaseErrorRecovery: React.FC<SimpleErrorRecoveryProps> = (props)
       </div>
     </div>
   );
-};
+});
+
+PurchaseErrorRecovery.displayName = 'PurchaseErrorRecovery';
