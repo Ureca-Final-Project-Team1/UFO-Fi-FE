@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { fetchLetters, type LetterDisplay } from '@/api/services/story/letters';
+import { fetchLetters } from '@/api/services/story/letters';
+import { LetterDisplay } from '@/api/types/letters';
 import { Button, Loading } from '@/shared';
 import { useLetterStore } from '@/stores/useLetterStore';
 
 type Letter = LetterDisplay;
 
-export default function LetterComponent() {
+export default function LetterListComponent() {
   const [letters, setLetters] = useState<Letter[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
