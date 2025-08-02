@@ -1,4 +1,4 @@
-import LetterComponent from './LetterComponent';
+import LetterComponent from './LetterListComponent';
 import SignalProgressBar from './SignalProgressBar';
 
 export default function LetterTabContent() {

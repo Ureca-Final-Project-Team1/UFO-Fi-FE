@@ -1,32 +1,50 @@
-import { Prisma, achievements } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
+import { UpdateAchievementResponse } from '@/types/Achievement';
 import { getUserFromToken } from '@/utils/getUserFromToken';
+
+const initialUpdateAchievementResponse: UpdateAchievementResponse = {
+  message: '',
+  statusCode: 200,
+  content: {
+    trade_level: 0,
+    follow_level: 0,
+    rotate_level: 0,
+    total_level: 0,
+    achievements: [],
+    newly_achieved_ids: [],
+    title_name: [],
+  },
+};
 
 export async function POST() {
   try {
-    // STEP 1. 인증 처리
     const result = await getUserFromToken();
     if ('error' in result) {
-      return NextResponse.json({ error: result.error }, { status: result.status });
+      return NextResponse.json(
+        {
+          ...initialUpdateAchievementResponse,
+          message: result.error ?? '인증 오류',
+          statusCode: result.status ?? 401,
+        },
+        { status: result.status ?? 401 },
+      );
     }
 
     const { userId } = result;
 
-    // STEP 2. 유저 상태 계산
     const [tradeCount, followerCount, step5Count] = await Promise.all([
       prisma.trade_histories.count({ where: { user_id: userId } }),
       prisma.follows.count({ where: { following_user_id: userId } }),
       prisma.voyage_letters.count({ where: { user_id: userId, step: 5 } }),
     ]);
 
-    // STEP 3. 전체 업적 로딩
     const allAchievements = await prisma.achievements.findMany({
       orderBy: [{ level: 'asc' }],
     });
 
-    // STEP 4. 이미 달성한 업적
     const alreadyAchieved = await prisma.user_achievements.findMany({
       where: { user_id: userId },
       select: { achievement_id: true, achieved_at: true },
@@ -51,7 +69,6 @@ export async function POST() {
       );
     });
 
-    // STEP 5. 새 업적 기록
     if (newlyAchieved.length > 0) {
       await prisma.$transaction(
         newlyAchieved.map((a) =>
@@ -66,15 +83,13 @@ export async function POST() {
       );
     }
 
-    // STEP 6. 업적 + 달성 여부 반환
     const achievementsWithMeta = allAchievements.map((a) => ({
       ...a,
       achievedAt:
         achievedMap.get(Number(a.id)) ??
-        (newlyAchieved.some((n) => n.id === a.id) ? new Date() : null),
+        (newlyAchieved.some((n) => n.id === a.id) ? new Date().toISOString() : null),
     }));
 
-    // STEP 7. 레벨 계산
     const calculateLevel = (type: 'trade' | 'follow' | 'rotate', currentValue: number): number => {
       return Math.max(
         ...allAchievements
@@ -89,37 +104,52 @@ export async function POST() {
     const rotateLevel = calculateLevel('rotate', step5Count);
     const totalLevel = Math.min(tradeLevel, followLevel, rotateLevel);
 
+    const titleNames = await prisma.honorific.findMany({
+      orderBy: { level: 'asc' },
+      select: { name: true },
+    });
+
     return NextResponse.json({
       message: '업적 상태가 업데이트되었습니다.',
-      trade_level: tradeLevel,
-      follow_level: followLevel,
-      rotate_level: rotateLevel,
-      total_level: totalLevel,
-      achievements: achievementsWithMeta.map((a) => ({
-        ...a,
-        id: Number(a.id),
-        level: Number(a.level),
-        condition_value: Number(a.condition_value),
-      })),
-      newly_achieved_ids: newlyAchieved.map((a: achievements) => Number(a.id)),
+      statusCode: 200,
+      content: {
+        trade_level: tradeLevel,
+        follow_level: followLevel,
+        rotate_level: rotateLevel,
+        total_level: totalLevel,
+        achievements: achievementsWithMeta.map((a) => ({
+          ...a,
+          id: Number(a.id),
+          level: Number(a.level),
+          condition_value: Number(a.condition_value),
+        })),
+        newly_achieved_ids: newlyAchieved.map((a) => Number(a.id)),
+        title_name: titleNames.map((t) => t.name),
+      },
     });
-  } catch (error: unknown) {
+  } catch (error) {
+    let message = '예기치 못한 오류가 발생했습니다.';
+
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      message = '데이터 처리 중 오류가 발생했습니다.';
       console.error('[Prisma Known Error]', error.message);
-      return NextResponse.json({ error: '데이터 처리 중 오류가 발생했습니다.' }, { status: 500 });
-    }
-
-    if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+    } else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+      message = '알 수 없는 데이터베이스 오류입니다.';
       console.error('[Prisma Unknown Error]', error.message);
-      return NextResponse.json({ error: '알 수 없는 데이터베이스 오류입니다.' }, { status: 500 });
-    }
-
-    if (error instanceof Error) {
+    } else if (error instanceof Error) {
+      message = '서버 내부 오류가 발생했습니다.';
       console.error('[Server Error]', error.stack || error.message);
-      return NextResponse.json({ error: '서버 내부 오류가 발생했습니다.' }, { status: 500 });
+    } else {
+      console.error('[Unhandled Error]', error);
     }
 
-    console.error('[Unhandled Error]', error);
-    return NextResponse.json({ error: '예기치 못한 오류가 발생했습니다.' }, { status: 500 });
+    return NextResponse.json(
+      {
+        ...initialUpdateAchievementResponse,
+        message,
+        statusCode: 500,
+      },
+      { status: 500 },
+    );
   }
 }
