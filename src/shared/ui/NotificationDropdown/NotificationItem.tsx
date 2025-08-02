@@ -25,7 +25,7 @@ interface NotificationItem {
 
 type NotificationItemProps = ComponentProps<'div'> & {
   notification: NotificationItem;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
 
 export const NotificationItem: React.FC<NotificationItemProps> = (props) => {

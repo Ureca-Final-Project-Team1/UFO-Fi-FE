@@ -1,4 +1,5 @@
 import { cva } from 'class-variance-authority';
+import React from 'react';
 
 // 알림 타입별 설정 (사용하지 않는 색상 필드 제거)
 export const notificationConfig = {
@@ -24,7 +25,7 @@ export const notificationConfig = {
 
 // 기본값 설정
 export const defaultValues = {
-  onClick: () => {},
+  onClick: (() => {}) as React.MouseEventHandler<HTMLDivElement>,
 } as const;
 
 // 컨테이너 variants
