@@ -40,14 +40,17 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="h-full flex flex-col justify-center items-center px-4 py-6">
-      <div className="w-full max-w-[560px]">
+    <>
+      <div className="flex flex-col items-center justify-center min-h-screen w-full">
         <div
-          className={`transition-all duration-500 ease-in-out flex flex-col items-center ${
+          className={`transition-all duration-500 ease-in-out w-full ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          <OnboardingImageFrame src={step.image} />
+          <div className="relative mx-auto mb-6 w-full">
+            <OnboardingImageFrame onboardingSrc="/images/onboarding/test1.png" />
+          </div>
+
           <AlienWithSpeech message={step.alienMessage} />
           <StepIndicator
             step={currentStep}
@@ -57,6 +60,6 @@ export default function OnboardingPage() {
           <NextButton isLast={step.isLastStep} onClick={handleNext} />
         </div>
       </div>
-    </div>
+    </>
   );
 }
