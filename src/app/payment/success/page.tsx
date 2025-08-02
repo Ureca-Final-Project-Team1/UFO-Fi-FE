@@ -87,12 +87,12 @@ function PaymentSuccessContent() {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-gradient-to-b from-primary-900 to-primary-800">
+    <div className="bg-gradient-to-b from-primary-900 to-primary-800 flex flex-col">
       <Title title="" iconVariant="close" />
 
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      <div className="flex-1 flex items-center justify-center px-6">
         <div
-          className={`flex flex-col items-center text-center ${isMobile ? 'space-y-4' : 'space-y-6'} max-w-sm`}
+          className={`flex flex-col items-center text-center ${isMobile ? 'space-y-4' : 'space-y-6'} max-w-sm w-full`}
         >
           <div className="relative mb-4">
             <Image
@@ -143,7 +143,7 @@ function PaymentSuccessContent() {
         </div>
       </div>
 
-      {/* 하단 버튼 */}
+      {/* 하단 버튼 - 고정 위치 */}
       <div className="flex-shrink-0 p-6 pb-8 space-y-3">
         <Button size="full-width" variant="primary" onClick={() => router.push('/')}>
           홈으로 돌아가기

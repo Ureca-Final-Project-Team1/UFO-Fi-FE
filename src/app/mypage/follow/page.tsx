@@ -59,7 +59,7 @@ export default function Page() {
   };
 
   return (
-    <div className="h-full w-full text-white">
+    <div className="text-white">
       <Title title="팔로우 목록" iconVariant="back" />
 
       <div className="mx-4 mb-6">
