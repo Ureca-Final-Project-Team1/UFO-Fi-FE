@@ -1,29 +1,30 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { BANK_OPTIONS, BankOption } from '@/features/payments/constants/BankOptions';
 
-interface BankSelectSheetProps {
-  isVisible: boolean;
-  isOpen: boolean;
-  dragTranslateY: number;
-  onClose: () => void;
-  onDragStart: (e: React.PointerEvent<HTMLDivElement>) => void;
-  onDragMove: (e: React.PointerEvent<HTMLDivElement>) => void;
-  onDragEnd: () => void;
-  handleBankSelect: (bank: BankOption) => void;
-}
+type BankSelectSheetProps = ComponentProps<'div'> & {
+  isVisible?: boolean;
+  isOpen?: boolean;
+  dragTranslateY?: number;
+  onClose?: () => void;
+  onDragStart?: (e: React.PointerEvent<HTMLDivElement>) => void;
+  onDragMove?: (e: React.PointerEvent<HTMLDivElement>) => void;
+  onDragEnd?: () => void;
+  handleBankSelect?: (bank: BankOption) => void;
+};
 
 export const BankSelectSheet: React.FC<BankSelectSheetProps> = (props) => {
   const {
-    isVisible,
-    isOpen,
-    dragTranslateY,
-    onClose,
-    onDragStart,
-    onDragMove,
-    onDragEnd,
-    handleBankSelect,
+    isVisible = false,
+    isOpen = false,
+    dragTranslateY = 0,
+    onClose = () => {},
+    onDragStart = () => {},
+    onDragMove = () => {},
+    onDragEnd = () => {},
+    handleBankSelect = () => {},
+    ...rest
   } = props;
 
   if (!isVisible) return null;
@@ -36,6 +37,7 @@ export const BankSelectSheet: React.FC<BankSelectSheetProps> = (props) => {
       <div
         className={`fixed left-0 right-0 bottom-14 z-20 bg-white/90 rounded-t-2xl p-6 flex flex-col items-center min-h-[320px] transition-transform duration-300 ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
         style={{ transform: `translateY(${isOpen ? dragTranslateY : 0}px)` }}
+        {...rest}
       >
         <div
           className="w-12 h-1.5 bg-gray-300 rounded-full mb-6 cursor-pointer"
