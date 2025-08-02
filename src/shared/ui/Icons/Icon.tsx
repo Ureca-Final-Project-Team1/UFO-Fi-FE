@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import * as CustomIcons from './CustomIcons';
+import { errorMessages, defaultValues, customIconComponents } from './Icon.styles';
 import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
@@ -20,11 +20,11 @@ type IconComponentProps = ComponentProps<'span'> &
  */
 export const Icon: React.FC<IconComponentProps> = (props) => {
   const {
-    name = undefined,
-    src = '',
-    alt = '',
-    onClick = undefined,
-    className = '',
+    name = defaultValues.name,
+    src = defaultValues.src,
+    alt = defaultValues.alt,
+    onClick = defaultValues.onClick,
+    className = defaultValues.className,
     ...rest
   } = props;
 
@@ -41,24 +41,9 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
   }
 
   if (!name) {
-    console.warn('Icon error');
+    console.warn(errorMessages.iconError);
     return null;
   }
-
-  const customIconComponents: Record<CustomIconType, React.ComponentType<IconProps>> = {
-    ufo: CustomIcons.UFOIcon,
-    planet: CustomIcons.PlanetIcon,
-    trending: CustomIcons.TrendingIcon,
-    astronaut: CustomIcons.AstronautIcon,
-    satellite: CustomIcons.SatelliteIcon,
-    box: CustomIcons.BoxIcon,
-    rotate: CustomIcons.RotateIcon,
-    graph: CustomIcons.GraphIcon,
-    'circle-minus': CustomIcons.CircleMinusIcon,
-    return: CustomIcons.ReturnIcon,
-    emblaprev: CustomIcons.EmblaPrevIcon,
-    emblanext: CustomIcons.EmblaNextIcon,
-  };
 
   if (name in customIconComponents) {
     const CustomIconComponent = customIconComponents[name as CustomIconType];
@@ -81,7 +66,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
       />
     );
   } catch (error) {
-    console.warn(`${name}`, error);
+    console.warn(errorMessages.iconNotFound(name), error);
     return (
       <LucideIcon
         name="AlertCircle"
