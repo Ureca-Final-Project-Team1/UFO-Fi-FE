@@ -5,17 +5,13 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { nextApiRequest } from '@/api/client/axios';
+import { LetterDisplay } from '@/api/types/letters';
 import { Modal, SpeechBubble } from '@/shared';
 
 const ORBIT_BASE_SIZE = 600;
 const SATELLITE_WIDTH = 30;
 const SATELLITE_HEIGHT = 60;
 const ORBIT_COUNT = 5;
-
-type Letter = {
-  step: number;
-  content: string;
-};
 
 const orbitConfigs = [
   { color: '#FFD230', speed: 'spin-slow', image: '/images/main/satellite1.svg' },
@@ -26,7 +22,7 @@ const orbitConfigs = [
 ];
 
 export default function OrbitWithSatellite() {
-  const [letters, setLetters] = useState<Letter[]>([]);
+  const [letters, setLetters] = useState<LetterDisplay[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const handleOpenMessage = (index: number) => {
@@ -38,7 +34,7 @@ export default function OrbitWithSatellite() {
       try {
         await nextApiRequest.post('/api/story/letters');
         const res = await nextApiRequest.get('/api/story/letters');
-        const data = (await res.data) as Letter[];
+        const data = (await res.data) as LetterDisplay[];
         setLetters(
           data.map((letter) => ({
             step: Number(letter.step),
