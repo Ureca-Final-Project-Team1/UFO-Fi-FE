@@ -6,6 +6,27 @@ import { statisticsService } from '@/api/services/admin/statistics';
 import type { StatisticsData } from '@/api/types';
 import { Header, Sidebar, Skeleton } from '@/shared';
 
+const ANALYTICS_LINKS = [
+  {
+    id: 'ga4',
+    title: 'GA4 실시간 이벤트 보기 (DebugView)',
+    url: process.env.NEXT_PUBLIC_GA4_URL || '#',
+    icon: '📊',
+  },
+  {
+    id: 'gtm',
+    title: 'GTM 태그 설정 (Google Tag Manager)',
+    url: process.env.NEXT_PUBLIC_GTM_URL || '#',
+    icon: '🏷️',
+  },
+  {
+    id: 'clarity',
+    title: 'Microsoft Clarity 세션 보기',
+    url: process.env.NEXT_PUBLIC_CLARITY_URL || '#',
+    icon: '🔍',
+  },
+];
+
 export default function AdminPage() {
   const [statistics, setStatistics] = useState<StatisticsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -122,37 +143,20 @@ export default function AdminPage() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Analytics 도구 대시보드 바로가기
                 </h3>
-                <ul className="space-y-3 text-sm text-blue-600">
-                  <li>
-                    🔗{' '}
-                    <a
-                      href="https://analytics.google.com/analytics/web/#/p495848233/reports/intelligenthome"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      GA4 실시간 이벤트 보기 (DebugView)
-                    </a>
-                  </li>
-                  <li>
-                    🔗{' '}
-                    <a
-                      href="https://tagmanager.google.com/#/container/accounts/6305283340/containers/225676690/workspaces/2"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      GTM 태그 설정 (Google Tag Manager)
-                    </a>
-                  </li>
-                  <li>
-                    🔗{' '}
-                    <a
-                      href="https://clarity.microsoft.com/projects/view/sjrq4d676b/dashboard?date=Last%203%20days"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Microsoft Clarity 세션 보기
-                    </a>
-                  </li>
+
+                <ul className="space-y-3 text-sm">
+                  {ANALYTICS_LINKS.map((link) => (
+                    <li key={link.id}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        {link.icon} {link.title}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
