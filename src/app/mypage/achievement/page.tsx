@@ -10,12 +10,11 @@ import { Loading, Title, AchievementModal } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 import { Achievement, SelectedAchievementState } from '@/types/Achievement';
 
-const titleName = ['우주 여행 입문자', '전파 항해자', '우주 개척자', '전설의 항해자'];
-
 export default function AchievementPage() {
   const [selectedAchievement, setSelectedAchievement] = useState<SelectedAchievementState | null>(
     null,
   );
+  const [titleName, setTitleName] = useState<string[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const { isDesktop, isTablet } = useViewportStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,7 +63,9 @@ export default function AchievementPage() {
             type: a.type as 'trade' | 'follow' | 'rotate',
           })),
         );
+        setTitleName(res.title_name);
       })
+
       .catch((err) => {
         console.error('Achievement fetch error:', err);
         setError('업적 정보를 불러오는데 실패했습니다.');

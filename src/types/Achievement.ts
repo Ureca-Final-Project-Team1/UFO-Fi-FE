@@ -1,13 +1,19 @@
 import type { achievements } from '@prisma/client';
 
-export interface AchievementUpdateResponse {
+export type UpdateAchievementResponse = {
   message: string;
+  statusCode: number;
+  content: UpdateAchievement;
+};
+
+export interface UpdateAchievement {
   trade_level: number;
   follow_level: number;
   rotate_level: number;
   total_level: number;
   achievements: (achievements & { achievedAt: string | null })[];
   newly_achieved_ids: number[];
+  title_name: string[];
 }
 
 export interface Achievement {
@@ -27,9 +33,11 @@ export type SelectedAchievementState = {
   isAchieve: boolean;
 };
 
-export interface GetHonorificsResponse {
-  honorifics: Honorific[];
-}
+export type GetHonorificsResponse = {
+  message: string;
+  statusCode: number;
+  content: Honorific[];
+};
 
 export interface Honorific {
   id: number;

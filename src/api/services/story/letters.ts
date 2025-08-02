@@ -1,19 +1,5 @@
 import { nextApiRequest } from '@/api/client/axios';
-
-export interface Letter {
-  id: string;
-  user_id: string;
-  step: number;
-  recipient_id: string;
-  content: string;
-  isLongestPath: boolean;
-  created_at: string;
-}
-
-export interface LetterDisplay {
-  step: number;
-  content: string;
-}
+import { Letter, LetterDisplay } from '@/api/types/letters';
 
 /**
  * 편지를 생성하고 가져오는 함수
