@@ -20,7 +20,7 @@ export default function ExchangePage() {
 
   // 수정 핸들러
   const handleEdit = (id: number) => {
-    router.push(`/exchange/edit/${id}`);
+    router.push(`/sell/edit/${id}`);
   };
 
   // 삭제 핸들러
