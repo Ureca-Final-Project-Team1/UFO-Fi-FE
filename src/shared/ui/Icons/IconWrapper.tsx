@@ -4,7 +4,7 @@ import { ICON_SIZES, ICON_COLORS } from '@/constants/icons';
 import { cn } from '@/lib/utils';
 
 import { IconProps } from './Icons.types';
-import { spanStyleMap, defaultValues } from './IconWrapper.styles';
+import { spanVariants, defaultValues } from './IconWrapperVariants';
 
 // SVG 요소인지 확인하는 타입 가드
 function isSVGElement(
@@ -37,7 +37,7 @@ export const IconWrapper: React.FC<IconWrapperProps> = (props) => {
 
   return (
     <span
-      className={cn(spanStyleMap.base, className)}
+      className={cn(spanVariants(), className)}
       style={{
         width: sizeValue,
         height: sizeValue,
