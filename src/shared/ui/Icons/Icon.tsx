@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ComponentProps, MouseEvent } from 'react';
+import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -21,13 +21,20 @@ type IconComponentProps = ComponentProps<'span'> &
  * Lucide 아이콘, 커스텀 SVG 아이콘, 이미지 아이콘을 하나의 인터페이스로 사용
  */
 export const Icon: React.FC<IconComponentProps> = (props) => {
-  const { name, src, alt, onClick, className, ...rest } = props;
+  const { name, src, alt, onClick, className, size, ...rest } = props;
+
+  const getImageIconSize = (size: IconProps['size']) => {
+    if (typeof size === 'number') return size;
+    if (size === 'xs' || size === 'xl' || size === '2xl' || size === '3xl') return 'md';
+    return size;
+  };
 
   if (src) {
     return (
       <ImageIcon
         src={src}
         alt={alt || name || 'icon'}
+        size={getImageIconSize(size)}
         onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
@@ -59,7 +66,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     const CustomIconComponent = customIconComponents[name as CustomIconType];
     return (
       <CustomIconComponent
-        onClick={onClick as ((event: MouseEvent<SVGElement>) => void) | undefined}
+        size={size}
+        onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
       />
@@ -70,6 +78,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return (
       <LucideIcon
         name={name as LucideIconType}
+        size={size}
         onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
@@ -80,6 +89,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return (
       <LucideIcon
         name="AlertCircle"
+        size={size}
         onClick={onClick}
         className={cn(className, onClick && 'cursor-pointer')}
         {...rest}
