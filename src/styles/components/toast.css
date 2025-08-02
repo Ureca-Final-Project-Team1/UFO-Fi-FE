@@ -1,5 +1,5 @@
 [data-sonner-toaster] {
-  bottom: 100px !important;
+  bottom: 120px;
   position: fixed;
   z-index: 9999;
 }
