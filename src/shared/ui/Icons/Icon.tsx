@@ -2,17 +2,16 @@ import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { errorMessages, defaultValues, customIconComponents } from './Icon.styles';
-import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
+import { IconProps, IconType, LucideIconType } from './Icons.types';
+import { iconVariants, errorMessages, defaultValues } from './IconVariants';
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
-type IconComponentProps = ComponentProps<'span'> &
-  IconProps & {
-    name?: IconType;
-    src?: string;
-    alt?: string;
-  };
+interface IconComponentProps extends Omit<ComponentProps<'span'>, 'onClick'>, IconProps {
+  name?: IconType;
+  src?: string;
+  alt?: string;
+}
 
 /**
  * 통합 아이콘 컴포넌트
@@ -34,7 +33,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
         src={src}
         alt={alt || name || 'icon'}
         onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
     );
@@ -45,23 +44,12 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return null;
   }
 
-  if (name in customIconComponents) {
-    const CustomIconComponent = customIconComponents[name as CustomIconType];
-    return (
-      <CustomIconComponent
-        onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
-        {...rest}
-      />
-    );
-  }
-
   try {
     return (
       <LucideIcon
         name={name as LucideIconType}
         onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
     );
@@ -71,7 +59,7 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
       <LucideIcon
         name="AlertCircle"
         onClick={onClick}
-        className={cn(className, onClick && 'cursor-pointer')}
+        className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
     );
