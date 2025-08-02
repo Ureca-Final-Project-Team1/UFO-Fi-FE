@@ -4,9 +4,9 @@ import React, { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import * as CustomIcons from './CustomIcons';
 import { IconProps, IconType, CustomIconType, LucideIconType } from './Icons.types';
 import { iconVariants, errorMessages, defaultValues } from './IconVariants';
-import * as CustomIcons from './CustomIcons';
 import { ImageIcon } from './ImageIcon';
 import { LucideIcon } from './LucideIcon';
 
@@ -44,7 +44,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
         src={src}
         alt={alt || name || 'icon'}
         size={getImageIconSize(size)}
-        onClick={onClick}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onClick={onClick as any}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
@@ -78,7 +79,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
     return (
       <CustomIconComponent
         size={size}
-        onClick={onClick}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onClick={onClick as any}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
@@ -90,7 +92,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
       <LucideIcon
         name={name as LucideIconType}
         size={size}
-        onClick={onClick}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onClick={onClick as any}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
@@ -101,7 +104,8 @@ export const Icon: React.FC<IconComponentProps> = (props) => {
       <LucideIcon
         name="AlertCircle"
         size={size}
-        onClick={onClick}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onClick={onClick as any}
         className={cn(iconVariants({ variant: onClick ? 'clickable' : 'default' }), className)}
         {...rest}
       />
