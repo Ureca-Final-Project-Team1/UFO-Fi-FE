@@ -1,8 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { IMAGE_PATHS } from '@/constants';
 import { ROUTE_CONFIG } from '@/constants/routes';
 import { AlienWithSpeech } from '@/features/onboarding/components';
 import { NextButton } from '@/features/onboarding/components';
@@ -48,7 +50,17 @@ export default function OnboardingPage() {
           }`}
         >
           <div className="relative mx-auto mb-6 w-full">
-            <OnboardingImageFrame onboardingSrc="/images/onboarding/test1.png" />
+            <OnboardingImageFrame onboardingSrc={step.image} />
+          </div>
+          <div className="relative w-full mt-4 sm:mt-6 md:mt-8 lg:mt-10">
+            <Image
+              src={IMAGE_PATHS.WINDOW_BOTTOM}
+              alt="창문 하단"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="w-full h-auto"
+            />
           </div>
 
           <AlienWithSpeech message={step.alienMessage} />

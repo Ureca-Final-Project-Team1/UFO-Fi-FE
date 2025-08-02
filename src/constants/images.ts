@@ -62,6 +62,7 @@ export const IMAGE_PATHS = {
   WINDOW: '/images/onboarding/window.svg',
   WINDOW_BORDER: '/images/onboarding/window-border.svg',
   WINDOW_MASK: '/images/onboarding/window-mask.svg',
+  WINDOW_BOTTOM: '/images/onboarding/window-bottom.svg',
 } as const;
 
 export const BADGE_ICONS: Record<string, string> = {};
