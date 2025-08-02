@@ -1,8 +1,11 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import { Carrier } from '@/api';
+import { MobileDataType } from '@/api/types/mobileData';
+import type { ExchangeItem } from '@/api/types/sell';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useInfiniteExchangePosts } from '@/features/exchange/hooks/useInfiniteExchangePosts';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
@@ -19,6 +22,22 @@ interface ExchangeListProps {
   onPurchase: (id: number) => void;
 }
 
+// 성능 최적화: 게시물 변환 함수
+const transformPostToItem = (post: ExchangeItem, userNickname?: string) => ({
+  id: post.postId,
+  title: post.title,
+  carrier: post.carrier,
+  networkType: getMobileDataTypeDisplay(post.mobileDataType as MobileDataType),
+  capacity: `${post.sellMobileDataCapacityGb}GB`,
+  price: `${post.totalPrice.toLocaleString()}ZET`,
+  timeLeft: formatTimeAgo(post.createdAt),
+  isOwner: userNickname === post.sellerNickname,
+  status: post.status,
+  sellerNickname: post.sellerNickname,
+  sellerId: post.sellerId,
+  sellerProfileUrl: post.sellerProfileUrl,
+});
+
 export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: ExchangeListProps) => {
   // 사용자 정보 조회
   const { data: userInfo } = useMyInfo();
@@ -27,12 +46,20 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
     useInfiniteExchangePosts();
 
-  // 무한스크롤 트리거 (화면 하단 감지)
+  // 다음 페이지 로드 함수 최적화
+  const loadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // 무한스크롤 트리거 최적화
   const { ref: loadMoreRef } = useInView({
-    threshold: 0,
+    threshold: 0.1,
+    rootMargin: '100px',
     onChange: (inView) => {
-      if (inView && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
+      if (inView) {
+        loadMore();
       }
     },
   });
@@ -40,36 +67,12 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
   const sellingItems = useMemo(() => {
     if (!data?.pages) return [];
 
-    return data.pages
-      .flatMap((page) => page.posts)
-      .filter((post) => post.status !== 'DELETED')
-      .map((post) => ({
-        id: post.postId,
-        title: post.title,
-        carrier: post.carrier,
-        networkType: getMobileDataTypeDisplay(post.mobileDataType),
-        capacity: `${post.sellMobileDataCapacityGb}GB`,
-        price: `${post.totalPrice.toLocaleString()}ZET`,
-        timeLeft: formatTimeAgo(post.createdAt),
-        isOwner: userInfo?.nickname === post.sellerNickname,
-        status: post.status,
-        sellerNickname: post.sellerNickname,
-        sellerId: post.sellerId,
-        sellerProfileUrl: post.sellerProfileUrl,
-      }));
-  }, [data?.pages, userInfo?.nickname]);
+    const allPosts = data.pages.flatMap((page) => page.posts);
 
-  // 로딩 상태
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-16">
-        <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-          <div className="text-white text-sm">게시글을 불러오는 중...</div>
-        </div>
-      </div>
-    );
-  }
+    return allPosts
+      .filter((post) => post.status !== 'DELETED')
+      .map((post) => transformPostToItem(post, userInfo?.nickname));
+  }, [data?.pages, userInfo?.nickname]);
 
   // 에러 상태
   if (error) {
@@ -96,14 +99,14 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
 
   return (
     <div className="w-full px-3">
-      {/* 반응형 그리드  */}
+      {/* 반응형 그리드 */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {sellingItems.map((item) => (
           <SellingItem
             key={item.id}
             title={item.title}
-            carrier={item.carrier}
-            networkType={item.networkType}
+            carrier={item.carrier as Carrier}
+            networkType={item.networkType as MobileDataType}
             capacity={item.capacity}
             price={item.price}
             timeLeft={item.timeLeft}

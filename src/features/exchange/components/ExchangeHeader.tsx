@@ -177,9 +177,9 @@ export const ExchangeHeader = () => {
           />
         </div>
 
-        {/* 필터 버튼들 (통신사/용량/가격) */}
+        {/* TODO: 필터 버튼들 API 다 안되면 지워야됨 */}
         <div className="flex flex-wrap gap-2">
-          <Chip rightIcon={<Icon name="ChevronDown" />}>통신사</Chip>
+          <Chip>통신사</Chip>
           <Chip>용량</Chip>
           <Chip>가격</Chip>
         </div>

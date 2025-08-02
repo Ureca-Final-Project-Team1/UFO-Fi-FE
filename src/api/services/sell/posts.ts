@@ -3,7 +3,8 @@ import type {
   SellDataRequest,
   SellDataResponse,
   UpdateSellDataRequest,
-  ExchangeItem,
+  GetPostsResponse,
+  PostDetailResponse,
 } from '@/api/types/sell';
 
 export const sellAPI = {
@@ -25,19 +26,24 @@ export const sellAPI = {
     return response.data;
   },
 
-  // 거래 게시물 현재 목록 조회
+  // 게시물 상세 조회
+  async getPostDetail(postId: number): Promise<PostDetailResponse> {
+    const response = await apiRequest.get<PostDetailResponse>(`/v1/posts/${postId}`);
+    return response.data;
+  },
+
+  // 거래 게시물 목록 조회 (무한스크롤)
   async getPosts(params?: {
-    page?: number;
-    size?: number;
     carrier?: string;
-    minPrice?: number;
-    maxPrice?: number;
-  }): Promise<ExchangeItem[]> {
-    const response = await apiRequest.get<{
-      statusCode: number;
-      message: string;
-      content: ExchangeItem[];
-    }>('/v1/posts', { params });
-    return response.data.content || [];
+    maxTotalZet?: number;
+    minTotalZet?: number;
+    maxCapacity?: number;
+    minCapacity?: number;
+    reputation?: string;
+    cursorId?: number;
+    size?: number;
+  }): Promise<GetPostsResponse> {
+    const response = await apiRequest.get<GetPostsResponse>('/v1/posts', { params });
+    return response.data;
   },
 };

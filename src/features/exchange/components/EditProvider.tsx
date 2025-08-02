@@ -3,9 +3,10 @@
 import { useRouter, useParams } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { exchangeAPI } from '@/api';
+import { sellAPI } from '@/api';
 import { AuthModal } from '@/features/exchange/components/AuthModal';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
+import { Loading } from '@/shared';
 
 interface PostData {
   title: string;
@@ -59,10 +60,22 @@ export const EditProvider = ({ children }: EditProviderProps) => {
       try {
         setIsLoading(true);
 
-        // 게시글 정보를 API에서 가져와서 소유권 확인
-        const response = await exchangeAPI.getPosts();
-        const posts = response.posts || [];
-        const targetPost = posts.find((post) => post.postId === Number(params.id));
+        const postId = Number(params.id);
+        if (isNaN(postId)) {
+          setAuthModal((prev) => ({
+            ...prev,
+            title: '잘못된 요청',
+            description: '올바르지 않은 게시물 ID입니다.\n거래소로 돌아가겠습니다.',
+            isOpen: true,
+          }));
+          setIsAuthorized(false);
+          setIsLoading(false);
+          return;
+        }
+
+        // 새로운 API 스펙: 게시물 상세 조회 사용
+        const response = await sellAPI.getPostDetail(postId);
+        const targetPost = response.content;
 
         if (!targetPost) {
           setAuthModal((prev) => ({
@@ -94,12 +107,32 @@ export const EditProvider = ({ children }: EditProviderProps) => {
         }
       } catch (error) {
         console.error('게시글 소유권 확인 실패:', error);
-        setAuthModal((prev) => ({
-          ...prev,
-          title: '오류가 발생했습니다',
-          description: '게시글 정보를 확인할 수 없습니다.\n거래소로 돌아가겠습니다.',
-          isOpen: true,
-        }));
+
+        // 에러 타입별 처리
+        if (error instanceof Error) {
+          if (error.message.includes('404')) {
+            setAuthModal((prev) => ({
+              ...prev,
+              title: '게시글을 찾을 수 없습니다',
+              description: '삭제되었거나 존재하지 않는 게시글입니다.\n거래소로 돌아가겠습니다.',
+              isOpen: true,
+            }));
+          } else if (error.message.includes('403')) {
+            setAuthModal((prev) => ({
+              ...prev,
+              title: '접근 권한이 없습니다',
+              description: '이 게시글에 접근할 권한이 없습니다.\n거래소로 돌아가겠습니다.',
+              isOpen: true,
+            }));
+          } else {
+            setAuthModal((prev) => ({
+              ...prev,
+              title: '오류가 발생했습니다',
+              description: '게시글 정보를 확인할 수 없습니다.\n거래소로 돌아가겠습니다.',
+              isOpen: true,
+            }));
+          }
+        }
         setIsAuthorized(false);
       } finally {
         setIsLoading(false);
@@ -116,11 +149,7 @@ export const EditProvider = ({ children }: EditProviderProps) => {
 
   // 로딩 중
   if (isUserLoading || isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-white">권한을 확인하는 중...</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   // 권한이 없는 경우
