@@ -26,6 +26,7 @@ export default function OnboardingPage() {
     return () => clearTimeout(timer);
   }, [currentStep]);
 
+  // 다음 버튼 클릭 핸들러
   const handleNext = useCallback(() => {
     if (currentStep < ONBOARDING_STEPS.length - 1) {
       setCurrentStep((prev) => prev + 1);
@@ -34,6 +35,7 @@ export default function OnboardingPage() {
     }
   }, [currentStep, router]);
 
+  // 스텝 인디케이터 클릭 핸들러
   const handleStepClick = (step: number) => {
     if (step <= currentStep) {
       setCurrentStep(step);
