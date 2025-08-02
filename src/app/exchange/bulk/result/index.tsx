@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { useBulkResult } from '@/features/bulk/hooks/useBulkResult';
-import { Icon, Button, Title } from '@/shared';
+import { Icon, Button, Title, Loading } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 function BulkResultContent() {
@@ -113,13 +113,7 @@ function BulkResultContent() {
 
 export default function BulkResultPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center h-full">
-          <div className="text-white">로딩 중...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<Loading />}>
       <BulkResultContent />
     </Suspense>
   );
