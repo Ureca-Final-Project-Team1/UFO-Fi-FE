@@ -47,8 +47,6 @@ export default function SignalCard({
         // 통일된 함수 사용
         const profileUrl = generateQRCodeValue(userId);
 
-        console.log('QR 코드 생성 URL:', profileUrl); // 디버깅용
-
         const dataURL = await generateQRCodeDataURL(profileUrl, {
           size: 80,
           margin: 1,
