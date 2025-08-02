@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
@@ -10,7 +11,6 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // GET: 현재 사용자에 대한 최장 경로 편지를 조회
 export async function GET() {
   try {
-    // STEP 1. 인증
     const result = await getUserFromToken();
     if ('error' in result) {
       return NextResponse.json({ error: result.error }, { status: result.status });
@@ -18,7 +18,6 @@ export async function GET() {
 
     const { userId } = result;
 
-    // 데이터베이스 쿼리 타임아웃 설정
     const queryStartTime = Date.now();
     const letters = await prisma.$transaction(
       async (prisma) => {
@@ -29,7 +28,7 @@ export async function GET() {
         });
       },
       {
-        timeout: 20000, // 20초 타임아웃
+        timeout: 20000,
       },
     );
 
@@ -50,7 +49,6 @@ export async function GET() {
   } catch (error) {
     console.error('편지 조회 실패:', error);
 
-    // JWT 에러 처리
     if (error instanceof jwt.JsonWebTokenError) {
       return NextResponse.json({ error: '유효하지 않은 토큰입니다.' }, { status: 401 });
     }
@@ -66,7 +64,6 @@ export async function GET() {
 // POST: 사용자 기준으로 새로운 편지를 생성
 export async function POST() {
   try {
-    // STEP 1. 인증
     const result = await getUserFromToken();
     if ('error' in result) {
       return NextResponse.json({ error: result.error }, { status: result.status });
@@ -74,7 +71,6 @@ export async function POST() {
 
     const { userId } = result;
 
-    // STEP 2. 기존 편지 조회
     const existingLetters = await prisma.voyage_letters.findMany({
       where: { user_id: userId },
       orderBy: { step: 'asc' },
@@ -86,14 +82,11 @@ export async function POST() {
       return new NextResponse(null, { status: 204 });
     }
 
-    // STEP 3. BFS로 최장 거래 경로 계산
     const visited = new Set<bigint>();
     const path: bigint[] = [];
 
     async function bfs(currentId: bigint) {
-      if (visited.has(currentId)) {
-        return;
-      }
+      if (visited.has(currentId)) return;
       visited.add(currentId);
       path.push(currentId);
 
@@ -119,7 +112,6 @@ export async function POST() {
       return new NextResponse(null, { status: 204 });
     }
 
-    // STEP 4. 사용자 이름 조회
     const users = await prisma.users.findMany({
       where: { id: { in: path } },
       select: { id: true, name: true },
@@ -127,7 +119,6 @@ export async function POST() {
 
     const newLetters = [];
 
-    // STEP 5. 경로에 따라 GPT 편지 생성 및 저장
     for (let i = 1; i < path.length; i++) {
       const fromId = path[i - 1];
       const toId = path[i];
@@ -135,6 +126,21 @@ export async function POST() {
 
       const fromName = users.find((u) => u.id === fromId)?.name ?? '어느 항해자';
       const toName = users.find((u) => u.id === toId)?.name ?? '다른 별';
+
+      const existing = await prisma.voyage_letters.findUnique({
+        where: {
+          user_id_step_recipient_id: {
+            user_id: userId,
+            step,
+            recipient_id: toId,
+          },
+        },
+      });
+
+      if (existing) {
+        newLetters.push(existing);
+        continue;
+      }
 
       const prompt = `당신은 은하계 항해 AI입니다. ${fromName}의 데이터가 ${toName}에게 도달했습니다.\n이 사실을 감성적이거나 재치있는 편지로 한 줄 적어주세요.`;
 
@@ -157,20 +163,47 @@ export async function POST() {
         content = `${fromName}의 데이터가 ${toName}에게 안전하게 도달했습니다.`;
       }
 
-      const saved = await prisma.voyage_letters.upsert({
-        where: { user_id_step: { user_id: userId, step } },
-        update: { recipient_id: toId, content, isLongestPath: true },
-        create: { user_id: userId, step, recipient_id: toId, content, isLongestPath: true },
-      });
-
-      newLetters.push(saved);
+      // 경쟁 조건 대비: create 시도 → 실패 시 continue
+      try {
+        const created = await prisma.voyage_letters.create({
+          data: {
+            user_id: userId,
+            step,
+            recipient_id: toId,
+            content,
+            isLongestPath: true,
+          },
+        });
+        newLetters.push(created);
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+          console.warn('이미 같은 편지가 생성됨 → 건너뜀');
+          const fallback = await prisma.voyage_letters.findUnique({
+            where: {
+              user_id_step_recipient_id: {
+                user_id: userId,
+                step,
+                recipient_id: toId,
+              },
+            },
+          });
+          if (fallback) {
+            newLetters.push(fallback);
+          }
+          continue;
+        }
+        throw error;
+      }
     }
 
-    // STEP 6. 기존 편지 중 새 경로에 포함되지 않은 것들 → isLongestPath: false 처리
     const currentPathLetterIds = newLetters.map((l) => l.id);
 
     await prisma.voyage_letters.updateMany({
-      where: { user_id: userId, id: { notIn: currentPathLetterIds } },
+      where: {
+        user_id: userId,
+        id: { notIn: currentPathLetterIds },
+        isLongestPath: true,
+      },
       data: { isLongestPath: false },
     });
 
