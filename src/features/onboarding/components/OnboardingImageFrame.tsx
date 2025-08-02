@@ -11,7 +11,7 @@ interface OnboardingImageFrameProps {
 
 export const OnboardingImageFrame = ({ onboardingSrc }: OnboardingImageFrameProps) => {
   return (
-    <div className="relative  aspect-[4/3]">
+    <div className="relative aspect-square">
       <Image
         src={IMAGE_PATHS.WINDOW_BORDER}
         alt="창문 테두리"
