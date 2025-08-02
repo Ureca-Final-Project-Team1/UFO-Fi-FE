@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, memo } from 'react';
 
 import { BANK_OPTIONS, BankOption } from '@/features/payments/constants/BankOptions';
 
@@ -24,7 +24,7 @@ type BankSelectSheetProps = ComponentProps<'div'> & {
   handleBankSelect?: (bank: BankOption) => void;
 };
 
-export const BankSelectSheet: React.FC<BankSelectSheetProps> = (props) => {
+export const BankSelectSheet = memo<BankSelectSheetProps>((props) => {
   const {
     isVisible = false,
     isOpen = false,
@@ -38,6 +38,7 @@ export const BankSelectSheet: React.FC<BankSelectSheetProps> = (props) => {
   } = props;
 
   if (!isVisible) return null;
+
   return (
     <>
       <div
@@ -78,4 +79,6 @@ export const BankSelectSheet: React.FC<BankSelectSheetProps> = (props) => {
       </div>
     </>
   );
-};
+});
+
+BankSelectSheet.displayName = 'BankSelectSheet';
