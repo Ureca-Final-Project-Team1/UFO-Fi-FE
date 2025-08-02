@@ -6,7 +6,13 @@ import React, { useState, useMemo, ComponentProps } from 'react';
 import { ICON_SIZES } from '@/constants/icons';
 import { cn } from '@/lib/utils';
 
-import { fallbackStyleMap, spanStyleMap, imageStyleMap, errorMessages } from './ImageIcon.styles';
+import {
+  fallbackVariants,
+  fallbackIconVariants,
+  spanVariants,
+  imageVariants,
+  errorMessages,
+} from './ImageIconVariants';
 import { LucideIcon } from './LucideIcon';
 
 const isStaticFile = (src: string): boolean => {
@@ -55,11 +61,11 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
   }, [src, isValidSrc, isStatic]);
 
   const renderFallback = () => (
-    <div className={fallbackStyleMap.container} style={{ width: sizeValue, height: sizeValue }}>
+    <div className={fallbackVariants()} style={{ width: sizeValue, height: sizeValue }}>
       <LucideIcon
         name={hasError ? fallbackIcon : 'Loader2'}
         size={size}
-        className={hasError ? '' : fallbackStyleMap.loading}
+        className={hasError ? fallbackIconVariants() : fallbackIconVariants({ variant: 'loading' })}
       />
     </div>
   );
@@ -69,18 +75,18 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
     console.warn(errorMessages.invalidSrc(src));
     return (
       <span
-        className={cn(spanStyleMap.base, className)}
+        className={cn(spanVariants(), className)}
         style={{ width: sizeValue, height: sizeValue }}
         {...rest}
       >
-        <LucideIcon name={fallbackIcon} size={size} className={fallbackStyleMap.icon} />
+        <LucideIcon name={fallbackIcon} size={size} className={fallbackIconVariants()} />
       </span>
     );
   }
 
   return (
     <span
-      className={cn(spanStyleMap.withRelative, className)}
+      className={cn(spanVariants({ variant: 'withRelative' }), className)}
       style={{ width: sizeValue, height: sizeValue }}
       {...rest}
     >
@@ -96,9 +102,11 @@ export const ImageIcon: React.FC<ImageIconProps> = (props) => {
         height={sizeValue}
         priority={priority}
         className={cn(
-          imageStyleMap.base,
+          imageVariants(),
           // 정적 파일은 즉시 표시, 외부 파일은 로딩 완료 후 표시
-          !isStatic && (isLoading || hasError) ? imageStyleMap.loading : imageStyleMap.loaded,
+          !isStatic && (isLoading || hasError)
+            ? imageVariants({ variant: 'loading' })
+            : imageVariants({ variant: 'loaded' }),
         )}
         sizes={`${sizeValue}px`}
         onLoad={() => {
