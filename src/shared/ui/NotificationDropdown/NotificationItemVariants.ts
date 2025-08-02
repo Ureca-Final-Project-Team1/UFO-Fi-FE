@@ -60,7 +60,7 @@ export const titleVariants = cva('text-sm leading-5', {
 });
 
 // 내용 variants
-export const contentVariants = cva('text-sm leading-5 line-clamp-2', {
+export const contentVariants = cva('text-sm leading-5 line-clamp-2 text-left', {
   variants: {
     variant: {
       base: '',

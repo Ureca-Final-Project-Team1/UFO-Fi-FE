@@ -16,7 +16,7 @@ export const buttonVariants = cva('', {
 export const iconVariants = cva('', {
   variants: {
     variant: {
-      bell: 'w-5 h-5',
+      bell: 'size-5 text-white',
     },
   },
   defaultVariants: {
