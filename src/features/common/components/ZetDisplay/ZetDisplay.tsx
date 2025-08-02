@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, memo } from 'react';
 
 import { sizeVariants, unitVariants } from './ZetDisplayVariants';
 
@@ -15,7 +15,7 @@ export const formatZetAmount = (amount: number): string => {
   return amount.toLocaleString();
 };
 
-export const ZetDisplay: React.FC<ZetDisplayProps> = (props) => {
+export const ZetDisplay = memo<ZetDisplayProps>((props) => {
   const { amount = 0, showUnit = true, size = 'md', ...rest } = props;
 
   const formattedAmount = formatZetAmount(amount);
@@ -26,4 +26,6 @@ export const ZetDisplay: React.FC<ZetDisplayProps> = (props) => {
       {showUnit && <span className={unitVariants()}>ZET</span>}
     </span>
   );
-};
+});
+
+ZetDisplay.displayName = 'ZetDisplay';
