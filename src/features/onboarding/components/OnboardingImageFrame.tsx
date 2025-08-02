@@ -22,7 +22,7 @@ export const OnboardingImageFrame = ({ onboardingSrc }: OnboardingImageFrameProp
 
       {/* 창문 모양 마스크 적용된 콘텐츠 */}
       <div
-        className="absolute inset-0 z-10 scale-[0.88]"
+        className="absolute inset-0 z-10 scale-[0.83]"
         style={{
           WebkitMaskImage: `url(${IMAGE_PATHS.WINDOW_MASK})`,
           WebkitMaskRepeat: 'no-repeat',

@@ -59,6 +59,9 @@ export const IMAGE_PATHS = {
   MY_PLANET_HALF: '/images/myplanet-half.svg',
   RECEIPT: '/images/receipt.svg',
   CLOUD: '/images/cloud.svg',
+  WINDOW: '/images/onboarding/window.svg',
+  WINDOW_BORDER: '/images/onboarding/window-border.svg',
+  WINDOW_MASK: '/images/onboarding/window-mask.svg',
 } as const;
 
 export const BADGE_ICONS: Record<string, string> = {};
