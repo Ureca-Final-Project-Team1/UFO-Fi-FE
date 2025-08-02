@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { serviceMarkdown } from '@/constants/terms/service';
-import { renderTermsWithHeadingsAndLinks } from '@/constants/terms/termsRenderer';
+import { MarkdownRenderer } from '@/features/common/components/MarkdownRenderer/MarkdownRenderer';
 import { Title } from '@/shared';
 
 export default function TermsPage() {
@@ -11,7 +11,7 @@ export default function TermsPage() {
     <div>
       <Title title="이용약관" iconVariant="back" />
       <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-        {renderTermsWithHeadingsAndLinks(serviceMarkdown)}
+        {MarkdownRenderer(serviceMarkdown)}
       </div>
     </div>
   );

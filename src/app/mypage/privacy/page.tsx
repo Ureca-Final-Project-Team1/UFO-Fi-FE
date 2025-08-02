@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { privacyMarkdown } from '@/constants/terms/privacy';
-import { renderTermsWithHeadingsAndLinks } from '@/constants/terms/termsRenderer';
+import { MarkdownRenderer } from '@/features/common/components/MarkdownRenderer/MarkdownRenderer';
 import { Title } from '@/shared';
 
 export default function TermsPage() {
@@ -11,7 +11,7 @@ export default function TermsPage() {
     <div>
       <Title title="개인정보 처리방침" iconVariant="back" />
       <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-        {renderTermsWithHeadingsAndLinks(privacyMarkdown)}
+        {MarkdownRenderer(privacyMarkdown)}
       </div>
     </div>
   );
