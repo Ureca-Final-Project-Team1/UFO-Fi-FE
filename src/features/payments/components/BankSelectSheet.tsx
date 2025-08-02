@@ -14,16 +14,18 @@ interface BankSelectSheetProps {
   handleBankSelect: (bank: BankOption) => void;
 }
 
-export const BankSelectSheet: React.FC<BankSelectSheetProps> = ({
-  isVisible,
-  isOpen,
-  dragTranslateY,
-  onClose,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-  handleBankSelect,
-}) => {
+export const BankSelectSheet: React.FC<BankSelectSheetProps> = (props) => {
+  const {
+    isVisible,
+    isOpen,
+    dragTranslateY,
+    onClose,
+    onDragStart,
+    onDragMove,
+    onDragEnd,
+    handleBankSelect,
+  } = props;
+
   if (!isVisible) return null;
   return (
     <>
