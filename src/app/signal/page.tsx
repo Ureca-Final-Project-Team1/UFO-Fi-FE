@@ -12,7 +12,7 @@ export default function SignalPage() {
   const [activeTab, setActiveTab] = useState<TabType>('orbit');
 
   return (
-    <div className="flex flex-col min-h-full w-full">
+    <div className="flex flex-col">
       <Title title="전파 거리" />
 
       {/* Tabs UI */}

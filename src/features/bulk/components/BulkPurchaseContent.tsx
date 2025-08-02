@@ -63,7 +63,7 @@ export function BulkPurchaseContent() {
   }
 
   return (
-    <div className="w-full min-h-full flex flex-col gap-6">
+    <div className="w-full h-full flex flex-col gap-6">
       <Title title="일괄구매 결과" />
       <section>
         <p className="body-16-bold mb-3">구매한 데이터 ({postCounts[0] || 0}건)</p>

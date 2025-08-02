@@ -1,0 +1,24 @@
+@layer utilities {
+  /* Top Navigation */
+  .top-nav-fixed {
+    @apply fixed top-0 left-1/2 transform -translate-x-1/2 h-14 z-50 w-full min-w-[375px] max-w-[620px] bg-primary-700 shadow-sm;
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav-fixed {
+    @apply fixed bottom-0 left-1/2 transform -translate-x-1/2 h-16 z-50 w-full min-w-[375px] max-w-[620px] bg-primary-700 border-t border-white/10;
+  }
+
+  /* Safe area 대응 */
+  @supports (padding: max(0px)) {
+    .top-nav-fixed {
+      padding-top: max(0px, env(safe-area-inset-top));
+      height: calc(56px + max(0px, env(safe-area-inset-top)));
+    }
+
+    .bottom-nav-fixed {
+      padding-bottom: max(0px, env(safe-area-inset-bottom));
+      height: calc(64px + max(0px, env(safe-area-inset-bottom)));
+    }
+  }
+}

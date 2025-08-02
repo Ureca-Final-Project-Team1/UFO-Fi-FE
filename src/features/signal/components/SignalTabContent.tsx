@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
 import { useLetters } from '@/hooks/useLetters';
+import { Loading } from '@/shared';
 
 import PlanetComponent from './PlanetComponent';
 
@@ -12,15 +13,26 @@ interface SignalTabContentProps {
 }
 
 export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(1);
+  const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 전역 상태에서 행성 도달 상태 가져오기
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
 
-  // 컴포넌트 마운트 시 편지 상태 로드
+  // 편지 상태 초기화 + 로딩 컨트롤
   useEffect(() => {
-    initializeLetters();
+    const loadData = async () => {
+      try {
+        await initializeLetters();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
   }, [initializeLetters]);
 
   const PLANETS = [
@@ -88,83 +100,149 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
 
   useEffect(() => {
     calculateScale();
-    const handleResize = () => calculateScale();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', calculateScale);
+    return () => window.removeEventListener('resize', calculateScale);
   }, [maxHeight]);
 
-  const scaledHeight = baseLayout.containerHeight * scale;
+  // PC 마우스 휠 → 수평 스크롤 가능하도록 추가
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
+      }
+    };
+
+    container.addEventListener('wheel', onWheel, { passive: false });
+    return () => container.removeEventListener('wheel', onWheel);
+  }, []);
+
+  // 스크롤 위치에 따른 버튼 표시 상태 업데이트
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const updateScrollButtons = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    };
+
+    updateScrollButtons();
+    container.addEventListener('scroll', updateScrollButtons);
+    return () => container.removeEventListener('scroll', updateScrollButtons);
+  }, [scale]);
+
+  const scrollLeft = () => {
+    scrollContainerRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+  };
+
+  const scrollRight = () => {
+    scrollContainerRef.current?.scrollTo({
+      left: scrollContainerRef.current.scrollWidth,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <div className="relative w-full overflow-hidden">
-      <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
-        {completedPlanets}번째 은하까지 탐사 완료...
-      </p>
+      {/* 로딩 오버레이로 변경 */}
+      {isLoading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center">
+          <Loading variant="signal" message="탐사 기록을 불러오는 중..." className="p-8" />
+        </div>
+      )}
 
-      <div
-        className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
-        style={{ height: `${scaledHeight}px` }}
-      >
+      {/* 하단 컨텐츠 전체를 감싸는 div */}
+      <div className={`${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+        <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
+          {completedPlanets}번째 은하까지 탐사 완료...
+        </p>
+        {/* 스크롤 버튼 */}
+        {canScrollLeft && (
+          <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
+            <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
+              ◀
+            </button>
+          </div>
+        )}
+        {canScrollRight && (
+          <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
+            <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
+              ▶
+            </button>
+          </div>
+        )}
+
         <div
-          ref={wrapperRef}
-          className="relative"
-          style={{
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-            width: `${860}px`,
-            height: `${baseLayout.containerHeight}px`,
-          }}
+          ref={scrollContainerRef}
+          className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
+          style={{ height: `${baseLayout.containerHeight * scale}px` }}
         >
-          {/* SVG 점선 - 각 연결선별로 개별 색상 */}
-          <svg
-            className="absolute top-0 left-0 pointer-events-none"
-            width="860"
-            height={baseLayout.containerHeight}
+          <div
+            ref={contentRef}
+            className="relative"
+            style={{
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+              width: `860px`,
+              height: `${baseLayout.containerHeight}px`,
+            }}
           >
-            {baseLayout.planets.map((from, i) => {
-              const to = baseLayout.planets[i + 1];
-              if (!to) return null;
-
-              const fromPoint = {
-                x: from.left + planetSizes[i] / 2,
-                y: from.top + planetSizes[i] / 2,
-              };
-              const toPoint = {
-                x: to.left + planetSizes[i + 1] / 2,
-                y: to.top + planetSizes[i + 1] / 2,
-              };
-
-              return (
-                <path
-                  key={i}
-                  d={getCurvePath(fromPoint, toPoint, i)}
-                  fill="none"
-                  stroke={getConnectionColor(i, i + 1)}
-                  strokeWidth="2"
-                  strokeDasharray="8 6"
-                />
-              );
-            })}
-          </svg>
-
-          {/* 행성들 */}
-          {baseLayout.planets.map((planet, index) => (
-            <div
-              key={index}
-              className="absolute"
-              style={{
-                top: `${planet.top}px`,
-                left: `${planet.left}px`,
-              }}
+            {/* SVG 점선 - 각 연결선별로 개별 색상 */}
+            <svg
+              className="absolute top-0 left-0 pointer-events-none"
+              width="860"
+              height={baseLayout.containerHeight}
             >
-              <PlanetComponent
-                planetSrc={PLANETS[index]}
-                satelliteSrc={SATELLITES[index]}
-                planetSize={planetSizes[index]}
-                isArrived={planetStatus[index]} // 전역 상태에서 가져온 행성 도달 상태 전달
-              />
-            </div>
-          ))}
+              {baseLayout.planets.map((from, i) => {
+                const to = baseLayout.planets[i + 1];
+                if (!to) return null;
+
+                const fromPoint = {
+                  x: from.left + planetSizes[i] / 2,
+                  y: from.top + planetSizes[i] / 2,
+                };
+                const toPoint = {
+                  x: to.left + planetSizes[i + 1] / 2,
+                  y: to.top + planetSizes[i + 1] / 2,
+                };
+
+                return (
+                  <path
+                    key={i}
+                    d={getCurvePath(fromPoint, toPoint, i)}
+                    fill="none"
+                    stroke={getConnectionColor(i, i + 1)}
+                    strokeWidth="2"
+                    strokeDasharray="8 6"
+                  />
+                );
+              })}
+            </svg>
+
+            {/* 행성들 */}
+            {baseLayout.planets.map((planet, index) => (
+              <div
+                key={index}
+                className="absolute"
+                style={{
+                  top: `${planet.top}px`,
+                  left: `${planet.left}px`,
+                }}
+              >
+                <PlanetComponent
+                  planetSrc={PLANETS[index]}
+                  satelliteSrc={SATELLITES[index]}
+                  planetSize={planetSizes[index]}
+                  isArrived={planetStatus[index]}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

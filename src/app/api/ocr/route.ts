@@ -45,6 +45,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ text, description });
   } catch (error) {
     console.error('OCR 실패:', error);
-    return NextResponse.json({ error: 'OCR 처리 중 오류 발생' }, { status: 500 });
+    return NextResponse.json({ error: 'OCR 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

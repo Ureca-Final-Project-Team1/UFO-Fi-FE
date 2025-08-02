@@ -54,5 +54,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function ProfileLayout({ children }: Props) {
-  return <div className="min-h-full w-full">{children}</div>;
+  return <>{children}</>;
 }

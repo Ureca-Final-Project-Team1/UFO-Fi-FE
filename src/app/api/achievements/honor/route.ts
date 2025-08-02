@@ -1,41 +1,20 @@
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
 
 export async function GET() {
-  // 1. 쿠키에서 JWT 토큰 꺼내기
-  const token = (await cookies()).get('Authorization')?.value;
-  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET 환경 변수가 설정되지 않았습니다.');
-  }
-
-  // 2. JWT 디코딩 및 userId 추출
-  let userId: bigint;
   try {
-    const secret = Buffer.from(process.env.JWT_SECRET, 'base64');
-    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
-    const id = decoded.id ?? decoded.sub;
-    if (!id) {
-      throw new Error('토큰에 user ID가 없습니다.');
+    // STEP 1. 쿠키에서 JWT 토큰 추출
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
     }
-    userId = BigInt(id);
-  } catch (error) {
-    if (error instanceof jwt.TokenExpiredError) {
-      return NextResponse.json({ error: '토큰이 만료되었습니다.' }, { status: 401 });
-    } else if (error instanceof jwt.JsonWebTokenError) {
-      return NextResponse.json({ error: '토큰이 유효하지 않습니다.' }, { status: 401 });
-    } else {
-      console.error('Token processing error:', error);
-      return NextResponse.json({ error: '인증에 실패했습니다.' }, { status: 401 });
-    }
-  }
 
-  // 3. 유저의 칭호 보유 내역 조회
-  try {
+    const { userId } = result;
+
+    // STEP 2. 유저의 칭호 보유 내역 조회
     let userHonorifics = await prisma.user_honorific.findMany({
       where: { user_id: userId },
       include: {
@@ -48,37 +27,37 @@ export async function GET() {
       },
     });
 
-    // 4. 없다면 기본 레벨 0 칭호 부여
+    // STEP 3. 칭호가 없다면 기본 레벨 0 부여
     if (userHonorifics.length === 0) {
-      const baseHonor = await prisma.honorific.findFirst({
-        where: { level: 0 },
+      const baseHonor = await prisma.honorific.findFirst({ where: { level: 0 } });
+
+      if (!baseHonor) {
+        throw new Error('레벨 0 칭호가 존재하지 않습니다.');
+      }
+
+      await prisma.user_honorific.create({
+        data: {
+          user_id: userId,
+          honorific_id: baseHonor.id,
+          is_active: true,
+        },
       });
 
-      if (baseHonor) {
-        await prisma.user_honorific.create({
-          data: {
-            user_id: userId,
-            honorific_id: baseHonor.id,
-            is_active: true,
+      // 다시 조회
+      userHonorifics = await prisma.user_honorific.findMany({
+        where: { user_id: userId },
+        include: {
+          honorific: true,
+        },
+        orderBy: {
+          honorific: {
+            level: 'asc',
           },
-        });
-
-        // 다시 조회
-        userHonorifics = await prisma.user_honorific.findMany({
-          where: { user_id: userId },
-          include: {
-            honorific: true,
-          },
-          orderBy: {
-            honorific: {
-              level: 'asc',
-            },
-          },
-        });
-      }
+        },
+      });
     }
 
-    // 5. 결과 반환
+    // STEP 4. 반환
     return NextResponse.json({
       userId: userId.toString(),
       honorifics: userHonorifics.map((uh) => ({
@@ -88,8 +67,24 @@ export async function GET() {
         isActive: uh.is_active,
       })),
     });
-  } catch (error) {
-    console.error('Database query error:', error);
-    return NextResponse.json({ error: '데이터베이스 연결에 실패했습니다.' }, { status: 500 });
+  } catch (error: unknown) {
+    // Prisma 오류 처리
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('[Prisma Known Error]', error.message, error.code);
+      return NextResponse.json({ error: '데이터 처리 중 오류가 발생했습니다.' }, { status: 500 });
+    }
+
+    if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+      console.error('[Prisma Unknown Error]', error.message);
+      return NextResponse.json({ error: '알 수 없는 데이터베이스 오류입니다.' }, { status: 500 });
+    }
+
+    if (error instanceof Error) {
+      console.error('[Server Error]', error.stack || error.message);
+      return NextResponse.json({ error: '서버 내부 오류가 발생했습니다.' }, { status: 500 });
+    }
+
+    console.error('[Unhandled Error]', error);
+    return NextResponse.json({ error: '예기치 못한 오류가 발생했습니다.' }, { status: 500 });
   }
 }

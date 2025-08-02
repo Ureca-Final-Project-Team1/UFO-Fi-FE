@@ -4,13 +4,14 @@ export const loadingContainerVariants = cva('flex items-center justify-center', 
   variants: {
     fullScreen: {
       true: 'min-h-screen w-full',
-      false: 'p-4',
+      false: 'min-h-[80vh] w-full',
     },
     variant: {
       default: 'flex-col gap-2',
       spinner: 'flex-col gap-2',
       dots: 'flex-col gap-2',
       pulse: 'flex-col gap-2',
+      signal: 'flex-col gap-2',
     },
   },
   defaultVariants: {
@@ -24,9 +25,9 @@ export const loadingSpinnerVariants = cva(
   {
     variants: {
       size: {
-        sm: 'w-4 h-4',
-        md: 'w-8 h-8',
-        lg: 'w-12 h-12',
+        sm: 'size-4',
+        md: 'size-8',
+        lg: 'size-12',
       },
     },
     defaultVariants: {
@@ -38,9 +39,9 @@ export const loadingSpinnerVariants = cva(
 export const loadingDotsVariants = cva('bg-cyan-400 rounded-full animate-pulse', {
   variants: {
     size: {
-      sm: 'w-2 h-2',
-      md: 'w-3 h-3',
-      lg: 'w-4 h-4',
+      sm: 'size-2',
+      md: 'size-3',
+      lg: 'size-4',
     },
   },
   defaultVariants: {

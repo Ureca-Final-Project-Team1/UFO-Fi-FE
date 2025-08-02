@@ -24,20 +24,42 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen pb-[20px]">
-      <div className="flex flex-[0.9] flex-col justify-center items-center text-center gap-5 w-full h-full pb-16">
-        <div className="flex flex-col justify-center items-center w-[300px] h-[80px] gap-8">
-          <Image src={ICON_PATHS['UFO_LOGO']} width={134.5} height={136} alt="ufo" />
-          <h1 className="pyeongchangpeace-title-1">UFO-Fi</h1>
-          <h3 className="pyeongchangpeace-title-2 text-teal-300">
+    <div className="min-h-full flex flex-col justify-between items-center px-6">
+      {/* 메인 콘텐츠 영역 - 화면 중앙에 배치 */}
+      <div className="flex-1 flex flex-col justify-center items-center text-center max-w-md w-full">
+        {/* 로고 및 텍스트 영역 */}
+        <div className="flex flex-col items-center gap-8 mb-12">
+          {/* UFO 로고 */}
+          <div className="flex flex-col items-center gap-4">
+            <Image
+              src={ICON_PATHS['UFO_LOGO']}
+              width={120}
+              height={120}
+              alt="UFO-Fi 로고"
+              className="drop-shadow-lg"
+              priority
+            />
+            <h1 className="pyeongchangpeace-title-1 text-white">UFO-Fi</h1>
+          </div>
+
+          {/* 서브 타이틀 */}
+          <h3 className="pyeongchangpeace-title-2 text-teal-300 leading-relaxed">
             데이터는 부족해도, 은하는 연결되어 있다.
           </h3>
         </div>
+      </div>
+
+      {/* 카카오 로그인 버튼 - 하단 고정 */}
+      <div className="w-full max-w-[320px] pb-6">
         <Button
-          className="fixed bottom-20 hover:cursor-pointer bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-cover h-10 sm:h-14 max-w-[300px] sm:max-w-[360px]"
+          className="w-full h-11 sm:h-12 bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-contain hover:opacity-90 transition-opacity duration-200 border-0"
           size="full-width"
           onClick={handleKakaoLogin}
-        />
+          aria-label="카카오로 로그인하기"
+        >
+          {/* 접근성을 위한 대체 텍스트 (시각적으로 숨김) */}
+          <span className="sr-only">카카오로 로그인하기</span>
+        </Button>
       </div>
     </div>
   );

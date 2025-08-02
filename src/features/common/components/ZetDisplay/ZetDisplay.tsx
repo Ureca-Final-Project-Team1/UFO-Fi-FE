@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { ComponentProps, memo } from 'react';
 
-interface ZetDisplayProps {
-  amount: number;
-  className?: string;
+import { sizeVariants, unitVariants } from './ZetDisplayVariants';
+
+type ZetDisplayProps = ComponentProps<'span'> & {
+  amount?: number;
   showUnit?: boolean;
   size?: 'sm' | 'md' | 'lg';
-}
+};
 
 export const formatZetAmount = (amount: number): string => {
   if (amount >= 99999) {
@@ -14,24 +15,17 @@ export const formatZetAmount = (amount: number): string => {
   return amount.toLocaleString();
 };
 
-export const ZetDisplay: React.FC<ZetDisplayProps> = ({
-  amount,
-  className = '',
-  showUnit = true,
-  size = 'md',
-}) => {
-  const sizeClasses = {
-    sm: 'text-sm',
-    md: 'text-base',
-    lg: 'text-lg',
-  };
+export const ZetDisplay = memo<ZetDisplayProps>((props) => {
+  const { amount = 0, showUnit = true, size = 'md', ...rest } = props;
 
   const formattedAmount = formatZetAmount(amount);
 
   return (
-    <span className={`${sizeClasses[size]} ${className}`}>
+    <span className={`${sizeVariants({ size })} ${rest.className || ''}`} {...rest}>
       {formattedAmount}
-      {showUnit && <span className="ml-1">ZET</span>}
+      {showUnit && <span className={unitVariants()}>ZET</span>}
     </span>
   );
-};
+});
+
+ZetDisplay.displayName = 'ZetDisplay';

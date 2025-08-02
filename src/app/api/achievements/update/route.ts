@@ -1,81 +1,72 @@
-import { achievements } from '@prisma/client';
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+import { Prisma, achievements } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
 
 export async function POST() {
-  const token = (await cookies()).get('Authorization')?.value;
-  if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET is not configured');
-
-  let userId: bigint;
   try {
-    const secret = Buffer.from(process.env.JWT_SECRET, 'base64');
-    const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
-    const id = decoded.id ?? decoded.sub;
-    if (!id) throw new Error('User ID missing in token');
-    userId = BigInt(id);
-  } catch {
-    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-  }
+    // STEP 1. 인증 처리
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
+    }
 
-  try {
-    // 유저 상태 계산
+    const { userId } = result;
+
+    // STEP 2. 유저 상태 계산
     const [tradeCount, followerCount, step5Count] = await Promise.all([
       prisma.trade_histories.count({ where: { user_id: userId } }),
       prisma.follows.count({ where: { following_user_id: userId } }),
       prisma.voyage_letters.count({ where: { user_id: userId, step: 5 } }),
     ]);
 
-    // 모든 업적 불러오기
+    // STEP 3. 전체 업적 로딩
     const allAchievements = await prisma.achievements.findMany({
       orderBy: [{ level: 'asc' }],
     });
 
-    // 이미 달성한 업적 ID 및 시간 조회
+    // STEP 4. 이미 달성한 업적
     const alreadyAchieved = await prisma.user_achievements.findMany({
       where: { user_id: userId },
       select: { achievement_id: true, achieved_at: true },
     });
 
-    // ID는 number로, achieved_at은 null 아닌 것만 Map에 저장
     const achievedMap = new Map<number, Date>(
       alreadyAchieved
         .filter((a): a is { achievement_id: bigint; achieved_at: Date } => !!a.achieved_at)
         .map((a) => [Number(a.achievement_id), a.achieved_at]),
     );
 
-    // 조건 만족 여부 판별
     const isMet = (type: 'trade' | 'follow' | 'rotate', value: number, required: number): boolean =>
       value >= required;
 
-    // 새로 달성한 업적 필터링
     const newlyAchieved = allAchievements.filter((a) => {
       const currentValue =
         a.type === 'trade' ? tradeCount : a.type === 'follow' ? followerCount : step5Count;
+
       return (
         isMet(a.type as 'trade' | 'follow' | 'rotate', currentValue, a.condition_value) &&
         !achievedMap.has(Number(a.id))
       );
     });
 
-    // 새 업적 기록
-    await prisma.$transaction(
-      newlyAchieved.map((a) =>
-        prisma.user_achievements.create({
-          data: {
-            user_id: userId,
-            achievement_id: a.id,
-            achieved_at: new Date(),
-          },
-        }),
-      ),
-    );
+    // STEP 5. 새 업적 기록
+    if (newlyAchieved.length > 0) {
+      await prisma.$transaction(
+        newlyAchieved.map((a) =>
+          prisma.user_achievements.create({
+            data: {
+              user_id: userId,
+              achievement_id: a.id,
+              achieved_at: new Date(),
+            },
+          }),
+        ),
+      );
+    }
 
-    // 전체 업적에 달성 여부 추가
+    // STEP 6. 업적 + 달성 여부 반환
     const achievementsWithMeta = allAchievements.map((a) => ({
       ...a,
       achievedAt:
@@ -83,7 +74,7 @@ export async function POST() {
         (newlyAchieved.some((n) => n.id === a.id) ? new Date() : null),
     }));
 
-    // 레벨 계산 헬퍼
+    // STEP 7. 레벨 계산
     const calculateLevel = (type: 'trade' | 'follow' | 'rotate', currentValue: number): number => {
       return Math.max(
         ...allAchievements
@@ -107,13 +98,28 @@ export async function POST() {
       achievements: achievementsWithMeta.map((a) => ({
         ...a,
         id: Number(a.id),
-        condition_value: Number(a.condition_value),
         level: Number(a.level),
+        condition_value: Number(a.condition_value),
       })),
       newly_achieved_ids: newlyAchieved.map((a: achievements) => Number(a.id)),
     });
-  } catch (error) {
-    console.error('Achievement update error:', error);
-    return NextResponse.json({ error: '업적 업데이트 중 오류가 발생했습니다.' }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('[Prisma Known Error]', error.message);
+      return NextResponse.json({ error: '데이터 처리 중 오류가 발생했습니다.' }, { status: 500 });
+    }
+
+    if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+      console.error('[Prisma Unknown Error]', error.message);
+      return NextResponse.json({ error: '알 수 없는 데이터베이스 오류입니다.' }, { status: 500 });
+    }
+
+    if (error instanceof Error) {
+      console.error('[Server Error]', error.stack || error.message);
+      return NextResponse.json({ error: '서버 내부 오류가 발생했습니다.' }, { status: 500 });
+    }
+
+    console.error('[Unhandled Error]', error);
+    return NextResponse.json({ error: '예기치 못한 오류가 발생했습니다.' }, { status: 500 });
   }
 }

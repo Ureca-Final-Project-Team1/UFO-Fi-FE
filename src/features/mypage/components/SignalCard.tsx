@@ -9,6 +9,8 @@ import { toast } from 'sonner';
 import { achievementsAPI } from '@/api/services/mypage/achievement';
 import { IMAGE_PATHS } from '@/constants/images';
 import { formatZetAmount } from '@/features/common/components/ZetDisplay';
+import { generateQRCodeDataURL } from '@/features/profile/utils/qrCodeUtils';
+import { generateQRCodeValue } from '@/features/profile/utils/shareUtils';
 import { Avatar, Button, Progress } from '@/shared';
 import { Honorific } from '@/types/Achievement';
 
@@ -33,7 +35,41 @@ export default function SignalCard({
 }: SignalCardProps) {
   const router = useRouter();
   const [honorifics, setHonorifics] = useState<Honorific[]>([]);
+  const [qrCodeDataURL, setQrCodeDataURL] = useState<string>('');
+  const [isQRLoading, setIsQRLoading] = useState(true);
 
+  // QR코드 동적 생성 - 통일된 함수 사용
+  useEffect(() => {
+    const generateUserQR = async () => {
+      try {
+        setIsQRLoading(true);
+
+        // 통일된 함수 사용
+        const profileUrl = generateQRCodeValue(userId);
+
+        const dataURL = await generateQRCodeDataURL(profileUrl, {
+          size: 80,
+          margin: 1,
+          color: {
+            dark: '#000000',
+            light: '#FFFFFF',
+          },
+        });
+        setQrCodeDataURL(dataURL);
+      } catch (error) {
+        console.error('QR 코드 생성 실패:', error);
+        setQrCodeDataURL('');
+      } finally {
+        setIsQRLoading(false);
+      }
+    };
+
+    if (userId) {
+      generateUserQR();
+    }
+  }, [userId]);
+
+  // ... 나머지 코드는 동일
   useEffect(() => {
     if (initialHonorifics.length === 0) {
       setHonorifics([]);
@@ -52,18 +88,23 @@ export default function SignalCard({
       );
     }
   }, [initialHonorifics]);
+
   const formattedZet = formatZetAmount(zetAmount);
 
   return (
-    <div
+    <section
       className="rounded-xl shadow-lg border-[4px] w-full max-w-[620px] mx-auto min-w-0"
       style={{
         borderColor: 'var(--chart-4)',
         backgroundColor: 'var(--color-background-card)',
       }}
+      role="region"
+      aria-labelledby="signal-card-title"
     >
-      <div className="text-center py-2 px-2">
+      {/* 헤더 */}
+      <header className="text-center py-2 px-2">
         <h2
+          id="signal-card-title"
           className="heading-20-bold sm:heading-24-bold"
           style={{ color: 'var(--color-badge-hover-dark)' }}
         >
@@ -79,10 +120,11 @@ export default function SignalCard({
           EARTH-BASED FIELD IDENTIFICATION
         </p>
         <hr className="my-1 border-black/30" />
-      </div>
+      </header>
 
+      {/* 메인 컨텐츠 */}
       <div className="flex justify-between items-start px-2 sm:px-4 md:px-6 pb-3 gap-2 sm:gap-3 md:gap-5">
-        {/* 왼쪽 캐릭터 */}
+        {/* 왼쪽 프로필 */}
         <div className="flex flex-col items-center shrink-0">
           <Avatar
             size="sm"
@@ -91,7 +133,7 @@ export default function SignalCard({
           >
             <Image
               src={profileImageUrl || IMAGE_PATHS.AVATAR}
-              alt="지구인"
+              alt={`${userId}의 프로필 이미지`}
               width={48}
               height={48}
               className="rounded-md w-full h-full object-cover sm:w-[64px] sm:h-[64px] md:w-[80px] md:h-[80px]"
@@ -113,9 +155,7 @@ export default function SignalCard({
                 await achievementsAPI.updateUserHonorific(name);
               } catch (error) {
                 console.error('칭호 변경 실패:', error);
-                // 실패 시 이전 상태로 롤백
                 setHonorifics(initialHonorifics);
-                // 사용자에게 에러 알림 (toast 등 사용)
                 toast.error('칭호 변경에 실패했습니다. 다시 시도해주세요.');
               }
             }}
@@ -126,19 +166,24 @@ export default function SignalCard({
           </HonorificChip>
         </div>
 
-        {/* 가운데 텍스트 */}
+        {/* 가운데 사용자 정보 */}
         <div className="flex-1 space-y-1 min-w-0">
           <div className="flex justify-between items-center">
-            <span className="body-16-bold sm:body-20-bold text-black truncate">
+            <h3 className="body-16-bold sm:body-20-bold text-black truncate">
               <span className="font-bold">{userId ? userId : '지구인'}</span>
-            </span>
+            </h3>
           </div>
 
           <div className="flex items-center caption-10-bold sm:caption-12-bold text-gray-800">
             <span className="truncate">이번 달 판매 가능 용량</span>
           </div>
 
-          <Progress usedStorage={availableData} totalStorage={maxData} size="sm" />
+          <Progress
+            usedStorage={availableData}
+            totalStorage={maxData}
+            size="sm"
+            aria-label={`데이터 사용량: ${availableData}/${maxData}GB`}
+          />
           <hr className="border-black/30" />
 
           <div className="caption-10-bold sm:caption-12-bold flex flex-col text-gray-800">
@@ -147,8 +192,11 @@ export default function SignalCard({
               <span className="body-14-bold sm:body-16-bold font-bold text-chart-4 truncate">
                 {formattedZet} ZET
               </span>
-              <Link href="/charge">
-                <button className="whitespace-nowrap caption-12-medium sm:body-14-medium rounded-md px-2 sm:px-4 py-1 sm:py-2 flex items-center justify-center exploration-button text-xs sm:text-sm">
+              <Link href="/charge" aria-label="ZET 충전하기">
+                <button
+                  type="button"
+                  className="whitespace-nowrap caption-12-medium sm:body-14-medium rounded-md px-2 sm:px-4 py-1 sm:py-2 flex items-center justify-center exploration-button text-xs sm:text-sm"
+                >
                   충전
                 </button>
               </Link>
@@ -156,32 +204,49 @@ export default function SignalCard({
           </div>
         </div>
 
-        {/* 오른쪽 QR & 칩 */}
+        {/* 오른쪽 QR & 액션 */}
         <div className="flex flex-col items-end gap-1 sm:gap-2 shrink-0">
           <Button
+            type="button"
             variant="outline"
             size="compact"
             className="text-gray-800 caption-6-medium sm:caption-8-medium h-6 sm:h-7 px-1 py-1 whitespace-nowrap text-[8px] sm:text-[10px]"
             onClick={() => router.push('/mypage/edit-profile')}
+            aria-label="프로필 수정하기"
           >
             ✏️&nbsp;프로필 수정
           </Button>
-          <Image
-            src={IMAGE_PATHS.QR}
-            alt="QR 코드"
-            width={48}
-            height={48}
-            className="sm:w-[64px] sm:h-[64px] md:w-[80px] md:h-[80px]"
-          />
+
+          {/* 동적 QR코드 */}
+          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white rounded-lg flex items-center justify-center">
+            {isQRLoading ? (
+              <div className="animate-spin w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full" />
+            ) : qrCodeDataURL ? (
+              <img
+                src={qrCodeDataURL}
+                alt={`${userId}의 프로필 QR 코드`}
+                className="w-full h-full object-contain rounded-lg"
+              />
+            ) : (
+              <Image
+                src={IMAGE_PATHS.QR}
+                alt="기본 QR 코드"
+                width={48}
+                height={48}
+                className="sm:w-[64px] sm:h-[64px] md:w-[80px] md:h-[80px]"
+              />
+            )}
+          </div>
+
           <Image
             src={IMAGE_PATHS.IC}
-            alt="칩"
+            alt="신분증 칩"
             width={32}
             height={32}
             className="mt-1 sm:mt-2 sm:w-[40px] sm:h-[40px] md:w-[50px] md:h-[50px]"
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 }

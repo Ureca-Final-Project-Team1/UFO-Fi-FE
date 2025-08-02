@@ -75,11 +75,10 @@ export default function AchievementPage() {
   }, []);
 
   if (isLoading) return <Loading />;
-  if (error)
-    return <div className="w-full min-h-full flex justify-center items-center">{error}</div>;
+  if (error) return <>{error}</>;
 
   return (
-    <div className="relative w-full min-h-full items-center flex flex-col gap-6">
+    <div className="relative flex flex-col gap-6">
       <Title iconVariant="back" className="w-full body-20-bold pb-2" title="업적 도감" />
       <p className="w-full text-center caption-12-medium">
         작지만 즐거운 업적을 모두 달성하고

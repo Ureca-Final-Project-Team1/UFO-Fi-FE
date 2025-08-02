@@ -26,7 +26,7 @@ export const FilterBox = ({
       )}
     >
       <div
-        className="absolute inset-0 w-full min-h-full rounded-2xl"
+        className="absolute inset-0 w-full h-full rounded-2xl"
         style={{
           background: 'var(--bg-trade-card)',
           opacity: 0.65,

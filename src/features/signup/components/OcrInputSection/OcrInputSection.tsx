@@ -208,18 +208,20 @@ export const OCRInputSection = ({
           accept="image/*"
           className="hidden"
         />
-        <Button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          className={ocrInputVariants.ocrButton}
-          variant="primary"
-          disabled={isLoading}
-        >
-          <div className={ocrInputVariants.ocrIconWrapper}>
-            <Icon name="Focus" />
-            <p>캡처 이미지로 요금제 자동 입력</p>
-          </div>
-        </Button>
+        <div className="pb-4">
+          <Button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className={ocrInputVariants.ocrButton}
+            variant="primary"
+            disabled={isLoading}
+          >
+            <div className={ocrInputVariants.ocrIconWrapper}>
+              <Icon name="Focus" />
+              <p>캡처 이미지로 요금제 자동 입력</p>
+            </div>
+          </Button>
+        </div>
       </div>
     </div>
   );
