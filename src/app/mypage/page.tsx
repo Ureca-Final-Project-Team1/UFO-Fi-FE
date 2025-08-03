@@ -10,9 +10,9 @@ import { LogoutModal } from '@/features/mypage/components';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
+import { Honorific } from '@/features/mypage/types/Achievement';
 import { Button, Icon, IconType, Loading, Title } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
-import { Honorific } from '@/types/Achievement';
 
 export default function MyPage() {
   const router = useRouter();

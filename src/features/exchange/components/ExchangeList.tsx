@@ -8,8 +8,8 @@ import type { ExchangeItem } from '@/backend/types/sell';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button } from '@/shared';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { formatTimeAgo } from '@/shared/utils';
+import { getMobileDataTypeDisplay } from '@/shared/utils/mobileData';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
 import { ExchangeListSkeleton } from './ExchangeListSkeleton';

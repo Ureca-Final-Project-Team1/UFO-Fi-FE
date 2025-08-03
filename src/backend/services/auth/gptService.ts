@@ -1,4 +1,4 @@
-import { ChatResult } from '@/types/ocr';
+import { ChatResult } from '@/features/signup/types/ocr';
 
 export const gptService = async (info: {
   message: string;

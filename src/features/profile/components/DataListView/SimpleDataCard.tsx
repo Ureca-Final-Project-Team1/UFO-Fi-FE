@@ -6,8 +6,8 @@ import { useState } from 'react';
 import type { TradePost } from '@/backend/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { formatTimeAgo } from '@/shared/utils';
+import { getMobileDataTypeDisplay } from '@/shared/utils';
 
 interface SimpleDataCardProps {
   post: TradePost;

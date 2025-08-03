@@ -10,10 +10,10 @@ import { purchaseHistory } from '@/backend/services/history/purchaseHistory';
 import { sellHistory } from '@/backend/services/history/sellHistory';
 import { PurchaseHistoryResponse, SellHistoryResponse } from '@/backend/types/history';
 import { TradeHistoryCard } from '@/features/mypage/components';
+import { useTradeHistory } from '@/features/mypage/hooks/useTradeHistory';
 import { TradeHistoryCardProps } from '@/features/mypage/types/TradeHistoryCard.types';
-import { useTradeHistory } from '@/hooks/useTradeHistory';
 import { BadgeState, Button, Label, Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared';
-import { groupByDate } from '@/utils/groupByDate';
+import { groupByDate } from '@/shared/utils/groupByDate';
 
 type TradeCardItem = TradeHistoryCardProps & {
   createdAt: Date;

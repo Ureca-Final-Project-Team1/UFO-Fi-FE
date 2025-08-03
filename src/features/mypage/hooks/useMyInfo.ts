@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { myInfoAPI } from '@/backend';
 import { ApiError } from '@/backend/client/axios';
 import { MyInfoResponse } from '@/backend/types/myInfo';
-import { queryKeys } from '@/utils';
+import { queryKeys } from '@/shared/utils';
 
 export function useMyInfo(enabled: boolean = true) {
   return useQuery<MyInfoResponse['content'] | null, unknown>({

@@ -7,8 +7,8 @@ import { toast } from 'sonner';
 import { bulkPurchaseAPI } from '@/backend';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { Button, Loading, Title } from '@/shared';
+import { formatTimeAgo } from '@/shared/utils';
 import { usePostIdsStore } from '@/stores/useBulkStore';
-import { formatTimeAgo } from '@/utils';
 
 import { BulkPurchaseItem, FailureBulkPurchaseItem } from '../types/bulkResult.types';
 

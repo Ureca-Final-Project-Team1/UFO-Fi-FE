@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SuccessApiResponse, ErrorApiResponse } from '@/backend';
 import { HttpStatusCode } from '@/backend/types/api';
 import { prisma } from '@/lib/prisma';
-import { getUserFromToken } from '@/utils/getUserFromToken';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 interface RouteParams {
   params: Promise<{ id: string }>;

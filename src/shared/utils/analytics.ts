@@ -6,7 +6,7 @@ import type {
   FormAction,
   GTMEventData,
   UserProperties,
-} from '@/types/analytics';
+} from '@/shared/types/analytics';
 
 const sendClarityEvent = (eventName: string, parameters?: AnalyticsEventParams): void => {
   if (typeof window !== 'undefined' && window.clarity) {

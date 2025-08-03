@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
-import { getOnlyNumbers } from '@/utils/getOnlyNumbers';
+import { getOnlyNumbers } from '@/shared/utils/getOnlyNumbers';
 
 import { Input } from './Input';
 import { CustomInputProps } from './Input.types';

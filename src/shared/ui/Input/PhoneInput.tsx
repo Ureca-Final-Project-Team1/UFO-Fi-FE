@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
-import { formatPhoneNumber } from '@/utils/formatPhoneNumber';
+import { formatPhoneNumber } from '@/shared/utils/formatPhoneNumber';
 
 import { Input } from './Input';
 import { CustomInputProps } from './Input.types';

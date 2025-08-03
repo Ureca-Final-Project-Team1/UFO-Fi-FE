@@ -1,9 +1,9 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-import type { EcommerceItem, UserProperties } from '@/types/analytics';
+import type { EcommerceItem, UserProperties } from '@/shared/types/analytics';
 
-import { analytics } from '../../utils/analytics';
+import { analytics } from '../utils/analytics';
 
 export function useAnalytics() {
   const pathname = usePathname();

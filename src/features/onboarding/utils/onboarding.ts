@@ -1,5 +1,5 @@
 import { OnboardingStep } from '@/features/onboarding/types/onboarding';
-import { analytics } from '@/utils/analytics';
+import { analytics } from '@/shared/utils/analytics';
 
 export const ONBOARDING_STEPS: OnboardingStep[] = [
   {

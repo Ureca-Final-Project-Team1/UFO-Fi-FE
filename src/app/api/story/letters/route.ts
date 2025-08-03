@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 
 import { prisma } from '@/lib/prisma';
-import { getUserFromToken } from '@/utils/getUserFromToken';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 

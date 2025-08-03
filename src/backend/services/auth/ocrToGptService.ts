@@ -1,4 +1,4 @@
-import { OCR_PROMPT } from '@/utils/OCRPrompt';
+import { OCR_PROMPT } from '@/features/signup/utils/OCRPrompt';
 
 import { gptService } from './gptService';
 

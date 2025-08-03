@@ -9,8 +9,8 @@ import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost } from '@/backend';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
+import { queryKeys } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-import { queryKeys } from '@/utils';
 
 export default function ExchangePage() {
   const router = useRouter();
