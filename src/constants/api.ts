@@ -127,6 +127,26 @@ export const API_ENDPOINTS = {
     REPORTS: '/statistics/reports',
   },
 
+  //NextAPI
+
+  //Collections(2)
+  COLLECTIONS: {
+    CREATE: '/api/collections',
+    SEARCH: '/api/collections/search',
+  },
+
+  // Achievements(4)
+  ACHIEVEMENTS: {
+    UPDATE: '/api/achievements/update',
+    HONOR: '/api/achievements/honor',
+    SELECT_HONOR: '/api/achievements/honor/select',
+  },
+
+  // Story(1)
+  STORY: {
+    LETTERS: '/api/story/letters',
+  },
+
   REFRESH: '/refresh',
   LOGOUT: '/logout',
 } as const;
