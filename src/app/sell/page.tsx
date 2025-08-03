@@ -35,10 +35,11 @@ export default function SellPage() {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="relative w-full min-h-full flex flex-col">
       <Title title="데이터 판매 등록" />
 
-      <div className="flex-1 space-y-6 py-4">
+      {/* 메인 컨텐츠 영역 */}
+      <div className="flex-1 space-y-6 py-4 pb-48 sm:pb-24">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -48,11 +49,11 @@ export default function SellPage() {
         {/* 통신사 + 제목 입력 */}
         <div className="rounded-lg p-3 space-y-2">
           <div className="flex items-center space-x-2 w-full">
-            <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1">
+            <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1 flex-shrink-0">
               <Icon src={ICON_PATHS['LGU']} />
             </div>
 
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <Input
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.target.value)}
@@ -81,12 +82,12 @@ export default function SellPage() {
         />
 
         {/* 1GB당 가격 입력 */}
-        <div className="flex justify-center items-center gap-3.5">
-          <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">
+        <div className="flex sm:flex-row justify-center items-center gap-2 sm:gap-3.5 px-4">
+          <div className="text-center text-cyan-400 text-base sm:text-lg font-semibold leading-relaxed whitespace-nowrap">
             1GB 당
           </div>
 
-          <div className="w-28 h-10 flex justify-center items-center px-2">
+          <div className="w-32 sm:w-28 h-12 sm:h-10 flex justify-center items-center px-2">
             <PriceInput
               value={String(pricePerGB)}
               onChange={(e) => handlePriceChange(e)}
@@ -95,7 +96,9 @@ export default function SellPage() {
             />
           </div>
 
-          <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">ZET</div>
+          <div className="text-center text-cyan-400 text-base sm:text-lg font-semibold leading-relaxed whitespace-nowrap">
+            ZET
+          </div>
         </div>
 
         {/* 총 판매 금액 표시 */}
@@ -106,23 +109,35 @@ export default function SellPage() {
         />
 
         {/* 등록 버튼 */}
-        <div className="w-full pt-2 flex justify-end">
+        <div className="pt-4 flex justify-center sm:justify-end px-4">
           <Button
             size={isMobile ? 'default' : 'lg'}
             onClick={handleSubmit}
             variant="exploration-button"
             disabled={!isFormValid || isSubmitting}
-            className="px-6 py-3"
+            className="w-full px-6 py-3"
           >
             {isSubmitting ? '등록 중...' : '등록하기'}
           </Button>
         </div>
       </div>
 
-      {/* 하단 캐릭터 - 절대 위치로 배치 */}
+      {/* 하단 캐릭터  */}
       <div className="absolute bottom-0 left-0 pointer-events-none">
-        <Image src={IMAGE_PATHS.AL_SELL} alt="판매 우주인" width={200} height={200} priority />
+        <div className="relative">
+          <Image
+            src={IMAGE_PATHS.AL_SELL}
+            alt="판매 우주인"
+            width={isMobile ? 180 : 250}
+            height={isMobile ? 180 : 250}
+            priority
+            className="opacity-80 sm:opacity-100"
+          />
+        </div>
       </div>
+
+      {/* 작은 화면에서 추가 스크롤 여백 */}
+      <div className="h-4 sm:hidden" />
     </div>
   );
 }

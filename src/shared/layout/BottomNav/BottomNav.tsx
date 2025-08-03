@@ -60,7 +60,6 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
                   isHome
                     ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
                     : 'w-full h-16 hover:bg-white/5 active:scale-95',
-                  isActive ? 'text-secondary-yellow' : 'text-white/70',
                 )}
                 aria-label={item.label}
                 aria-current={isActive ? 'page' : undefined}
@@ -68,12 +67,13 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
                 <Icon
                   name={item.icon}
                   size={isHome ? 'lg' : 'md'}
-                  color={isActive ? 'rgb(var(--color-secondary-yellow))' : 'white'}
+                  color={isActive ? 'var(--color-secondary-yellow)' : 'white'}
+                  className={isActive ? 'text-yellow-400' : 'text-white'}
                 />
                 <span
                   className={cn(
-                    'text-xs font-bold leading-none',
-                    isActive ? 'text-secondary-yellow' : 'text-white/70',
+                    'text-xs font-bold leading-none transition-colors',
+                    isActive ? 'text-yellow-400' : 'text-white/70',
                   )}
                 >
                   {item.label}
