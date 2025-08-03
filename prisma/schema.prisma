@@ -58,6 +58,7 @@ model notification_histories {
   content           String?                                   @db.VarChar(255)
   title             String?                                   @db.VarChar(255)
   url               String?                                   @db.VarChar(255)
+  is_read           Boolean                                   @default(false)
   notification_type notification_histories_notification_type?
   users             users?                                    @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FKd8sa0pk7oc16oxkqihyv1daj7")
 

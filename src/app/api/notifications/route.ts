@@ -1,84 +1,101 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-// TODO: Mock 데이터, 일단 임시로 이렇게 해놓겠습니다.
-const mockNotifications = [
-  {
-    id: '1',
-    type: 'SELL' as const,
-    title: '데이터가 판매되었습니다',
-    content: '5GB 데이터가 성공적으로 판매되었습니다.',
-    url: '/mypage/trade',
-    notifiedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-    isRead: false,
-  },
-  {
-    id: '2',
-    type: 'INTERESTED_POST' as const,
-    title: '관심 상품에 새 글이 등록되었어요',
-    content: 'SKT 10GB 데이터가 저렴한 가격에 등록되었습니다.',
-    url: '/exchange',
-    notifiedAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-    isRead: true,
-  },
-];
-
-let notificationStore = [...mockNotifications];
+import { HttpStatusCode, SuccessApiResponse, ErrorApiResponse } from '@/backend/types/api';
+import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
 
 export async function GET() {
   try {
-    const cookieStore = await cookies();
-    const authToken = cookieStore.get('Authorization');
-
-    if (!authToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      const response: ErrorApiResponse = {
+        statusCode: result.status ?? HttpStatusCode.UNAUTHORIZED,
+        message: result.error ?? '인증 오류',
+      };
+      return NextResponse.json(response, { status: response.statusCode });
     }
 
-    const unreadCount = notificationStore.filter((n) => !n.isRead).length;
+    const { userId } = result;
 
-    return NextResponse.json({
-      statusCode: 200,
+    const notificationStore = await prisma.notification_histories.findMany({
+      where: { user_id: userId },
+      orderBy: { notified_at: 'desc' },
+    });
+
+    const unreadCount = notificationStore.filter((n) => !n.is_read).length;
+
+    const serializedNotifications = notificationStore.map((n) => ({
+      id: n.id.toString(),
+      type: n.notification_type ?? 'SELL',
+      title: n.title ?? '',
+      content: n.content ?? '',
+      url: n.url ?? '',
+      notifiedAt: n.notified_at?.toISOString() ?? '',
+      isRead: n.is_read,
+    }));
+
+    const response: SuccessApiResponse<{
+      notifications: typeof serializedNotifications;
+      unreadCount: number;
+    }> = {
+      statusCode: HttpStatusCode.OK,
       message: 'OK',
       content: {
-        notifications: notificationStore.sort(
-          (a, b) => new Date(b.notifiedAt).getTime() - new Date(a.notifiedAt).getTime(),
-        ),
+        notifications: serializedNotifications,
         unreadCount,
       },
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Notification fetch error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const response: ErrorApiResponse = {
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      message: 'Internal Server Error',
+    };
+    return NextResponse.json(response, { status: response.statusCode });
   }
 }
 
-// 모든 알림 읽음 처리
 export async function PATCH() {
   try {
-    const cookieStore = await cookies();
-    const authToken = cookieStore.get('Authorization');
-
-    if (!authToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      const response: ErrorApiResponse = {
+        statusCode: result.status ?? HttpStatusCode.UNAUTHORIZED,
+        message: result.error ?? '인증 오류',
+      };
+      return NextResponse.json(response, { status: response.statusCode });
     }
 
-    // 모든 알림을 읽음 처리
-    const updatedCount = notificationStore.filter((n) => !n.isRead).length;
-    notificationStore = notificationStore.map((notification) => ({
-      ...notification,
-      isRead: true,
-    }));
+    const { userId } = result;
 
-    return NextResponse.json({
-      statusCode: 200,
+    const { count } = await prisma.notification_histories.updateMany({
+      where: {
+        user_id: userId,
+        is_read: false,
+      },
+      data: {
+        is_read: true,
+      },
+    });
+
+    const response: SuccessApiResponse<{ success: boolean; updatedCount: number }> = {
+      statusCode: HttpStatusCode.OK,
       message: 'All notifications marked as read',
       content: {
         success: true,
-        updatedCount,
+        updatedCount: count,
       },
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Mark all read error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const response: ErrorApiResponse = {
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      message: 'Internal Server Error',
+    };
+    return NextResponse.json(response, { status: response.statusCode });
   }
 }
