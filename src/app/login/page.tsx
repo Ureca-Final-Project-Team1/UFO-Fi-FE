@@ -24,11 +24,11 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-full flex flex-col justify-between items-center px-6">
+    <main className="min-h-full flex flex-col justify-between items-center px-6">
       {/* 메인 콘텐츠 영역 - 화면 중앙에 배치 */}
-      <div className="flex-1 flex flex-col justify-center items-center text-center max-w-md w-full">
+      <section className="flex-1 flex flex-col justify-center items-center text-center max-w-md w-full">
         {/* 로고 및 텍스트 영역 */}
-        <div className="flex flex-col items-center gap-8 mb-12">
+        <header className="flex flex-col items-center gap-8 mb-12">
           {/* UFO 로고 */}
           <div className="flex flex-col items-center gap-4">
             <Image
@@ -43,14 +43,14 @@ const LoginPage = () => {
           </div>
 
           {/* 서브 타이틀 */}
-          <h3 className="pyeongchangpeace-title-2 text-teal-300 leading-relaxed">
+          <h2 className="pyeongchangpeace-title-2 text-teal-300 leading-relaxed">
             데이터는 부족해도, 은하는 연결되어 있다.
-          </h3>
-        </div>
-      </div>
+          </h2>
+        </header>
+      </section>
 
       {/* 카카오 로그인 버튼 - 하단 고정 */}
-      <div className="w-full max-w-[320px] pb-6">
+      <section className="w-full max-w-[320px] pb-6">
         <Button
           className="w-full h-11 sm:h-12 bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-contain hover:opacity-90 transition-opacity duration-200 border-0"
           size="full-width"
@@ -60,8 +60,8 @@ const LoginPage = () => {
           {/* 접근성을 위한 대체 텍스트 (시각적으로 숨김) */}
           <span className="sr-only">카카오로 로그인하기</span>
         </Button>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 
