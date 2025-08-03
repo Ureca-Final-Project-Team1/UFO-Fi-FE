@@ -12,31 +12,39 @@ export default function SignalPage() {
   const [activeTab, setActiveTab] = useState<TabType>('orbit');
 
   return (
-    <div className="flex flex-col">
-      <Title title="전파 거리" />
+    <main className="flex flex-col">
+      <header>
+        <Title title="전파 거리" />
+      </header>
 
-      {/* Tabs UI */}
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)}>
-        <TabsList className="p-1 mb-6 w-auto">
-          <TabsTrigger value="orbit" variant="darkTab" size="full">
-            전파 궤도
-          </TabsTrigger>
-          <TabsTrigger value="letters" variant="darkTab" size="full">
-            편지함
-          </TabsTrigger>
-        </TabsList>
+      <section aria-labelledby="signal-tabs">
+        {/* 탭 선택 영역 */}
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)}>
+          <TabsList
+            id="signal-tabs"
+            className="p-1 mb-6 mx-4 w-auto"
+            aria-label="전파 궤도와 편지함을 선택하는 탭"
+          >
+            <TabsTrigger value="orbit" variant="darkTab" size="full">
+              전파 궤도
+            </TabsTrigger>
+            <TabsTrigger value="letters" variant="darkTab" size="full">
+              편지함
+            </TabsTrigger>
+          </TabsList>
 
-        {/* 탭 콘텐츠 */}
-        <div className="flex-1">
-          <TabsContent value="orbit">
-            <SignalTabContent />
-          </TabsContent>
+          {/* 탭 콘텐츠 */}
+          <div className="flex-1">
+            <TabsContent value="orbit">
+              <SignalTabContent />
+            </TabsContent>
 
-          <TabsContent value="letters">
-            <LetterTabContent />
-          </TabsContent>
-        </div>
-      </Tabs>
-    </div>
+            <TabsContent value="letters">
+              <LetterTabContent />
+            </TabsContent>
+          </div>
+        </Tabs>
+      </section>
+    </main>
   );
 }
