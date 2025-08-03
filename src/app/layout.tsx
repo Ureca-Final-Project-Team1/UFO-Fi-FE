@@ -79,34 +79,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  // 파비콘 및 아이콘 설정
-  // - favicon.ico: 브라우저 탭, 북마크 기본 아이콘
-  // - icon: 일반 브라우저용 다양한 크기 아이콘
-  // - apple: iOS Safari 전용 아이콘
-  // - manifest: PWA 설치 지원
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/icon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon-60x60.png', sizes: '60x60', type: 'image/png' },
-      { url: '/icon-72x72.png', sizes: '72x72', type: 'image/png' },
-      { url: '/icon-76x76.png', sizes: '76x76', type: 'image/png' },
-      { url: '/icon-114x114.png', sizes: '114x114', type: 'image/png' },
-      { url: '/icon-120x120.png', sizes: '120x120', type: 'image/png' },
-      { url: '/icon-144x144.png', sizes: '144x144', type: 'image/png' },
-      { url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
-      { url: '/icon-60x60.png', sizes: '60x60', type: 'image/png' },
-      { url: '/icon-76x76.png', sizes: '76x76', type: 'image/png' },
-      { url: '/icon-120x120.png', sizes: '120x120', type: 'image/png' },
-      { url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-    ],
-    shortcut: '/favicon.ico',
-  },
+  // 파비콘 및 아이콘 설정 (파일 기반 방식)
+  // - src/app/에 배치된 파일들이 자동으로 인식됨
+  // - favicon.ico, icon.png, apple-icon.png, icon-XXxXX.png 등
   manifest: '/manifest.json',
   other: {
     'apple-mobile-web-app-capable': 'yes',
