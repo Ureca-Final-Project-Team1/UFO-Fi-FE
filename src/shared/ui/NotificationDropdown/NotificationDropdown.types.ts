@@ -1,4 +1,4 @@
-import type { NotificationItem } from '@/api/types/notification';
+import type { NotificationItem } from '@/backend/types/notification';
 export type { NotificationItem };
 import type { IconType } from '@/shared';
 

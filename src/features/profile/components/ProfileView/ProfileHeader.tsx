@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { toast } from 'sonner';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { useFollowStatus } from '@/features/profile/hooks/useFollowStatus';
 import { useProfileFollowActions } from '@/features/profile/hooks/useProfileFollowActions';

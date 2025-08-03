@@ -1,6 +1,6 @@
 'use client';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';

@@ -6,9 +6,9 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-import { purchaseHistory } from '@/api/services/history/purchaseHistory';
-import { sellHistory } from '@/api/services/history/sellHistory';
-import { PurchaseHistoryResponse, SellHistoryResponse } from '@/api/types/history';
+import { purchaseHistory } from '@/backend/services/history/purchaseHistory';
+import { sellHistory } from '@/backend/services/history/sellHistory';
+import { PurchaseHistoryResponse, SellHistoryResponse } from '@/backend/types/history';
 import { TradeHistoryCard } from '@/features/mypage/components';
 import { TradeHistoryCardProps } from '@/features/mypage/types/TradeHistoryCard.types';
 import { useTradeHistory } from '@/hooks/useTradeHistory';

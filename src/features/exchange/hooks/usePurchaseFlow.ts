@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useState, useCallback } from 'react';
 
-import { purchaseAPI, exchangeAPI, myInfoAPI } from '@/api';
-import type { ExchangePost } from '@/api/types/exchange';
+import { purchaseAPI, exchangeAPI, myInfoAPI } from '@/backend';
+import type { ExchangePost } from '@/backend/types/exchange';
 import {
   purchaseTracker,
   PurchaseStatus,

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { notificationAPI } from '@/api';
+import { notificationAPI } from '@/backend';
 import type { NotificationType } from '@/shared';
 import { Title, Switch } from '@/shared';
 

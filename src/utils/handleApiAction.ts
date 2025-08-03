@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 
-import { ApiResponse, isSuccessResponse } from '@/api/types/api';
+import { ApiResponse, isSuccessResponse } from '@/backend/types/api';
 
 interface HandleApiActionParams<T = unknown> {
   apiCall: () => Promise<ApiResponse<T>>;

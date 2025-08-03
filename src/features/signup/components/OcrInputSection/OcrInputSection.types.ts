@@ -1,7 +1,7 @@
 import { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 
-import { Plan } from '@/api';
-import { Carrier } from '@/api/types/carrier';
+import { Plan } from '@/backend';
+import { Carrier } from '@/backend/types/carrier';
 import { SignupPlanSchema } from '@/schemas/signupSchema';
 
 export interface OCRInputSectionProps {

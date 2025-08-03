@@ -1,4 +1,4 @@
-import { PurchaseStatus, PurchaseErrorType } from '@/api/types/exchange';
+import { PurchaseStatus, PurchaseErrorType } from '@/backend/types/exchange';
 import type { EcommerceItem } from '@/types/analytics';
 import { analytics } from '@/utils/analytics';
 

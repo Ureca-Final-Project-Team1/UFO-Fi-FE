@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { Carrier } from '@/api/types/carrier';
+import { Carrier } from '@/backend/types/carrier';
 
 import { TradeHistoryCard } from './TradeHistoryCard';
 

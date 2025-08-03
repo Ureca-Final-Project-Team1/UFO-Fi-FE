@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost } from '@/api';
+import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost } from '@/backend';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';

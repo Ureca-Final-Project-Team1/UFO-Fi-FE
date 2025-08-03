@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { followingAPI } from '@/api';
+import { followingAPI } from '@/backend';
 import { queryKeys } from '@/utils';
 
 export function useFollowStatus(targetUserId: number, enabled: boolean = true) {

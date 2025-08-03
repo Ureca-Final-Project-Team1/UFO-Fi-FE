@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect, Suspense } from 'react';
 
-import { PurchaseErrorType } from '@/api/types/exchange';
-import type { PurchaseRequest } from '@/api/types/exchange';
+import { PurchaseErrorType } from '@/backend/types/exchange';
+import type { PurchaseRequest } from '@/backend/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseErrorRecovery';
 import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';

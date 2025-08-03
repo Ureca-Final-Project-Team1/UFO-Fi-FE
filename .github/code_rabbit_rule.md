@@ -68,11 +68,11 @@ src/
 
 ```typescript
 // Good
-import { notificationAPI } from '@/api';
+import { notificationAPI } from '@/backend';
 await notificationAPI.getSettings();
 
 // Bad
-import { getNotificationSettings } from '@/api/notification';
+import { getNotificationSettings } from '@/backend/notification';
 ```
 
 ### File Structure

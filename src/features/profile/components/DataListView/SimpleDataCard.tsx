@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import type { TradePost } from '@/api/types/profile';
+import type { TradePost } from '@/backend/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Button, Icon, Badge, Avatar } from '@/shared';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Carrier } from '@/api/types/carrier';
-import { MobileDataType } from '@/api/types/mobileData';
-import type { ProfileUser } from '@/api/types/profile';
+import { Carrier } from '@/backend/types/carrier';
+import { MobileDataType } from '@/backend/types/mobileData';
+import type { ProfileUser } from '@/backend/types/profile';
 import { IMAGE_PATHS } from '@/constants/images';
 
 const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({

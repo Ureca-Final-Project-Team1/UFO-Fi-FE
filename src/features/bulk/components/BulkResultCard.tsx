@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Carrier } from '@/api/types/carrier';
+import { Carrier } from '@/backend/types/carrier';
 import { IMAGE_PATHS } from '@/constants';
 import { Icon, Avatar } from '@/shared';
 

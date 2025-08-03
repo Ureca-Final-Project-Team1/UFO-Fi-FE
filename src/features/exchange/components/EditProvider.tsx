@@ -4,7 +4,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI } from '@/api';
+import { sellAPI } from '@/backend';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Loading } from '@/shared';
 

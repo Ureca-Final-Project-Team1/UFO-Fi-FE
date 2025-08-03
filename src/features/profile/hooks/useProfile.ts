@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { profileAPI } from '@/api';
-import type { ProfileUser } from '@/api/types/profile';
+import { profileAPI } from '@/backend';
+import type { ProfileUser } from '@/backend/types/profile';
 
 export function useProfile(userId: number) {
   return useQuery<ProfileUser, Error>({

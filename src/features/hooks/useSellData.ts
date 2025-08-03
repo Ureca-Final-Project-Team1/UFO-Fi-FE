@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI } from '@/api';
+import { sellAPI } from '@/backend';
 import { validatePricePerGB, validateTotalPrice } from '@/lib/validate';
 
 export const useSellData = () => {

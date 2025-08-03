@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { statisticsService } from '@/api/services/admin/statistics';
-import type { ReportsStatisticsData } from '@/api/types';
-import { ReportedUser } from '@/api/types/report';
+import { statisticsService } from '@/backend/services/admin/statistics';
+import type { ReportsStatisticsData } from '@/backend/types';
+import { ReportedUser } from '@/backend/types/report';
 import { useReportedUsers } from '@/features/admin/hooks/useReportedUsers';
 import {
   Button,

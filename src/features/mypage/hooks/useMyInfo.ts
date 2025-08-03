@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { myInfoAPI } from '@/api';
-import { ApiError } from '@/api/client/axios';
-import { MyInfoResponse } from '@/api/types/myInfo';
+import { myInfoAPI } from '@/backend';
+import { ApiError } from '@/backend/client/axios';
+import { MyInfoResponse } from '@/backend/types/myInfo';
 import { queryKeys } from '@/utils';
 
 export function useMyInfo(enabled: boolean = true) {

@@ -9,8 +9,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-import { nextApiRequest } from '@/api/client/axios';
-import type { ProfileUser, UserStats } from '@/api/types/profile';
+import { nextApiRequest } from '@/backend/client/axios';
+import type { ProfileUser, UserStats } from '@/backend/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
 import { getMobileDataTypeDisplay } from '@/utils/mobileData';

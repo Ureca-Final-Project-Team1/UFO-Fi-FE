@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 
-import { bannedWordsAPI } from '@/api/services/admin/bannedWords';
-import { BannedWord } from '@/api/types/bannedWords';
+import { bannedWordsAPI } from '@/backend/services/admin/bannedWords';
+import { BannedWord } from '@/backend/types/bannedWords';
 
 interface UseBannedWordsReturn {
   bannedWords: BannedWord[];

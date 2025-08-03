@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { followActionsAPI } from '@/api';
+import { followActionsAPI } from '@/backend';
 
 export const useFollowActions = () => {
   const queryClient = useQueryClient();

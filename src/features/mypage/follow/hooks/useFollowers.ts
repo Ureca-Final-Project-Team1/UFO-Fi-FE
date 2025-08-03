@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { followersAPI } from '@/api';
+import { followersAPI } from '@/backend';
 
 export const useFollowers = () => {
   return useQuery({

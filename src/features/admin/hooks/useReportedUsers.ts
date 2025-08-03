@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 
-import { reportAPI } from '@/api';
-import { ReportedUser } from '@/api/types/report';
+import { reportAPI } from '@/backend';
+import { ReportedUser } from '@/backend/types/report';
 
 interface UseReportedUsersReturn {
   reportedUsers: ReportedUser[];

@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 import { useKakaoSDK } from '@/features/profile/hooks/useKakaoSDK';
 import {
   facebookShare,

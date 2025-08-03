@@ -1,6 +1,6 @@
 'use client';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 
 interface ProfileStatsProps {
   profile: ProfileUser;

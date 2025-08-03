@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI } from '@/api';
+import { sellAPI } from '@/backend';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useEditContext } from '@/features/exchange/components/EditProvider';

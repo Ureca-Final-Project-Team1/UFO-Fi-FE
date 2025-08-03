@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 
 import { ShareModal } from './ShareModal';
 

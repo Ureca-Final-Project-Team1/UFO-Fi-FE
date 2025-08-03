@@ -1,6 +1,6 @@
 import { getToken, onMessage, isSupported } from 'firebase/messaging';
 
-import { fcmAPI } from '@/api';
+import { fcmAPI } from '@/backend';
 
 import { messaging } from './firebase';
 

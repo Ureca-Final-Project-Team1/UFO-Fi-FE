@@ -2,9 +2,9 @@
 
 import { useMemo } from 'react';
 
-import { Carrier } from '@/api';
-import { MobileDataType } from '@/api/types/mobileData';
-import type { ExchangeItem } from '@/api/types/sell';
+import { Carrier } from '@/backend';
+import { MobileDataType } from '@/backend/types/mobileData';
+import type { ExchangeItem } from '@/backend/types/sell';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Button } from '@/shared';

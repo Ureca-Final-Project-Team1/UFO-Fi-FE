@@ -1,8 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { purchaseHistory } from '@/api/services/history/purchaseHistory';
-import { purchaseDetailService, PurchaseDetail } from '@/api/services/mypage/purchaseDetail';
+import { purchaseHistory } from '@/backend/services/history/purchaseHistory';
+import { purchaseDetailService, PurchaseDetail } from '@/backend/services/mypage/purchaseDetail';
 
 interface UsePurchaseDetailResult {
   purchaseDetail: PurchaseDetail | null;

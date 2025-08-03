@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, ComponentProps, memo } from 'react';
 
-import { PurchaseErrorType } from '@/api/types/exchange';
+import { PurchaseErrorType } from '@/backend/types/exchange';
 import { Button } from '@/shared';
 import { analytics } from '@/utils/analytics';
 

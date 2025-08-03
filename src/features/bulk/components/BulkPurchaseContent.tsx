@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { bulkPurchaseAPI } from '@/api';
+import { bulkPurchaseAPI } from '@/backend';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { Button, Loading, Title } from '@/shared';
 import { usePostIdsStore } from '@/stores/useBulkStore';
