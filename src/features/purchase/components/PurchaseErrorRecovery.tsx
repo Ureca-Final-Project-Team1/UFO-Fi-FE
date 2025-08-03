@@ -5,7 +5,7 @@ import { useEffect, ComponentProps, memo } from 'react';
 
 import { PurchaseErrorType } from '@/backend/types/exchange';
 import { Button } from '@/shared';
-import { analytics } from '@/utils/analytics';
+import { analytics } from '@/shared/utils/analytics';
 
 import {
   overlayVariants,

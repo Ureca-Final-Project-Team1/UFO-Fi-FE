@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { ocrToGptService } from '@/service/ocrToGptService';
+import { ocrToGptService } from '@/backend/services/auth/ocrToGptService';
 
 const handleOCRToGpt = async (formData: FormData): Promise<string[]> => {
   const result = await ocrToGptService(formData);

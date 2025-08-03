@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { HttpStatusCode, SuccessApiResponse, ErrorApiResponse } from '@/backend/types/api';
 import { prisma } from '@/lib/prisma';
-import { getUserFromToken } from '@/utils/getUserFromToken';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 export async function GET() {
   try {

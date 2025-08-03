@@ -12,9 +12,9 @@ import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { generateQRCodeDataURL } from '@/features/profile/utils/qrCodeUtils';
 import { generateQRCodeValue } from '@/features/profile/utils/shareUtils';
 import { Avatar, Button, Progress } from '@/shared';
-import { Honorific } from '@/types/Achievement';
 
 import { HonorificChip } from './HonorificChip';
+import { Honorific } from '../types/Achievement';
 
 interface SignalCardProps {
   userId: string;

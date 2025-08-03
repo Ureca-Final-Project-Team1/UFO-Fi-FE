@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
+import { GetHonorificsResponse } from '@/features/mypage/types/Achievement';
 import { prisma } from '@/lib/prisma';
-import { GetHonorificsResponse } from '@/types/Achievement';
-import { getUserFromToken } from '@/utils/getUserFromToken';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 const initialResponse = (): GetHonorificsResponse => ({
   message: '',

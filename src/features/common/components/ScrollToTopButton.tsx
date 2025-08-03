@@ -1,6 +1,6 @@
 // src/features/common/components/ScrollToTopButton.tsx
-import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { Icon } from '@/shared';
+import { useScrollToTop } from '@/shared/hooks/useScrollToTop';
 
 export const ScrollToTopButton = () => {
   const { show, scrollToTop } = useScrollToTop(200);

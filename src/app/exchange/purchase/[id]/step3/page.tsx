@@ -10,8 +10,8 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseErrorRecovery';
 import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';
 import { Button, Loading, Title } from '@/shared';
+import { analytics } from '@/shared/utils/analytics';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-import { analytics } from '@/utils/analytics';
 
 function Step3Content() {
   const router = useRouter();

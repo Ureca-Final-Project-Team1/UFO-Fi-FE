@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
-import { getUserFromToken } from '@/utils/getUserFromToken';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 export async function POST(req: NextRequest) {
   try {

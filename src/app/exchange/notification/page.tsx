@@ -7,8 +7,8 @@ import { toast } from 'sonner';
 import { fcmAPI } from '@/backend';
 import { Carrier, CARRIER_DISPLAY_NAMES } from '@/backend/types/carrier';
 import { FilterBox } from '@/features/exchange/components/FilterBox';
-import { useFilteredItemCount } from '@/hooks/useFilteredItemCount';
-import { useFilterState } from '@/hooks/useFilterState';
+import { useFilteredItemCount } from '@/features/exchange/hooks/useFilteredItemCount';
+import { useFilterState } from '@/features/exchange/hooks/useFilterState';
 import { Button, Chip, DataRangeSlider, DataSlider, Icon, Title } from '@/shared';
 
 import '@/styles/globals.css';

@@ -1,5 +1,5 @@
 import { OnboardingStep } from '@/features/onboarding/types/onboarding';
-import { analytics } from '@/utils/analytics';
+import { analytics } from '@/shared/utils/analytics';
 
 // 온보딩 단계 정의
 export const ONBOARDING_STEPS: OnboardingStep[] = [

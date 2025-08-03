@@ -16,6 +16,4 @@ export * from './groupByDate';
 export * from './mobileData';
 export * from './sliderUtils';
 export * from './uuid';
-
-// OCR utilities
-export * from './OCRPrompt';
+export * from './metadata';

@@ -1,7 +1,8 @@
 'use client';
 
 import { Chip, Icon } from '@/shared';
-import { Honorific } from '@/types/Achievement';
+
+import { Honorific } from '../types/Achievement';
 
 interface HonorificChipProps extends Omit<React.ComponentProps<typeof Chip>, 'onChange'> {
   honorifics: Honorific[];
