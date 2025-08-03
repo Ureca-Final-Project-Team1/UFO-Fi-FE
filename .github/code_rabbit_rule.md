@@ -9,7 +9,7 @@ All reviews must be provided in **Korean language**.
 ### FSD (Feature-Sliced Design) Architecture Compliance
 
 - Check proper separation between `features/[domain]/components/` vs `shared/ui/`
-- Ensure `src/api/services/[domain]/` structure compliance
+- Ensure `src/backend/services/[domain]/` structure compliance
 - Verify barrel exports in `features/[domain]/index.ts`
 - Only move to `shared/ui` when used by 3+ domains
 
@@ -77,9 +77,9 @@ import { getNotificationSettings } from '@/backend/notification';
 
 ### File Structure
 
-- API functions: `src/api/services/[domain]/`
-- Type definitions: `src/api/types/[domain].ts`
-- Axios configuration: `src/api/client/axios.ts`
+- API functions: `src/backend/services/[domain]/`
+- Type definitions: `src/backend/types/[domain].ts`
+- Axios configuration: `src/backend/client/axios.ts`
 
 ### Type Safety
 
