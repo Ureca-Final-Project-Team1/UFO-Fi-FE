@@ -10,8 +10,8 @@ export const AlienCharacter = () => {
       <Image
         src={IMAGE_PATHS['AL_ONBOARDING']}
         alt="UFO-Fi 외계인"
-        width={100}
-        height={100}
+        width={500}
+        height={500}
         className="w-full h-full max-w-full max-h-full object-contain drop-shadow-2xl transition-all duration-300 animate-bounce aspect-square"
         priority
       />
