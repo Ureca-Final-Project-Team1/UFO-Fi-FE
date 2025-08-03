@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import { statisticsService } from '@/api/services/admin/statistics';
-import type { StatisticsData } from '@/api/types';
+import { statisticsService } from '@/backend/services/admin/statistics';
+import type { StatisticsData } from '@/backend/types';
 import { Header, Sidebar, Skeleton } from '@/shared';
 
 const ANALYTICS_LINKS = [

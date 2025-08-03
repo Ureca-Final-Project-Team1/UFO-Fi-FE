@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-import { bulkPurchaseAPI } from '@/api/services/exchange/bulkPurchase';
+import { bulkPurchaseAPI } from '@/backend/services/exchange/bulkPurchase';
 import { ICON_PATHS } from '@/constants/icons';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
 import { useMyInfo } from '@/features/mypage/hooks';

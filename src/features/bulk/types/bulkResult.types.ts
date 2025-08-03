@@ -1,5 +1,5 @@
-import { Carrier } from '@/api/types/carrier';
-import { MobileDataType } from '@/api/types/mobileData';
+import { Carrier } from '@/backend/types/carrier';
+import { MobileDataType } from '@/backend/types/mobileData';
 
 export interface BulkPurchaseItem {
   postId: number;

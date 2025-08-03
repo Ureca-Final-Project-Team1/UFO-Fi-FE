@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
-import { fcmAPI } from '@/api';
-import { Carrier, CARRIER_DISPLAY_NAMES } from '@/api/types/carrier';
+import { fcmAPI } from '@/backend';
+import { Carrier, CARRIER_DISPLAY_NAMES } from '@/backend/types/carrier';
 import { FilterBox } from '@/features/exchange/components/FilterBox';
 import { useFilteredItemCount } from '@/hooks/useFilteredItemCount';
 import { useFilterState } from '@/hooks/useFilterState';

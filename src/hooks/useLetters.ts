@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { toast } from 'sonner';
 
-import { fetchAndCreateLetters, fetchLetters } from '@/api/services/story/letters';
+import { fetchAndCreateLetters, fetchLetters } from '@/backend/services/story/letters';
 import { useLetterStore } from '@/stores/useLetterStore';
 
 /**

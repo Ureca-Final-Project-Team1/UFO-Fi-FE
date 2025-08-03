@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { achievementsAPI } from '@/api/services/mypage/achievement';
+import { achievementsAPI } from '@/backend/services/mypage/achievement';
 import { IMAGE_PATHS } from '@/constants';
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
 import { Loading, Title, AchievementModal } from '@/shared';

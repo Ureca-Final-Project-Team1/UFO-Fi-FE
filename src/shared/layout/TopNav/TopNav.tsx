@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import { nextApiRequest } from '@/api/client/axios';
-import type { NotificationItem } from '@/api/types/notification';
+import { nextApiRequest } from '@/backend/client/axios';
+import type { NotificationItem } from '@/backend/types/notification';
 import { ICON_PATHS } from '@/constants/icons';
 import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';

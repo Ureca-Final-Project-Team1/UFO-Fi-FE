@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { profileAPI } from '@/api';
+import { profileAPI } from '@/backend';
 import { IMAGE_PATHS } from '@/constants/images';
 
 interface Props {

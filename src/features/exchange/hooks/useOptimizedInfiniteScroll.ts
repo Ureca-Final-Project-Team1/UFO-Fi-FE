@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import type { GetExchangePostsRequest } from '@/api/types/exchange';
+import type { GetExchangePostsRequest } from '@/backend/types/exchange';
 
 import { useInfiniteExchangePosts } from './useInfiniteExchangePosts';
 

@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { sellAPI } from '@/api';
-import type { GetExchangePostsRequest } from '@/api';
+import { sellAPI } from '@/backend';
+import type { GetExchangePostsRequest } from '@/backend';
 
 export const useInfiniteExchangePosts = (params?: Omit<GetExchangePostsRequest, 'cursorId'>) => {
   return useInfiniteQuery({

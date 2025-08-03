@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { logoutAPI, ApiError } from '@/api';
-import { achievementsAPI } from '@/api/services/mypage/achievement';
+import { logoutAPI, ApiError } from '@/backend';
+import { achievementsAPI } from '@/backend/services/mypage/achievement';
 import { LogoutModal } from '@/features/mypage/components';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';

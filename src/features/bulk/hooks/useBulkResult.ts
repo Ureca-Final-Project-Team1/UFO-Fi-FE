@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { Carrier } from '@/api/types/carrier';
+import { Carrier } from '@/backend/types/carrier';
 
 interface BulkResultData {
   carrier: Carrier;

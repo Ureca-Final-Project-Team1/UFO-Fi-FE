@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, ChangeEvent } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { plansAPI } from '@/api';
-import { Carrier } from '@/api/types/carrier';
+import { plansAPI } from '@/backend';
+import { Carrier } from '@/backend/types/carrier';
 import { OCRInputSectionProps, ocrInputVariants, PlanCombo } from '@/features/signup/components';
 import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
 import {

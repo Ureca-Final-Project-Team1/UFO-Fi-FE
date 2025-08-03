@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import type { NotificationItem as NotificationItemType } from '@/api';
-import { nextApiRequest } from '@/api/client/axios';
+import type { NotificationItem as NotificationItemType } from '@/backend';
+import { nextApiRequest } from '@/backend/client/axios';
 import { Icon, NotificationTrigger, NotificationDropdownProps, NotificationItem } from '@/shared';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';

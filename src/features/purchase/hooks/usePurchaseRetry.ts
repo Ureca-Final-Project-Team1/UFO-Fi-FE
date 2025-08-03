@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
 
-import { purchaseAPI } from '@/api';
-import { ApiError } from '@/api/client/axios';
-import type { PurchaseRequest, PurchaseResponse } from '@/api/types/exchange';
-import { PurchaseErrorType } from '@/api/types/exchange';
+import { purchaseAPI } from '@/backend';
+import { ApiError } from '@/backend/client/axios';
+import type { PurchaseRequest, PurchaseResponse } from '@/backend/types/exchange';
+import { PurchaseErrorType } from '@/backend/types/exchange';
 import { analytics } from '@/utils/analytics';
 
 export type RetryState =

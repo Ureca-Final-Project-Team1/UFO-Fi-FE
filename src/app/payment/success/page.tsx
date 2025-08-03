@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense, useRef } from 'react';
 import { toast } from 'sonner';
 
-import { paymentAPI } from '@/api';
+import { paymentAPI } from '@/backend';
 import { PACKAGES } from '@/constants';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';

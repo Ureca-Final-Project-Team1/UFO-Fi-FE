@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 
 import { useWebShare } from './useWebShare';
 import { generateProfileUrl, generateShareText, generateShareTitle } from '../utils/shareUtils';

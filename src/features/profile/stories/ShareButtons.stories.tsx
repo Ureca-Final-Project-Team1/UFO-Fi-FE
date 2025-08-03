@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 import { IMAGE_PATHS } from '@/constants/images';
 
 import { ShareButtons } from '../components/ProfileShare/ShareButtons';

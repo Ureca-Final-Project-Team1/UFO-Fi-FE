@@ -1,6 +1,6 @@
 'use client';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/backend/types/profile';
 import { useProfileShare } from '@/features/profile/hooks/useProfileShare';
 import { useModalStore } from '@/stores/useModalStore';
 

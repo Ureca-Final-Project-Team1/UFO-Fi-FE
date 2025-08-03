@@ -1,4 +1,4 @@
-import type { MobileDataType } from '@/api/types/mobileData';
+import type { MobileDataType } from '@/backend/types/mobileData';
 
 /**
  * 모바일 데이터 타입을 표시용 문자열로 변환

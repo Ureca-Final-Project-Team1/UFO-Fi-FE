@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { plansAPI, editProfileAPI } from '@/api';
-import type { Carrier } from '@/api/types/carrier';
-import type { Plan } from '@/api/types/plan';
+import { plansAPI, editProfileAPI } from '@/backend';
+import type { Carrier } from '@/backend/types/carrier';
+import type { Plan } from '@/backend/types/plan';
 import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 export function useEditProfile() {

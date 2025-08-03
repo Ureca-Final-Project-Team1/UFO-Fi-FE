@@ -1,4 +1,4 @@
-import { Carrier } from '@/api/types/carrier';
+import { Carrier } from '@/backend/types/carrier';
 
 export interface ExchangeItemAction {
   onEdit: (id: number) => void;

@@ -7,8 +7,8 @@ import '@/styles/globals.css';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { getUserInfoResponse, Plan, signupAPI } from '@/api';
-import { Carrier } from '@/api/types/carrier';
+import { getUserInfoResponse, Plan, signupAPI } from '@/backend';
+import { Carrier } from '@/backend/types/carrier';
 import { OCRInputSection, Stepper } from '@/features/signup/components';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import { Button, Title } from '@/shared';

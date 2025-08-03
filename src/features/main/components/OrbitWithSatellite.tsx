@@ -4,8 +4,8 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { nextApiRequest } from '@/api/client/axios';
-import { LetterDisplay } from '@/api/types/letters';
+import { nextApiRequest } from '@/backend/client/axios';
+import { LetterDisplay } from '@/backend/types/letters';
 import { Modal, SpeechBubble } from '@/shared';
 
 const ORBIT_BASE_SIZE = 600;

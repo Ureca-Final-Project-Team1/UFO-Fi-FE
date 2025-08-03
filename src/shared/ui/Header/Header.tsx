@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { logoutAPI } from '@/api';
+import { logoutAPI } from '@/backend';
 import { Button, Modal } from '@/shared';
 
 interface HeaderProps {

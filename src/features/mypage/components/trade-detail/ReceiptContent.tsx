@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { PurchaseDetail } from '@/api/services/mypage/purchaseDetail';
+import { PurchaseDetail } from '@/backend/services/mypage/purchaseDetail';
 import { ICON_PATHS, IMAGE_PATHS } from '@/constants';
 import { Icon } from '@/shared';
 

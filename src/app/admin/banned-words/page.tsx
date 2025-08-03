@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
-import { BannedWord } from '@/api/types/bannedWords';
+import { BannedWord } from '@/backend/types/bannedWords';
 import { useBannedWords } from '@/features/admin/hooks/useBannedWords';
 import {
   Button,

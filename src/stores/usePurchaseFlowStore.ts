@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-import type { ExchangePost } from '@/api/types/exchange';
+import type { ExchangePost } from '@/backend/types/exchange';
 
 interface PurchaseFlowState {
   // 상품 데이터

@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Plan } from '@/api';
-import { Carrier } from '@/api/types/carrier';
+import { Plan } from '@/backend';
+import { Carrier } from '@/backend/types/carrier';
 import { OCRInputSection } from '@/features/signup/components';
 import { SignupPlanSchema, signupPlanSchema } from '@/schemas/signupSchema';
 import { Button } from '@/shared';

@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useState, ComponentProps } from 'react';
 
-import { reportAPI } from '@/api';
-import { HttpStatusCode } from '@/api/types/api';
+import { reportAPI } from '@/backend';
+import { HttpStatusCode } from '@/backend/types/api';
 
 import { Modal } from './Modal';
 import { RadioGroup } from '../Radio';
