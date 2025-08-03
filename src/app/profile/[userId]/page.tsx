@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 
 import { ProfileView } from '@/features/profile/components/ProfileView';
+import { Loading } from '@/shared';
 
 function ProfileContent() {
   const params = useParams();
@@ -11,17 +12,19 @@ function ProfileContent() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let parsedId: number | null = null;
     if (params?.userId) {
-      const id = Number(params.userId);
-      if (!isNaN(id) && id > 0) {
-        setUserId(id);
+      const maybeId = Number(params.userId);
+      if (!isNaN(maybeId) && maybeId > 0) {
+        parsedId = maybeId;
       }
     }
+    setUserId(parsedId);
     setIsLoading(false);
   }, [params]);
 
   if (isLoading) {
-    return <div className="text-white">로딩 중...</div>;
+    return <Loading />;
   }
 
   if (!userId) {
@@ -33,7 +36,7 @@ function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Suspense fallback={<div className="text-white">프로필을 불러오는 중...</div>}>
+    <Suspense fallback={<Loading />}>
       <ProfileContent />
     </Suspense>
   );

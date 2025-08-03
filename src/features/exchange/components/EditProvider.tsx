@@ -88,7 +88,7 @@ export const EditProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchAndCheckPost();
-  }, [userInfo, isUserLoading, params, router]);
+  }, [userInfo, isUserLoading, params.id, router]);
 
   if (isUserLoading || isLoading) {
     return <Loading />;
