@@ -7,12 +7,13 @@ export interface PageMetadataConfig {
 }
 
 export const createPageMetadata = (config: PageMetadataConfig): Metadata => {
+  const { title = '', description = '', noIndex = false } = config;
   return {
-    title: config.title,
-    description: config.description,
+    title,
+    description,
     robots: {
-      index: !config.noIndex,
-      follow: !config.noIndex,
+      index: !noIndex,
+      follow: !noIndex,
     },
   };
 };
