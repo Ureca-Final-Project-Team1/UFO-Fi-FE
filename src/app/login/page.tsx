@@ -8,9 +8,7 @@ import { ICON_PATHS } from '@/constants/icons';
 import { Button } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
 
-type LoginPageProps = object;
-
-const LoginPage = ({}: LoginPageProps) => {
+const LoginPage = () => {
   const { message, status, clearToast, hasShown } = useToastStore();
   const [isMounted, setIsMounted] = useState(false);
 
