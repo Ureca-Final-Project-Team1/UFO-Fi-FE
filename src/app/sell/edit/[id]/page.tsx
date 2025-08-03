@@ -1,11 +1,12 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI } from '@/backend';
+import { sellAPI, userPlanAPI } from '@/backend';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useEditContext } from '@/features/exchange/components/EditProvider';
@@ -26,6 +27,11 @@ export default function SellEditPage() {
   const [titleInput, setTitleInput] = useState('');
   const [pricePerGB, setPricePerGB] = useState(90);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { data: userPlan } = useQuery({
+    queryKey: ['userPlan'],
+    queryFn: () => userPlanAPI.get(),
+  });
 
   // postData로 초기값 설정
   useEffect(() => {
@@ -92,7 +98,7 @@ export default function SellEditPage() {
           <div className="flex items-center space-x-2 w-full">
             <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1 flex-shrink-0">
               <Icon
-                src={ICON_PATHS[postData.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
+                src={ICON_PATHS[userPlan?.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
               />
             </div>
 

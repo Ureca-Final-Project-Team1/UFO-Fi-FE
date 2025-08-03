@@ -1,9 +1,10 @@
-// src/app/sell/page.tsx
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 
+import { userPlanAPI } from '@/backend';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useSellData } from '@/features/hooks/useSellData';
@@ -32,6 +33,11 @@ export default function SellPage() {
     isSubmitting,
   } = useSellData();
 
+  const { data: userPlan } = useQuery({
+    queryKey: ['userPlan'],
+    queryFn: () => userPlanAPI.get(),
+  });
+
   const maxCapacity = myInfo?.sellableDataAmount || 0;
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
   const isMobile = useViewportStore((state) => state.isMobile);
@@ -52,7 +58,9 @@ export default function SellPage() {
         <div className="rounded-lg p-3 space-y-2">
           <div className="flex items-center space-x-2 w-full">
             <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1 flex-shrink-0">
-              <Icon src={ICON_PATHS['LGU']} />
+              <Icon
+                src={ICON_PATHS[userPlan?.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
+              />
             </div>
 
             <div className="flex-1 min-w-0">
