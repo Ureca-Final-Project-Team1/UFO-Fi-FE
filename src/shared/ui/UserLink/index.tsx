@@ -57,7 +57,7 @@ export function UserLink({
   // children이 있으면 클릭 가능한 div로 래핑
   if (children) {
     return (
-      <Link href={href!}>
+      <Link href={href || '#'}>
         <div
           onClick={handleClick}
           className={finalClassName}
@@ -86,7 +86,7 @@ export function UserLink({
   }
 
   return (
-    <Link href={href!}>
+    <Link href={href || '#'}>
       <span
         onClick={handleClick}
         className={`${finalClassName} text-cyan-400 hover:text-cyan-300 hover:underline underline-offset-4`}
