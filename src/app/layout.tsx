@@ -48,15 +48,16 @@ export const metadata: Metadata = {
     siteName: 'UFO-Fi',
     title: 'UFO-Fi - 데이터는 부족해도, 은하는 연결되어 있다',
     description: 'UFO-Fi는 데이터 부족 상황에서도 은하계를 연결하는 혁신적인 플랫폼입니다.',
-    images: [
-      {
-        url: '/images/main/alien.svg',
-        width: 1200,
-        height: 630,
-        alt: 'UFO-Fi 메인 이미지',
-        type: 'image/svg+xml',
-      },
-    ],
+    // TODO: Open Graph 썸네일 이미지 추가 후 주석 해제
+    // images: [
+    //   {
+    //     url: '/images/og-thumbnail.svg',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: 'UFO-Fi - 데이터는 부족해도, 은하는 연결되어 있다',
+    //     type: 'image/svg+xml',
+    //   },
+    // ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -64,7 +65,8 @@ export const metadata: Metadata = {
     creator: '@UFOFi',
     title: 'UFO-Fi - 데이터는 부족해도, 은하는 연결되어 있다',
     description: 'UFO-Fi는 데이터 부족 상황에서도 은하계를 연결하는 혁신적인 플랫폼입니다.',
-    images: ['/images/main/alien.svg'],
+    // TODO: Open Graph 썸네일 이미지 추가 후 주석 해제
+    // images: ['/images/og-thumbnail.svg'],
   },
   robots: {
     index: true,
