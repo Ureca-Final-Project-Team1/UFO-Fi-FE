@@ -82,6 +82,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
           }
         : {};
 
