@@ -1,7 +1,7 @@
 export const IMAGE_PATHS = {
   AL_SAD: '/images/alien-sad.png',
   AL_HAPPY: '/images/alien-happy.png',
-  AL_ONBOARDING: '/images/alien-onboarding.png',
+  AL_ONBOARDING: '/images/alien-onboarding.svg',
   AL_SELL: '/images/alien-sell.png',
   AL_REPORTED: '/images/alien-sad-reported.png',
   AL_BULK_PURCHASE: '/images/alien-bulk.png',
