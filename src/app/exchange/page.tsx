@@ -37,8 +37,30 @@ export default function ExchangePage() {
     setReportModal({ isOpen: true, postId, sellerId });
   };
 
+  // 상품 검증 함수
+  const validateProduct = (
+    productData: ExchangePost | undefined | null,
+  ): productData is ExchangePost => {
+    if (!productData) {
+      toast.error('상품을 찾을 수 없습니다.');
+      return false;
+    }
+    if (productData.status !== 'SELLING') {
+      toast.error('판매 중인 상품이 아닙니다.');
+      return false;
+    }
+    return true;
+  };
+
+  // 병렬 데이터 로딩 함수
+  const loadPurchaseData = async () => {
+    const [userInfo, history] = await Promise.all([myInfoAPI.get(), purchaseHistory()]);
+    return { userInfo, history };
+  };
+
   // 데이터 미리 로드
   const handlePurchase = async (id: number, productFromList?: ExchangePost) => {
+    if (isPurchaseLoading) return; // 중복 실행 방지
     setIsPurchaseLoading(true);
 
     try {
@@ -49,25 +71,18 @@ export default function ExchangePage() {
         productData = response.content;
       }
 
-      if (!productData) {
-        toast.error('상품을 찾을 수 없습니다.');
-        return;
-      }
+      // 2. 상품 검증
+      if (!validateProduct(productData)) return;
 
-      if (productData.status !== 'SELLING') {
-        toast.error('판매 중인 상품이 아닙니다.');
-        return;
-      }
+      // 3. 병렬로 사용자 정보와 구매 내역 조회
+      const { userInfo, history } = await loadPurchaseData();
 
-      // 2. 병렬로 사용자 정보와 구매 내역 조회
-      const [userInfo, history] = await Promise.all([myInfoAPI.get(), purchaseHistory()]);
-
-      // 3. Zustand Store에 데이터 저장
+      // 4. Zustand Store에 데이터 저장
       setProductData(productData);
       setUserZetBalance(userInfo?.zetAsset || 0);
       setIsFirstPurchase(!history || history.length === 0);
 
-      // 4. 구매 페이지로 이동
+      // 5. 구매 페이지로 이동
       router.push(`/exchange/purchase/${id}`);
     } catch (error) {
       console.error('구매 준비 중 오류:', error);
