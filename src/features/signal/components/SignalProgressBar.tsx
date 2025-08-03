@@ -58,7 +58,7 @@ export default function SignalProgressBar() {
         </div>
 
         {/* 진행 상태 카운터 */}
-        <div className="flex items-center justify-center size-12 rounded-full bg-neutral-900 text-white text-sm ml-3 relative z-10 flex-shrink-0">
+        <div className="flex items-center justify-center size-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
           {completedPlanets}/{PLANETS.length}
         </div>
       </div>
