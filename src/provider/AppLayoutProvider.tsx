@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo, useEffect, useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { ScrollToTopButton } from '@/features/common/components/ScrollToTopButton';
@@ -33,6 +33,12 @@ const BOTTOM_NAV_HEIGHT = 64;
 
 export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const pathname = usePathname();
+  // Next.js 15.4 SSR hydration mismatch 완전 방지
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const isAdminRoute = pathname.startsWith('/admin');
   const isPasswordPage = pathname.includes('password');
@@ -43,9 +49,9 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     pathname.startsWith('/blackhole') ||
     pathname.startsWith('/signup/privacy');
 
-  // 홈페이지만 중앙 정렬, 나머지는 일반 플렉스 컬럼
   const isHomePage = pathname === '/';
 
+  // React Hook Rules 준수: 모든 hooks를 early return 전에 호출
   const contextValue: AppLayoutContextValue = useMemo(
     () => ({
       isAdminPage: isAdminRoute,
@@ -55,7 +61,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     [isAdminRoute, isNavigationHidden, isPasswordPage],
   );
 
-  const backgroundImageUrl = (() => {
+  const backgroundImageUrl = useMemo(() => {
     if (
       pathname.startsWith('/login') ||
       pathname.startsWith('/signup') ||
@@ -63,27 +69,30 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     ) {
       return IMAGE_PATHS.BG_LOGIN;
     }
-    if (isOnboardingPage) {
-      return '';
-    }
-    if (isPasswordPage) {
+    if (isOnboardingPage || isPasswordPage) {
       return '';
     }
     return IMAGE_PATHS.BG_BASIC;
-  })();
+  }, [pathname, isOnboardingPage, isPasswordPage]);
 
-  const containerStyle = isPasswordPage
-    ? { backgroundColor: 'var(--color-password-bg)' }
-    : isOnboardingPage
-      ? { backgroundColor: 'var(--color-onboarding-bg)' }
-      : backgroundImageUrl
-        ? {
-            backgroundImage: `url(${backgroundImageUrl})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }
-        : {};
+  const containerStyle = useMemo(() => {
+    if (isPasswordPage) {
+      return { backgroundColor: 'var(--color-password-bg)' };
+    }
+    if (isOnboardingPage) {
+      return { backgroundColor: 'var(--color-onboarding-bg)' };
+    }
+    if (backgroundImageUrl) {
+      return {
+        backgroundImage: `url(${backgroundImageUrl})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        // backgroundAttachment: 'fixed'
+      };
+    }
+    return {};
+  }, [isPasswordPage, isOnboardingPage, backgroundImageUrl]);
 
   if (isAdminRoute) {
     return (
@@ -93,22 +102,34 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     );
   }
 
+  // SSR hydration mismatch 방지
+  if (!isMounted) {
+    return (
+      <AppLayoutContext.Provider value={contextValue}>
+        <div className="min-h-screen w-full flex justify-center">
+          <div className="relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden">
+            <main className="min-h-screen flex flex-col px-6 text-white">{children}</main>
+          </div>
+        </div>
+      </AppLayoutContext.Provider>
+    );
+  }
+
+  // 클라이언트에서 레이아웃 적용
   return (
     <AppLayoutContext.Provider value={contextValue}>
       <div className="min-h-screen w-full flex justify-center">
         <div
-          className={`
-            relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden
-            ${backgroundImageUrl ? 'nav-container-bg' : ''}
-          `}
+          className={`relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden ${
+            backgroundImageUrl ? 'nav-container-bg' : ''
+          }`}
           style={containerStyle}
         >
           {!isNavigationHidden && <TopNav />}
           <main
-            className={`
-              overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white
-              ${isHomePage ? 'flex flex-col justify-center items-center' : 'flex flex-col'}
-            `}
+            className={`overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white ${
+              isHomePage ? 'flex flex-col justify-center items-center' : 'flex flex-col'
+            }`}
             style={{
               minHeight: '100dvh',
               paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,

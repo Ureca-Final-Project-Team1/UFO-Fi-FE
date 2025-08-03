@@ -32,7 +32,7 @@ export const TitleWithoutRouter: React.FC<TitleWithoutRouterProps> = (props) => 
   const hasIcon = iconName !== null;
 
   return (
-    <div className={cn('relative w-full flex items-center py-4 px-4', className)} {...rest}>
+    <div className={cn('relative w-full flex items-center py-4', className)} {...rest}>
       {/* 아이콘 영역 */}
       {hasIcon && (
         <button

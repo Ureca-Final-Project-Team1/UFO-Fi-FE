@@ -1,5 +1,4 @@
 @layer utilities {
-  /* NavigationProvider */
   .nav-container-bg {
     position: relative;
   }
@@ -21,7 +20,7 @@
 
   @media (min-width: 769px) {
     .nav-container-bg::before {
-      background-attachment: fixed;
+      background-attachment: scroll;
     }
   }
 
