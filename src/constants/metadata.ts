@@ -8,6 +8,12 @@ export const SITE_CONFIG = {
   ogImage: '/images/open-graph.png',
   creator: 'UFO-Fi Team',
   themeColor: '#000000',
+  icons: {
+    favicon: '/favicon.ico',
+    faviconPng: '/favicon.png',
+    icon: '/icon.png',
+    appleIcon: '/apple-icon.png',
+  },
 } as const;
 
 export const SEO_KEYWORDS = [
@@ -94,6 +100,15 @@ export const DEFAULT_METADATA: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
   alternates: {
     canonical: '/',
+  },
+  icons: {
+    icon: [
+      { url: SITE_CONFIG.icons.favicon, sizes: 'any', type: 'image/x-icon' },
+      { url: SITE_CONFIG.icons.faviconPng, sizes: '32x32', type: 'image/png' },
+      { url: SITE_CONFIG.icons.icon, sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: SITE_CONFIG.icons.appleIcon, sizes: '180x180', type: 'image/png' }],
+    shortcut: SITE_CONFIG.icons.favicon,
   },
   openGraph: {
     type: 'website',
