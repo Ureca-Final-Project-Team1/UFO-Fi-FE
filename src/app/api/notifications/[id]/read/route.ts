@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { getUserFromToken } from '@/utils/getUserFromToken';
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const initialUpdateAchievementResponse = {
@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 
     const { userId } = result;
-    const { id } = params;
+    const { id } = await params;
 
     await prisma.notification_histories.update({
       where: {
