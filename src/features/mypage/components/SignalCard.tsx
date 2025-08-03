@@ -174,7 +174,6 @@ export default function SignalCard({
 
         {/* 가운데 사용자 정보 */}
         <div className="flex-1 space-y-1 min-w-0 max-w-[180px] sm:max-w-none">
-          {/* 사용자명과 프로필 수정 버튼 */}
           <div className="flex justify-between items-start gap-2">
             <h3 className="body-16-bold sm:body-20-bold text-black truncate flex-1">
               {userId || '지구인'}
@@ -213,7 +212,6 @@ export default function SignalCard({
 
         {/* 오른쪽 QR & 액션 */}
         <div className="flex flex-col items-end gap-1 sm:gap-2 shrink-0">
-          {/* 데스크톱에서만 프로필 수정 버튼 표시 */}
           <Button
             type="button"
             variant="outline"
