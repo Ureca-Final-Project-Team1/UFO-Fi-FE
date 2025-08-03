@@ -1,5 +1,4 @@
-import { apiRequest } from '@/api/client/axios';
-import type { SignupRequest, SignupResponse } from '@/api/types/auth';
+import { apiRequest, type SignupRequest, type SignupResponse } from '@/api';
 
 export const signupAPI = {
   async signup(data: SignupRequest): Promise<SignupResponse> {

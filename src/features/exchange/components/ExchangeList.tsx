@@ -2,18 +2,13 @@
 
 import { useMemo } from 'react';
 
-import { Carrier } from '@/api';
-import { MobileDataType } from '@/api/types/mobileData';
-import type { ExchangeItem } from '@/api/types/sell';
+import { Carrier, MobileDataType, type ExchangeItem } from '@/api/';
 import SellingItem from '@/features/exchange/components/SellingItem';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button } from '@/shared';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { Button, formatTimeAgo, useMyInfo, getMobileDataTypeDisplay } from '@/shared';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
 import { ExchangeListSkeleton } from './ExchangeListSkeleton';
-import { useOptimizedInfiniteScroll } from '../hooks/useOptimizedInfiniteScroll';
+import { useOptimizedInfiniteScroll } from '../hooks';
 
 interface ExchangeListProps {
   onEdit: (id: number) => void;

@@ -1,5 +1,4 @@
-import { apiRequest } from '@/api/client/axios';
-import { SetLogoutResponse } from '@/api/types';
+import { apiRequest, SetLogoutResponse } from '@/api';
 
 export const logoutAPI = {
   async setLogout(): Promise<SetLogoutResponse> {

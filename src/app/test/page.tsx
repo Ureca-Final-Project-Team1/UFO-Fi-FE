@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { recommendAPI } from '@/api/services/follow/recommend';
-import EmblaCarousel from '@/features/profile/components/Carousel/EmblaCarousel';
+import EmblaCarousel from '@/features/mypage/components/Carousel/EmblaCarousel';
 import { Button } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 

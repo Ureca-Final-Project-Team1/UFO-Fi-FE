@@ -6,15 +6,16 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { achievementsAPI } from '@/api/services/mypage/achievement';
-import { IMAGE_PATHS } from '@/constants/images';
-import { formatZetAmount } from '@/features/common/components/ZetDisplay';
-import { generateQRCodeDataURL } from '@/features/profile/utils/qrCodeUtils';
-import { generateQRCodeValue } from '@/features/profile/utils/shareUtils';
+import { achievementsAPI } from '@/api';
+import { IMAGE_PATHS } from '@/constants';
+import {
+  formatZetAmount,
+  generateQRCodeDataURL,
+  generateQRCodeValue,
+  Honorific,
+  HonorificChip,
+} from '@/features';
 import { Avatar, Button, Progress } from '@/shared';
-import { Honorific } from '@/types/Achievement';
-
-import { HonorificChip } from './HonorificChip';
 
 interface SignalCardProps {
   userId: string;

@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { useUserRole } from '@/features/signup/hooks/useUserRole';
+import { useUserRole } from '@/features';
 import { useSignupStore } from '@/stores/useSignupStore';
 
 export default function SignupLayout({ children }: { children: React.ReactNode }) {

@@ -4,9 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import type { IconType } from '@/shared';
-import { Icon } from '@/shared';
-import { useNavigation } from '@/shared/hooks/useNavigation';
+import { Icon, useNavigation, type IconType } from '@/shared';
 
 interface NavItem {
   id: string;

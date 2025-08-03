@@ -4,11 +4,10 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { purchaseHistory } from '@/api/services/history/purchaseHistory';
+import { purchaseHistory } from '@/api';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
-import { Title, Icon, Button, Loading } from '@/shared';
-import { analytics } from '@/utils/analytics';
+import { Title, Icon, Button, Loading, analytics } from '@/shared';
 
 export default function PurchasePage() {
   const router = useRouter();

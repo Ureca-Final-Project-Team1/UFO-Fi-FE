@@ -2,8 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { getUserInfoAPI } from '@/api/services/auth/userInfo';
-import { getUserInfoResponse } from '@/api/types/userInfo';
+import { getUserInfoAPI, getUserInfoResponse } from '@/api';
 
 export const useUserInfo = (enabled: boolean = true) => {
   return useQuery<getUserInfoResponse>({

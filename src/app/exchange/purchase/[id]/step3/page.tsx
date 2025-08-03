@@ -8,10 +8,10 @@ import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
 import { PurchaseErrorType } from '@/api/types/exchange';
 import type { ExchangePost, PurchaseRequest } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
-import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseErrorRecovery';
-import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';
+import { PurchaseErrorRecovery } from '@/features/exchange/purchase/components/PurchaseErrorRecovery';
+import { usePurchaseRetry } from '@/features/exchange/purchase/hooks/usePurchaseRetry';
 import { Button, Loading, Title } from '@/shared';
-import { analytics } from '@/utils/analytics';
+import { analytics } from '@/shared/utils/analytics';
 
 export default function Step3Page() {
   const router = useRouter();

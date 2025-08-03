@@ -4,10 +4,8 @@ import { useEffect, useRef, useState, ChangeEvent } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { plansAPI } from '@/api';
-import { Carrier } from '@/api/types/carrier';
-import { OCRInputSectionProps, ocrInputVariants, PlanCombo } from '@/features/signup/components';
-import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
+import { plansAPI, Carrier } from '@/api';
+import { OCRInputSectionProps, ocrInputVariants, PlanCombo, useOCRToGptMutation } from '@/features';
 import {
   Button,
   Icon,
@@ -16,8 +14,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  getMobileDataTypeDisplay,
 } from '@/shared';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
 
 const VALID_CARRIERS = ['SKT', 'LGU', 'KT'] as const;
 

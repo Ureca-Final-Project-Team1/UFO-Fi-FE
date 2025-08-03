@@ -1,4 +1,4 @@
-import { apiRequest } from '@/api/client/axios';
+import { apiRequest } from '@/api';
 import {
   BannedWordsResponse,
   CreateBannedWordRequest,
@@ -6,7 +6,7 @@ import {
   DeleteBannedWordsRequest,
   DeleteBannedWordsResponse,
   DeleteSingleBannedWordResponse,
-} from '@/api/types/bannedWords';
+} from '@/api/types';
 
 export const bannedWordsAPI = {
   // 금칙어 전체 조회 (페이지네이션)

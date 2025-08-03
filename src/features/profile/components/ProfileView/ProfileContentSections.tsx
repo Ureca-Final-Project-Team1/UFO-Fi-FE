@@ -9,11 +9,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
+import type { ProfileUser, UserStats } from '@/api';
 import { nextApiRequest } from '@/api/client/axios';
-import type { ProfileUser, UserStats } from '@/api/types/profile';
-import { ICON_PATHS } from '@/constants/icons';
-import { Icon } from '@/shared';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { ICON_PATHS } from '@/constants';
+import { Icon, getMobileDataTypeDisplay } from '@/shared';
 
 interface ProfileContentSectionsProps {
   profile: ProfileUser;

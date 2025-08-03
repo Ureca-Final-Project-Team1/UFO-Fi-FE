@@ -1,9 +1,11 @@
+'use client';
+
 import { useState } from 'react';
 
-import type { ProfileUser } from '@/api/types/profile';
+import type { ProfileUser } from '@/api';
 
 import { useWebShare } from './useWebShare';
-import { generateProfileUrl, generateShareText, generateShareTitle } from '../utils/shareUtils';
+import { generateProfileUrl, generateShareText, generateShareTitle } from '../utils';
 
 export function useProfileShare(profile: ProfileUser) {
   const [isModalOpen, setIsModalOpen] = useState(false);

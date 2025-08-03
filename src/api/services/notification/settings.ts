@@ -1,8 +1,5 @@
+import type { NotificationSettings, UpdateNotificationSettingRequest } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import type {
-  NotificationSettings,
-  UpdateNotificationSettingRequest,
-} from '@/api/types/notification';
 
 export const notificationAPI = {
   async getSettings(): Promise<NotificationSettings | undefined> {

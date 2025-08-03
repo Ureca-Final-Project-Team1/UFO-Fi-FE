@@ -1,5 +1,4 @@
-import { apiRequest } from '@/api/client/axios';
-import type { Plan } from '@/api/types/plan';
+import { apiRequest, type Plan } from '@/api';
 
 export const plansAPI = {
   async getByCarrier(carrier: string): Promise<Plan[]> {

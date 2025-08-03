@@ -3,12 +3,10 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
-import type { ExchangePost } from '@/api/types/exchange';
+import { exchangeAPI, myInfoAPI, purchaseHistory, type ExchangePost } from '@/api';
 import { IMAGE_PATHS } from '@/constants/images';
-import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
-import { Button, Loading, Title } from '@/shared';
-import { analytics } from '@/utils/analytics';
+import { InsufficientZetModal } from '@/features';
+import { Button, Loading, Title, analytics } from '@/shared';
 
 export default function Step1Page() {
   const router = useRouter();

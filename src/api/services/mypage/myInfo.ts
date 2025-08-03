@@ -1,5 +1,5 @@
+import { MyInfoResponse } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import { MyInfoResponse } from '@/api/types/myInfo';
 
 export const myInfoAPI = {
   async get(): Promise<MyInfoResponse['content'] | undefined> {

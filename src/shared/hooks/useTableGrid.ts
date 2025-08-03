@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { TableColumn, BaseTableRow } from '../ui/Table/Table.types';
+import { BaseTableRow, TableColumn } from '../ui';
 
 interface UseTableGridProps<T extends BaseTableRow> {
   columns: TableColumn<T>[];

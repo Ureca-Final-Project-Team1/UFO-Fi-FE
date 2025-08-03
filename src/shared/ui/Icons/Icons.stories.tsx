@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { ICON_SIZES, ICON_COLORS } from '@/constants/icons';
+import { ICON_SIZES, ICON_COLORS } from '@/constants';
 
 import { Icon, LucideIcon, UFOIcon, PlanetIcon, TrendingIcon, AstronautIcon } from './index';
 

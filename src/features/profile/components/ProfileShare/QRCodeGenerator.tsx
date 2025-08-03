@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { generateQRCodeDataURL } from '@/features/profile/utils/qrCodeUtils';
+import { generateQRCodeDataURL } from '@/features';
 
 interface QRCodeGeneratorProps {
   url: string;

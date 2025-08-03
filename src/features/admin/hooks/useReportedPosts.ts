@@ -1,8 +1,9 @@
+'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 
-import { reportAPI } from '@/api';
-import { ReportedPost } from '@/api/types/report';
+import { reportAPI, ReportedPost } from '@/api';
 
 interface UseReportedPostsReturn {
   reportedPosts: ReportedPost[];

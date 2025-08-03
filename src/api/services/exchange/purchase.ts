@@ -1,5 +1,5 @@
+import { PurchaseRequest, PurchaseResponse } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import { PurchaseRequest, PurchaseResponse } from '@/api/types/exchange';
 
 export const purchaseAPI = {
   async purchase(data: PurchaseRequest): Promise<PurchaseResponse> {

@@ -3,10 +3,9 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Table } from '@/shared';
+import { Table, Button } from '@/shared';
 
 import { AdminTableProps, BaseTableRow } from './Table.types';
-import { Button } from '../Button/Button';
 
 export function AdminTable<T extends BaseTableRow>({
   title,

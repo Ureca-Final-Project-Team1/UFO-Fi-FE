@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ProfileUser } from '@/api/types/profile';
 import { IMAGE_PATHS } from '@/constants/images';
 
-import { ProfileShare } from '../components/ProfileShare';
+import { ProfileShare } from '../components/ProfileShare/ProfileShare';
 
 const mockProfile: ProfileUser = {
   userId: 308,

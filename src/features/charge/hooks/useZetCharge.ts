@@ -3,10 +3,8 @@
 import { useState, useRef, useCallback } from 'react';
 import { toast } from 'sonner';
 
-import { paymentAPI } from '@/api';
-import type { PaymentRequest } from '@/api/types/payment';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { generateCustomerKey } from '@/utils/uuid';
+import { paymentAPI, type PaymentRequest } from '@/api';
+import { useMyInfo, generateCustomerKey } from '@/shared';
 
 import { useTossPayments } from './useTossPayments';
 

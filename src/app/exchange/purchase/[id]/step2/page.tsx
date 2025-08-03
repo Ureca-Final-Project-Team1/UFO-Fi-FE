@@ -3,12 +3,10 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-import { exchangeAPI, purchaseHistory } from '@/api';
-import type { ExchangePost } from '@/api/types/exchange';
+import { exchangeAPI, purchaseHistory, type ExchangePost } from '@/api';
 import { IMAGE_PATHS } from '@/constants/images';
-import { useUserRole } from '@/features/signup/hooks/useUserRole';
-import { Button, Loading, Title } from '@/shared';
-import { analytics } from '@/utils/analytics';
+import { useUserRole } from '@/features';
+import { Button, Loading, Title, analytics } from '@/shared';
 
 export default function Step2Page() {
   const router = useRouter();

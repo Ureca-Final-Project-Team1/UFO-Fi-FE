@@ -4,7 +4,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { routeUtils } from '@/constants';
-import { useUserRole } from '@/features/signup/hooks/useUserRole';
+import { useUserRole } from '@/features';
 import { Loading } from '@/shared';
 
 interface AuthProviderProps {

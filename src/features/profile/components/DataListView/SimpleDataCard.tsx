@@ -3,11 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import type { TradePost } from '@/api/types/profile';
-import { ICON_PATHS } from '@/constants/icons';
-import { Button, Icon, Badge, Avatar } from '@/shared';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import type { TradePost } from '@/api';
+import { ICON_PATHS } from '@/constants';
+import { Button, Icon, Badge, Avatar, formatTimeAgo, getMobileDataTypeDisplay } from '@/shared';
 
 interface SimpleDataCardProps {
   post: TradePost;

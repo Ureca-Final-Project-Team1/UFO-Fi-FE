@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { Carrier } from '@/api/types/carrier';
+import { Carrier } from '@/api';
 
 type SignupData = {
   name: string;

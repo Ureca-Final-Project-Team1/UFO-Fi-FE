@@ -4,15 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { logoutAPI, ApiError } from '@/api';
-import { achievementsAPI } from '@/api/services/mypage/achievement';
-import { LogoutModal } from '@/features/mypage/components';
+import { achievementsAPI, ApiError, logoutAPI } from '@/api';
+import { Honorific, LogoutModal } from '@/features';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Icon, IconType, Loading, Title } from '@/shared';
+import { Button, Icon, IconType, Loading, Title, useMyInfo } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
-import { Honorific } from '@/types/Achievement';
 
 export default function MyPage() {
   const router = useRouter();

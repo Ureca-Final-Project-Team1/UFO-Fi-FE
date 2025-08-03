@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 
-import { BulkResultContent } from '@/features/bulk/components/BulkResultContent';
+import { BulkResultContent } from '@/features/exchange/bulk/components/BulkResultContent';
 import { Loading } from '@/shared';
 
 export default function BulkResultPage() {

@@ -1,8 +1,7 @@
 'use client';
 
 import { PACKAGES } from '@/constants';
-import { ZetChargePackageCard } from '@/features/charge/components/ZetChargePackageCard';
-import { useZetCharge } from '@/features/charge/hooks/useZetCharge';
+import { ZetChargePackageCard, useZetCharge } from '@/features';
 import { Title } from '@/shared';
 
 export default function ZetChargePage() {

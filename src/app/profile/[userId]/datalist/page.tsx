@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { DataListView } from '@/features/profile/components/DataListView';
+import { DataListView } from '@/features';
 
 export default function ProfileDataListPage() {
   const params = useParams();

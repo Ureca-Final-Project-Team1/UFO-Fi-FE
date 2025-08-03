@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
+import { UpdateAchievementResponse } from '@/features';
 import { prisma } from '@/lib/prisma';
-import { UpdateAchievementResponse } from '@/types/Achievement';
 import { getUserFromToken } from '@/utils/getUserFromToken';
 
 const initialUpdateAchievementResponse: UpdateAchievementResponse = {

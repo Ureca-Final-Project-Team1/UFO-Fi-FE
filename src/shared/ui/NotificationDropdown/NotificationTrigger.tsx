@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { DotBadge, Icon } from '@/shared';
-import { NotificationTriggerProps } from '@/shared';
+import { DotBadge, Icon, NotificationTriggerProps } from '@/shared';
 
 export const NotificationTrigger: React.FC<NotificationTriggerProps> = ({
   unreadCount,

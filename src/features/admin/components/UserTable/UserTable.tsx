@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Table } from '@/shared';
 
-import { UserRow } from '../../types/user';
+import { UserRow } from '../../types';
 
 interface UserTableProps {
   data: UserRow[];

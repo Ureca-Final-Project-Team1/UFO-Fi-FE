@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 
-import { useUserInfo } from '@/shared/hooks/useUserInfo';
+import { useUserInfo } from '@/shared';
 
 type UserRole = 'ROLE_USER' | 'ROLE_ADMIN' | 'ROLE_NO_INFO' | 'ROLE_REPORTED';
 

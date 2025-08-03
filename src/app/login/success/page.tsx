@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-import { getUserInfoAPI } from '@/api/services/auth/userInfo';
+import { getUserInfoAPI } from '@/api';
 import { registerFCMToken } from '@/lib/fcm';
 import { Loading } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';

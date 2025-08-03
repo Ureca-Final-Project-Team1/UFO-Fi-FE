@@ -1,5 +1,4 @@
-import { apiRequest } from '@/api/client/axios';
-import type { StatisticsResponse, ReportsStatisticsResponse } from '@/api/types';
+import { apiRequest, type StatisticsResponse, type ReportsStatisticsResponse } from '@/api';
 
 export const statisticsService = {
   // 기본 통계 데이터 api 호출

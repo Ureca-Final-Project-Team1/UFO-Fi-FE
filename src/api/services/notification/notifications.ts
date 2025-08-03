@@ -1,10 +1,10 @@
-import { apiRequest } from '@/api/client/axios';
 import type {
   GetNotificationsResponse,
   MarkNotificationReadRequest,
   MarkAllNotificationsReadRequest,
   NotificationReadResponse,
-} from '@/api/types/notification';
+} from '@/api';
+import { apiRequest } from '@/api/client/axios';
 
 export const notificationsAPI = {
   // 알림 목록 조회

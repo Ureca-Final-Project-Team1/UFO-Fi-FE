@@ -3,13 +3,12 @@
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { useTableSelection, useTableGrid } from '@/shared/hooks';
+import { useTableSelection, useTableGrid, Pagination } from '@/shared';
 
 import { BaseTableProps, BaseTableRow } from './Table.types';
 import { TableActions } from './TableActions/TableActions';
 import { TableCheckbox } from './TableCheckbox/TableCheckbox';
 import { TableSkeleton } from './TableSkeleton';
-import Pagination from '../Pagination/Pagination';
 
 export function Table<T extends BaseTableRow>({
   columns,

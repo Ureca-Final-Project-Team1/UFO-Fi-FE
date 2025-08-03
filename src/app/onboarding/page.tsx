@@ -4,13 +4,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { IMAGE_PATHS } from '@/constants';
-import { ROUTE_CONFIG } from '@/constants/routes';
-import { AlienWithSpeech } from '@/features/onboarding/components';
-import { NextButton } from '@/features/onboarding/components';
-import { OnboardingImageFrame } from '@/features/onboarding/components';
-import { StepIndicator } from '@/features/onboarding/components';
-import { ONBOARDING_STEPS } from '@/features/onboarding/utils/onboarding';
+import { IMAGE_PATHS, ROUTE_CONFIG } from '@/constants';
+import {
+  OnboardingNextButton,
+  OnboardingImageFrame,
+  AlienWithSpeech,
+  StepIndicator,
+  ONBOARDING_STEPS,
+} from '@/features';
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -81,7 +82,7 @@ export default function OnboardingPage() {
                 total={ONBOARDING_STEPS.length}
                 onClick={handleStepClick}
               />
-              <NextButton isLast={step.isLastStep} onClick={handleNext} />
+              <OnboardingNextButton isLast={step.isLastStep} onClick={handleNext} />
             </div>
           </div>
         </div>

@@ -1,9 +1,9 @@
 'use client';
 
-import type { ProfileUser } from '@/api/types/profile';
-import { ICON_PATHS } from '@/constants/icons';
+import type { ProfileUser } from '@/api';
+import { ICON_PATHS } from '@/constants';
 import { Icon } from '@/shared';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { formatTimeAgo } from '@/shared';
 
 interface TradeDataProps {
   profile: ProfileUser;

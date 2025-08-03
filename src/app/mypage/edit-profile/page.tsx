@@ -4,9 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { ConfirmModal, NicknameEditor } from '@/features/mypage/components';
-import { PlanEditor } from '@/features/mypage/components/PlanEditor';
-import { useEditProfile } from '@/features/mypage/hooks/useEditProfile';
+import { ConfirmModal, NicknameEditor, PlanEditor, useEditProfile } from '@/features';
 import { Title } from '@/shared';
 
 export default function EditProfilePage() {

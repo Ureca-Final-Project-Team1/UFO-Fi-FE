@@ -1,5 +1,5 @@
+import { SuccessApiResponse } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import { SuccessApiResponse } from '@/api/types/api';
 
 export interface PurchaseDetail {
   postId: number;

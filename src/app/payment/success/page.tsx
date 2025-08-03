@@ -7,9 +7,8 @@ import { toast } from 'sonner';
 
 import { paymentAPI } from '@/api';
 import { PACKAGES } from '@/constants';
-import { IMAGE_PATHS } from '@/constants/images';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Loading, Title } from '@/shared';
+import { IMAGE_PATHS } from '@/constants';
+import { Button, Loading, Title, useMyInfo } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 function PaymentSuccessContent() {

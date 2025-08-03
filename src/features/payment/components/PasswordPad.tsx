@@ -6,7 +6,7 @@ import { Icon } from '@/shared';
 
 import NumberButton from './NumberButton';
 import PasswordInput from './PasswordInput';
-import { PasswordPadProps } from '../types/PasswordPad.types';
+import { PasswordPadProps } from '../types';
 
 const NUMBER_PAD = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 

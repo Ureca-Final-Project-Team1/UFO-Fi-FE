@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
-import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
-import { useBulkResult } from '@/features/bulk/hooks/useBulkResult';
+import { BulkResultCard } from '@/features/exchange/bulk/components/BulkResultCard';
+import { useBulkResult } from '@/features/exchange/bulk/hooks/useBulkResult';
 import { Icon, Button, Title, Loading } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 

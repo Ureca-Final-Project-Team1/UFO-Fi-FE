@@ -1,4 +1,7 @@
-import { Prisma } from '@prisma/client';
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+} from '@prisma/client/runtime/library';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
@@ -59,12 +62,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: '칭호가 성공적으로 변경되었습니다.' });
   } catch (error: unknown) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error instanceof PrismaClientKnownRequestError) {
       console.error('[Prisma Known Error]', error.message);
       return NextResponse.json({ error: '데이터 처리 중 오류가 발생했습니다.' }, { status: 500 });
     }
 
-    if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+    if (error instanceof PrismaClientUnknownRequestError) {
       console.error('[Prisma Unknown Error]', error.message);
       return NextResponse.json({ error: '알 수 없는 데이터베이스 오류입니다.' }, { status: 500 });
     }

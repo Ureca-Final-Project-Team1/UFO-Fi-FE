@@ -2,14 +2,8 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { ProfileUser } from '@/api/types/profile';
-import { useKakaoSDK } from '@/features/profile/hooks/useKakaoSDK';
-import {
-  facebookShare,
-  twitterShare,
-  lineShare,
-  naverShare,
-} from '@/features/profile/utils/socialShare';
+import type { ProfileUser } from '@/api';
+import { facebookShare, twitterShare, lineShare, naverShare, useKakaoSDK } from '@/features';
 import { Button, Icon } from '@/shared';
 
 import 'swiper/css';

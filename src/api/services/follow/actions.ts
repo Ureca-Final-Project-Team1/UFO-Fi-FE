@@ -1,5 +1,5 @@
+import type { FollowActionResponse } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import type { FollowActionResponse } from '@/api/types/follow';
 
 export const followActionsAPI = {
   // 다른 유저에게 팔로우 신청

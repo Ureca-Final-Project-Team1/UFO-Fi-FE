@@ -3,12 +3,11 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { achievementsAPI } from '@/api/services/mypage/achievement';
+import { achievementsAPI } from '@/api';
 import { IMAGE_PATHS } from '@/constants';
-import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
+import { Achievement, SelectedAchievementState, AchievementBadge } from '@/features';
 import { Loading, Title, AchievementModal } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
-import { Achievement, SelectedAchievementState } from '@/types/Achievement';
 
 export default function AchievementPage() {
   const [selectedAchievement, setSelectedAchievement] = useState<SelectedAchievementState | null>(

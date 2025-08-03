@@ -1,6 +1,6 @@
 import { apiRequest } from '@/api/client/axios';
 
-export interface ApiResponse {
+interface ApiResponse {
   success: boolean;
   message?: string;
 }

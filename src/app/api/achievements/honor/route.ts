@@ -1,8 +1,11 @@
-import { Prisma } from '@prisma/client';
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+} from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
+import { GetHonorificsResponse } from '@/features/mypage/achievement/types/Achievement';
 import { prisma } from '@/lib/prisma';
-import { GetHonorificsResponse } from '@/types/Achievement';
 import { getUserFromToken } from '@/utils/getUserFromToken';
 
 const initialResponse = (): GetHonorificsResponse => ({
@@ -79,10 +82,10 @@ export async function GET() {
   } catch (error: unknown) {
     let message = '예기치 못한 오류가 발생했습니다.';
 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error instanceof PrismaClientKnownRequestError) {
       message = '데이터 처리 중 오류가 발생했습니다.';
       console.error('[Prisma Known Error]', error.message, error.code);
-    } else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+    } else if (error instanceof PrismaClientUnknownRequestError) {
       message = '알 수 없는 데이터베이스 오류입니다.';
       console.error('[Prisma Unknown Error]', error.message);
     } else if (error instanceof Error) {

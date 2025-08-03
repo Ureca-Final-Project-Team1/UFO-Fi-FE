@@ -3,10 +3,8 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { ICON_PATHS } from '@/constants/icons';
-import { IMAGE_PATHS } from '@/constants/images';
-import { BulkCapacitySlider } from '@/features/bulk/components/BulkCapacitySlider';
-import { useBulkPurchase } from '@/features/bulk/hooks/useBulkPurchase';
+import { ICON_PATHS, IMAGE_PATHS } from '@/constants';
+import { BulkCapacitySlider, useBulkPurchase } from '@/features';
 import { Icon, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 

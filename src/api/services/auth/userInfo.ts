@@ -1,5 +1,4 @@
-import { apiRequest } from '@/api/client/axios';
-import { getUserInfoResponse } from '@/api/types/userInfo';
+import { apiRequest, getUserInfoResponse } from '@/api';
 
 export const getUserInfoAPI = {
   async getInfo(): Promise<getUserInfoResponse> {

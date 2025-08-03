@@ -4,12 +4,11 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import type { NotificationItem } from '@/api';
 import { nextApiRequest } from '@/api/client/axios';
-import type { NotificationItem } from '@/api/types/notification';
 import { ICON_PATHS } from '@/constants/icons';
-import { formatZetAmount } from '@/features/common/components/ZetDisplay';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Icon, NotificationDropdown } from '@/shared';
+import { formatZetAmount } from '@/features';
+import { Icon, NotificationDropdown, useMyInfo } from '@/shared';
 
 interface TopNavProps {
   title?: string;

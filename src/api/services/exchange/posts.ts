@@ -1,5 +1,5 @@
+import type { GetExchangePostsRequest, GetExchangePostsResponse } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import type { GetExchangePostsRequest, GetExchangePostsResponse } from '@/api/types/exchange';
 
 export const exchangeAPI = {
   async getPosts(params?: GetExchangePostsRequest): Promise<GetExchangePostsResponse> {

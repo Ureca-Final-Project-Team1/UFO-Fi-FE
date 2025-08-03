@@ -4,9 +4,8 @@ import { useRouter, useParams } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { sellAPI } from '@/api';
-import { AuthModal } from '@/features/exchange/components/AuthModal';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Loading } from '@/shared';
+import { AuthModal } from '@/features';
+import { Loading, useMyInfo } from '@/shared';
 
 interface PostData {
   title: string;

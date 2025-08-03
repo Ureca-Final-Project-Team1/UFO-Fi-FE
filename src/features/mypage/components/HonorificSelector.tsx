@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import { Honorific } from '@/features';
 import { Chip } from '@/shared';
-import { Honorific } from '@/types/Achievement';
 
 interface HonorificSelectorProps {
   honorific: Honorific[];

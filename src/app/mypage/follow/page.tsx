@@ -2,11 +2,8 @@
 
 import { useMemo } from 'react';
 
+import { FOLLOW_TYPE, useFollowActions, useFollowers, useFollowing } from '@/features';
 import FollowTabContent from '@/features/mypage/follow/components/FollowTabContent';
-import { useFollowActions } from '@/features/mypage/follow/hooks/useFollowActions';
-import { useFollowers } from '@/features/mypage/follow/hooks/useFollowers';
-import { useFollowing } from '@/features/mypage/follow/hooks/useFollowing';
-import { FOLLOW_TYPE } from '@/features/mypage/follow/types/FollowType.types';
 import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared';
 
 export default function Page() {

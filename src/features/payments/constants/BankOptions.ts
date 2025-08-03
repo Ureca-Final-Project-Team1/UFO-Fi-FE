@@ -1,4 +1,4 @@
-import { IMAGE_PATHS } from '@/constants/images';
+import { IMAGE_PATHS } from '@/constants';
 
 export type BankOption = { label: string; value: string; image: string };
 

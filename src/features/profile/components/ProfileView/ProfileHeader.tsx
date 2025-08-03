@@ -3,14 +3,10 @@
 import Image from 'next/image';
 import { toast } from 'sonner';
 
-import type { ProfileUser } from '@/api/types/profile';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { useFollowStatus } from '@/features/profile/hooks/useFollowStatus';
-import { useProfileFollowActions } from '@/features/profile/hooks/useProfileFollowActions';
-import { Avatar, Button, Icon } from '@/shared';
+import type { ProfileUser } from '@/api';
+import { useFollowStatus, useProfileFollowActions, ProfileShareContent } from '@/features';
+import { Avatar, Button, Icon, useMyInfo } from '@/shared';
 import { useModalStore } from '@/stores/useModalStore';
-
-import { ProfileShareContent } from '../ProfileShare/ProfileShareContent';
 
 interface ProfileHeaderProps {
   profile: ProfileUser;

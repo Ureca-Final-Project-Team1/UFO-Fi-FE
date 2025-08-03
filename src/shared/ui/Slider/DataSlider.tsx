@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { getGbLabel } from '@/utils/sliderUtils';
+import { getGbLabel } from '@/shared';
 
 import BaseSlider from './BaseSlider';
 import type { DataSliderProps } from './Slider.types';

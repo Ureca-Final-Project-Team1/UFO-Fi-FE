@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 
-import { IMAGE_PATHS } from '@/constants/images';
+import { IMAGE_PATHS } from '@/constants';
 import { Button, Loading, Title, Icon } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 

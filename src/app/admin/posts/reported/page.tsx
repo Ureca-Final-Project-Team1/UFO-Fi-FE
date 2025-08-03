@@ -2,9 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { statisticsService } from '@/api/services/admin/statistics';
-import type { ReportsStatisticsData } from '@/api/types';
-import { useReportedPosts } from '@/features/admin/hooks/useReportedPosts';
+import { statisticsService, type ReportsStatisticsData } from '@/api';
+import { useReportedPosts } from '@/features';
 import {
   Button,
   Header,
@@ -14,8 +13,8 @@ import {
   TableColumn,
   TableActions,
   BaseTableRow,
+  useModal,
 } from '@/shared';
-import { useModal } from '@/shared/hooks/useModal';
 
 interface ReportedPostTableRow extends BaseTableRow {
   id: number;

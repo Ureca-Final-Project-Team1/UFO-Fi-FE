@@ -9,8 +9,7 @@ import { toast } from 'sonner';
 
 import { getUserInfoResponse, Plan, signupAPI } from '@/api';
 import { Carrier } from '@/api/types/carrier';
-import { OCRInputSection, Stepper } from '@/features/signup/components';
-import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
+import { OCRInputSection, Stepper, signupPlanSchema, SignupPlanSchema } from '@/features';
 import { Button, Title } from '@/shared';
 import { useSignupStore } from '@/stores/useSignupStore';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePagination } from '../../hooks/usePagination';
+import { usePagination } from '@/shared/hooks';
 
 interface PaginationProps {
   page: number;

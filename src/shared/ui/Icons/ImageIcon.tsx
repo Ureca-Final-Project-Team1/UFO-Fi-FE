@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 
-import { ICON_SIZES } from '@/constants/icons';
+import { ICON_SIZES } from '@/constants';
 import { cn } from '@/lib/utils';
 
 import { ImageIconProps } from './Icons.types';

@@ -1,8 +1,9 @@
+'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 
-import { bannedWordsAPI } from '@/api/services/admin/bannedWords';
-import { BannedWord } from '@/api/types/bannedWords';
+import { bannedWordsAPI, BannedWord } from '@/api';
 
 interface UseBannedWordsReturn {
   bannedWords: BannedWord[];

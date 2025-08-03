@@ -3,7 +3,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { ReturnIcon } from '../../Icons/CustomIcons';
+import { ReturnIcon } from '../../Icons';
 import { BaseTableRow, TableActionsProps } from '../Table.types';
 
 export function TableActions<T extends BaseTableRow>({

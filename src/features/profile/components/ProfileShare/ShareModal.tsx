@@ -1,7 +1,7 @@
 'use client';
 
-import type { ProfileUser } from '@/api/types/profile';
-import { useProfileShare } from '@/features/profile/hooks/useProfileShare';
+import type { ProfileUser } from '@/api';
+import { useProfileShare } from '@/features';
 import { Modal } from '@/shared';
 
 import { QRCodeGenerator } from './QRCodeGenerator';

@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
-import { BannedWord } from '@/api/types/bannedWords';
-import { useBannedWords } from '@/features/admin/hooks/useBannedWords';
+import { BannedWord } from '@/api';
+import { useBannedWords } from '@/features';
 import {
   Button,
   Header,
@@ -16,8 +16,8 @@ import {
   TableSelection,
   TablePagination,
   BaseTableRow,
+  useModal,
 } from '@/shared';
-import { useModal } from '@/shared/hooks/useModal';
 
 interface BannedWordTableRow extends BannedWord, BaseTableRow {
   id: number;

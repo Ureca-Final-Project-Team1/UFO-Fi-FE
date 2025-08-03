@@ -4,9 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants';
-import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Icon } from '@/shared';
-import { SpeechBubble, Progress } from '@/shared';
+import { Button, Icon, useMyInfo, SpeechBubble, Progress } from '@/shared';
 
 export const ExchangeHeader = () => {
   const router = useRouter();

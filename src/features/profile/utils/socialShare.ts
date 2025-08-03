@@ -1,4 +1,4 @@
-import type { ProfileShareOptions } from '@/shared/types/kakao';
+import type { ProfileShareOptions } from '@/shared';
 
 // 카카오톡 공유
 export const kakaoTalkShare = (options: ProfileShareOptions): void => {

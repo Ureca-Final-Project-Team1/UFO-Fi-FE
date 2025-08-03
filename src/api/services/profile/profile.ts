@@ -1,5 +1,5 @@
+import type { GetProfileResponse, ProfileUser } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import type { GetProfileResponse, ProfileUser } from '@/api/types/profile';
 
 export const profileAPI = {
   async getProfile(anotherUserId: number): Promise<GetProfileResponse> {

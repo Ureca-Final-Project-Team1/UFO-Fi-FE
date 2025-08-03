@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
-import { useLetters } from '@/hooks/useLetters';
+import { useLetters } from '@/features';
 
 import PlanetWithSatellite from './PlanetWithSatellite';
 

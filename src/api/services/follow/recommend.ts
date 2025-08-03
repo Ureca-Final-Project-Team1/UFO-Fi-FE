@@ -1,5 +1,5 @@
+import { FindRecommendUsersResponse } from '@/api';
 import { nextApiRequest } from '@/api/client/axios';
-import { FindRecommendUsersResponse } from '@/api/types';
 
 export const recommendAPI = {
   // Qdrant 컬렉션 생성 및 시딩 (POST)

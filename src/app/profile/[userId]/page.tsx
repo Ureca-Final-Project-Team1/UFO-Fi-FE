@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { ProfileView } from '@/features/profile/components/ProfileView';
+import { ProfileView } from '@/features';
 
 export default function ProfilePage() {
   const params = useParams();

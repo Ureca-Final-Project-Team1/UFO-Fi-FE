@@ -32,8 +32,8 @@ export default function OrbitWithSatellite() {
   useEffect(() => {
     async function fetchLetters() {
       try {
-        await nextApiRequest.post('/api/story/letters');
-        const res = await nextApiRequest.get('/api/story/letters');
+        await nextApiRequest.post('/api/letters');
+        const res = await nextApiRequest.get('/api/letters');
         const data = (await res.data) as LetterDisplay[];
         setLetters(
           data.map((letter) => ({

@@ -4,12 +4,8 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { ICON_PATHS } from '@/constants/icons';
-import { IMAGE_PATHS } from '@/constants/images';
-import { useSellData } from '@/features/hooks/useSellData';
-import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
-import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
-import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
+import { ICON_PATHS, IMAGE_PATHS } from '@/constants';
+import { SellCapacitySlider, SellTotalPrice, useSellData, getSellErrorMessages } from '@/features';
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 

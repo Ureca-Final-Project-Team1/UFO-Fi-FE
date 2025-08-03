@@ -1,5 +1,5 @@
+import { PurchaseHistoryResponse } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import { PurchaseHistoryResponse } from '@/api/types/history';
 
 export const purchaseHistory = async (): Promise<PurchaseHistoryResponse[] | undefined> => {
   const response = await apiRequest.get<{

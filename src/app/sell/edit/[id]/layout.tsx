@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { EditProvider } from '@/features/exchange/components/EditProvider';
+import { EditProvider } from '@/features';
 
 export const metadata: Metadata = {
   title: 'UFO-Fi | 게시글 수정',

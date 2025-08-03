@@ -1,11 +1,11 @@
-import { apiRequest } from '@/api/client/axios';
 import type {
   SellDataRequest,
   SellDataResponse,
   UpdateSellDataRequest,
   GetPostsResponse,
   PostDetailResponse,
-} from '@/api/types/sell';
+} from '@/api';
+import { apiRequest } from '@/api/client/axios';
 
 export const sellAPI = {
   // 판매 게시물 생성

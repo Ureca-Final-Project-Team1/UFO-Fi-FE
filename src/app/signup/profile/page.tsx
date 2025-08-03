@@ -6,8 +6,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import '@/styles/globals.css';
 
-import { Stepper } from '@/features/signup/components';
-import { signupProfileSchema, SignupProfileSchema } from '@/schemas/signupSchema';
+import { signupProfileSchema, SignupProfileSchema, Stepper } from '@/features';
 import { Button, PhoneInput, Input, Title } from '@/shared';
 import { useSignupStore } from '@/stores/useSignupStore';
 

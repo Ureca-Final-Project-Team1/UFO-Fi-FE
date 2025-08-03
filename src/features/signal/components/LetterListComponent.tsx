@@ -3,8 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { fetchLetters } from '@/api/services/story/letters';
-import { LetterDisplay } from '@/api/types/letters';
+import { LetterDisplay, fetchLetters } from '@/api';
 import { Button, Loading } from '@/shared';
 import { useLetterStore } from '@/stores/useLetterStore';
 

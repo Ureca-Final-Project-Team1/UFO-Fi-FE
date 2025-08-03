@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { IMAGE_PATHS } from '@/constants/images';
+import { IMAGE_PATHS } from '@/constants';
 import { Modal } from '@/shared';
 
 export interface LogoutModalProps {

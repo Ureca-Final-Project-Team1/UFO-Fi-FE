@@ -6,10 +6,8 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
-import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
-import { ExchangeList } from '@/features/exchange/components/ExchangeList';
-import { Modal, ReportedModal, Title } from '@/shared';
-import { queryKeys } from '@/utils';
+import { ExchangeHeader, ExchangeList } from '@/features';
+import { Modal, ReportedModal, Title, queryKeys } from '@/shared';
 
 export default function ExchangePage() {
   const router = useRouter();

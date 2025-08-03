@@ -1,4 +1,3 @@
-import { apiRequest } from '@/api/client/axios';
 import {
   GetReportedUsersResponse,
   GetReportedPostsResponse,
@@ -8,7 +7,8 @@ import {
   GrantUserResponse,
   ReportPostsResponse,
   ReportPostsRequest,
-} from '@/api/types/report';
+} from '@/api';
+import { apiRequest } from '@/api/client/axios';
 
 export const reportAPI = {
   // 정지된 사용자 목록 조회

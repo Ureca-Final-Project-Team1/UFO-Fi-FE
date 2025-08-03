@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { privacyMarkdown } from '@/constants/terms/privacy';
-import { MarkdownRenderer } from '@/features/common/components/MarkdownRenderer/MarkdownRenderer';
+import { MarkdownRenderer } from '@/features';
 import { Title } from '@/shared';
 
 export default function TermsPage() {

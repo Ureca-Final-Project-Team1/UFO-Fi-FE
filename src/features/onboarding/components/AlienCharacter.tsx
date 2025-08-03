@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { IMAGE_PATHS } from '@/constants/images';
+import { IMAGE_PATHS } from '@/constants';
 
 export const AlienCharacter = () => {
   return (

@@ -1,5 +1,5 @@
+import type { FCMTokenRequest, FCMTokenResponse, NotificationFilterRequest } from '@/api';
 import { apiRequest } from '@/api/client/axios';
-import type { FCMTokenRequest, FCMTokenResponse, NotificationFilterRequest } from '@/api/types/fcm';
 
 export const fcmAPI = {
   async saveToken(data: FCMTokenRequest): Promise<FCMTokenResponse> {

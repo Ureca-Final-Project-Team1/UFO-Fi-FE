@@ -5,15 +5,16 @@ import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 import { ApiResponse, sellAPI } from '@/api';
-import { ICON_PATHS } from '@/constants/icons';
-import { IMAGE_PATHS } from '@/constants/images';
-import { useEditContext } from '@/features/exchange/components/EditProvider';
-import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
-import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
-import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
+import { ICON_PATHS, IMAGE_PATHS } from '@/constants';
+import {
+  useEditContext,
+  SellCapacitySlider,
+  SellTotalPrice,
+  getSellErrorMessages,
+} from '@/features';
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
+import { handleApiAction } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
-import { handleApiAction } from '@/utils/handleApiAction';
 
 export default function SellEditPage() {
   const router = useRouter();

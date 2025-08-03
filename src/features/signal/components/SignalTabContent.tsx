@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
-import { useLetters } from '@/hooks/useLetters';
+import { useLetters } from '@/features';
 import { Loading } from '@/shared';
 
 import PlanetComponent from './PlanetComponent';

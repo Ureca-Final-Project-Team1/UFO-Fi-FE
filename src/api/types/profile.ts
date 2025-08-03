@@ -1,4 +1,4 @@
-import { Achievement } from '@/types/Achievement';
+import { Achievement } from '@/features';
 
 import { SuccessApiResponse } from './api';
 import { Carrier } from './carrier';

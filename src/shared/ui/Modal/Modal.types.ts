@@ -1,7 +1,7 @@
 import { VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
-import { SelectedAchievementState } from '@/types/Achievement';
+import { SelectedAchievementState } from '@/features';
 
 import { modalVariants, modalHeaderVariants } from './modalVariants';
 

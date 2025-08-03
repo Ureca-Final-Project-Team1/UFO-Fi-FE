@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { profileAPI } from '@/api';
-import { IMAGE_PATHS } from '@/constants/images';
+import { IMAGE_PATHS } from '@/constants';
 
 interface Props {
   params: Promise<{ userId: string }>;

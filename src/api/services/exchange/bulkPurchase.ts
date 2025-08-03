@@ -3,7 +3,7 @@ import {
   GetBulkPurchaseRequest,
   GetBulkPurchaseResponse,
   PostBulkPurchaseResponse,
-} from '@/features/bulk/types/bulkResult.types';
+} from '@/features';
 
 export const bulkPurchaseAPI = {
   async getBulkPurchaseResult(params: GetBulkPurchaseRequest): Promise<GetBulkPurchaseResponse> {

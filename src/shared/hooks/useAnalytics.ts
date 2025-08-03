@@ -1,9 +1,11 @@
+'use client';
+
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 import type { EcommerceItem, UserProperties } from '@/types/analytics';
 
-import { analytics } from '../../utils/analytics';
+import { analytics } from '../utils';
 
 export function useAnalytics() {
   const pathname = usePathname();

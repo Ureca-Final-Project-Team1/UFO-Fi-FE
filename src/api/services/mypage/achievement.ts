@@ -1,6 +1,6 @@
 import { nextApiRequest } from '@/api/client/axios';
 import { ApiError } from '@/api/client/axios';
-import { Honorific, UpdateAchievement } from '@/types/Achievement';
+import { Honorific, UpdateAchievement } from '@/features';
 
 export const achievementsAPI = {
   async updateAchievements(): Promise<UpdateAchievement> {
