@@ -1,5 +1,3 @@
-export { AccountInput } from './AccountInput';
-export { BankSelectInput } from './BankSelectInput';
 export { BasicInput } from './BasicInput';
 export { LabeledInput } from './LabeledInput';
 export { PhoneInput } from './PhoneInput';
