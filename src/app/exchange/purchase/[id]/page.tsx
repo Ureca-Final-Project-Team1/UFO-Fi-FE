@@ -34,12 +34,16 @@ function PurchaseContent() {
         router.replace(`/exchange/purchase/${params.id}/step1`);
         return;
       }
-
-      // 첫 구매면 이 화면 표시
-      analytics.track.featureUsed('first_purchase_flow', 'started');
       setIsLoading(false);
     }
   }, [params, router, isFirstPurchase]);
+
+  // 첫 구매 진입 이벤트는 최초 1회만 전송
+  useEffect(() => {
+    if (isFirstPurchase) {
+      analytics.track.featureUsed('first_purchase_flow', 'started');
+    }
+  }, [isFirstPurchase]);
 
   const handleContinue = () => {
     if (!id) return;

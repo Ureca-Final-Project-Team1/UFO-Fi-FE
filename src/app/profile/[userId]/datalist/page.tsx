@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 
 import { DataListView } from '@/features/profile/components/DataListView';
+import { Loading } from '@/shared';
 
 function DataListContent() {
   const params = useParams();
@@ -21,7 +22,7 @@ function DataListContent() {
   }, [params]);
 
   if (isLoading) {
-    return <div className="text-white">로딩 중...</div>;
+    return <Loading />;
   }
 
   if (!userId) {
@@ -33,7 +34,7 @@ function DataListContent() {
 
 export default function ProfileDataListPage() {
   return (
-    <Suspense fallback={<div className="text-white">판매 데이터를 불러오는 중...</div>}>
+    <Suspense fallback={<Loading />}>
       <DataListContent />
     </Suspense>
   );

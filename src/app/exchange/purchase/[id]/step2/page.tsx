@@ -45,8 +45,9 @@ function Step2Content() {
       setIsLoading(false);
 
       // 애널리틱스 이벤트
+      const postIdStr = postId !== null ? postId.toString() : '';
       analytics.event('purchase_step2_viewed', {
-        post_id: postId!.toString(),
+        post_id: postIdStr,
         data_amount: `${productData.sellMobileDataCapacityGb}GB`,
         is_first_purchase: isFirstPurchase,
       });
