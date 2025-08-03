@@ -17,7 +17,7 @@ export default function SignalPage() {
 
       {/* Tabs UI */}
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)}>
-        <TabsList className="p-1 mb-6 mx-4 w-auto">
+        <TabsList className="p-1 mb-6 w-auto">
           <TabsTrigger value="orbit" variant="darkTab" size="full">
             전파 궤도
           </TabsTrigger>

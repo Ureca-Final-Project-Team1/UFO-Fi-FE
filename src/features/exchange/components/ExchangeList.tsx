@@ -81,22 +81,16 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
   }
 
   return (
-    <div className="w-auto justify-center items-center">
+    <div className="w-full">
       {/* 게시물 목록 컨테이너 */}
       <section
-        className="px-3"
         role="feed"
         aria-label="데이터 거래 게시물 목록"
         aria-live="polite"
         aria-busy={isFetchingNextPage}
+        className="px-2 sm:px-4"
       >
-        {/* 
-          반응형 그리드 최적화:
-          - 모바일: 2열 (더 넓은 간격)
-          - 태블릿: 3열
-          - 데스크톱: 4열
-        */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="flex flex-wrap justify-center gap-3">
           {sellingItems.map((item) => (
             <SellingItem
               key={item.id}

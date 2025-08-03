@@ -114,7 +114,7 @@ export const ExchangeHeader = () => {
       </div>
 
       {/* 모바일 레이아웃 */}
-      <div className="md:hidden w-full p-4 space-y-4">
+      <div className="md:hidden w-full space-y-4">
         {/* 알림 설정 카드 */}
         <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl border border-blue-500/30 backdrop-blur-sm">
           <p className="text-white text-xs">원하는 상품이 올라오면 알려드려요.</p>
