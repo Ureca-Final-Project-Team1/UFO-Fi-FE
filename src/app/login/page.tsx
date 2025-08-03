@@ -76,7 +76,7 @@ const LoginPage = () => {
       {/* 카카오 로그인 버튼 - 하단 고정 */}
       <section className="w-full max-w-[320px] pb-6" aria-label="로그인 버튼">
         <Button
-          className="w-full h-11 sm:h-12 bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-contain hover:opacity-90 transition-opacity duration-200 border-0 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-slate-900"
+          className="w-full h-11 sm:h-12 bg-[url('/images/kakao_login_button.png')] bg-no-repeat bg-center bg-contain hover:opacity-90 transition-opacity duration-200 border-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-slate-900"
           size="full-width"
           onClick={handleKakaoLogin}
           onKeyDown={handleKeyDown}
