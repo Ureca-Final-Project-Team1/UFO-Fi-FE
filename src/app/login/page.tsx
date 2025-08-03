@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import '@/styles/globals.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { ICON_PATHS } from '@/constants/icons';
@@ -20,7 +20,7 @@ const LoginPage = () => {
     }
   }, [message, status, hasShown, clearToast]);
 
-  const handleKakaoLogin = async () => {
+  const handleKakaoLogin = useCallback(async () => {
     try {
       setIsLoading(true);
       window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/kakao`;
@@ -28,14 +28,17 @@ const LoginPage = () => {
       toast.error('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleKakaoLogin();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        handleKakaoLogin();
+      }
+    },
+    [handleKakaoLogin],
+  );
 
   return (
     <main
