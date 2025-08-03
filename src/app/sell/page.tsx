@@ -133,15 +133,15 @@ export default function SellPage() {
           <div
             className="absolute h-full pointer-events-none"
             style={{
-              left: isMobile ? '-10px' : '0px',
-              bottom: isMobile ? '0px' : '10px',
+              left: isMobile ? '-20px' : '-40px',
+              bottom: isMobile ? '40px' : '10px',
             }}
           >
             <Image
               src={IMAGE_PATHS.AL_SELL}
               alt="판매 우주인"
-              width={isMobile ? 240 : 300}
-              height={isMobile ? 240 : 300}
+              width={isMobile ? 200 : 300}
+              height={isMobile ? 200 : 300}
               priority
             />
           </div>
