@@ -128,7 +128,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
           {isFetchingNextPage ? (
             <div className="flex flex-col items-center gap-3">
               <div
-                className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"
+                className="animate-spin rounded-full size-8 border-b-2 border-white"
                 aria-hidden="true"
               />
               <p className="text-white text-sm" aria-live="polite">

@@ -36,7 +36,7 @@ export const ReceiptContent = ({ purchaseDetail }: ReceiptContentProps) => {
             <Icon
               src={getCarrierIcon(purchaseDetail.carrier)!}
               alt={purchaseDetail.carrier}
-              className="w-3 h-3 object-contain"
+              className="size-3 object-contain"
             />
             {purchaseDetail.totalGB}GB
           </span>

@@ -123,7 +123,7 @@ export function ShareButtons({ profile, profileUrl, onCopyLink, onClose }: Share
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 min-w-[70px]"
               >
                 <div
-                  className={`w-14 h-14 rounded-full flex items-center justify-center ${option.bgColor}`}
+                  className={`size-14 rounded-full flex items-center justify-center ${option.bgColor}`}
                 >
                   {typeof option.icon === 'string' ? (
                     <span
@@ -146,7 +146,7 @@ export function ShareButtons({ profile, profileUrl, onCopyLink, onClose }: Share
 
       {/* 공유 링크 복사 버튼 */}
       <Button variant="secondary" className="w-full" onClick={onCopyLink}>
-        <Icon name="Upload" className="w-4 h-4 mr-2" />
+        <Icon name="Upload" className="size-4 mr-2" />
         공유 링크 복사하기
       </Button>
     </div>

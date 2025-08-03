@@ -75,7 +75,7 @@ export default function BulkPurchasePage() {
 
           {/* 가격 입력 부분 */}
           <div className="flex items-center gap-2">
-            <Icon src={ICON_PATHS['COIN']} className="w-4 h-4" aria-hidden="true" />
+            <Icon src={ICON_PATHS['COIN']} className="size-4" aria-hidden="true" />
             <span className="text-cyan-400 caption-14-bold">1GB 당</span>
             <div className="w-28 h-10 flex justify-center items-center px-2">
               <PriceInput

@@ -64,7 +64,7 @@ export default function PlanetProgressBar() {
             <Planet key={p.id} {...p} />
           ))}
         </div>
-        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
+        <div className="flex items-center justify-center size-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
           {completed}/{planets.length}
         </div>
       </div>
@@ -75,7 +75,7 @@ export default function PlanetProgressBar() {
 function Planet({ src, active, color }: Planet) {
   return (
     <div
-      className="relative w-10 h-10 rounded-full flex items-center justify-center"
+      className="relative size-10 rounded-full flex items-center justify-center"
       style={{
         backgroundColor: active ? color : 'transparent',
         boxShadow: active

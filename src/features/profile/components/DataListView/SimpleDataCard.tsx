@@ -60,7 +60,7 @@ export function SimpleDataCard({ post, sellerNickname }: SimpleDataCardProps) {
           <div className="flex items-center justify-between">
             <Badge showIcon={false} variant="secondary">
               <div className="flex items-center gap-1">
-                {carrierIcon && <Icon src={carrierIcon} alt={post.carrier} className="w-4 h-4" />}
+                {carrierIcon && <Icon src={carrierIcon} alt={post.carrier} className="size-4" />}
                 <span>{`${post.carrier} ${networkType}`}</span>
               </div>
             </Badge>

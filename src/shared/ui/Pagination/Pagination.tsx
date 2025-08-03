@@ -32,7 +32,7 @@ const Pagination: React.FC<PaginationProps> = ({
       {/* 첫 페이지 버튼 */}
       <button
         className={`
-          flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 
+          flex items-center justify-center size-10 rounded-lg border border-gray-200 
           transition-all duration-200 ease-in-out
           ${
             !canGoPrevious
@@ -44,7 +44,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={!canGoPrevious}
         aria-label="첫 페이지"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -57,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({
       {/* 이전 페이지 버튼 */}
       <button
         className={`
-          flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 
+          flex items-center justify-center size-10 rounded-lg border border-gray-200 
           transition-all duration-200 ease-in-out
           ${
             !canGoPrevious
@@ -69,7 +69,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={!canGoPrevious}
         aria-label="이전 페이지"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
@@ -80,7 +80,7 @@ const Pagination: React.FC<PaginationProps> = ({
           pageNumber === DOTS ? (
             <span
               key={`dots-${idx}`}
-              className="flex items-center justify-center w-10 h-10 text-gray-400 font-medium"
+              className="flex items-center justify-center size-10 text-gray-400 font-medium"
             >
               {DOTS}
             </span>
@@ -88,7 +88,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <button
               key={`page-${pageNumber}`}
               className={`
-                flex items-center justify-center w-10 h-10 rounded-lg border font-medium
+                flex items-center justify-center size-10 rounded-lg border font-medium
                 transition-all duration-200 ease-in-out
                 ${
                   pageNumber === page
@@ -108,7 +108,7 @@ const Pagination: React.FC<PaginationProps> = ({
       {/* 다음 페이지 버튼 */}
       <button
         className={`
-          flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 
+          flex items-center justify-center size-10 rounded-lg border border-gray-200 
           transition-all duration-200 ease-in-out
           ${
             !canGoNext
@@ -120,7 +120,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={!canGoNext}
         aria-label="다음 페이지"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
@@ -128,7 +128,7 @@ const Pagination: React.FC<PaginationProps> = ({
       {/* 마지막 페이지 버튼 */}
       <button
         className={`
-          flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 
+          flex items-center justify-center size-10 rounded-lg border border-gray-200 
           transition-all duration-200 ease-in-out
           ${
             !canGoNext
@@ -140,7 +140,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={!canGoNext}
         aria-label="마지막 페이지"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"

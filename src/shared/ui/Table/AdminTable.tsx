@@ -39,7 +39,7 @@ export function AdminTable<T extends BaseTableRow>({
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="size-2 bg-blue-500 rounded-full"></div>
               <span className="text-sm text-blue-700 font-medium">
                 {tableProps.selection.selectedIds.length}개의 항목이 선택되었습니다.
               </span>

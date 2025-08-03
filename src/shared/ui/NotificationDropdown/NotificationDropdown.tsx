@@ -74,7 +74,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
         <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/80 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <Icon name="Bell" className="w-4 h-4" color="white" />
+              <Icon name="Bell" className="size-4" color="white" />
               알림
               {unreadCount > 0 && (
                 <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">

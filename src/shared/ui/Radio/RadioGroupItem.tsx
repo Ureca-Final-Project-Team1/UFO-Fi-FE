@@ -27,7 +27,7 @@ export function RadioGroupItem({
         data-slot="radio-group-indicator"
         className="relative flex items-center justify-center"
       >
-        <div className={`rounded-full w-3 h-3 bg-${color}`} />
+        <div className={`rounded-full size-3 bg-${color}`} />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

@@ -218,9 +218,9 @@ export default function SignalCard({
           </Button>
 
           {/* 동적 QR코드 */}
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white rounded-lg flex items-center justify-center">
+          <div className="size-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white rounded-lg flex items-center justify-center">
             {isQRLoading ? (
-              <div className="animate-spin w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full" />
+              <div className="animate-spin size-6 border-2 border-gray-300 border-t-gray-600 rounded-full" />
             ) : qrCodeDataURL ? (
               <img
                 src={qrCodeDataURL}

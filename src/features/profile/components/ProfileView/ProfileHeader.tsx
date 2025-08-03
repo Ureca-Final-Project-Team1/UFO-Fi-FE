@@ -76,7 +76,7 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
               className="w-full h-full object-cover rounded-full"
             />
           ) : (
-            <Icon name="astronaut" className="w-12 h-12 text-purple-200" />
+            <Icon name="astronaut" className="size-12 text-purple-200" />
           )}
         </Avatar>
 
@@ -98,7 +98,7 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
             className="flex-1"
           >
             {isButtonLoading ? (
-              <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             ) : isFollowing ? (
               '언팔로우'
             ) : (
@@ -123,7 +123,7 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
 
         {/* 공유 버튼 */}
         <Button variant="secondary" size="sm" onClick={handleShareClick} className="flex-1">
-          <Icon name="Share" className="w-4 h-4 mr-1" />
+          <Icon name="Share" className="size-4 mr-1" />
           공유
         </Button>
       </div>

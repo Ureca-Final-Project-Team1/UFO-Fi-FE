@@ -63,7 +63,7 @@ export const ExchangeHeader = () => {
           <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl border border-blue-500/30 mb-4 backdrop-blur-sm">
             <p className="text-white caption-12-regular">원하는 상품이 올라오면 알려드려요.</p>
             <Button size="sm" variant="ghost" onClick={handleNotificationSettings}>
-              <Icon name="Bell" className="w-5 h-5 pr-1" color="primary400" />
+              <Icon name="Bell" className="size-5 pr-1" color="primary400" />
               <span className="caption-12-bold text-white">알림설정</span>
             </Button>
           </div>
@@ -71,7 +71,7 @@ export const ExchangeHeader = () => {
           {/* 일괄구매/잔액/충전 */}
           <div className="flex items-center justify-between gap-4 mb-4">
             <Button size="sm" variant="exploration-button" onClick={handleBulkPurchase}>
-              <Icon name="box" className="w-3 h-3 pr-1" />
+              <Icon name="box" className="size-3 pr-1" />
               <span className="caption-14-bold">일괄구매</span>
             </Button>
             <div className="flex items-center gap-2">
@@ -119,7 +119,7 @@ export const ExchangeHeader = () => {
         <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl border border-blue-500/30 backdrop-blur-sm">
           <p className="text-white text-xs">원하는 상품이 올라오면 알려드려요.</p>
           <Button size="sm" variant="ghost" onClick={handleNotificationSettings}>
-            <Icon name="Bell" className="w-4 h-4" color="primary400" />
+            <Icon name="Bell" className="size-4" color="primary400" />
             <span className="caption-12-bold text-white pl-2">알림설정</span>
           </Button>
         </div>
@@ -146,7 +146,7 @@ export const ExchangeHeader = () => {
             onClick={handleBulkPurchase}
             className="flex-shrink-0"
           >
-            <Icon name="box" className="w-3 h-3 pr-1" />
+            <Icon name="box" className="size-3 pr-1" />
             <span className="text-xs font-bold">일괄구매</span>
           </Button>
           <div className="flex items-center gap-2 min-w-0">

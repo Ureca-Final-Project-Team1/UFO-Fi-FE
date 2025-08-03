@@ -30,7 +30,7 @@ function Badge({
         <div className="flex items-center gap-1.5">
           {showIcon && status.showDot && (
             <div
-              className={cn('w-3 h-3 rounded-full', {
+              className={cn('size-3 rounded-full', {
                 'bg-(--color-text-selling)': state === 'selling',
                 'bg-(--color-text-sold)': state === 'sold',
                 'bg-(--color-text-timeout)': state === 'timeout',

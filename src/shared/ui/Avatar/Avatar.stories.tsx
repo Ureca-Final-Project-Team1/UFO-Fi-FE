@@ -73,7 +73,7 @@ export const AllSizes: Story = {
     <div className="flex items-center gap-4">
       <div className="text-center">
         <Avatar size="sm" variant="selling">
-          <Icon name="astronaut" className="w-5 h-5 text-purple-200" />
+          <Icon name="astronaut" className="size-5 text-purple-200" />
         </Avatar>
         <p className="text-xs mt-1 text-gray-600">Small</p>
       </div>
@@ -85,7 +85,7 @@ export const AllSizes: Story = {
       </div>
       <div className="text-center">
         <Avatar size="lg" variant="selling">
-          <Icon name="astronaut" className="w-12 h-12 text-purple-200" />
+          <Icon name="astronaut" className="size-12 text-purple-200" />
         </Avatar>
         <p className="text-xs mt-1 text-gray-600">Large</p>
       </div>

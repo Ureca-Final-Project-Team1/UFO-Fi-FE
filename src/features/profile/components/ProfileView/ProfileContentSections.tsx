@@ -157,7 +157,7 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
                   <div className="bg-gray-800 rounded-lg p-4 w-24 h-24 flex flex-col items-center justify-center space-y-2">
                     {/* 통신사 로고 - null 체크 추가 */}
                     {post.carrier && ICON_PATHS[post.carrier] && (
-                      <Icon src={ICON_PATHS[post.carrier]} className="w-6 h-6" />
+                      <Icon src={ICON_PATHS[post.carrier]} className="size-6" />
                     )}
 
                     {/* 용량 */}

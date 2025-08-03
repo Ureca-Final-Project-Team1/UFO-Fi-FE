@@ -18,7 +18,7 @@ export function Stepper({ className, step, content, textColor = 'text-white' }: 
                 : 'bg-(--color-stepper-chosen)',
             )}
           >
-            {step === 2 ? <Icon name="Check" className="w-4 h-4" /> : '1'}
+            {step === 2 ? <Icon name="Check" className="size-4" /> : '1'}
           </div>
           {step === 1 && (
             <span className={`absolute top-10 caption-12-medium ${textColor} whitespace-nowrap`}>

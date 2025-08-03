@@ -18,8 +18,8 @@ type TestRow = {
 const defaultActions = {
   render: () => (
     <div className="flex gap-2 justify-center">
-      <Icon name="CircleMinus" className="w-5 h-5" color="red" />
-      <Icon name="RotateCcw" className="w-4 h-4" color="green" />
+      <Icon name="CircleMinus" className="size-5" color="red" />
+      <Icon name="RotateCcw" className="size-4" color="green" />
     </div>
   ),
 };

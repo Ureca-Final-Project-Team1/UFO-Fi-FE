@@ -155,7 +155,7 @@ function Step2Content() {
                 agreed: e.target.checked,
               });
             }}
-            className="w-5 h-5 accent-blue-500 appearance-auto"
+            className="size-5 accent-blue-500 appearance-auto"
           />
           <span className="text-white text-sm leading-relaxed">
             해당 번호로 데이터를 전송하는 것에 대해 동의함.

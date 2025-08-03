@@ -12,7 +12,7 @@ export function TableActions<T extends BaseTableRow>({
   isLoading = false,
   size = 'md',
 }: TableActionsProps<T>) {
-  const iconSize = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5';
+  const iconSize = size === 'sm' ? 'size-4' : 'size-5';
   const buttonSize = size === 'sm' ? 'p-1' : 'p-1.5';
 
   return (
