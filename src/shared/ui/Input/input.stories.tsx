@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { AccountInput } from './AccountInput';
-import { BankSelectInput } from './BankSelectInput';
 import { BasicInput } from './BasicInput';
 import { LabeledInput } from './LabeledInput';
 import { PhoneInput } from './PhoneInput';
@@ -17,7 +15,7 @@ const meta: Meta = {
   argTypes: {
     inputType: {
       control: 'select',
-      options: ['basic', 'account', 'bankSelect', 'price', 'namePhone'],
+      options: ['basic', 'price', 'namePhone'],
       description: '표시할 인풋 컴포넌트 선택',
     },
     size: {
@@ -31,7 +29,7 @@ const meta: Meta = {
 export default meta;
 
 type PlaygroundProps = {
-  inputType: 'basic' | 'account' | 'bankSelect' | 'price' | 'namePhone';
+  inputType: 'basic' | 'price' | 'namePhone';
   size: 'sm' | 'md' | 'lg';
 };
 
@@ -46,16 +44,6 @@ export const Playground: StoryObj<PlaygroundProps> = {
     const sizeClass = sizeMap[size];
 
     switch (inputType) {
-      case 'account':
-        return <AccountInput className={sizeClass} />;
-      case 'bankSelect':
-        return (
-          <BankSelectInput
-            selectedBank="은행명"
-            onClick={() => alert('은행 선택창 열기')}
-            className={sizeClass}
-          />
-        );
       case 'price':
         return <PriceInput className={sizeClass} />;
       case 'namePhone':

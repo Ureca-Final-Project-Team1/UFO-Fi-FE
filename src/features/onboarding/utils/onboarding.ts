@@ -1,6 +1,7 @@
 import { OnboardingStep } from '@/features/onboarding/types/onboarding';
 import { analytics } from '@/shared/utils/analytics';
 
+// 온보딩 단계 정의
 export const ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: 1,
@@ -57,34 +58,38 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   },
 ];
 
+// 내부 유틸
+const getUserId = (userId?: string) => userId ?? 'anonymous';
+const getNowISO = () => new Date().toISOString();
+const stepCount = ONBOARDING_STEPS.length;
+
+// 온보딩 유틸
 export const onboardingUtils = {
   /**
-   * 온보딩 완료 처리
-   * - MS Clarity와 GA4에 이벤트 전송
+   * 온보딩 완료 처리 (GA4, Clarity)
    */
   markComplete: (userId?: string): void => {
+    const uid = getUserId(userId);
+
     try {
-      // 온보딩 완료 이벤트 전송 (GTM + Clarity)
       analytics.event('onboarding_completed', {
         timestamp: Date.now(),
-        completion_date: new Date().toISOString(),
-        steps_completed: ONBOARDING_STEPS.length,
-        user_id: userId || 'anonymous',
+        completion_date: getNowISO(),
+        steps_completed: stepCount,
+        user_id: uid,
       });
 
-      // 사용자 식별 및 속성 업데이트 (Clarity)
       if (userId) {
         analytics.identifyUser(userId, {
           onboarding_completed: true,
-          onboarding_completion_date: new Date().toISOString(),
+          onboarding_completion_date: getNowISO(),
           user_journey_stage: 'activated',
         });
       }
 
-      // 기능 사용 트래킹
       analytics.track.featureUsed('onboarding_flow', 'completion');
     } catch (error) {
-      console.error('온보딩 완료 이벤트 전송 실패:', error);
+      console.error('[onboarding] 완료 이벤트 전송 실패:', error);
     }
   },
 
@@ -94,19 +99,19 @@ export const onboardingUtils = {
   trackStart: (userId?: string): void => {
     analytics.event('onboarding_started', {
       timestamp: Date.now(),
-      user_id: userId || 'anonymous',
+      user_id: getUserId(userId),
     });
   },
 
   /**
-   * 온보딩 단계 진행 트래킹
+   * 특정 단계 조회 트래킹
    */
   trackStep: (stepNumber: number, stepTitle: string, userId?: string): void => {
     analytics.event('onboarding_step_viewed', {
       step_number: stepNumber,
       step_title: stepTitle,
-      progress_percentage: Math.round((stepNumber / ONBOARDING_STEPS.length) * 100),
-      user_id: userId || 'anonymous',
+      progress_percentage: Math.round((stepNumber / stepCount) * 100),
+      user_id: getUserId(userId),
     });
   },
 };
