@@ -79,6 +79,11 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  // 파비콘 및 아이콘 설정
+  // - favicon.ico: 브라우저 탭, 북마크 기본 아이콘
+  // - icon: 일반 브라우저용 다양한 크기 아이콘
+  // - apple: iOS Safari 전용 아이콘
+  // - manifest: PWA 설치 지원
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
