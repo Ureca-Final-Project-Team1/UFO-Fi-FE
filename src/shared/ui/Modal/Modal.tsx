@@ -82,7 +82,7 @@ export function Modal({
             )}
             aria-label="모달 닫기"
           >
-            <X className="w-4 h-4 text-gray-600" />
+            <X className="size-4 text-gray-600" />
           </button>
         )}
 

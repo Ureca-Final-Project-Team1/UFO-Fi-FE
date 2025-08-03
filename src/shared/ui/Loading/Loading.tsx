@@ -71,7 +71,7 @@ export function Loading({
                     className={cn(
                       'border-2 border-cyan-400 rounded-full animate-ping opacity-60',
                       size === 'sm'
-                        ? 'w-10 h-10'
+                        ? 'size-10'
                         : size === 'md'
                           ? 'w-20 h-20'
                           : 'w-[120px] h-[120px]',
@@ -87,7 +87,7 @@ export function Loading({
                   <div
                     className={cn(
                       'absolute border-2 border-indigo-400 rounded-full animate-ping opacity-30',
-                      size === 'sm' ? 'w-6 h-6' : size === 'md' ? 'w-12 h-12' : 'w-[72px] h-[72px]',
+                      size === 'sm' ? 'size-6' : size === 'md' ? 'size-12' : 'w-[72px] h-[72px]',
                     )}
                     style={{ animationDelay: '1s' }}
                   />
@@ -95,11 +95,11 @@ export function Loading({
 
                 {/* 신호 점들 */}
                 <div className="absolute -top-2 -right-2">
-                  <div className="w-3 h-3 bg-cyan-400 rounded-full animate-bounce" />
+                  <div className="size-3 bg-cyan-400 rounded-full animate-bounce" />
                 </div>
                 <div className="absolute -bottom-2 -left-2">
                   <div
-                    className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"
+                    className="size-2 bg-purple-400 rounded-full animate-bounce"
                     style={{ animationDelay: '0.3s' }}
                   />
                 </div>

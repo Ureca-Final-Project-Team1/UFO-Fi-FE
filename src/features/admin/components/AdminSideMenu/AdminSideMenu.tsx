@@ -209,7 +209,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
               {hasChildren && (
                 <Icon
                   name={isOpen ? 'ChevronUp' : 'ChevronDown'}
-                  className={`w-4 h-4 transition-all duration-200 ${
+                  className={`size-4 transition-all duration-200 ${
                     isActive ? chevronColorMap.active : chevronColorMap.inactive
                   }`}
                 />
@@ -275,7 +275,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Icon name="Shield" className="w-6 h-6 text-blue-600" />
+                  <Icon name="Shield" className="size-6 text-blue-600" />
                   <span className="font-bold text-lg text-gray-900">관리자</span>
                 </div>
                 <button
@@ -284,7 +284,7 @@ export const AdminSideMenu: React.FC<AdminSideMenuProps> = (props) => {
                   onClick={handleClose}
                   aria-label="메뉴 닫기"
                 >
-                  <Icon name="X" className="w-6 h-6 text-gray-500" />
+                  <Icon name="X" className="size-6 text-gray-500" />
                 </button>
               </div>
             </div>

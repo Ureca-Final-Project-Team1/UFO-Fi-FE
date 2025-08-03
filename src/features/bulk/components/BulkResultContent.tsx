@@ -166,7 +166,7 @@ function BulkResultDisplay({
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
-              <Icon src={ICON_PATHS['COIN']} className="w-4 h-4" />
+              <Icon src={ICON_PATHS['COIN']} className="size-4" />
               <span className="text-white body-16-medium">예상 결제 금액</span>
             </div>
             <span className="text-cyan-400 heading-24-bold">{totalPrice}ZET</span>
@@ -176,7 +176,7 @@ function BulkResultDisplay({
         <div className="rounded-xl p-4 border-2 border-cyan-300">
           <div className="flex justify-between items-center mb-2">
             <span className="text-white heading-18-bold">총 합계</span>
-            <Icon name="Calculator" className="w-5 h-5 text-cyan-400" />
+            <Icon name="Calculator" className="size-5 text-cyan-400" />
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-300 body-14-medium">총 {posts.length}개 상품</span>

@@ -67,8 +67,8 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
       onClick={onClick}
     >
       {/* 아이콘 */}
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center relative">
-        <Icon name={config.icon} className="w-5 h-5" color="blue-400" />
+      <div className="flex-shrink-0 size-10 rounded-full bg-blue-50 flex items-center justify-center relative">
+        <Icon name={config.icon} className="size-5" color="blue-400" />
 
         {/* 읽지 않은 알림 표시 닷배지 */}
         {isUnread && (
@@ -88,7 +88,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
           >
             {notification.title}
             {isUnread && (
-              <span className="inline-block ml-1 w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="inline-block ml-1 size-2 bg-blue-500 rounded-full"></span>
             )}
           </h4>
           <span className="text-xs text-gray-500 ml-3 flex-shrink-0 mt-0.5">

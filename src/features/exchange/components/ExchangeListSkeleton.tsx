@@ -27,7 +27,7 @@ export const ExchangeListSkeleton = () => {
                 <div className="w-20 h-3 bg-gray-600 rounded"></div>
                 <div className="flex justify-between items-center">
                   <div className="w-16 h-6 bg-gray-600 rounded"></div>
-                  <div className="w-6 h-6 bg-gray-600 rounded-full"></div>
+                  <div className="size-6 bg-gray-600 rounded-full"></div>
                 </div>
               </div>
             </div>

@@ -1,80 +1,73 @@
 'use client';
+
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 
-import { exchangeAPI, purchaseHistory } from '@/api';
-import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useUserRole } from '@/features/signup/hooks/useUserRole';
 import { Button, Loading, Title } from '@/shared';
+import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 import { analytics } from '@/utils/analytics';
 
-export default function Step2Page() {
+function Step2Content() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
-
   const { phoneNumber } = useUserRole();
+  const { productData, isFirstPurchase } = usePurchaseFlowStore();
 
+  const [postId, setPostId] = useState<number | null>(null);
   const [isChecked, setIsChecked] = useState(false);
-  const [productData, setProductData] = useState<ExchangePost | null>(null);
   const [userPhoneNumber, setUserPhoneNumber] = useState('');
-  const [, setIsFirstPurchase] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 상품 정보와 구매 내역 조회
-        const [postsResponse, history] = await Promise.all([
-          exchangeAPI.getPosts({ size: 50 }),
-          purchaseHistory(),
-        ]);
-
-        const product = postsResponse.posts.find((post) => post.postId === parseInt(id));
-
-        if (!product) {
-          throw new Error('상품을 찾을 수 없습니다.');
-        }
-
-        // 첫 구매 여부 확인
-        const isFirst = !history || history.length === 0;
-
-        setProductData(product);
-        setIsFirstPurchase(isFirst);
-
-        // 사용자 전화번호 설정
-        const userPhoneNumber = phoneNumber;
-        setUserPhoneNumber(userPhoneNumber ?? '전화번호 없음');
-
-        // 애널리틱스 이벤트
-        analytics.event('purchase_step2_viewed', {
-          post_id: id,
-          data_amount: `${product.sellMobileDataCapacityGb}GB`,
-          is_first_purchase: isFirst,
-        });
-      } catch (error) {
-        console.error('데이터 조회 실패:', error);
-        router.back();
-      } finally {
-        setIsLoading(false);
+    if (params?.id) {
+      const id = parseInt(params.id as string, 10);
+      if (!isNaN(id) && id > 0) {
+        setPostId(id);
+      } else {
+        setError('잘못된 상품 ID입니다.');
       }
-    };
+    } else {
+      setError('상품 ID가 없습니다.');
+    }
+  }, [params]);
 
-    fetchData();
-  }, [id, phoneNumber, router]);
+  // Store 데이터 확인 및 초기화
+  useEffect(() => {
+    if (!postId) return;
+
+    if (productData && productData.postId === postId) {
+      // Store에 데이터가 있다면 사용
+      setUserPhoneNumber(phoneNumber ?? '전화번호 없음');
+      setIsLoading(false);
+
+      // 애널리틱스 이벤트
+      const postIdStr = postId !== null ? postId.toString() : '';
+      analytics.event('purchase_step2_viewed', {
+        post_id: postIdStr,
+        data_amount: `${productData.sellMobileDataCapacityGb}GB`,
+        is_first_purchase: isFirstPurchase,
+      });
+    } else {
+      // 거래소로 리다이렉트
+      setError('상품 정보가 없습니다. 거래소에서 다시 선택해주세요.');
+      setIsLoading(false);
+    }
+  }, [postId, productData, isFirstPurchase, phoneNumber]);
 
   const handleNext = () => {
-    if (isChecked && productData) {
-      analytics.event('purchase_step2_completed', {
-        post_id: id,
-        phone_number_confirmed: true,
-        data_amount: `${productData.sellMobileDataCapacityGb}GB`,
-      });
+    if (!isChecked || !productData || !postId) return;
 
-      router.push(`/exchange/purchase/${id}/step3`);
-    }
+    analytics.event('purchase_step2_completed', {
+      post_id: postId.toString(),
+      phone_number_confirmed: true,
+      data_amount: `${productData.sellMobileDataCapacityGb}GB`,
+    });
+
+    router.push(`/exchange/purchase/${postId}/step3`);
   };
 
   const handleEditProfile = () => {
@@ -83,18 +76,24 @@ export default function Step2Page() {
     router.push('/mypage');
   };
 
+  const handleGoBack = () => {
+    router.push('/exchange');
+  };
+
   if (isLoading) {
     return <Loading />;
   }
 
-  if (!productData) {
+  if (error || !productData) {
     return (
       <>
         <Title title="데이터 구매하기" iconVariant="back" />
         <div className="flex flex-col">
-          <p className="text-red-400 text-center mb-4">상품 정보를 불러올 수 없습니다.</p>
-          <Button type="button" variant="secondary" onClick={() => router.back()}>
-            돌아가기
+          <p className="text-red-400 text-center mb-4">
+            {error || '상품 정보를 불러올 수 없습니다.'}
+          </p>
+          <Button type="button" variant="secondary" onClick={handleGoBack}>
+            거래소로 돌아가기
           </Button>
         </div>
       </>
@@ -152,11 +151,11 @@ export default function Step2Page() {
 
               // 체크박스 상태 변경 추적
               analytics.event('purchase_agreement_toggled', {
-                post_id: id,
+                post_id: postId?.toString() || '',
                 agreed: e.target.checked,
               });
             }}
-            className="w-5 h-5 accent-blue-500 appearance-auto"
+            className="size-5 accent-blue-500 appearance-auto"
           />
           <span className="text-white text-sm leading-relaxed">
             해당 번호로 데이터를 전송하는 것에 대해 동의함.
@@ -199,5 +198,13 @@ export default function Step2Page() {
         </Button>
       </div>
     </>
+  );
+}
+
+export default function Step2Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Step2Content />
+    </Suspense>
   );
 }

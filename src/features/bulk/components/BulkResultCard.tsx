@@ -52,7 +52,7 @@ export function BulkResultCard({
       {/* 통신사 & 타이틀 */}
       <div className="flex items-center gap-2 flex-1">
         <div
-          className={`w-6 h-6 rounded ${CARRIER_COLORS[carrier]} flex items-center justify-center flex-shrink-0`}
+          className={`size-6 rounded ${CARRIER_COLORS[carrier]} flex items-center justify-center flex-shrink-0`}
         >
           <span className="text-white caption-12-bold">{carrier}</span>
         </div>
@@ -62,12 +62,12 @@ export function BulkResultCard({
       {/* 하단: 데이터량 & 가격 */}
       <div className="flex flex-wrap justify-between gap-y-2">
         <div className="flex items-center gap-2">
-          <Icon name="Database" className="w-4 h-4 text-cyan-400" />
+          <Icon name="Database" className="size-4 text-cyan-400" />
           <span className="text-cyan-400 body-16-semibold">{dataAmount}GB</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <Icon name="Coins" className="w-4 h-4 text-yellow-400" />
+          <Icon name="Coins" className="size-4 text-yellow-400" />
           <span className="text-yellow-400 body-16-semibold">{price}ZET</span>
         </div>
       </div>

@@ -12,7 +12,7 @@ export default function PasswordInput({ value, maxLength, showDots = true }: Pas
       {Array.from({ length: maxLength }).map((_, idx) => (
         <span
           key={idx}
-          className={`w-5 h-5 rounded-full border-2 transition-colors ${
+          className={`size-5 rounded-full border-2 transition-colors ${
             idx < value.length ? 'bg-white border-white' : 'bg-transparent border-white/40'
           }`}
         >

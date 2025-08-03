@@ -181,7 +181,7 @@ const MockProfileView = ({
                     key={post.postId}
                     className="bg-gray-800 rounded-lg p-4 w-24 h-24 flex flex-col items-center justify-center space-y-2 flex-shrink-0"
                   >
-                    <div className="w-6 h-6 bg-red-500 rounded"></div>
+                    <div className="size-6 bg-red-500 rounded"></div>
                     <div className="text-cyan-400 text-xs font-bold text-center">
                       {post.sellMobileDataAmountGB}GB
                     </div>

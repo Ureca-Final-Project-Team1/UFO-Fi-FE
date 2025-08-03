@@ -112,7 +112,7 @@ const Sidebar = () => {
           >
             <Icon
               name={item.icon as IconType}
-              className={`w-5 h-5 transition-colors ${
+              className={`size-5 transition-colors ${
                 isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
               }`}
             />
@@ -129,7 +129,7 @@ const Sidebar = () => {
           >
             <Icon
               name={item.icon as IconType}
-              className={`w-5 h-5 transition-colors ${
+              className={`size-5 transition-colors ${
                 isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
               }`}
             />
@@ -137,7 +137,7 @@ const Sidebar = () => {
             {hasChildren && (
               <Icon
                 name={isOpen ? 'ChevronUp' : 'ChevronDown'}
-                className={`w-4 h-4 transition-all duration-200 ${
+                className={`size-4 transition-all duration-200 ${
                   isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-600'
                 }`}
               />

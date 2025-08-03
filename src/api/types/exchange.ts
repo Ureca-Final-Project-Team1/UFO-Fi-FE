@@ -31,11 +31,11 @@ export interface ExchangePost {
   title: string;
   totalPrice: number;
   sellMobileDataCapacityGb: number;
-  carrier: Carrier;
-  status: ExchangeStatus;
+  carrier: string;
+  status: string;
   createdAt: string;
   pricePerUnit: number;
-  mobileDataType: MobileDataType;
+  mobileDataType: string;
   sellerNickname: string;
   sellerId: number;
   sellerProfileUrl: string;

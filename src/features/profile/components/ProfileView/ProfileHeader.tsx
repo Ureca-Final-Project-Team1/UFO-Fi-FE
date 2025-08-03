@@ -63,9 +63,10 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
   const isButtonLoading = isFollowStatusLoading || isFollowActionLoading;
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      {/* 프로필 정보 */}
       <div className="flex items-center gap-4">
-        <Avatar variant="default" size="lg">
+        <Avatar variant="default" size="lg" className="flex-shrink-0">
           {profile.profileImageUrl ? (
             <Image
               src={profile.profileImageUrl}
@@ -75,27 +76,29 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
               className="w-full h-full object-cover rounded-full"
             />
           ) : (
-            <Icon name="astronaut" className="w-12 h-12 text-purple-200" />
+            <Icon name="astronaut" className="size-12 text-purple-200" />
           )}
         </Avatar>
 
-        <div className="flex flex-col">
-          <h1 className="text-white text-xl font-bold">{profile.nickname}</h1>
+        <div className="flex flex-col min-w-0 flex-1">
+          <h1 className="text-white text-xl font-bold truncate">{profile.nickname}</h1>
           <span className="text-gray-400 text-sm">네임태그 #{profile.userId}</span>
         </div>
       </div>
 
-      <div className="flex gap-2">
+      {/* 버튼들 - 전체 너비 활용 */}
+      <div className="flex gap-2 w-full">
         {/* 팔로우 버튼 - 본인 프로필이 아닐 때만 표시 */}
         {isLoggedIn && !isActuallyMyProfile && (
           <Button
             variant={isFollowing ? 'following-button' : 'follow-button'}
-            size="follow-sm"
+            size="sm"
             onClick={handleFollowClick}
             disabled={isButtonLoading}
+            className="flex-1"
           >
             {isButtonLoading ? (
-              <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             ) : isFollowing ? (
               '언팔로우'
             ) : (
@@ -108,18 +111,19 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
         {!isLoggedIn && (
           <Button
             variant="follow-button"
-            size="follow-sm"
+            size="sm"
             onClick={() => {
               toast('로그인이 필요합니다.');
             }}
+            className="flex-1"
           >
             로그인
           </Button>
         )}
 
         {/* 공유 버튼 */}
-        <Button variant="secondary" size="sm" onClick={handleShareClick}>
-          <Icon name="Share" className="w-4 h-4 mr-1" />
+        <Button variant="secondary" size="sm" onClick={handleShareClick} className="flex-1">
+          <Icon name="Share" className="size-4 mr-1" />
           공유
         </Button>
       </div>

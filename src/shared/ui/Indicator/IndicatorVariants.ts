@@ -23,9 +23,9 @@ export const indicatorVariants = cva('flex items-center justify-center', {
 export const basicDotVariants = cva('rounded-full transition-all duration-300 ease-in-out', {
   variants: {
     size: {
-      sm: 'w-2 h-2',
-      md: 'w-3 h-3',
-      lg: 'w-4 h-4',
+      sm: 'size-2',
+      md: 'size-3',
+      lg: 'size-4',
     },
     state: {
       pending: 'bg-gray-300 scale-75 opacity-60',

@@ -2,13 +2,14 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { sellAPI } from '@/api';
-import { AuthModal } from '@/features/exchange/components/AuthModal';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Loading } from '@/shared';
 
 interface PostData {
+  postId: number;
   title: string;
   zetPerUnit: number;
   capacity: number;
@@ -17,14 +18,10 @@ interface PostData {
 
 interface EditContextType {
   postData: PostData | null;
-  isLoading: boolean;
-  isAuthorized: boolean | null;
 }
 
 const EditContext = createContext<EditContextType>({
   postData: null,
-  isLoading: true,
-  isAuthorized: null,
 });
 
 export const useEditContext = () => {
@@ -35,139 +32,71 @@ export const useEditContext = () => {
   return context;
 };
 
-interface EditProviderProps {
-  children: React.ReactNode;
-}
-
-export const EditProvider = ({ children }: EditProviderProps) => {
+export const EditProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const params = useParams();
   const { data: userInfo, isLoading: isUserLoading } = useMyInfo();
-
-  const [authModal, setAuthModal] = useState({
-    isOpen: false,
-    title: '접근 권한 없음',
-    description: '본인이 작성한 글만 수정할 수 있습니다.\n거래소로 돌아가겠습니다.',
-  });
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [postData, setPostData] = useState<PostData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkOwnership = async () => {
-      if (isUserLoading || !userInfo || !params.id) return;
+    const fetchAndCheckPost = async () => {
+      if (isUserLoading || !userInfo || !params?.id) return;
+
+      const postId = parseInt(params.id as string, 10);
+      if (isNaN(postId)) {
+        toast.error('잘못된 게시글 ID입니다.');
+        router.push('/exchange');
+        return;
+      }
 
       try {
-        setIsLoading(true);
-
-        const postId = Number(params.id);
-        if (isNaN(postId)) {
-          setAuthModal((prev) => ({
-            ...prev,
-            title: '잘못된 요청',
-            description: '올바르지 않은 게시물 ID입니다.\n거래소로 돌아가겠습니다.',
-            isOpen: true,
-          }));
-          setIsAuthorized(false);
-          setIsLoading(false);
-          return;
-        }
-
-        // 새로운 API 스펙: 게시물 상세 조회 사용
         const response = await sellAPI.getPostDetail(postId);
-        const targetPost = response.content;
+        const post = response.content;
 
-        if (!targetPost) {
-          setAuthModal((prev) => ({
-            ...prev,
-            title: '게시글을 찾을 수 없습니다',
-            description: '삭제되었거나 존재하지 않는 게시글입니다.\n거래소로 돌아가겠습니다.',
-            isOpen: true,
-          }));
-          setIsAuthorized(false);
-          setIsLoading(false);
+        // 본인 게시글인지 확인
+        if (userInfo.nickname !== post.sellerNickname) {
+          toast.error('본인이 작성한 글만 수정할 수 있습니다.');
+          router.push('/exchange');
           return;
         }
 
-        // 게시글 작성자와 현재 사용자 비교
-        const isOwner = userInfo.nickname === targetPost.sellerNickname;
-
-        if (!isOwner) {
-          setAuthModal((prev) => ({ ...prev, isOpen: true }));
-          setIsAuthorized(false);
-        } else {
-          // 권한이 있으면 게시글 데이터를 상태에 저장
-          setPostData({
-            title: targetPost.title,
-            zetPerUnit: targetPost.pricePerUnit,
-            capacity: targetPost.sellMobileDataCapacityGb,
-            carrier: targetPost.carrier,
-          });
-          setIsAuthorized(true);
-        }
+        // 권한 있음
+        setPostData({
+          postId: post.postId,
+          title: post.title,
+          zetPerUnit: post.pricePerUnit,
+          capacity: post.sellMobileDataCapacityGb,
+          carrier: post.carrier,
+        });
       } catch (error) {
-        console.error('게시글 소유권 확인 실패:', error);
+        console.error('게시글 조회 실패:', error);
 
-        // 에러 타입별 처리
         if (error instanceof Error) {
           if (error.message.includes('404')) {
-            setAuthModal((prev) => ({
-              ...prev,
-              title: '게시글을 찾을 수 없습니다',
-              description: '삭제되었거나 존재하지 않는 게시글입니다.\n거래소로 돌아가겠습니다.',
-              isOpen: true,
-            }));
+            toast.error('게시글을 찾을 수 없습니다.');
           } else if (error.message.includes('403')) {
-            setAuthModal((prev) => ({
-              ...prev,
-              title: '접근 권한이 없습니다',
-              description: '이 게시글에 접근할 권한이 없습니다.\n거래소로 돌아가겠습니다.',
-              isOpen: true,
-            }));
+            toast.error('접근 권한이 없습니다.');
           } else {
-            setAuthModal((prev) => ({
-              ...prev,
-              title: '오류가 발생했습니다',
-              description: '게시글 정보를 확인할 수 없습니다.\n거래소로 돌아가겠습니다.',
-              isOpen: true,
-            }));
+            toast.error('게시글 정보를 불러올 수 없습니다.');
           }
         }
-        setIsAuthorized(false);
+        router.push('/exchange');
       } finally {
         setIsLoading(false);
       }
     };
 
-    checkOwnership();
-  }, [userInfo, isUserLoading, params.id]);
+    fetchAndCheckPost();
+  }, [userInfo, isUserLoading, params.id, router]);
 
-  const handleModalClose = () => {
-    setAuthModal((prev) => ({ ...prev, isOpen: false }));
-    router.push('/exchange');
-  };
-
-  // 로딩 중
   if (isUserLoading || isLoading) {
     return <Loading />;
   }
 
-  // 권한이 없는 경우
-  if (isAuthorized === false) {
-    return (
-      <AuthModal
-        isOpen={authModal.isOpen}
-        onClose={handleModalClose}
-        title={authModal.title}
-        description={authModal.description}
-      />
-    );
+  if (!postData) {
+    return null;
   }
 
-  // 권한이 있는 경우 Context Provider로 감싸서 렌더링
-  return (
-    <EditContext.Provider value={{ postData, isLoading: false, isAuthorized }}>
-      {children}
-    </EditContext.Provider>
-  );
+  return <EditContext.Provider value={{ postData }}>{children}</EditContext.Provider>;
 };

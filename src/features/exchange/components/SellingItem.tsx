@@ -132,7 +132,7 @@ export default function SellingItem({
                   onClick={onReport}
                   className="p-1 hover:bg-white/10 rounded-full"
                 >
-                  <Icon name="Siren" className="w-4 h-4" color="white" />
+                  <Icon name="Siren" className="size-4" color="white" />
                 </Button>
               </>
             ) : (
@@ -143,7 +143,7 @@ export default function SellingItem({
                   onClick={onEdit}
                   className="p-1 hover:bg-white/10 rounded-full"
                 >
-                  <Icon name="Edit" className="w-4 h-4 text-white/70 hover:text-white" />
+                  <Icon name="Edit" className="size-4 text-white/70 hover:text-white" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -151,7 +151,7 @@ export default function SellingItem({
                   onClick={onDelete}
                   className="p-1 hover:bg-red-500/20 rounded-full"
                 >
-                  <Icon name="Trash2" className="w-4 h-4 text-red-300 hover:text-red-200" />
+                  <Icon name="Trash2" className="size-4 text-red-300 hover:text-red-200" />
                 </Button>
               </div>
             )}

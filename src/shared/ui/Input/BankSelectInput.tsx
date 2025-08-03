@@ -19,7 +19,7 @@ export function BankSelectInput({ selectedBank, onClick, className }: BankSelect
       )}
     >
       <span>{selectedBank || '은행 선택'}</span>
-      <ChevronDown className="w-4 h-4 text-white" />
+      <ChevronDown className="size-4 text-white" />
     </button>
   );
 }

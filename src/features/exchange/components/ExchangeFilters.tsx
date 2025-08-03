@@ -36,7 +36,7 @@ export const ExchangeFilters = () => {
           onClick={handleBulkPurchase}
           aria-label="여러 데이터를 한번에 구매하기"
         >
-          <Icon name="box" className="w-3 h-3 pr-1" aria-hidden="true" />
+          <Icon name="box" className="size-3 pr-1" aria-hidden="true" />
           <span className="caption-14-bold"> 일괄구매</span>
         </Button>
       </div>

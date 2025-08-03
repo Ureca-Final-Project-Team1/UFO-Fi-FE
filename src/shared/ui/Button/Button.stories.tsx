@@ -188,7 +188,7 @@ const FollowButtonExampleComponent = () => {
   return (
     <div className="flex flex-col gap-4 p-4 bg-gray-900 rounded-lg">
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+        <div className="size-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
           U
         </div>
         <div className="flex-1 text-white">

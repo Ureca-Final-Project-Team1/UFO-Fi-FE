@@ -59,7 +59,7 @@ export default function SignalProgressBar() {
             />
           ))}
         </div>
-        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
+        <div className="flex items-center justify-center size-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
           {completed}/{PLANETS.length}
         </div>
       </div>
