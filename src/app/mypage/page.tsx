@@ -145,32 +145,30 @@ export default function MyPage() {
   return (
     <div>
       <Title title="마이페이지" />
-      {/* Signal Card */}
-      <SignalCard
-        userId={mypageInfo.nickname || '사용자'}
-        profileImageUrl={mypageInfo.profileImageUrl}
-        zetAmount={mypageInfo.zetAsset || 0}
-        availableData={mypageInfo.sellableDataAmount || 0}
-        maxData={mypageInfo.sellMobileDataCapacityGb || 0}
-        honorifics={honorifics}
-      />
-
-      <hr className="my-6 border-white/20" />
-
-      {/* 메뉴 아이콘들 */}
-      <div className="grid grid-cols-3 gap-4 text-center text-sm mb-4">
-        <MenuIconButton icon="Heart" label="팔로우 목록" onClick={navigateToFollow} />
-        <MenuIconButton icon="Star" label="업적 목록" onClick={navigateToAchievement} />
-        <MenuIconButton icon="Bell" label="알림 설정" onClick={navigateToNotification} />
-      </div>
-
-      <hr className="my-6 border-white/20" />
-
-      {/* 거래 내역 + 고객 지원 */}
-      <div className="space-y-6 text-gray-300">
-        <MenuSection title="나의 거래" items={transactionItems} />
-        <hr className="border-white/20" />
-        <MenuSection title="고객 지원" items={supportItems} />
+      <div className="pb-6">
+        {/* Signal Card */}
+        <SignalCard
+          userId={mypageInfo.nickname || '사용자'}
+          profileImageUrl={mypageInfo.profileImageUrl}
+          zetAmount={mypageInfo.zetAsset || 0}
+          availableData={mypageInfo.sellableDataAmount || 0}
+          maxData={mypageInfo.sellMobileDataCapacityGb || 0}
+          honorifics={honorifics}
+        />
+        <hr className="my-6 border-white/20" />
+        {/* 메뉴 아이콘들 */}
+        <div className="grid grid-cols-3 gap-4 text-center text-sm mb-4">
+          <MenuIconButton icon="Heart" label="팔로우 목록" onClick={navigateToFollow} />
+          <MenuIconButton icon="Star" label="업적 목록" onClick={navigateToAchievement} />
+          <MenuIconButton icon="Bell" label="알림 설정" onClick={navigateToNotification} />
+        </div>
+        <hr className="my-6 border-white/20" />
+        {/* 거래 내역 + 고객 지원 */}
+        <div className="space-y-6 text-gray-300">
+          <MenuSection title="나의 거래" items={transactionItems} />
+          <hr className="border-white/20" />
+          <MenuSection title="고객 지원" items={supportItems} />
+        </div>
       </div>
 
       {/* 로그아웃 모달 */}

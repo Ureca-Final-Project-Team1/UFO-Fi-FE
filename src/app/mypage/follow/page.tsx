@@ -62,7 +62,7 @@ export default function Page() {
     <div className="text-white">
       <Title title="팔로우 목록" iconVariant="back" />
 
-      <div className="mx-4 mb-6">
+      <div className="mb-6">
         <Tabs defaultValue="followers">
           <TabsList className="bg-transparent w-full mb-6">
             <TabsTrigger value="followers" variant="darkTab" size="full">
