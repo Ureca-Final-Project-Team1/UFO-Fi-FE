@@ -82,6 +82,14 @@ export const metadata: Metadata = {
   // 파비콘 및 아이콘 설정 (파일 기반 방식)
   // - src/app/에 배치된 파일들이 자동으로 인식됨
   // - favicon.ico, icon.png, apple-icon.png, icon-XXxXX.png 등
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: '/favicon.ico',
+  },
   manifest: '/manifest.json',
   other: {
     'apple-mobile-web-app-capable': 'yes',
