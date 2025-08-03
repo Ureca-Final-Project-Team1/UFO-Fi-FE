@@ -7,8 +7,8 @@ import {
   EmptyState,
   ReceiptContent,
   CompletionImage,
-} from '@/features/mypage/components';
-import { usePurchaseDetail } from '@/features/mypage/hooks';
+  usePurchaseDetail,
+} from '@/features';
 import { Title } from '@/shared';
 
 export default function MyTradeDetailPage() {
