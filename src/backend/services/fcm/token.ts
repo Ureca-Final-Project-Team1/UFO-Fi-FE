@@ -4,14 +4,18 @@ import type {
   FCMTokenResponse,
   NotificationFilterRequest,
 } from '@/backend/types/fcm';
+import { API_ENDPOINTS } from '@/constants';
 
 export const fcmAPI = {
   async saveToken(data: FCMTokenRequest): Promise<FCMTokenResponse> {
-    const response = await apiRequest.post<FCMTokenResponse>('/v1/fcm/token', data);
+    const response = await apiRequest.post<FCMTokenResponse>(
+      API_ENDPOINTS.NOTIFICATION.FCM_TOKEN,
+      data,
+    );
     return response.data;
   },
 
   async setInterestedPostFilter(data: NotificationFilterRequest): Promise<void> {
-    await apiRequest.patch('/v1/notification-filters/interested-post', data);
+    await apiRequest.patch(API_ENDPOINTS.NOTIFICATION.INTERESTED_POST_FILTER, data);
   },
 };

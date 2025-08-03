@@ -1,5 +1,6 @@
 import { apiRequest } from '@/backend/client/axios';
 import type { GetProfileResponse, ProfileUser } from '@/backend/types/profile';
+import { API_ENDPOINTS } from '@/constants';
 
 export const profileAPI = {
   async getProfile(anotherUserId: number): Promise<GetProfileResponse> {
@@ -7,7 +8,9 @@ export const profileAPI = {
       throw new Error('유효하지 않은 사용자 ID입니다.');
     }
 
-    const response = await apiRequest.get<GetProfileResponse>(`/v1/profile/${anotherUserId}`);
+    const response = await apiRequest.get<GetProfileResponse>(
+      API_ENDPOINTS.USER.PROFILE(anotherUserId),
+    );
     return response.data;
   },
 
