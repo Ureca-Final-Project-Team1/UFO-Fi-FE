@@ -27,7 +27,8 @@ const PlanetWithSatellite = React.forwardRef<HTMLDivElement, PlanetWithSatellite
             alt="위성"
             width={SATELLITE_SIZE}
             height={SATELLITE_SIZE}
-            className={`absolute top-[${SATELLITE_OFFSET_TOP}px]`}
+            className="absolute"
+            style={{ top: `${SATELLITE_OFFSET_TOP}px` }}
           />
         )}
 
