@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
-import { ApiResponse, sellAPI } from '@/api';
+import { sellAPI } from '@/api';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useEditContext } from '@/features/exchange/components/EditProvider';
@@ -13,20 +14,18 @@ import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
-import { handleApiAction } from '@/utils/handleApiAction';
 
 export default function SellEditPage() {
   const router = useRouter();
-  const params = useParams();
-  const postId = Number(params.id);
   const { postData } = useEditContext();
   const isMobile = useViewportStore((state) => state.isMobile);
+
   const [value, setValue] = useState<number[]>([1]);
   const [titleInput, setTitleInput] = useState('');
   const [pricePerGB, setPricePerGB] = useState(90);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // postData가 로드되면 상태 업데이트
+  // postData로 초기값 설정
   useEffect(() => {
     if (postData) {
       setTitleInput(postData.title);
@@ -35,14 +34,7 @@ export default function SellEditPage() {
     }
   }, [postData]);
 
-  // postData가 없으면 로딩 상태
-  if (!postData) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-white">게시글 정보를 불러오는 중...</div>
-      </div>
-    );
-  }
+  if (!postData) return null;
 
   const maxCapacity = 10;
   const sellCapacity = value[0];
@@ -60,22 +52,25 @@ export default function SellEditPage() {
 
   // 수정 제출
   const handleSubmit = async () => {
+    if (!isValidTitle || !isValidPrice || !isValidCapacity) return;
+
     setIsSubmitting(true);
 
-    await handleApiAction({
-      apiCall: () =>
-        sellAPI.updatePost(postId, {
-          title: titleInput.trim(),
-          zetPerUnit: pricePerGB,
-          sellMobileDataCapacityGb: sellCapacity,
-        }) as Promise<ApiResponse>,
-      successMessage: '게시물이 수정되었습니다!',
-      errorMessage: '게시물 수정 중 오류가 발생했습니다.',
-      onSuccess: () => router.push('/exchange'),
-      onError: () => setIsSubmitting(false),
-    });
+    try {
+      await sellAPI.updatePost(postData.postId, {
+        title: titleInput.trim(),
+        zetPerUnit: pricePerGB,
+        sellMobileDataCapacityGb: sellCapacity,
+      });
 
-    setIsSubmitting(false);
+      toast.success('게시물이 수정되었습니다!');
+      router.push('/exchange');
+    } catch (error) {
+      console.error('수정 실패:', error);
+      toast.error('게시물 수정 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
