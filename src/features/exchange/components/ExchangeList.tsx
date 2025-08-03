@@ -20,6 +20,7 @@ interface ExchangeListProps {
   onDelete: (id: number) => void;
   onReport: (id: number, sellerId: number) => void;
   onPurchase: (id: number) => void;
+  purchaseLoading?: boolean;
 }
 
 // 게시물 변환 함수

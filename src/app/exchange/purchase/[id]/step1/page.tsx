@@ -1,82 +1,66 @@
 'use client';
+
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
-import type { ExchangePost } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
 import { Button, Loading, Title } from '@/shared';
+import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 import { analytics } from '@/utils/analytics';
 
-export default function Step1Page() {
+function Step1Content() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
-  const [showZetModal, setShowZetModal] = useState(false);
+  const { productData, userZetBalance, isFirstPurchase } = usePurchaseFlowStore();
 
-  const [productData, setProductData] = useState<ExchangePost | null>(null);
-  const [userZet, setUserZet] = useState(0);
-  const [, setIsFirstPurchase] = useState(false);
+  const [postId, setPostId] = useState<number | null>(null);
+  const [showZetModal, setShowZetModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const [postsResponse, userInfo, history] = await Promise.all([
-          exchangeAPI.getPosts({ size: 50 }),
-          myInfoAPI.get(),
-          purchaseHistory(),
-        ]);
-
-        // ID로 해당 상품 찾기
-        const product = postsResponse.posts.find((post) => post.postId === parseInt(id));
-
-        if (!product) {
-          throw new Error('상품을 찾을 수 없습니다.');
-        }
-
-        if (product.status !== 'SELLING') {
-          throw new Error('판매 중인 상품이 아닙니다.');
-        }
-
-        // 첫 구매 여부 확인
-        const isFirst = !history || history.length === 0;
-
-        setProductData(product);
-        setUserZet(userInfo?.zetAsset || 0);
-        setIsFirstPurchase(isFirst);
-
-        // 애널리틱스 이벤트
-        analytics.event('purchase_step1_viewed', {
-          post_id: id,
-          product_price: product.totalPrice,
-          user_zet_balance: userInfo?.zetAsset || 0,
-          is_first_purchase: isFirst,
-        });
-      } catch (err) {
-        console.error('데이터 조회 실패:', err);
-        setError(err instanceof Error ? err.message : '데이터를 불러올 수 없습니다.');
-      } finally {
-        setIsLoading(false);
+    if (params?.id) {
+      const id = parseInt(params.id as string, 10);
+      if (!isNaN(id) && id > 0) {
+        setPostId(id);
+      } else {
+        setError('잘못된 상품 ID입니다.');
       }
-    };
+    } else {
+      setError('상품 ID가 없습니다.');
+    }
+  }, [params]);
 
-    fetchData();
-  }, [id]);
+  // Store 데이터 확인
+  useEffect(() => {
+    if (!postId) return;
+
+    if (productData && productData.postId === postId) {
+      setIsLoading(false);
+
+      analytics.event('purchase_step1_viewed', {
+        post_id: postId.toString(),
+        product_price: productData.totalPrice,
+        user_zet_balance: userZetBalance,
+        is_first_purchase: isFirstPurchase,
+      });
+    } else {
+      setError('상품 정보가 없습니다. 거래소에서 다시 선택해주세요.');
+      setIsLoading(false);
+    }
+  }, [postId, productData, userZetBalance, isFirstPurchase]);
 
   const handleNext = () => {
-    if (!productData) return;
+    if (!productData || !postId) return;
 
-    if (userZet < productData.totalPrice) {
+    if (userZetBalance < productData.totalPrice) {
       analytics.event('purchase_insufficient_balance', {
-        post_id: id,
+        post_id: postId.toString(),
         required_zet: productData.totalPrice,
-        user_zet: userZet,
-        deficit: productData.totalPrice - userZet,
+        user_zet: userZetBalance,
+        deficit: productData.totalPrice - userZetBalance,
       });
 
       setShowZetModal(true);
@@ -84,11 +68,15 @@ export default function Step1Page() {
     }
 
     analytics.event('purchase_step1_completed', {
-      post_id: id,
+      post_id: postId.toString(),
       product_price: productData.totalPrice,
     });
 
-    router.push(`/exchange/purchase/${id}/step2`);
+    router.push(`/exchange/purchase/${postId}/step2`);
+  };
+
+  const handleGoBack = () => {
+    router.push('/exchange');
   };
 
   if (isLoading) {
@@ -100,14 +88,14 @@ export default function Step1Page() {
       <div className="flex flex-col items-center justify-center h-full px-4">
         <Title title="데이터 구매하기" iconVariant="back" />
         <p className="text-red-400 text-center mb-4">{error}</p>
-        <Button variant="secondary" onClick={() => router.back()} className="px-6 py-2">
-          돌아가기
+        <Button variant="secondary" onClick={handleGoBack} className="px-6 py-2">
+          거래소로 돌아가기
         </Button>
       </div>
     );
   }
 
-  const hasEnoughZet = userZet >= productData.totalPrice;
+  const hasEnoughZet = userZetBalance >= productData.totalPrice;
 
   return (
     <div>
@@ -141,53 +129,36 @@ export default function Step1Page() {
         <div className="text-center mb-4">
           <p className="text-sm text-gray-300 mb-2">내 ZET 잔액</p>
           <p className={`text-lg font-bold ${hasEnoughZet ? 'text-green-400' : 'text-red-400'}`}>
-            {userZet}ZET
-          </p>
-          {!hasEnoughZet && (
-            <p className="text-red-400 text-sm mt-2">{productData.totalPrice - userZet}ZET 부족</p>
-          )}
-        </div>
-
-        {/* 결제 확인 문구 */}
-        <div className="text-center text-white mb-8">
-          <p className="text-xl font-bold">
-            {hasEnoughZet ? '결제를 진행하시겠습니까?' : 'ZET 충전이 필요합니다'}
+            {userZetBalance}ZET
           </p>
         </div>
 
-        {/* 주의사항 */}
-        <div className="text-center text-gray-400 text-sm px-4">
-          <p>
-            ※ 결제 후 환불이 불가합니다.
-            <br />
-            중개소가 자동으로 판매자에게 ZET를 정산합니다.
-          </p>
+        {/* 구매 버튼 */}
+        <div className="mt-8">
+          <Button onClick={handleNext} disabled={!hasEnoughZet} className="w-full">
+            {hasEnoughZet ? '다음 단계' : 'ZET 부족'}
+          </Button>
         </div>
+
+        {/* ZET 부족 모달 */}
+        <InsufficientZetModal
+          isOpen={showZetModal}
+          onClose={() => setShowZetModal(false)}
+          onCancel={() => setShowZetModal(false)}
+          onGoToCharge={() => {
+            setShowZetModal(false);
+            router.push('/charge');
+          }}
+        />
       </div>
-
-      <div className="my-6">
-        {/* 다음 버튼 */}
-        <Button
-          size="full-width"
-          type="button"
-          variant="primary"
-          onClick={handleNext}
-          className="mt-auto"
-          disabled={!hasEnoughZet}
-        >
-          {hasEnoughZet ? '다음' : 'ZET 충전하기'}
-        </Button>
-      </div>
-
-      <InsufficientZetModal
-        isOpen={showZetModal}
-        onClose={() => setShowZetModal(false)}
-        onCancel={() => setShowZetModal(false)}
-        onGoToCharge={() => {
-          setShowZetModal(false);
-          router.push('/charge');
-        }}
-      />
     </div>
+  );
+}
+
+export default function Step1Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Step1Content />
+    </Suspense>
   );
 }

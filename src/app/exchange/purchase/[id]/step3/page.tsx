@@ -2,25 +2,24 @@
 
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 
-import { exchangeAPI, myInfoAPI, purchaseHistory } from '@/api';
 import { PurchaseErrorType } from '@/api/types/exchange';
-import type { ExchangePost, PurchaseRequest } from '@/api/types/exchange';
+import type { PurchaseRequest } from '@/api/types/exchange';
 import { IMAGE_PATHS } from '@/constants/images';
 import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseErrorRecovery';
 import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';
 import { Button, Loading, Title } from '@/shared';
+import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 import { analytics } from '@/utils/analytics';
 
-export default function Step3Page() {
+function Step3Content() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const { productData, userZetBalance, isFirstPurchase, resetPurchaseFlow } =
+    usePurchaseFlowStore();
 
-  const [productData, setProductData] = useState<ExchangePost | null>(null);
-  const [userZet, setUserZet] = useState(0);
-  const [isFirstPurchase, setIsFirstPurchase] = useState(false);
+  const [postId, setPostId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,48 +27,50 @@ export default function Step3Page() {
     maxRetries: 3,
     onSuccess: (result) => {
       analytics.event('purchase_success', {
-        post_id: id,
+        post_id: postId?.toString() || '',
         is_first_purchase: isFirstPurchase,
-        final_zet_balance: result.content?.zetAsset,
+        final_zet_balance: result.content?.zetAsset || 0,
       });
     },
   });
 
+  // useParams 안전하게 처리
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const [postsResponse, userInfo, history] = await Promise.all([
-          exchangeAPI.getPosts({ size: 50 }),
-          myInfoAPI.get(),
-          purchaseHistory(),
-        ]);
-
-        const product = postsResponse.posts.find((post) => post.postId === parseInt(id));
-        if (!product) throw new Error('상품을 찾을 수 없습니다.');
-
-        setProductData(product);
-        setUserZet(userInfo?.zetAsset || 0);
-        setIsFirstPurchase(!history || history.length === 0);
-
-        analytics.event('purchase_step3_viewed', {
-          post_id: id,
-          is_first_purchase: !history || history.length === 0,
-          product_price: product.totalPrice,
-          user_zet: userInfo?.zetAsset || 0,
-        });
-      } catch (err) {
-        setError(err instanceof Error ? err.message : '데이터를 불러올 수 없습니다.');
-      } finally {
-        setIsLoading(false);
+    if (params?.id) {
+      const id = parseInt(params.id as string, 10);
+      if (!isNaN(id) && id > 0) {
+        setPostId(id);
+      } else {
+        setError('잘못된 상품 ID입니다.');
       }
-    };
+    } else {
+      setError('상품 ID가 없습니다.');
+    }
+  }, [params]);
 
-    fetchData();
-  }, [id]);
+  // Store 데이터 확인
+  useEffect(() => {
+    if (!postId) return;
+
+    if (productData && productData.postId === postId) {
+      // Store에 데이터가 있음 - 바로 사용
+      setIsLoading(false);
+
+      analytics.event('purchase_step3_viewed', {
+        post_id: postId.toString(),
+        is_first_purchase: isFirstPurchase,
+        product_price: productData.totalPrice,
+        user_zet: userZetBalance,
+      });
+    } else {
+      // Store에 데이터가 없음 - 거래소로 리다이렉트
+      setError('상품 정보가 없습니다. 거래소에서 다시 선택해주세요.');
+      setIsLoading(false);
+    }
+  }, [postId, productData, isFirstPurchase, userZetBalance]);
 
   const handlePurchase = async () => {
-    if (!productData) return;
+    if (!productData || !postId) return;
 
     const purchaseRequest: PurchaseRequest = {
       postId: productData.postId,
@@ -82,13 +83,22 @@ export default function Step3Page() {
   };
 
   const handleErrorRetry = () => {
-    analytics.event('error_recovery_retry_clicked', { post_id: id });
+    analytics.event('error_recovery_retry_clicked', {
+      post_id: postId?.toString() || '',
+    });
     reset();
     handlePurchase();
   };
 
   const handleConfirm = () => {
-    analytics.event('purchase_completed_confirmed', { post_id: id });
+    analytics.event('purchase_completed_confirmed', {
+      post_id: postId?.toString() || '',
+    });
+    resetPurchaseFlow(); // Store 초기화
+    router.push('/exchange');
+  };
+
+  const handleGoBack = () => {
     router.push('/exchange');
   };
 
@@ -98,13 +108,38 @@ export default function Step3Page() {
     return (
       <>
         <Title title="데이터 구매하기" iconVariant="back" />
-        <p className="text-red-400 text-center mb-4" role="alert">
-          {error}
-        </p>
-        <Button variant="secondary" onClick={() => router.back()}>
-          돌아가기
-        </Button>
+        <div className="flex flex-col items-center px-4">
+          <p className="text-red-400 text-center mb-4" role="alert">
+            {error}
+          </p>
+          <Button variant="secondary" onClick={handleGoBack}>
+            거래소로 돌아가기
+          </Button>
+        </div>
       </>
+    );
+  }
+
+  // 에러 복구가 필요한 경우
+  if (needsRecovery) {
+    const errorMessage =
+      state.status === 'error_recovery' || state.status === 'failed'
+        ? state.error
+        : '구매 중 오류가 발생했습니다.';
+
+    const errorType =
+      state.status === 'error_recovery' || state.status === 'failed'
+        ? state.errorType
+        : PurchaseErrorType.NETWORK_ERROR;
+
+    return (
+      <PurchaseErrorRecovery
+        error={errorMessage}
+        errorType={errorType}
+        postId={postId?.toString() || ''}
+        onRetry={handleErrorRetry}
+        canRetry={true}
+      />
     );
   }
 
@@ -137,7 +172,7 @@ export default function Step3Page() {
 
           <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4 mb-6">
             <p className="text-green-300 text-sm">
-              구매 완료! 남은 ZET: {state.data?.content?.zetAsset ?? userZet}
+              구매 완료! 남은 ZET: {state.data?.content?.zetAsset ?? userZetBalance}
             </p>
           </div>
 
@@ -151,7 +186,8 @@ export default function Step3Page() {
     );
   }
 
-  const hasEnoughZet = userZet >= productData.totalPrice;
+  // 구매 확인 화면
+  const hasEnoughZet = userZetBalance >= productData.totalPrice;
   const canPurchase = productData.status === 'SELLING' && hasEnoughZet;
 
   return (
@@ -226,7 +262,9 @@ export default function Step3Page() {
               </div>
               <div className="flex justify-between text-sm">
                 <dt>내 ZET 잔액:</dt>
-                <dd className={hasEnoughZet ? 'text-green-400' : 'text-red-400'}>{userZet}ZET</dd>
+                <dd className={hasEnoughZet ? 'text-green-400' : 'text-red-400'}>
+                  {userZetBalance}ZET
+                </dd>
               </div>
             </dl>
           </article>
@@ -262,20 +300,14 @@ export default function Step3Page() {
           </Button>
         </footer>
       </>
-
-      {needsRecovery && state.status === 'error_recovery' && (
-        <PurchaseErrorRecovery
-          error={state.error}
-          errorType={state.errorType}
-          postId={id}
-          onRetry={handleErrorRetry}
-          canRetry={
-            state.errorType !== PurchaseErrorType.PRODUCT_UNAVAILABLE &&
-            state.errorType !== PurchaseErrorType.INSUFFICIENT_BALANCE &&
-            state.errorType !== PurchaseErrorType.PRODUCT_NOT_FOUND
-          }
-        />
-      )}
     </>
+  );
+}
+
+export default function Step3Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Step3Content />
+    </Suspense>
   );
 }
