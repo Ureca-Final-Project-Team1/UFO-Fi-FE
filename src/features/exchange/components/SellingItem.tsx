@@ -58,7 +58,7 @@ export default function SellingItem({
   return (
     <div className="relative w-full max-w-[180px] sm:max-w-[196px] mb-8">
       {/* 카드 본체 */}
-      <div className="relative z-10 p-3 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col min-h-[890px]">
+      <div className="relative z-10 p-3 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col min-h-[240px]">
         {/* 뱃지들 */}
         <div className="flex justify-between items-center mb-3">
           <div className="flex gap-1">
@@ -99,39 +99,44 @@ export default function SellingItem({
               <span className="text-cyan-300 caption-12-bold font-medium truncate">
                 {sellerNickname}
               </span>
-              <span className="text-gray-400 caption-12-regular ">프로필 보기</span>
+              <span className="text-gray-400 caption-12-regular">프로필 보기</span>
             </div>
           </UserLink>
         </div>
 
         {/* 글 제목 */}
         <div className="mb-3">
-          <span className="text-white text-md font-semibold line-clamp-1 leading-tight">
+          <span className="text-white text-sm font-semibold line-clamp-1 leading-tight">
             {title}
           </span>
         </div>
 
         {/* 용량 + 가격 */}
-        <div className="flex justify-between items-baseline mb-3">
+        <div className="flex justify-between items-baseline mb-4">
           <span className="text-white text-base font-bold">{capacity}</span>
           <span className="text-cyan-300 text-base font-bold">{price}</span>
         </div>
 
         {/* 구매/관리 버튼 */}
-        <div className="flex justify-end items-center gap-1 mt-auto">
+        <div className="flex justify-end items-center gap-1">
           {!isOwner ? (
             <>
-              <Button variant="exploration-button" size="sm" onClick={onPurchase}>
+              <Button
+                variant="exploration-button"
+                size="sm"
+                className="text-xs px-2 py-1"
+                onClick={onPurchase}
+              >
                 구매하기
               </Button>
               <Button
                 variant="ghost"
                 size="compact"
                 onClick={onReport}
-                className="p-1.5 hover:bg-red-500/20 rounded-full"
+                className="p-1 hover:bg-red-500/20 rounded-full"
                 aria-label="신고하기"
               >
-                <Icon name="Siren" className="size-4" color="red" />
+                <Icon name="Siren" className="size-3" color="red" />
               </Button>
             </>
           ) : (
@@ -140,19 +145,19 @@ export default function SellingItem({
                 variant="ghost"
                 size="compact"
                 onClick={onEdit}
-                className="p-1.5 hover:bg-white/10 rounded-full"
+                className="p-1 hover:bg-white/10 rounded-full"
                 aria-label="수정하기"
               >
-                <Icon name="Edit" className="size-4 text-white/70 hover:text-white" />
+                <Icon name="Edit" className="size-3 text-white/70 hover:text-white" />
               </Button>
               <Button
                 variant="ghost"
                 size="compact"
                 onClick={onDelete}
-                className="p-1.5 hover:bg-red-500/20 rounded-full"
+                className="p-1 hover:bg-red-500/20 rounded-full"
                 aria-label="삭제하기"
               >
-                <Icon name="Trash2" className="size-4 text-red-300 hover:text-red-200" />
+                <Icon name="Trash2" className="size-3 text-red-300 hover:text-red-200" />
               </Button>
             </div>
           )}

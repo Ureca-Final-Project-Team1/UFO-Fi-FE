@@ -88,27 +88,27 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
         aria-label="데이터 거래 게시물 목록"
         aria-live="polite"
         aria-busy={isFetchingNextPage}
-        className="px-2 sm:px-4"
       >
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-center">
           {sellingItems.map((item) => (
-            <SellingItem
-              key={item.id}
-              title={item.title}
-              carrier={item.carrier as Carrier}
-              networkType={item.networkType}
-              capacity={item.capacity}
-              price={item.price}
-              timeLeft={item.timeLeft}
-              isOwner={item.isOwner}
-              sellerNickname={item.sellerNickname}
-              sellerId={item.sellerId}
-              sellerProfileUrl={item.sellerProfileUrl}
-              onEdit={() => onEdit(item.id)}
-              onDelete={() => onDelete(item.id)}
-              onReport={() => onReport(item.id, item.sellerId)}
-              onPurchase={() => onPurchase(item.id)}
-            />
+            <div key={item.id} className="flex justify-center">
+              <SellingItem
+                title={item.title}
+                carrier={item.carrier as Carrier}
+                networkType={item.networkType}
+                capacity={item.capacity}
+                price={item.price}
+                timeLeft={item.timeLeft}
+                isOwner={item.isOwner}
+                sellerNickname={item.sellerNickname}
+                sellerId={item.sellerId}
+                sellerProfileUrl={item.sellerProfileUrl}
+                onEdit={() => onEdit(item.id)}
+                onDelete={() => onDelete(item.id)}
+                onReport={() => onReport(item.id, item.sellerId)}
+                onPurchase={() => onPurchase(item.id)}
+              />
+            </div>
           ))}
         </div>
 
