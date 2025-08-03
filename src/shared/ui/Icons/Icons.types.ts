@@ -78,6 +78,7 @@ export type LucideIconType =
   | 'UserCheck'
   | 'Users'
   | 'Focus'
+  | 'CreditCard'
   | 'ArrowUp';
 
 // 커스텀 아이콘 타입

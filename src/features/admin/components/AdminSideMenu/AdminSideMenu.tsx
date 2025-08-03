@@ -55,6 +55,12 @@ const menuItems: MenuItem[] = [
     href: '/admin/banned-words',
   },
   {
+    id: 'zet-recovery',
+    label: 'ZET 복구',
+    icon: 'CreditCard',
+    href: '/admin/zet-recovery',
+  },
+  {
     id: 'settings',
     label: '시스템 설정',
     icon: 'Settings',
