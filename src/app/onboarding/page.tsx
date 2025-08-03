@@ -17,6 +17,17 @@ import { ONBOARDING_STEPS } from '@/features/onboarding/utils/onboarding';
 // 애니메이션 지연 시간
 const ANIMATION_DELAY_MS = 150;
 
+// 상수화된 레이아웃 값
+const STYLE = {
+  IMAGE_MAX_HEIGHT: 'max-h-[60vh]',
+  BOTTOM_CONTAINER_HEIGHT: 'max-h-[40vh]',
+  BOTTOM_SPACING: 'bottom-16 pb-16',
+  Z_INDEX: {
+    IMAGE: 'z-10',
+    ALIEN_AND_BUTTON: 'z-40',
+  },
+};
+
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isStepVisible, setIsStepVisible] = useState(false);
@@ -59,8 +70,10 @@ export default function OnboardingPage() {
         }`}
       >
         {/* 이미지 영역 */}
-        <div className="absolute inset-0 flex flex-col justify-start items-center pt-8 space-y-2 max-h-[60vh]">
-          <div className="relative mx-auto w-full z-10 flex-shrink-0">
+        <div
+          className={`absolute inset-0 flex flex-col justify-start items-center pt-8 space-y-2 ${STYLE.IMAGE_MAX_HEIGHT}`}
+        >
+          <div className={`relative mx-auto w-full ${STYLE.Z_INDEX.IMAGE} flex-shrink-0`}>
             <OnboardingImageFrame onboardingSrc={step.image} />
           </div>
 
@@ -77,9 +90,12 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      {/* AlienWithSpeech와 하단 버튼 영역 */}
-      <div className="absolute left-0 right-0 bottom-16 flex flex-col items-center space-y-6 z-[40] pb-16 max-h-[40vh]">
+      {/* AlienWithSpeech + 하단 버튼 */}
+      <div
+        className={`absolute left-0 right-0 ${STYLE.BOTTOM_SPACING} flex flex-col items-center space-y-6 ${STYLE.Z_INDEX.ALIEN_AND_BUTTON} ${STYLE.BOTTOM_CONTAINER_HEIGHT}`}
+      >
         <AlienWithSpeech message={step.alienMessage} />
+
         <div className="flex flex-col items-center space-y-4 mb-5">
           <StepIndicator
             step={currentStep}
