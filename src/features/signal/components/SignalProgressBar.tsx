@@ -7,6 +7,8 @@ import { useLetters } from '@/hooks/useLetters';
 
 import PlanetWithSatellite from './PlanetWithSatellite';
 
+const PLANET_SIZE = 60;
+
 export default function SignalProgressBar() {
   const PLANETS = [
     IMAGE_PATHS.PLANET_1,
@@ -24,25 +26,20 @@ export default function SignalProgressBar() {
     IMAGE_PATHS.SATELLITE_5,
   ];
 
-  // 전역 상태에서 행성 도달 상태 가져오기
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
 
-  // 컴포넌트 마운트 시 편지 상태 로드하기
   useEffect(() => {
     initializeLetters();
   }, [initializeLetters]);
 
-  // 도달한 행성의 개수 계산
-  const completed = completedPlanets;
-
   return (
-    <div className="flex flex-col items-center w-full gap-4 px-4">
+    <section aria-label="탐사 진행 현황" className="flex flex-col items-center w-full gap-4 px-4">
       {/* 진행 텍스트 */}
-      <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
-        {completed}번째 은하까지 탐사 완료...
+      <p className="text-white text-md pyeongchangpeace-title-2 mb-5" aria-live="polite">
+        {completedPlanets}번째 은하까지 탐사 완료...
       </p>
 
-      {/* 선 + 행성 */}
+      {/* 선 + 행성 아이콘 */}
       <div className="relative flex items-center justify-center w-full">
         {/* 가운데 점선 선 */}
         <div className="absolute inset-x-4 top-1/2 rounded-full border border-dashed border-gray-400 -translate-y-1/2" />
@@ -54,15 +51,20 @@ export default function SignalProgressBar() {
               key={index}
               planetSrc={planet}
               satelliteSrc={SATELLITES[index]}
-              planetSize={60}
+              planetSize={PLANET_SIZE}
               isArrived={planetStatus[index]}
             />
           ))}
         </div>
-        <div className="flex items-center justify-center size-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
-          {completed}/{PLANETS.length}
+
+        {/* 진행 상태 카운터 */}
+        <div
+          className="flex items-center justify-center size-12 rounded-full text-white text-sm ml-3 relative z-10 flex-shrink-0"
+          style={{ backgroundColor: '#222' }}
+        >
+          {completedPlanets}/{PLANETS.length}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

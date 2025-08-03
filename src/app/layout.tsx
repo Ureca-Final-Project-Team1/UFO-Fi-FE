@@ -12,8 +12,81 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'UFO-Fi',
-  description: 'UFO-Fi 앱',
+  title: {
+    default: 'UFO-Fi - 데이터는 부족해도, 은하는 연결되어 있다',
+    template: '%s | UFO-Fi',
+  },
+  description:
+    'UFO-Fi는 데이터 부족 상황에서도 은하계를 연결하는 혁신적인 플랫폼입니다. 카카오 로그인으로 간편하게 시작하세요.',
+  keywords: [
+    'UFO-Fi',
+    '데이터 연결',
+    '은하계',
+    '소셜 플랫폼',
+    '카카오 로그인',
+    '모바일 앱',
+    '데이터 공유',
+  ],
+  authors: [{ name: 'UFO-Fi Team' }],
+  creator: 'UFO-Fi',
+  publisher: 'UFO-Fi',
+  category: 'Technology',
+  classification: 'Social Platform',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://ufo-fi.store'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    url: '/',
+    siteName: 'UFO-Fi',
+    title: 'UFO-Fi - 데이터는 부족해도, 은하는 연결되어 있다',
+    description: 'UFO-Fi는 데이터 부족 상황에서도 은하계를 연결하는 혁신적인 플랫폼입니다.',
+    // TODO: Open Graph 썸네일 이미지 추가 후 주석 해제
+    // images: [
+    //   {
+    //     url: '/images/og-thumbnail.svg',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: 'UFO-Fi - 데이터는 부족해도, 은하는 연결되어 있다',
+    //     type: 'image/svg+xml',
+    //   },
+    // ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@UFOFi',
+    creator: '@UFOFi',
+    title: 'UFO-Fi - 데이터는 부족해도, 은하는 연결되어 있다',
+    description: 'UFO-Fi는 데이터 부족 상황에서도 은하계를 연결하는 혁신적인 플랫폼입니다.',
+    // TODO: Open Graph 썸네일 이미지 추가 후 주석 해제
+    // images: ['/images/og-thumbnail.svg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  other: {
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default',
+    'apple-mobile-web-app-title': 'UFO-Fi',
+    'application-name': 'UFO-Fi',
+    'msapplication-TileColor': '#000000',
+    'theme-color': '#000000',
+  },
 };
 
 export default function RootLayout({
@@ -23,9 +96,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <head>
-        <meta name="format-detection" content="telephone=no" />
-      </head>
       <body
         className={`${pretendard.className} antialiased min-h-screen bg-transparent`}
         style={

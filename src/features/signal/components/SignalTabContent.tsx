@@ -7,6 +7,12 @@ import { useLetters } from '@/hooks/useLetters';
 import { Loading } from '@/shared';
 
 import PlanetComponent from './PlanetComponent';
+import {
+  CONTAINER_HEIGHT,
+  CONTAINER_WIDTH,
+  PLANET_POSITIONS,
+  PLANET_SIZES,
+} from '../constants/layoutConfig';
 
 interface SignalTabContentProps {
   maxHeight?: number;
@@ -20,10 +26,8 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // 전역 상태에서 행성 도달 상태 가져오기
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
 
-  // 편지 상태 초기화 + 로딩 컨트롤
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -51,34 +55,17 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     IMAGE_PATHS.SATELLITE_5,
   ];
 
-  // 기본 레이아웃 설정
-  const baseLayout = {
-    containerHeight: 675,
-    planets: [
-      { top: 36, left: 36 },
-      { top: 200, left: 170 },
-      { top: 440, left: 390 },
-      { top: 50, left: 500 },
-      { top: 180, left: 740 },
-    ],
-  };
-
-  const planetSizes = [145, 185, 145, 195, 120];
-
-  // 점선 경로 생성
   const getCurvePath = (
     from: { x: number; y: number },
     to: { x: number; y: number },
     index: number,
   ) => {
     if (index === 2) {
-      // 3번째 연결선은 베지어 곡선
       const cp1 = { x: from.x + 200, y: from.y - 150 };
       const cp2 = { x: to.x - 200, y: to.y + 150 };
       return `M ${from.x},${from.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${to.x},${to.y}`;
     }
 
-    // 나머지는 호(arc)
     const dx = to.x - from.x;
     const dy = to.y - from.y;
     const radius = (Math.sqrt(dx * dx + dy * dy) / 2) * 0.8;
@@ -87,14 +74,13 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     return `M ${from.x},${from.y} A ${radius},${radius} 0 0,${sweepFlag} ${to.x},${to.y}`;
   };
 
-  // 연결선 색상 결정 (두 행성 모두 도달했을 때만 색상)
   const getConnectionColor = (fromIndex: number, toIndex: number) => {
     return planetStatus[fromIndex] && planetStatus[toIndex] ? '#7BD5FF' : '#666666';
   };
 
   const calculateScale = () => {
     const availableHeight = maxHeight || window.innerHeight * 0.8;
-    const newScale = Math.min(1, availableHeight / baseLayout.containerHeight);
+    const newScale = Math.min(1, availableHeight / CONTAINER_HEIGHT);
     setScale(newScale);
   };
 
@@ -104,7 +90,6 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     return () => window.removeEventListener('resize', calculateScale);
   }, [maxHeight]);
 
-  // PC 마우스 휠 → 수평 스크롤 가능하도록 추가
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -120,7 +105,6 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     return () => container.removeEventListener('wheel', onWheel);
   }, []);
 
-  // 스크롤 위치에 따른 버튼 표시 상태 업데이트
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -148,7 +132,7 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
   };
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <section aria-label="탐사 경로 시각화" className="relative w-full overflow-hidden">
       {/* 로딩 오버레이로 변경 */}
       {isLoading && (
         <div className="absolute inset-0 z-50 flex items-center justify-center">
@@ -156,59 +140,57 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
         </div>
       )}
 
-      {/* 하단 컨텐츠 전체를 감싸는 div */}
-      <div className={`${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-        <p className="text-white text-md pyeongchangpeace-title-2 mb-5">
+      <div className={isLoading ? 'opacity-0' : 'opacity-100'}>
+        <p className="text-white text-md pyeongchangpeace-title-2 mb-5" aria-live="polite">
           {completedPlanets}번째 은하까지 탐사 완료...
         </p>
-        {/* 스크롤 버튼 */}
+
         {canScrollLeft && (
-          <div className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
+          <aside className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
             <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
               ◀
             </button>
-          </div>
+          </aside>
         )}
+
         {canScrollRight && (
-          <div className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
+          <aside className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
             <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
               ▶
             </button>
-          </div>
+          </aside>
         )}
 
         <div
           ref={scrollContainerRef}
           className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
-          style={{ height: `${baseLayout.containerHeight * scale}px` }}
+          style={{ height: `${CONTAINER_HEIGHT * scale}px` }}
         >
           <div
             ref={contentRef}
-            className="relative"
+            className="relative origin-top-left"
             style={{
               transform: `scale(${scale})`,
-              transformOrigin: 'top left',
-              width: `860px`,
-              height: `${baseLayout.containerHeight}px`,
+              width: `${CONTAINER_WIDTH}px`,
+              height: `${CONTAINER_HEIGHT}px`,
             }}
           >
-            {/* SVG 점선 - 각 연결선별로 개별 색상 */}
             <svg
               className="absolute top-0 left-0 pointer-events-none"
-              width="860"
-              height={baseLayout.containerHeight}
+              width={CONTAINER_WIDTH}
+              height={CONTAINER_HEIGHT}
             >
-              {baseLayout.planets.map((from, i) => {
-                const to = baseLayout.planets[i + 1];
+              {PLANET_POSITIONS.map((from, i) => {
+                const to = PLANET_POSITIONS[i + 1];
                 if (!to) return null;
 
                 const fromPoint = {
-                  x: from.left + planetSizes[i] / 2,
-                  y: from.top + planetSizes[i] / 2,
+                  x: from.left + PLANET_SIZES[i] / 2,
+                  y: from.top + PLANET_SIZES[i] / 2,
                 };
                 const toPoint = {
-                  x: to.left + planetSizes[i + 1] / 2,
-                  y: to.top + planetSizes[i + 1] / 2,
+                  x: to.left + PLANET_SIZES[i + 1] / 2,
+                  y: to.top + PLANET_SIZES[i + 1] / 2,
                 };
 
                 return (
@@ -224,8 +206,7 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
               })}
             </svg>
 
-            {/* 행성들 */}
-            {baseLayout.planets.map((planet, index) => (
+            {PLANET_POSITIONS.map((planet, index) => (
               <div
                 key={index}
                 className="absolute"
@@ -237,7 +218,7 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
                 <PlanetComponent
                   planetSrc={PLANETS[index]}
                   satelliteSrc={SATELLITES[index]}
-                  planetSize={planetSizes[index]}
+                  planetSize={PLANET_SIZES[index]}
                   isArrived={planetStatus[index]}
                 />
               </div>
@@ -245,6 +226,6 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

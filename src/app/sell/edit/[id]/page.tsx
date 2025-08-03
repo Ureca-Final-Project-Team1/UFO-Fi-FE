@@ -74,9 +74,11 @@ export default function SellEditPage() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="relative w-full min-h-full flex flex-col">
       <Title title="데이터 판매 수정" iconVariant="back" />
-      <div className="relative rounded-[20px] space-y-6 pb-16 xs:pb-32">
+
+      {/* 메인 컨텐츠 영역 */}
+      <div className="flex-1 space-y-6 py-4 pb-48 sm:pb-24">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -86,12 +88,13 @@ export default function SellEditPage() {
         {/* 통신사 + 제목 입력 */}
         <div className="rounded-lg p-3 space-y-2">
           <div className="flex items-center space-x-2 w-full">
-            <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1">
+            <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1 flex-shrink-0">
               <Icon
                 src={ICON_PATHS[postData.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
               />
             </div>
-            <div className="flex-1">
+
+            <div className="flex-1 min-w-0">
               <Input
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.target.value)}
@@ -120,12 +123,12 @@ export default function SellEditPage() {
         />
 
         {/* 1GB당 가격 입력 */}
-        <div className="flex justify-center items-center gap-3.5">
-          <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">
+        <div className="flex sm:flex-row justify-center items-center gap-2 sm:gap-3.5 px-4">
+          <div className="text-center text-cyan-400 text-base sm:text-lg font-semibold leading-relaxed whitespace-nowrap">
             1GB 당
           </div>
 
-          <div className="w-28 h-10 flex justify-center items-center px-2">
+          <div className="w-32 sm:w-28 h-12 sm:h-10 flex justify-center items-center px-2">
             <PriceInput
               value={String(pricePerGB)}
               onChange={(e) => handlePriceChange(e)}
@@ -134,7 +137,9 @@ export default function SellEditPage() {
             />
           </div>
 
-          <div className="text-center text-cyan-400 text-lg font-semibold leading-relaxed">ZET</div>
+          <div className="text-center text-cyan-400 text-base sm:text-lg font-semibold leading-relaxed whitespace-nowrap">
+            ZET
+          </div>
         </div>
 
         {/* 총 판매 금액 표시 */}
@@ -145,28 +150,35 @@ export default function SellEditPage() {
         />
 
         {/* 수정 버튼 */}
-        <div className="w-full mx-auto pt-2 flex justify-end relative">
+        <div className="pt-4 flex justify-center sm:justify-end px-4">
           <Button
             size={isMobile ? 'default' : 'lg'}
             onClick={handleSubmit}
             variant="exploration-button"
             disabled={!isValidTitle || !isValidPrice || !isValidCapacity || isSubmitting}
-            className="px-6 py-3"
+            className="w-full sm:w-auto px-6 py-3 min-h-[48px]"
           >
             {isSubmitting ? '수정 중...' : '수정완료'}
           </Button>
         </div>
-
-        {/* 하단 캐릭터 */}
-        <Image
-          src={IMAGE_PATHS.AL_SELL}
-          alt="판매 우주인"
-          width={200}
-          height={200}
-          className="absolute bottom-12 xs:-bottom-28 left-0"
-          priority
-        />
       </div>
+
+      {/* 하단 캐릭터 */}
+      <div className="absolute bottom-0 left-0 pointer-events-none">
+        <div className="relative">
+          <Image
+            src={IMAGE_PATHS.AL_SELL}
+            alt="판매 우주인"
+            width={isMobile ? 180 : 250}
+            height={isMobile ? 180 : 250}
+            priority
+            className="opacity-80 sm:opacity-100"
+          />
+        </div>
+      </div>
+
+      {/* 작은 화면에서 추가 스크롤 여백 */}
+      <div className="h-4 sm:hidden" />
     </div>
   );
 }
