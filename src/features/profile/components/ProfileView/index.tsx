@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { useProfileWithFollow } from '@/features/profile/hooks/useProfileWithFollow';
-import { Title } from '@/shared';
+import { Button, Loading, Title } from '@/shared';
 
 import { ProfileContentSections } from './ProfileContentSections';
 import { ProfileHeader } from './ProfileHeader';
@@ -18,32 +18,28 @@ export function ProfileView({ userId }: ProfileViewProps) {
   const { data: profile, isLoading, error, isMyProfile } = useProfileWithFollow(userId);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-white">프로필을 불러오는 중...</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-full gap-4">
+      <div className="flex flex-col w-full pb-6">
         <div className="text-white">프로필을 불러올 수 없습니다.</div>
         <div className="text-red-400 text-sm">{error.message}</div>
-        <button onClick={() => router.back()} className="text-cyan-400 underline">
+        <Button type="button" size="full-width" onClick={() => router.back()}>
           돌아가기
-        </button>
+        </Button>
       </div>
     );
   }
 
   if (!profile) {
     return (
-      <div className="flex flex-col items-center justify-center h-full gap-4">
+      <div className="flex flex-col w-full pb-6">
         <div className="text-white">프로필을 찾을 수 없습니다.</div>
-        <button onClick={() => router.back()} className="text-cyan-400 underline">
+        <Button type="button" size="full-width" onClick={() => router.back()}>
           돌아가기
-        </button>
+        </Button>
       </div>
     );
   }
