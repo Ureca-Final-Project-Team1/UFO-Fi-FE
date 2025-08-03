@@ -56,12 +56,12 @@ export default function SellingItem({
   const carrierIcon = getCarrierIcon(carrier);
 
   return (
-    <div className="relative w-full max-w-[180px] sm:max-w-[196px] mb-8">
+    <div className="relative w-full max-w-[170px] sm:max-w-[190px] mb-8">
       {/* 카드 본체 */}
-      <div className="relative z-10 p-3 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col min-h-[240px]">
+      <div className="relative z-10 p-3 rounded-2xl bg-[#0E213F] shadow-md border border-[#175F89] flex flex-col min-h-[200px]">
         {/* 뱃지들 */}
-        <div className="flex justify-between items-center mb-3">
-          <div className="flex gap-1">
+        <div className="flex gap-1 justify-between items-center mb-2">
+          <div className="flex items-center gap-1">
             <Badge showIcon={false} variant="carrier" className="text-[9px] px-2 py-0.5">
               {carrierIcon && (
                 <Image
@@ -69,22 +69,20 @@ export default function SellingItem({
                   alt={carrier}
                   width={12}
                   height={12}
-                  className="inline-block w-3 h-3 mr-1"
+                  className="inline-block w-3 h-3"
                 />
               )}
-              {carrier}
             </Badge>
             <Badge showIcon={false} variant="secondary" className="text-[9px] px-2 py-0.5">
               {networkType}
             </Badge>
           </div>
+          {/* 시간 영역 */}
+          <span className="text-gray-400 text-[12px] text-right">{timeLeft}</span>
         </div>
 
-        {/* 시간 영역 */}
-        <span className="text-gray-400 text-[12px] text-right">{timeLeft}</span>
-
         {/* 프로필 영역 - 클릭 시 프로필 페이지로 이동 */}
-        <div className="mb-3">
+        <div className="mb-2">
           <UserLink userId={sellerId} nickname={sellerNickname} className="flex items-center gap-2">
             <div className="size-10 rounded-full overflow-hidden border border-cyan-400/30 hover:border-cyan-400 transition-colors flex-shrink-0">
               <Image
@@ -105,20 +103,20 @@ export default function SellingItem({
         </div>
 
         {/* 글 제목 */}
-        <div className="mb-3">
+        <div className="mb-2">
           <span className="text-white text-sm font-semibold line-clamp-1 leading-tight">
             {title}
           </span>
         </div>
 
         {/* 용량 + 가격 */}
-        <div className="flex justify-between items-baseline mb-4">
-          <span className="text-white text-base font-bold">{capacity}</span>
-          <span className="text-cyan-300 text-base font-bold">{price}</span>
+        <div className="flex justify-between items-baseline mb-2">
+          <span className="text-white text-lg font-bold">{capacity}</span>
+          <span className="text-cyan-300 text-lg font-bold">{price}</span>
         </div>
 
         {/* 구매/관리 버튼 */}
-        <div className="flex justify-end items-center gap-1">
+        <div className="flex justify-between items-center gap-1 mt-auto">
           {!isOwner ? (
             <>
               <Button
@@ -168,9 +166,9 @@ export default function SellingItem({
       <Image
         src={IMAGE_PATHS.STONE}
         alt="stone"
-        width={220}
+        width={260}
         height={60}
-        className="absolute bottom-[-1.75rem] left-1/2 -translate-x-1/2 z-0 scale-[0.9]"
+        className="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 z-0 "
       />
     </div>
   );
