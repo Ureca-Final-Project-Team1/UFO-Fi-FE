@@ -1,20 +1,44 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { prisma } from '@/lib/prisma';
+import { getUserFromToken } from '@/utils/getUserFromToken';
+
 interface RouteParams {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
+
+const initialUpdateAchievementResponse = {
+  statusCode: 0,
+  message: '',
+  content: null,
+};
 
 export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
-    const cookieStore = await cookies();
-    const authToken = cookieStore.get('Authorization');
-
-    if (!authToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      return NextResponse.json(
+        {
+          ...initialUpdateAchievementResponse,
+          statusCode: result.status ?? 401,
+          message: result.error ?? '인증 오류',
+        },
+        { status: result.status ?? 401 },
+      );
     }
 
-    const { id } = await params;
+    const { userId } = result;
+    const { id } = params;
+
+    await prisma.notification_histories.update({
+      where: {
+        id: BigInt(id),
+        user_id: userId,
+      },
+      data: {
+        is_read: true,
+      },
+    });
 
     return NextResponse.json({
       statusCode: 200,
@@ -26,22 +50,40 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     });
   } catch (error) {
     console.error('Mark notification read error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      {
+        ...initialUpdateAchievementResponse,
+        statusCode: 500,
+        message: 'Internal Server Error',
+      },
+      { status: 500 },
+    );
   }
 }
 
 // src/app/api/notifications/unread-count/route.ts
 export async function GET() {
   try {
-    const cookieStore = await cookies();
-    const authToken = cookieStore.get('Authorization');
-
-    if (!authToken) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const result = await getUserFromToken();
+    if ('error' in result) {
+      return NextResponse.json(
+        {
+          ...initialUpdateAchievementResponse,
+          statusCode: result.status ?? 401,
+          message: result.error ?? '인증 오류',
+        },
+        { status: result.status ?? 401 },
+      );
     }
 
-    // 실제로는 데이터베이스에서 읽지 않은 알림 개수 조회
-    const unreadCount = 2; // Mock 데이터
+    const { userId } = result;
+
+    const unreadCount = await prisma.notification_histories.count({
+      where: {
+        user_id: userId,
+        is_read: false,
+      },
+    });
 
     return NextResponse.json({
       statusCode: 200,
@@ -52,6 +94,13 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Unread count fetch error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      {
+        ...initialUpdateAchievementResponse,
+        statusCode: 500,
+        message: 'Internal Server Error',
+      },
+      { status: 500 },
+    );
   }
 }
