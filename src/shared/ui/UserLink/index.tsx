@@ -29,7 +29,7 @@ export function UserLink({
     event.stopPropagation();
 
     // 커스텀 onClick이 있으면 먼저 실행
-    if (onClick && 'button' in event) {
+    if (onClick && event.type === 'click') {
       onClick(event as React.MouseEvent<HTMLElement>);
     }
 
