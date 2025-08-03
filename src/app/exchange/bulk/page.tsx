@@ -89,12 +89,12 @@ export default function BulkPurchasePage() {
           </div>
 
           {/* 외계인 캐릭터 */}
-          <div className="absolute bottom-[-90px] right-0" aria-hidden="true">
+          <div className="absolute bottom-[-90px] h-full right-0" aria-hidden="true">
             <Image
               src={IMAGE_PATHS.AL_BULK_PURCHASE}
               alt=""
-              width={isMobile ? 140 : 220}
-              height={isMobile ? 140 : 220}
+              width={isMobile ? 200 : 260}
+              height={isMobile ? 200 : 260}
               priority
             />
           </div>
