@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { SuccessApiResponse, ErrorApiResponse } from '@/backend';
+import { HttpStatusCode } from '@/backend/types/api';
 import { prisma } from '@/lib/prisma';
 import { getUserFromToken } from '@/utils/getUserFromToken';
 
@@ -7,24 +9,15 @@ interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
-const initialUpdateAchievementResponse = {
-  statusCode: 0,
-  message: '',
-  content: null,
-};
-
 export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
     const result = await getUserFromToken();
     if ('error' in result) {
-      return NextResponse.json(
-        {
-          ...initialUpdateAchievementResponse,
-          statusCode: result.status ?? 401,
-          message: result.error ?? '인증 오류',
-        },
-        { status: result.status ?? 401 },
-      );
+      const response: ErrorApiResponse = {
+        statusCode: result.status ?? HttpStatusCode.UNAUTHORIZED,
+        message: result.error ?? '인증 오류',
+      };
+      return NextResponse.json(response, { status: response.statusCode });
     }
 
     const { userId } = result;
@@ -40,40 +33,35 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       },
     });
 
-    return NextResponse.json({
-      statusCode: 200,
+    const response: SuccessApiResponse<{ success: boolean; notificationId: string }> = {
+      statusCode: HttpStatusCode.OK,
       message: 'Notification marked as read',
       content: {
         success: true,
         notificationId: id,
       },
-    });
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Mark notification read error:', error);
-    return NextResponse.json(
-      {
-        ...initialUpdateAchievementResponse,
-        statusCode: 500,
-        message: 'Internal Server Error',
-      },
-      { status: 500 },
-    );
+    const response: ErrorApiResponse = {
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      message: 'Internal Server Error',
+    };
+    return NextResponse.json(response, { status: response.statusCode });
   }
 }
 
-// src/app/api/notifications/unread-count/route.ts
 export async function GET() {
   try {
     const result = await getUserFromToken();
     if ('error' in result) {
-      return NextResponse.json(
-        {
-          ...initialUpdateAchievementResponse,
-          statusCode: result.status ?? 401,
-          message: result.error ?? '인증 오류',
-        },
-        { status: result.status ?? 401 },
-      );
+      const response: ErrorApiResponse = {
+        statusCode: result.status ?? HttpStatusCode.UNAUTHORIZED,
+        message: result.error ?? '인증 오류',
+      };
+      return NextResponse.json(response, { status: response.statusCode });
     }
 
     const { userId } = result;
@@ -85,22 +73,19 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json({
-      statusCode: 200,
+    const response: SuccessApiResponse<{ unreadCount: number }> = {
+      statusCode: HttpStatusCode.OK,
       message: 'OK',
-      content: {
-        unreadCount,
-      },
-    });
+      content: { unreadCount },
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Unread count fetch error:', error);
-    return NextResponse.json(
-      {
-        ...initialUpdateAchievementResponse,
-        statusCode: 500,
-        message: 'Internal Server Error',
-      },
-      { status: 500 },
-    );
+    const response: ErrorApiResponse = {
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      message: 'Internal Server Error',
+    };
+    return NextResponse.json(response, { status: response.statusCode });
   }
 }
