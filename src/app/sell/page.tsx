@@ -131,17 +131,17 @@ export default function SellPage() {
           </Button>
 
           <div
-            className="absolute pointer-events-none"
+            className="absolute h-full pointer-events-none"
             style={{
-              left: isMobile ? '0px' : '30px',
-              bottom: isMobile ? '-20px' : '-15px',
+              left: isMobile ? '-20px' : '-40px',
+              bottom: isMobile ? '40px' : '10px',
             }}
           >
             <Image
               src={IMAGE_PATHS.AL_SELL}
               alt="판매 우주인"
-              width={isMobile ? 160 : 220}
-              height={isMobile ? 160 : 220}
+              width={isMobile ? 200 : 300}
+              height={isMobile ? 200 : 300}
               priority
             />
           </div>

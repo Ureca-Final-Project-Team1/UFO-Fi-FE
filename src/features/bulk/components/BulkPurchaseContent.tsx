@@ -120,7 +120,13 @@ export function BulkPurchaseContent() {
         )}
       </section>
 
-      <Button onClick={handleClick} size="full-width" className="body-16-medium h-14 text-white">
+      <Button
+        type="button"
+        size="full-width"
+        onClick={handleClick}
+        variant="exploration-button"
+        className="px-8 py-3 min-w-[200px]"
+      >
         돌아가기
       </Button>
     </div>
