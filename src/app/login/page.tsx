@@ -42,7 +42,7 @@ const LoginPage = () => {
 
   return (
     <main
-      className="min-h-full flex flex-col justify-between items-center px-6"
+      className="h-full flex flex-col justify-between items-center px-6"
       role="main"
       aria-labelledby="login-title"
     >
