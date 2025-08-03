@@ -34,38 +34,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async rewrites() {
-    return [
-      {
-        source: '/sell/edit/:id',
-        destination: '/sell/edit/[id]',
-      },
-      {
-        source: '/exchange/purchase/:id',
-        destination: '/exchange/purchase/[id]',
-      },
-      {
-        source: '/exchange/purchase/:id/step1',
-        destination: '/exchange/purchase/[id]/step1',
-      },
-      {
-        source: '/exchange/purchase/:id/step2',
-        destination: '/exchange/purchase/[id]/step2',
-      },
-      {
-        source: '/exchange/purchase/:id/step3',
-        destination: '/exchange/purchase/[id]/step3',
-      },
-      {
-        source: '/profile/:id',
-        destination: '/profile/[id]',
-      },
-      {
-        source: '/api/notifications/:id/read',
-        destination: '/api/notifications/[id]/read',
-      },
-    ];
-  },
 };
 
 export default nextConfig;
