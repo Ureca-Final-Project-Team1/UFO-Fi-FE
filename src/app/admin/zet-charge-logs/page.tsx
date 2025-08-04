@@ -149,6 +149,7 @@ export default function AdminZetChargeLogsPage() {
   // 더미 데이터 로드
   useEffect(() => {
     setIsLoading(true);
+    setCurrentPage(0);
     setTimeout(() => {
       setChargeLogs(DUMMY_CHARGE_LOGS);
       setTotalElements(DUMMY_CHARGE_LOGS.length);
