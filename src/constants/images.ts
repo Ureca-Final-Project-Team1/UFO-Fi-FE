@@ -1,4 +1,5 @@
 export const IMAGE_PATHS = {
+  ALIEN: '/images/main/alien.svg',
   AL_SAD: '/images/alien-sad.png',
   AL_HAPPY: '/images/alien-happy.png',
   AL_ONBOARDING: '/images/alien-onboarding.svg',

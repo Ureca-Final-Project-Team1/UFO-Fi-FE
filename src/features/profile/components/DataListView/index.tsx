@@ -1,11 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
+import { IMAGE_PATHS } from '@/constants';
+import SellingItem from '@/features/exchange/components/SellingItem';
 import { useProfile } from '@/features/profile/hooks/useProfile';
-import { Title } from '@/shared';
-
-import { SimpleDataCard } from './SimpleDataCard';
+import { ReportedModal, Title } from '@/shared';
+import { formatTimeAgo, getMobileDataTypeDisplay } from '@/shared/utils';
 
 interface DataListViewProps {
   userId: number;
@@ -14,6 +16,7 @@ interface DataListViewProps {
 export function DataListView({ userId }: DataListViewProps) {
   const router = useRouter();
   const { data: profile, isLoading, error } = useProfile(userId);
+  const [reportModal, setReportModal] = useState({ isOpen: false, postId: 0, sellerId: 0 });
 
   if (isLoading) {
     return (
@@ -34,6 +37,14 @@ export function DataListView({ userId }: DataListViewProps) {
     );
   }
 
+  const handleReport = (postId: number, sellerId: number) => {
+    setReportModal({ isOpen: true, postId, sellerId });
+  };
+
+  const handleCancelReport = () => {
+    setReportModal({ isOpen: false, postId: 0, sellerId: 0 });
+  };
+
   return (
     <div className="flex flex-col w-full pb-6">
       <Title title="판매중인 데이터 목록" iconVariant="back" />
@@ -48,10 +59,25 @@ export function DataListView({ userId }: DataListViewProps) {
           </div>
 
           {profile.tradePostsRes.length > 0 ? (
-            <div className="grid grid-cols-1 gap-3">
-              {profile.tradePostsRes.map((post) => (
-                <SimpleDataCard key={post.postId} post={post} sellerNickname={profile.nickname} />
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-center">
+              {profile.tradePostsRes
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((post) => (
+                  <SellingItem
+                    key={post.postId}
+                    networkType={getMobileDataTypeDisplay(post.mobileDataType)}
+                    capacity={String(`${post.sellMobileDataAmountGB}GB`)}
+                    sellerNickname={profile.nickname}
+                    sellerProfileUrl={profile.profileImageUrl ?? IMAGE_PATHS.AVATAR}
+                    // TODO: 백엔드 응답에 존재하지 않음 ** 수정 필요 **
+                    price={`${post.sellMobileDataPrice ?? 0}ZET`}
+                    timeLeft={formatTimeAgo(post.createdAt)}
+                    sellerId={profile.userId}
+                    {...post}
+                    onPurchase={() => router.push(`/exchange/purchase/${post.postId}`)}
+                    onReport={() => handleReport(post.postId, profile.userId)}
+                  />
+                ))}
             </div>
           ) : (
             <div className="text-center text-gray-400 py-12">
@@ -61,6 +87,12 @@ export function DataListView({ userId }: DataListViewProps) {
           )}
         </div>
       </div>
+      <ReportedModal
+        isOpen={reportModal.isOpen}
+        onClose={handleCancelReport}
+        postId={reportModal.postId}
+        postOwnerUserId={reportModal.sellerId}
+      />
     </div>
   );
 }
