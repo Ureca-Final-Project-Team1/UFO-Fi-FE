@@ -1,93 +1,194 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-// Mock NicknameEditor for Storybook
-const MockNicknameEditor = ({
-  nickname = '',
-  setNickname,
-  onSave,
-  isLoading = false,
-}: {
+import { Icon } from '@/shared';
+
+import { NicknameEditor } from './NicknameEditor';
+
+// Story Wrapper Components
+const DefaultStoryWrapper = (args: {
   nickname?: string;
-  setNickname?: (nickname: string) => void;
-  onSave?: () => void;
   isLoading?: boolean;
+  onSave?: () => void;
 }) => {
-  const [localNickname, setLocalNickname] = useState(nickname);
-  const isValid = localNickname.length > 0 && localNickname.length <= 15;
-
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickname = e.target.value;
-    setLocalNickname(newNickname);
-    setNickname?.(newNickname);
-  };
-
-  const handleSave = () => {
-    onSave?.();
-  };
+  const [nickname, setNickname] = useState(args.nickname);
 
   return (
-    <div className="p-6 bg-gray-800 rounded-lg">
-      <h1 className="mb-4 font-semibold text-lg text-white">닉네임 수정</h1>
-      <input
-        value={localNickname}
-        onChange={handleNicknameChange}
-        placeholder="변경할 닉네임을 입력해주세요."
-        maxLength={15}
-        className={`w-full p-3 rounded-lg border transition-colors ${
-          !isValid && localNickname ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'
-        } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-      />
-      {!isValid && localNickname && (
-        <p className="text-red-500 text-sm mt-1">닉네임은 1~15자 이내여야 합니다.</p>
-      )}
-      <button
-        className={`w-full h-12 mt-4 rounded-lg font-medium transition-colors ${
-          !isValid || isLoading
-            ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 text-white hover:bg-blue-700'
-        }`}
-        disabled={!isValid || isLoading}
-        onClick={handleSave}
-      >
-        {isLoading ? '저장 중...' : '닉네임 저장'}
-      </button>
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <NicknameEditor
+              {...args}
+              nickname={nickname}
+              setNickname={setNickname}
+              onSave={() => {}}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-const meta: Meta<typeof MockNicknameEditor> = {
+const WithNicknameStoryWrapper = (args: {
+  nickname?: string;
+  isLoading?: boolean;
+  onSave?: () => void;
+}) => {
+  const [nickname, setNickname] = useState(args.nickname);
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <NicknameEditor
+              {...args}
+              nickname={nickname}
+              setNickname={setNickname}
+              onSave={() => {}}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LoadingStoryWrapper = (args: {
+  nickname?: string;
+  isLoading?: boolean;
+  onSave?: () => void;
+}) => {
+  const [nickname, setNickname] = useState(args.nickname);
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <NicknameEditor
+              {...args}
+              nickname={nickname}
+              setNickname={setNickname}
+              onSave={() => {}}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DesktopStoryWrapper = (args: {
+  nickname?: string;
+  isLoading?: boolean;
+  onSave?: () => void;
+}) => {
+  const [nickname, setNickname] = useState(args.nickname);
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <NicknameEditor
+              {...args}
+              nickname={nickname}
+              setNickname={setNickname}
+              onSave={() => {}}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const meta: Meta<typeof NicknameEditor> = {
   title: 'Mypage/NicknameEditor',
-  component: MockNicknameEditor,
+  component: NicknameEditor,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    setNickname: { action: 'nickname changed' },
-    onSave: { action: 'save clicked' },
+    nickname: {
+      control: { type: 'text' },
+      description: '현재 닉네임',
+    },
+    isLoading: {
+      control: { type: 'boolean' },
+      description: '로딩 상태',
+    },
+    onSave: {
+      action: 'nickname saved',
+      description: '닉네임 저장 핸들러',
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof NicknameEditor>;
 
 export const Default: Story = {
   args: {
     nickname: '',
+    isLoading: false,
   },
+  render: (args) => <DefaultStoryWrapper {...args} />,
 };
 
 export const WithNickname: Story = {
   args: {
     nickname: '지구인123',
+    isLoading: false,
   },
-};
-
-export const LongNickname: Story = {
-  args: {
-    nickname: '매우긴닉네임입니다',
-  },
+  render: (args) => <WithNicknameStoryWrapper {...args} />,
 };
 
 export const Loading: Story = {
@@ -95,22 +196,26 @@ export const Loading: Story = {
     nickname: '새닉네임',
     isLoading: true,
   },
+  render: (args) => <LoadingStoryWrapper {...args} />,
 };
 
 export const InvalidNickname: Story = {
   args: {
-    nickname: '이것은매우매우매우긴닉네임입니다',
+    nickname: '매우긴닉네임입니다',
+    isLoading: false,
   },
+  render: (args) => <DefaultStoryWrapper {...args} />,
 };
 
-export const EmptyNickname: Story = {
+export const Desktop: Story = {
   args: {
-    nickname: '',
+    nickname: '데스크톱유저',
+    isLoading: false,
   },
-};
-
-export const ShortNickname: Story = {
-  args: {
-    nickname: 'A',
+  render: (args) => <DesktopStoryWrapper {...args} />,
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };

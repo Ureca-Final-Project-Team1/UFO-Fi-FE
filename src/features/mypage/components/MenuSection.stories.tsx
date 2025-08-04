@@ -1,41 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Mock MenuSection for Storybook
-const MockMenuSection = ({
-  title = '메뉴 섹션',
-  items = [
-    { label: '프로필 수정', onClick: () => console.log('프로필 수정 클릭') },
-    { label: '알림 설정', onClick: () => console.log('알림 설정 클릭') },
-    { label: '개인정보', onClick: () => console.log('개인정보 클릭') },
-  ],
-}: {
-  title?: string;
-  items?: Array<{ label: string; onClick?: () => void }>;
-}) => {
-  return (
-    <section className="p-4 bg-gray-800 rounded-lg">
-      <h3 className="text-lg font-bold text-white mb-4">{title}</h3>
-      <ul className="space-y-1 text-sm">
-        {items.map((item) => (
-          <li
-            key={item.label}
-            className="hover:text-white cursor-pointer flex items-center justify-between group py-2 px-3 rounded hover:bg-gray-700 transition-colors"
-            onClick={item.onClick}
-          >
-            <span className="text-gray-300 group-hover:text-white">{item.label}</span>
-            <span className="text-gray-400 group-hover:text-white text-lg">→</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-};
+import { Icon } from '@/shared';
 
-const meta: Meta<typeof MockMenuSection> = {
+import MenuSection from './MenuSection';
+
+const meta: Meta<typeof MenuSection> = {
   title: 'Mypage/MenuSection',
-  component: MockMenuSection,
+  component: MenuSection,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -47,82 +23,192 @@ const meta: Meta<typeof MockMenuSection> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MenuSection>;
 
 export const Default: Story = {
   args: {
     title: '계정 설정',
     items: [
-      { label: '프로필 수정', onClick: () => console.log('프로필 수정 클릭') },
-      { label: '알림 설정', onClick: () => console.log('알림 설정 클릭') },
-      { label: '개인정보', onClick: () => console.log('개인정보 클릭') },
+      { label: '프로필 수정', onClick: () => {} },
+      { label: '알림 설정', onClick: () => {} },
+      { label: '개인정보', onClick: () => {} },
     ],
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MenuSection {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const AccountSettings: Story = {
   args: {
     title: '계정 설정',
     items: [
-      { label: '프로필 수정', onClick: () => console.log('프로필 수정 클릭') },
-      { label: '닉네임 변경', onClick: () => console.log('닉네임 변경 클릭') },
-      { label: '비밀번호 변경', onClick: () => console.log('비밀번호 변경 클릭') },
-      { label: '이메일 변경', onClick: () => console.log('이메일 변경 클릭') },
+      { label: '프로필 수정', onClick: () => {} },
+      { label: '닉네임 변경', onClick: () => {} },
+      { label: '비밀번호 변경', onClick: () => {} },
+      { label: '이메일 변경', onClick: () => {} },
     ],
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MenuSection {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const AppSettings: Story = {
   args: {
     title: '앱 설정',
     items: [
-      { label: '알림 설정', onClick: () => console.log('알림 설정 클릭') },
-      { label: '언어 설정', onClick: () => console.log('언어 설정 클릭') },
-      { label: '테마 설정', onClick: () => console.log('테마 설정 클릭') },
+      { label: '알림 설정', onClick: () => {} },
+      { label: '언어 설정', onClick: () => {} },
+      { label: '테마 설정', onClick: () => {} },
     ],
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MenuSection {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const Support: Story = {
+export const MultipleSections: Story = {
   args: {
-    title: '고객 지원',
+    title: '계정 설정',
     items: [
-      { label: '자주 묻는 질문', onClick: () => console.log('FAQ 클릭') },
-      { label: '문의하기', onClick: () => console.log('문의하기 클릭') },
-      { label: '버그 신고', onClick: () => console.log('버그 신고 클릭') },
+      { label: '프로필 수정', onClick: () => {} },
+      { label: '닉네임 변경', onClick: () => {} },
+      { label: '비밀번호 변경', onClick: () => {} },
     ],
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MenuSection {...args} />
+          </div>
+
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MenuSection
+              title="앱 설정"
+              items={[
+                { label: '알림 설정', onClick: () => {} },
+                { label: '언어 설정', onClick: () => {} },
+                { label: '테마 설정', onClick: () => {} },
+              ]}
+            />
+          </div>
+
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MenuSection
+              title="고객 지원"
+              items={[
+                { label: '자주 묻는 질문', onClick: () => {} },
+                { label: '문의하기', onClick: () => {} },
+                { label: '버그 신고', onClick: () => {} },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const SingleItem: Story = {
+export const Desktop: Story = {
   args: {
-    title: '단일 메뉴',
-    items: [{ label: '로그아웃', onClick: () => console.log('로그아웃 클릭') }],
-  },
-};
-
-export const LongTitle: Story = {
-  args: {
-    title: '매우 긴 메뉴 섹션 제목입니다',
+    title: '데스크톱 메뉴',
     items: [
-      { label: '프로필 수정', onClick: () => console.log('프로필 수정 클릭') },
-      { label: '알림 설정', onClick: () => console.log('알림 설정 클릭') },
+      { label: '프로필 수정', onClick: () => {} },
+      { label: '알림 설정', onClick: () => {} },
+      { label: '개인정보', onClick: () => {} },
     ],
   },
-};
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
+          </div>
+        </div>
 
-export const ManyItems: Story = {
-  args: {
-    title: '많은 메뉴 항목',
-    items: [
-      { label: '프로필 수정', onClick: () => console.log('프로필 수정 클릭') },
-      { label: '알림 설정', onClick: () => console.log('알림 설정 클릭') },
-      { label: '개인정보', onClick: () => console.log('개인정보 클릭') },
-      { label: '보안 설정', onClick: () => console.log('보안 설정 클릭') },
-      { label: '결제 정보', onClick: () => console.log('결제 정보 클릭') },
-      { label: '사용 내역', onClick: () => console.log('사용 내역 클릭') },
-      { label: '고객 지원', onClick: () => console.log('고객 지원 클릭') },
-      { label: '로그아웃', onClick: () => console.log('로그아웃 클릭') },
-    ],
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MenuSection {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };

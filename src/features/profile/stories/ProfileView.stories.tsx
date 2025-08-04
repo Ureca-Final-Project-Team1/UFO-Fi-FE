@@ -4,6 +4,7 @@ import { Carrier } from '@/backend/types/carrier';
 import { MobileDataType } from '@/backend/types/mobileData';
 import type { ProfileUser } from '@/backend/types/profile';
 import { IMAGE_PATHS } from '@/constants/images';
+import { Icon } from '@/shared';
 
 const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
   userId: 308,
@@ -100,101 +101,109 @@ const MockProfileView = ({
   const profile = getMockProfileById(userId);
 
   return (
-    <div className="flex flex-col w-full pb-6">
-      <div className="flex items-center p-4 border-b border-white/10">
-        <button className="text-white mr-4">←</button>
-        <h1 className="text-white text-lg font-bold">{profile.nickname}의 프로필</h1>
-      </div>
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">프로필 뷰</h2>
 
-      <div className="space-y-6 px-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
-              {profile.profileImageUrl ? (
-                <img
-                  src={profile.profileImageUrl}
-                  alt={profile.nickname}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              ) : (
-                <span>👽</span>
-              )}
+          <div className="flex flex-col w-full pb-6">
+            <div className="flex items-center p-4 border-b border-white/10">
+              <button className="text-white mr-4">
+                <Icon name="ChevronLeft" className="w-5 h-5" />
+              </button>
+              <h1 className="text-white text-lg font-bold">{profile.nickname}의 프로필</h1>
             </div>
-            <div className="flex flex-col">
-              <h1 className="text-white text-xl font-bold">{profile.nickname}</h1>
-              <span className="text-gray-400 text-sm">지구인 #{profile.userId}</span>
-            </div>
-          </div>
 
-          <div className="flex gap-2">
-            <FollowButton
-              isFollowing={isFollowing}
-              isMyProfile={isMyProfile}
-              isLoggedIn={isLoggedIn}
-            />
-            <button className="px-4 py-2 bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-600 transition-colors flex items-center gap-1">
-              공유
-            </button>
-          </div>
-        </div>
+            <div className="space-y-6 px-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
+                    <Icon name="astronaut" className="size-8 text-purple-200" />
+                  </div>
+                  <div className="flex flex-col">
+                    <h1 className="text-white text-xl font-bold">{profile.nickname}</h1>
+                    <span className="text-gray-400 text-sm">지구인 #{profile.userId}</span>
+                  </div>
+                </div>
 
-        <div className="flex justify-center gap-8">
-          <div className="text-center">
-            <div className="text-white text-lg font-bold">팔로워 {profile.followerCount}명</div>
-          </div>
-          <div className="text-center">
-            <div className="text-white text-lg font-bold">팔로잉 {profile.followingCount}명</div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="space-y-3">
-            <h3 className="text-white font-semibold text-lg">거래 현황</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-300 text-sm">7일 평균 거래량</span>
-                <span className="text-white text-sm font-medium">2건</span>
+                <div className="flex gap-2">
+                  <FollowButton
+                    isFollowing={isFollowing}
+                    isMyProfile={isMyProfile}
+                    isLoggedIn={isLoggedIn}
+                  />
+                  <button className="px-4 py-2 bg-gray-700 text-white rounded-lg text-sm hover:bg-gray-600 transition-colors flex items-center gap-1">
+                    공유
+                  </button>
+                </div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-300 text-sm">7일 평균 거래 시간</span>
-                <div className="flex items-center gap-1">
-                  <span className="text-white text-sm font-medium">낮</span>
-                  <span className="text-lg">☀️</span>
+
+              <div className="flex justify-center gap-8">
+                <div className="text-center">
+                  <div className="text-white text-lg font-bold">
+                    팔로워 {profile.followerCount}명
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-white text-lg font-bold">
+                    팔로잉 {profile.followingCount}명
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-white font-semibold text-lg">거래 현황</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">7일 평균 거래량</span>
+                      <span className="text-white text-sm font-medium">2건</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">7일 평균 거래 시간</span>
+                      <div className="flex items-center gap-1">
+                        <span className="text-white text-sm font-medium">낮</span>
+                        <span className="text-lg">☀️</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-white opacity-20"></div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-white font-semibold text-lg">판매중인 데이터</h3>
+                    {profile.tradePostsRes.length > 0 && (
+                      <button className="text-cyan-400 text-sm hover:text-cyan-300 transition-colors">
+                        자세히 보기
+                      </button>
+                    )}
+                  </div>
+
+                  {profile.tradePostsRes.length > 0 ? (
+                    <div className="flex gap-3 overflow-x-auto pb-2">
+                      {profile.tradePostsRes.map((post) => (
+                        <div
+                          key={post.postId}
+                          className="bg-gray-800 rounded-lg p-4 w-24 h-24 flex flex-col items-center justify-center space-y-2 flex-shrink-0"
+                        >
+                          <div className="size-6 bg-red-500 rounded"></div>
+                          <div className="text-cyan-400 text-xs font-bold text-center">
+                            {post.sellMobileDataAmountGB}GB
+                          </div>
+                          <div className="text-gray-400 text-xs">{post.totalZet}ZET</div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-400 py-4">
+                      판매중인 데이터가 없습니다.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="w-full h-px bg-white opacity-20"></div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <h3 className="text-white font-semibold text-lg">판매중인 데이터</h3>
-              {profile.tradePostsRes.length > 0 && (
-                <button className="text-cyan-400 text-sm hover:text-cyan-300 transition-colors">
-                  자세히 보기
-                </button>
-              )}
-            </div>
-
-            {profile.tradePostsRes.length > 0 ? (
-              <div className="flex gap-3 overflow-x-auto pb-2">
-                {profile.tradePostsRes.map((post) => (
-                  <div
-                    key={post.postId}
-                    className="bg-gray-800 rounded-lg p-4 w-24 h-24 flex flex-col items-center justify-center space-y-2 flex-shrink-0"
-                  >
-                    <div className="size-6 bg-red-500 rounded"></div>
-                    <div className="text-cyan-400 text-xs font-bold text-center">
-                      {post.sellMobileDataAmountGB}GB
-                    </div>
-                    <div className="text-gray-400 text-xs">250ZET</div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center text-gray-400 py-4">판매중인 데이터가 없습니다.</div>
-            )}
           </div>
         </div>
       </div>
@@ -203,23 +212,15 @@ const MockProfileView = ({
 };
 
 const meta: Meta<typeof MockProfileView> = {
-  title: 'Components/Profile/ProfileView',
+  title: 'Profile/ProfileView',
   component: MockProfileView,
   parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: '사용자 프로필 전체 뷰 컴포넌트 - 팔로우/언팔로우 기능 포함',
-      },
+    layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
     },
   },
-  decorators: [
-    (Story) => (
-      <div className="min-h-screen bg-gray-900">
-        <Story />
-      </div>
-    ),
-  ],
+  tags: ['autodocs'],
   argTypes: {
     userId: {
       control: 'number',
@@ -259,11 +260,6 @@ export const MyProfile: Story = {
     isFollowing: false,
     isLoggedIn: true,
   },
-  parameters: {
-    docs: {
-      description: { story: '내 프로필을 표시할 때는 "내 프로필" 표시가 나타납니다.' },
-    },
-  },
 };
 
 export const NotFollowingUser: Story = {
@@ -272,11 +268,6 @@ export const NotFollowingUser: Story = {
     isMyProfile: false,
     isFollowing: false,
     isLoggedIn: true,
-  },
-  parameters: {
-    docs: {
-      description: { story: '팔로우하지 않은 사용자의 프로필 - "팔로우" 버튼이 표시됩니다.' },
-    },
   },
 };
 
@@ -287,9 +278,27 @@ export const FollowingUser: Story = {
     isFollowing: true,
     isLoggedIn: true,
   },
+};
+
+export const NotLoggedIn: Story = {
+  args: {
+    userId: 308,
+    isMyProfile: false,
+    isFollowing: false,
+    isLoggedIn: false,
+  },
+};
+
+export const Desktop: Story = {
+  args: {
+    userId: 308,
+    isMyProfile: false,
+    isFollowing: false,
+    isLoggedIn: true,
+  },
   parameters: {
-    docs: {
-      description: { story: '이미 팔로우한 사용자의 프로필 - "언팔로우" 버튼이 표시됩니다.' },
+    viewport: {
+      defaultViewport: 'desktop',
     },
   },
 };
