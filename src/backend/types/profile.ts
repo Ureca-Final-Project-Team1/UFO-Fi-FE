@@ -11,7 +11,7 @@ export interface TradePost {
   sellMobileDataAmountGB: number;
   title: string;
   createdAt: string;
-  sellMobileDataPrice: number;
+  totalZet: number;
 }
 
 export interface ProfileUser {

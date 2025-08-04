@@ -70,8 +70,7 @@ export function DataListView({ userId }: DataListViewProps) {
                     capacity={String(`${post.sellMobileDataAmountGB}GB`)}
                     sellerNickname={profile.nickname}
                     sellerProfileUrl={profile.profileImageUrl ?? IMAGE_PATHS.AVATAR}
-                    // TODO: 백엔드 응답에 존재하지 않음 ** 수정 필요 **
-                    price={`${post.sellMobileDataPrice ?? 0}ZET`}
+                    price={`${post.totalZet ?? 0}ZET`}
                     timeLeft={formatTimeAgo(post.createdAt)}
                     sellerId={profile.userId}
                     carrier={carrier as Carrier}
