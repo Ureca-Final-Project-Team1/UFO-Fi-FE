@@ -28,34 +28,15 @@ interface AppLayoutProviderProps {
   children: React.ReactNode;
 }
 
+const NAV_HEIGHT = 56;
+const BOTTOM_NAV_HEIGHT = 64;
+
 export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-
-    // body/html 레벨의 스크롤만 방지, main 영역 스크롤은 허용
-    const preventPageScroll = (e: Event) => {
-      // main 요소나 그 하위 요소에서 발생한 스크롤은 허용
-      const target = e.target as Element;
-      const mainElement = target?.closest('main');
-
-      // main 영역이 아닌 곳에서의 스크롤만 방지
-      if (!mainElement && window.scrollY !== 0) {
-        window.scrollTo(0, 0);
-      }
-    };
-
-    // 초기 스크롤 위치 설정
-    window.scrollTo(0, 0);
-
-    // 스크롤 이벤트 감지
-    window.addEventListener('scroll', preventPageScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', preventPageScroll);
-    };
   }, []);
 
   const isAdminRoute = pathname.startsWith('/admin');
@@ -66,8 +47,6 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     isOnboardingPage ||
     pathname.startsWith('/blackhole') ||
     pathname.startsWith('/signup/privacy');
-
-  const isHomePage = pathname === '/';
 
   const contextValue: AppLayoutContextValue = useMemo(
     () => ({
@@ -91,27 +70,22 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   }, [pathname, isOnboardingPage, isPasswordPage]);
 
   const containerStyle = useMemo(() => {
-    if (isPasswordPage) {
-      return { backgroundColor: 'var(--color-password-bg)' };
-    }
-    if (isOnboardingPage) {
-      return { backgroundColor: 'var(--color-onboarding-bg)' };
-    }
-    if (backgroundImageUrl) {
+    if (isPasswordPage) return { backgroundColor: 'var(--color-password-bg)' };
+    if (isOnboardingPage) return { backgroundColor: 'var(--color-onboarding-bg)' };
+    if (backgroundImageUrl)
       return {
         backgroundImage: `url(${backgroundImageUrl})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       };
-    }
     return {};
   }, [isPasswordPage, isOnboardingPage, backgroundImageUrl]);
 
   if (isAdminRoute) {
     return (
       <AppLayoutContext.Provider value={contextValue}>
-        <div className="h-screen w-full bg-gray-50">{children}</div>
+        <div className="min-h-screen w-full bg-gray-50">{children}</div>
       </AppLayoutContext.Provider>
     );
   }
@@ -119,9 +93,9 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   if (!isMounted) {
     return (
       <AppLayoutContext.Provider value={contextValue}>
-        <div className="w-full h-full flex justify-center fixed inset-0 overflow-hidden">
+        <div className="min-h-screen w-full flex justify-center">
           <div className="relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden">
-            <main className="h-full flex flex-col px-6 text-white overflow-y-auto">{children}</main>
+            <main className="min-h-screen flex flex-col px-6 text-white">{children}</main>
           </div>
         </div>
       </AppLayoutContext.Provider>
@@ -130,43 +104,40 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
 
   return (
     <AppLayoutContext.Provider value={contextValue}>
-      <div className="w-full h-screen flex justify-center overflow-hidden fixed inset-0">
+      <div className="fixed inset-0 w-full h-full flex justify-center overflow-hidden bg-background">
         <div
-          className={`relative flex flex-col w-full h-full min-w-[375px] max-w-[620px] ${
-            backgroundImageUrl ? 'nav-container-bg' : ''
-          }`}
+          className="relative w-full h-full min-w-[375px] max-w-[620px] flex flex-col"
           style={containerStyle}
         >
-          {/* 상단 고정 */}
-          {!isNavigationHidden && (
-            <div className="shrink-0 z-50">
-              <TopNav />
-            </div>
-          )}
+          {!isNavigationHidden && <TopNav />}
 
-          {/* 가운데 스크롤 영역 */}
           <main
-            className={`
-              flex-1 overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10
-              sm:px-10.5 px-6 text-white
-              ${isHomePage ? 'flex flex-col justify-center items-center' : 'flex flex-col'}
-            `}
+            className="flex-1 overflow-y-auto overflow-x-hidden hide-scrollbar sm:px-10.5 px-6 text-white relative z-10"
             style={{
               WebkitOverflowScrolling: 'touch',
               overscrollBehavior: 'contain',
+              paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
+              paddingBottom: isNavigationHidden
+                ? isOnboardingPage
+                  ? '0px'
+                  : '32px'
+                : `${BOTTOM_NAV_HEIGHT}px`,
             }}
           >
             {children}
           </main>
 
-          {/* 하단 고정 */}
           {!isNavigationHidden && (
-            <div className="shrink-0 z-50">
+            <div
+              className="fixed bottom-0 left-0 w-full z-40"
+              style={{ height: `${BOTTOM_NAV_HEIGHT}px` }}
+              onTouchStart={(e) => e.preventDefault()}
+              onTouchMove={(e) => e.preventDefault()}
+            >
               <BottomNav />
             </div>
           )}
 
-          {/* Scroll to top 버튼 */}
           {!isNavigationHidden && (
             <div className="absolute bottom-24 right-4 z-50">
               <ScrollToTopButton />
