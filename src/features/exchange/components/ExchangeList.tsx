@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { Carrier } from '@/backend';
 import { MobileDataType } from '@/backend/types/mobileData';
@@ -21,6 +21,7 @@ interface ExchangeListProps {
   onReport: (id: number, sellerId: number) => void;
   onPurchase: (id: number) => void;
   purchaseLoading?: boolean;
+  onRefetch?: (refetchFunction: () => void) => void;
 }
 
 // 게시물 변환 함수
@@ -39,12 +40,24 @@ const transformPostToItem = (post: ExchangeItem, userNickname?: string) => ({
   sellerProfileUrl: post.sellerProfileUrl,
 });
 
-export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: ExchangeListProps) => {
+export const ExchangeList = ({
+  onEdit,
+  onDelete,
+  onReport,
+  onPurchase,
+  onRefetch,
+}: ExchangeListProps) => {
   // 사용자 정보 조회
   const { data: userInfo } = useMyInfo();
 
   const { data, isLoading, error, isFetchingNextPage, hasNextPage, loadMoreRef, refetch } =
     useOptimizedInfiniteScroll();
+
+  useEffect(() => {
+    if (onRefetch) {
+      onRefetch(refetch);
+    }
+  }, [refetch, onRefetch]);
 
   const sellingItems = useMemo(() => {
     if (!data?.pages) return [];
@@ -52,7 +65,7 @@ export const ExchangeList = ({ onEdit, onDelete, onReport, onPurchase }: Exchang
     const allPosts = data.pages.flatMap((page) => page.posts);
 
     return allPosts
-      .filter((post) => post.status !== 'DELETED')
+      .filter((post) => post.status !== 'DELETED' && post.status !== 'REPORTED')
       .map((post) => transformPostToItem(post, userInfo?.nickname));
   }, [data?.pages, userInfo?.nickname]);
 
