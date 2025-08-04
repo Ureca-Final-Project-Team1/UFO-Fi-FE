@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
+import { Indicator } from '@/shared';
+
 // Mock StepIndicator for Storybook
 const MockStepIndicator = ({
   step = 0,
@@ -20,51 +22,27 @@ const MockStepIndicator = ({
   const [currentStep, setCurrentStep] = useState(step);
 
   const handleClick = (clickedStep: number) => {
-    setCurrentStep(clickedStep);
-    // 단계 ${clickedStep + 1}로 이동
-  };
-
-  const getSizeClasses = (size: string) => {
-    switch (size) {
-      case 'sm':
-        return 'w-2 h-2';
-      case 'lg':
-        return 'w-4 h-4';
-      default:
-        return 'w-3 h-3';
-    }
-  };
-
-  const getSpacingClasses = (spacing: string) => {
-    switch (spacing) {
-      case 'tight':
-        return 'gap-1';
-      case 'wide':
-        return 'gap-4';
-      default:
-        return 'gap-2';
-    }
+    setCurrentStep(clickedStep - 1); // Indicator는 1-based이므로 변환
+    // 단계 ${clickedStep}로 이동
   };
 
   return (
-    <div className={`flex justify-center py-2 ${className}`}>
-      <div className={`flex items-center ${getSpacingClasses(spacing)}`}>
-        {Array.from({ length: total }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handleClick(index)}
-            className={`
-              ${getSizeClasses(size)} 
-              rounded-full transition-all duration-200
-              ${index === currentStep ? 'bg-blue-500 scale-110' : 'bg-gray-300 hover:bg-gray-400'}
-              ${showHover && index !== currentStep ? 'hover:scale-105' : ''}
-            `}
-            aria-label={`단계 ${index + 1}`}
-          />
-        ))}
-      </div>
-      <div className="ml-4 text-sm text-gray-600">
-        {currentStep + 1} / {total}
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">단계 인디케이터</h2>
+
+          <div className={`flex justify-center py-2 ${className}`}>
+            <Indicator
+              step={currentStep + 1} // Indicator는 1-based
+              totalSteps={total}
+              onStepClick={handleClick}
+              size={size}
+              spacing={spacing}
+              showHover={showHover}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -75,6 +53,9 @@ const meta: Meta<typeof MockStepIndicator> = {
   component: MockStepIndicator,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -108,7 +89,7 @@ const meta: Meta<typeof MockStepIndicator> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockStepIndicator>;
 
 export const Default: Story = {
   args: {
@@ -187,5 +168,20 @@ export const LastStep: Story = {
     showHover: true,
     size: 'md',
     spacing: 'normal',
+  },
+};
+
+export const Desktop: Story = {
+  args: {
+    step: 2,
+    total: 5,
+    showHover: true,
+    size: 'md',
+    spacing: 'normal',
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };

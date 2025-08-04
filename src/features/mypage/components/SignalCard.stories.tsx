@@ -1,22 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Image from 'next/image';
 
-// Mock SignalCard for Storybook
+import { Icon } from '@/shared';
+
+import { Honorific } from '../types/Achievement';
+
+// Mock SignalCard for Storybook (Next.js 의존성 제거)
 const MockSignalCard = ({
-  userId = '지구인123',
-  zetAmount = 1500,
-  availableData = 5,
-  maxData = 10,
-  honorifics = [
-    { name: '초보 탐험가', isActive: true },
-    { name: '중급 탐험가', isActive: false },
-    { name: '고급 탐험가', isActive: false },
-  ],
+  userId,
+  profileImageUrl,
+  zetAmount,
+  availableData,
+  maxData,
+  honorifics,
 }: {
-  userId?: string;
-  zetAmount?: number;
-  availableData?: number;
-  maxData?: number;
-  honorifics?: Array<{ name: string; isActive: boolean }>;
+  userId: string;
+  profileImageUrl: string | undefined;
+  zetAmount: number;
+  availableData: number;
+  maxData: number;
+  honorifics: Honorific[];
 }) => {
   const formatZetAmount = (amount: number): string => {
     if (amount >= 99999) {
@@ -32,8 +35,8 @@ const MockSignalCard = ({
     <section
       className="rounded-xl shadow-lg border-[4px] w-full max-w-[620px] mx-auto"
       style={{
-        borderColor: '#735AB1',
-        backgroundColor: '#f8f9fa',
+        borderColor: 'var(--chart-4)',
+        backgroundColor: 'var(--color-background-card)',
       }}
       role="region"
       aria-labelledby="signal-card-title"
@@ -52,7 +55,17 @@ const MockSignalCard = ({
         {/* 왼쪽 프로필 */}
         <div className="flex flex-col items-center shrink-0">
           <div className="border w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-md overflow-hidden">
-            <div className="w-full h-full bg-gray-300 flex items-center justify-center">👤</div>
+            {profileImageUrl ? (
+              <Image
+                src={profileImageUrl}
+                alt="Profile"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-300 flex items-center justify-center">👤</div>
+            )}
           </div>
 
           {/* 칭호 */}
@@ -129,35 +142,21 @@ const meta: Meta<typeof MockSignalCard> = {
   title: 'Mypage/SignalCard',
   component: MockSignalCard,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
-  argTypes: {
-    userId: {
-      control: { type: 'text' },
-      description: '사용자 ID',
-    },
-    zetAmount: {
-      control: { type: 'number' },
-      description: 'ZET 잔액',
-    },
-    availableData: {
-      control: { type: 'number' },
-      description: '사용 가능한 데이터 용량',
-    },
-    maxData: {
-      control: { type: 'number' },
-      description: '최대 데이터 용량',
-    },
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockSignalCard>;
 
 export const Default: Story = {
   args: {
     userId: '지구인123',
+    profileImageUrl: '/images/main/alien.svg',
     zetAmount: 1500,
     availableData: 5,
     maxData: 10,
@@ -165,49 +164,96 @@ export const Default: Story = {
       { name: '초보 탐험가', isActive: true },
       { name: '중급 탐험가', isActive: false },
       { name: '고급 탐험가', isActive: false },
-    ],
+    ] as Honorific[],
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <MockSignalCard {...args} />
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const HighZet: Story = {
+export const WithHighZet: Story = {
   args: {
     userId: '부자지구인',
+    profileImageUrl: '/images/main/alien.svg',
     zetAmount: 50000,
     availableData: 8,
     maxData: 10,
     honorifics: [
-      { name: '부자 탐험가', isActive: true },
-      { name: '초보 탐험가', isActive: false },
-    ],
+      { name: '고급 탐험가', isActive: true },
+      { name: '전설의 탐험가', isActive: false },
+    ] as Honorific[],
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <MockSignalCard {...args} />
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const LowData: Story = {
+export const Desktop: Story = {
   args: {
-    userId: '데이터부족',
-    zetAmount: 100,
-    availableData: 1,
-    maxData: 10,
-    honorifics: [{ name: '초보 탐험가', isActive: true }],
-  },
-};
-
-export const NoHonorific: Story = {
-  args: {
-    userId: '신규사용자',
-    zetAmount: 0,
-    availableData: 0,
-    maxData: 10,
-    honorifics: [],
-  },
-};
-
-export const LongUserId: Story = {
-  args: {
-    userId: '매우긴사용자아이디입니다',
+    userId: '데스크톱지구인',
+    profileImageUrl: '/images/main/alien.svg',
     zetAmount: 2500,
     availableData: 7,
     maxData: 10,
-    honorifics: [{ name: '긴칭호를가진탐험가', isActive: true }],
+    honorifics: [
+      { name: '중급 탐험가', isActive: true },
+      { name: '고급 탐험가', isActive: false },
+    ] as Honorific[],
+  },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <MockSignalCard {...args} />
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };

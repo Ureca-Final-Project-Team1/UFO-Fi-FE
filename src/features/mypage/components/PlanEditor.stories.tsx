@@ -1,36 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-// Mock PlanEditor for Storybook
+import { Plan } from '@/backend';
+import { Carrier } from '@/backend/types/carrier';
+import { Icon, Button } from '@/shared';
+
+// Mock PlanEditor for Storybook to avoid React Query dependency
 const MockPlanEditor = ({
-  carrier = '',
+  carrier = '' as Carrier | '',
   setCarrier,
   plan = '',
   setPlan,
-  plans = [
-    { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
-    { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
-    { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
-  ],
+  plans = [],
   isLoading = false,
   onSave,
 }: {
-  carrier?: string;
-  setCarrier?: (carrier: string) => void;
+  carrier?: Carrier | '';
+  setCarrier?: (carrier: Carrier) => void;
   plan?: string;
   setPlan?: (plan: string) => void;
-  plans?: Array<{ id: number; name: string; carrier: string; data: number }>;
+  plans?: Plan[];
   isLoading?: boolean;
   onSave?: () => void;
 }) => {
-  const [localCarrier, setLocalCarrier] = useState(carrier);
+  const [localCarrier, setLocalCarrier] = useState<Carrier | ''>(carrier);
   const [localPlan, setLocalPlan] = useState(plan);
   const [localMaxData, setLocalMaxData] = useState<number | null>(null);
   const [localNetworkType, setLocalNetworkType] = useState('');
 
-  const handleCarrierChange = (newCarrier: string) => {
+  const handleCarrierChange = (newCarrier: Carrier) => {
     setLocalCarrier(newCarrier);
     setCarrier?.(newCarrier);
+    setLocalPlan('');
+    setPlan?.('');
   };
 
   const handlePlanChange = (newPlan: string) => {
@@ -50,7 +52,7 @@ const MockPlanEditor = ({
   };
 
   return (
-    <div className="p-6 bg-gray-800 rounded-lg">
+    <div>
       <h2 className="mb-4 font-semibold text-lg text-white">요금제 변경</h2>
 
       {/* Mock OCR Input Section */}
@@ -59,13 +61,13 @@ const MockPlanEditor = ({
           <label className="block text-sm font-medium text-gray-300 mb-2">통신사</label>
           <select
             value={localCarrier}
-            onChange={(e) => handleCarrierChange(e.target.value)}
+            onChange={(e) => handleCarrierChange(e.target.value as Carrier)}
             className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
           >
             <option value="">통신사를 선택하세요</option>
-            <option value="SKT">SKT</option>
-            <option value="KT">KT</option>
-            <option value="LG U+">LG U+</option>
+            <option value={Carrier.SKT}>SKT</option>
+            <option value={Carrier.KT}>KT</option>
+            <option value={Carrier.LGU}>LG U+</option>
           </select>
         </div>
 
@@ -111,18 +113,13 @@ const MockPlanEditor = ({
         </div>
       )}
 
-      {/* Save Button */}
-      <button
-        className={`w-full h-12 mt-4 rounded-lg font-medium transition-colors ${
-          !localCarrier || !localPlan || isLoading
-            ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 text-white hover:bg-blue-700'
-        }`}
+      <Button
+        className="w-full h-12 mt-4"
         disabled={!localCarrier || !localPlan || isLoading}
         onClick={onSave}
       >
-        {isLoading ? '저장 중...' : '요금제 저장'}
-      </button>
+        요금제 저장
+      </Button>
     </div>
   );
 };
@@ -131,62 +128,195 @@ const meta: Meta<typeof MockPlanEditor> = {
   title: 'Mypage/PlanEditor',
   component: MockPlanEditor,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     setCarrier: { action: 'carrier changed' },
     setPlan: { action: 'plan changed' },
+    setPlans: { action: 'plans changed' },
+    setIsLoading: { action: 'loading changed' },
     onSave: { action: 'save clicked' },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockPlanEditor>;
 
 export const Default: Story = {
   args: {
+    carrier: '' as Carrier | '',
+    plan: '',
     plans: [
       { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
       { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
       { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
-    ],
+    ] as Plan[],
+    isLoading: false,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MockPlanEditor {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const WithSelection: Story = {
+export const WithCarrierSelected: Story = {
   args: {
-    carrier: 'SKT',
-    plan: '5G 프리미엄 요금제',
+    carrier: Carrier.SKT,
+    plan: '',
     plans: [
       { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
       { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
       { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
-    ],
+    ] as Plan[],
+    isLoading: false,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MockPlanEditor {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const WithPlanSelected: Story = {
+  args: {
+    carrier: Carrier.SKT,
+    plan: '5G 기본 요금제',
+    plans: [
+      { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
+      { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
+      { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
+    ] as Plan[],
+    isLoading: false,
+  },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MockPlanEditor {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const Loading: Story = {
   args: {
-    carrier: 'SKT',
+    carrier: Carrier.SKT,
     plan: '5G 기본 요금제',
-    isLoading: true,
     plans: [
       { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
       { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
-    ],
+      { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
+    ] as Plan[],
+    isLoading: true,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MockPlanEditor {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const MultipleCarriers: Story = {
+export const Desktop: Story = {
   args: {
+    carrier: Carrier.KT,
+    plan: '5G 프리미엄 요금제',
     plans: [
-      { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
-      { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
-      { id: 3, name: '5G 기본 요금제', carrier: 'KT', data: 10 },
-      { id: 4, name: '5G 프리미엄 요금제', carrier: 'KT', data: 20 },
-      { id: 5, name: '5G 기본 요금제', carrier: 'LG U+', data: 10 },
-      { id: 6, name: '5G 프리미엄 요금제', carrier: 'LG U+', data: 20 },
-    ],
+      { id: 1, name: '5G 기본 요금제', carrier: 'KT', data: 10 },
+      { id: 2, name: '5G 프리미엄 요금제', carrier: 'KT', data: 20 },
+      { id: 3, name: '5G 무제한 요금제', carrier: 'KT', data: 100 },
+    ] as Plan[],
+    isLoading: false,
+  },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <MockPlanEditor {...args} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };
