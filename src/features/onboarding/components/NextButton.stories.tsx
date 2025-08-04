@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Image from 'next/image';
+
+import { IMAGE_PATHS } from '@/constants/images';
 
 // Mock NextButton for Storybook
 const MockNextButton = ({
@@ -12,27 +15,34 @@ const MockNextButton = ({
     // isLast ? '시작하기 클릭됨' : '다음 클릭됨'
   };
 
+  const imageSrc = isLast ? IMAGE_PATHS.FIRE_BTN_ONBOARDING : IMAGE_PATHS.NEXT_BTN_ONBOARDING;
+  const altText = isLast ? '시작하기' : '다음';
   const buttonAnimation = isLast ? '' : 'animate-pulse';
 
   return (
-    <div className="flex justify-center">
-      <button
-        onClick={handleClick}
-        className={`transition-all duration-300 transform hover:scale-110 active:scale-95 ${buttonAnimation} ${className}`}
-        aria-label={isLast ? '시작하기' : '다음'}
-      >
-        <div className="w-64 h-12 rounded-lg flex items-center justify-center text-white font-semibold text-lg drop-shadow-lg">
-          {isLast ? (
-            <div className="bg-gradient-to-r from-orange-500 to-red-500 w-full h-full rounded-lg flex items-center justify-center">
-              🔥 시작하기
-            </div>
-          ) : (
-            <div className="bg-gradient-to-r from-blue-500 to-purple-500 w-full h-full rounded-lg flex items-center justify-center">
-              ➡️ 다음
-            </div>
-          )}
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">다음 버튼</h2>
+
+          <div className="flex justify-center">
+            <button
+              onClick={handleClick}
+              className={`transition-all duration-300 transform hover:scale-110 active:scale-95 ${buttonAnimation} ${className}`}
+              aria-label={altText}
+            >
+              <Image
+                src={imageSrc}
+                alt={altText}
+                width={140}
+                height={30}
+                className="w-64 h-auto drop-shadow-lg"
+                priority
+              />
+            </button>
+          </div>
         </div>
-      </button>
+      </div>
     </div>
   );
 };
@@ -42,6 +52,9 @@ const meta: Meta<typeof MockNextButton> = {
   component: MockNextButton,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -57,7 +70,7 @@ const meta: Meta<typeof MockNextButton> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockNextButton>;
 
 export const Next: Story = {
   args: {
@@ -82,5 +95,16 @@ export const StartWithCustomClass: Story = {
   args: {
     isLast: true,
     className: 'mt-8',
+  },
+};
+
+export const Desktop: Story = {
+  args: {
+    isLast: false,
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };

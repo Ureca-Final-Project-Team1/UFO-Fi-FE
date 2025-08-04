@@ -1,91 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Mock ReceiptContent for Storybook
-const MockReceiptContent = ({
-  purchaseDetail = {
-    purchaseHistoryId: 'PUR-2024-001',
-    carrier: 'SKT',
-    totalGB: 10,
-    createdAt: '2024-01-15T10:30:00Z',
-    totalZet: 1500,
-  },
-}: {
-  purchaseDetail?: {
-    purchaseHistoryId: string;
-    carrier: string;
-    totalGB: number;
-    createdAt: string;
-    totalZet: number;
-  };
-}) => {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR');
-  };
+import { PurchaseDetail } from '@/backend/services/mypage/purchaseDetail';
 
-  const getCarrierIcon = (carrier: string) => {
-    switch (carrier) {
-      case 'SKT':
-        return '📱';
-      case 'KT':
-        return '📱';
-      case 'LG U+':
-        return '📱';
-      default:
-        return '📱';
-    }
-  };
+import { ReceiptContent } from './ReceiptContent';
 
-  return (
-    <div className="w-full flex items-center justify-center mt-8 relative">
-      <div className="w-[350px] h-[350px] bg-white border-2 border-gray-300 rounded-lg shadow-lg"></div>
-
-      {/* 영수증 내용 */}
-      <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-64 text-center">
-        {/* UFO-Fi 타이틀 */}
-        <div className="mb-10">
-          <div className="text-3xl">🛸</div>
-          <div className="text-3xl font-bold text-gray-800">UFO-Fi</div>
-        </div>
-        <hr className="border-dotted border-t-2 border-gray-400 mb-3" />
-        {/* 주문번호 */}
-        <div className="flex justify-between border-b-2 border-dotted border-gray-400 pb-1 mb-3">
-          <span className="text-sm text-gray-600">주문번호</span>
-          <span className="text-sm font-medium text-black">{purchaseDetail.purchaseHistoryId}</span>
-        </div>
-
-        {/* 상품 정보 */}
-        <div className="flex justify-between border-b-2 border-dotted border-gray-400 pb-1 mb-3">
-          <span className="text-sm text-gray-600">상품 정보</span>
-          <span className="text-sm font-medium text-black flex items-center gap-1">
-            {getCarrierIcon(purchaseDetail.carrier)}
-            {purchaseDetail.totalGB}GB
-          </span>
-        </div>
-
-        {/* 구매 일자 */}
-        <div className="flex justify-between border-b-2 border-dotted border-gray-400 pb-1 mb-3">
-          <span className="text-sm text-gray-600">구매 일자</span>
-          <span className="text-sm font-medium text-black">
-            {formatDate(purchaseDetail.createdAt)}
-          </span>
-        </div>
-
-        {/* 총 ZET */}
-        <div className="flex justify-between border-b-2 border-dotted border-gray-400 pb-1 mb-8">
-          <span className="text-sm text-gray-600">구입 가격</span>
-          <span className="text-sm font-medium text-black">{purchaseDetail.totalZet} ZET</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const meta: Meta<typeof MockReceiptContent> = {
+const meta: Meta<typeof ReceiptContent> = {
   title: 'Mypage/TradeDetail/ReceiptContent',
-  component: MockReceiptContent,
+  component: ReceiptContent,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -97,7 +23,7 @@ const meta: Meta<typeof MockReceiptContent> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ReceiptContent>;
 
 export const Default: Story = {
   args: {
@@ -107,8 +33,18 @@ export const Default: Story = {
       totalGB: 10,
       createdAt: '2024-01-15T10:30:00Z',
       totalZet: 1500,
-    },
+    } as PurchaseDetail,
   },
+  render: (args) => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">영수증 내용</h2>
+          <ReceiptContent {...args} />
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const KT: Story = {
@@ -119,8 +55,18 @@ export const KT: Story = {
       totalGB: 5,
       createdAt: '2024-01-16T14:20:00Z',
       totalZet: 800,
-    },
+    } as PurchaseDetail,
   },
+  render: (args) => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">KT 영수증</h2>
+          <ReceiptContent {...args} />
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const LGU: Story = {
@@ -131,8 +77,18 @@ export const LGU: Story = {
       totalGB: 20,
       createdAt: '2024-01-17T09:15:00Z',
       totalZet: 2500,
-    },
+    } as PurchaseDetail,
   },
+  render: (args) => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">LG U+ 영수증</h2>
+          <ReceiptContent {...args} />
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const LargeAmount: Story = {
@@ -143,6 +99,43 @@ export const LargeAmount: Story = {
       totalGB: 100,
       createdAt: '2024-01-18T16:45:00Z',
       totalZet: 10000,
+    } as PurchaseDetail,
+  },
+  render: (args) => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">대용량 영수증</h2>
+          <ReceiptContent {...args} />
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const Desktop: Story = {
+  args: {
+    purchaseDetail: {
+      purchaseHistoryId: 'PUR-2024-001',
+      carrier: 'SKT',
+      totalGB: 10,
+      createdAt: '2024-01-15T10:30:00Z',
+      totalZet: 1500,
+    } as PurchaseDetail,
+  },
+  render: (args) => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">데스크톱 영수증 내용</h2>
+          <ReceiptContent {...args} />
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
     },
   },
 };

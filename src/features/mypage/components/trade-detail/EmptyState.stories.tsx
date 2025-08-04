@@ -1,55 +1,78 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Mock EmptyState for Storybook
-const MockEmptyState = () => {
-  return (
-    <div className="overflow-y-hidden w-full min-h-screen flex flex-col items-center justify-center">
-      <div className="relative w-full flex items-center py-4">
-        <button className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center size-8 rounded-full hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors">
-          <span className="text-white text-2xl">←</span>
-        </button>
-        <h1 className="text-xl font-bold text-white w-full text-center">주문 상세</h1>
-      </div>
-      <div className="flex items-center justify-center mt-8">
-        <div className="text-gray-500 text-center">
-          <div className="text-4xl mb-4">📭</div>
-          <div className="text-lg">구매 내역을 찾을 수 없습니다.</div>
-        </div>
-      </div>
-    </div>
-  );
-};
+import { EmptyState } from './EmptyState';
 
-const meta: Meta<typeof MockEmptyState> = {
+const meta: Meta<typeof EmptyState> = {
   title: 'Mypage/TradeDetail/EmptyState',
-  component: MockEmptyState,
+  component: EmptyState,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EmptyState>;
 
 export const Default: Story = {
-  args: {},
+  render: () => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">빈 상태</h2>
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <div className="text-gray-500 text-4xl mb-4">📭</div>
+              <div className="text-gray-500 text-lg">구매 내역을 찾을 수 없습니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const WithBackground: Story = {
-  args: {},
+export const WithCustomMessage: Story = {
+  render: () => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">거래 내역 없음</h2>
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <div className="text-gray-500 text-4xl mb-4">📋</div>
+              <div className="text-gray-500 text-lg">거래 내역이 없습니다.</div>
+              <div className="text-gray-400 text-sm mt-2">첫 거래를 시작해보세요!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const Desktop: Story = {
+  render: () => (
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">데스크톱 빈 상태</h2>
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <div className="text-gray-500 text-4xl mb-4">📭</div>
+              <div className="text-gray-500 text-lg">구매 내역을 찾을 수 없습니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
   parameters: {
-    docs: {
-      description: {
-        story: '배경이 있는 환경에서 빈 상태가 어떻게 보이는지 확인할 수 있습니다.',
-      },
+    viewport: {
+      defaultViewport: 'desktop',
     },
   },
-  decorators: [
-    (Story) => (
-      <div className="bg-gray-900 p-4 min-h-screen">
-        <Story />
-      </div>
-    ),
-  ],
 };
