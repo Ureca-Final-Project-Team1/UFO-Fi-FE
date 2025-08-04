@@ -11,10 +11,18 @@ import {
 } from '@/backend/types/report';
 
 export const reportAPI = {
-  // 정지된 사용자 목록 조회
-  getReportedUsers: async (): Promise<GetReportedUsersResponse> => {
-    const res = await apiRequest.get<GetReportedUsersResponse>('/v1/users/reported');
-    return res.data;
+  // 정지된 사용자 목록 조회 (페이지네이션)
+  async getReportedUsers(params?: {
+    page?: number;
+    size?: number;
+  }): Promise<GetReportedUsersResponse> {
+    const response = await apiRequest.get<GetReportedUsersResponse>('/v1/users/reported', {
+      params: {
+        page: params?.page || 0,
+        size: params?.size || 10,
+      },
+    });
+    return response.data;
   },
 
   // 신고된 게시물 목록 조회
