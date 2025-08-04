@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import LetterTabContent from '@/features/signal/components/LetterTabContent';
 import SignalTabContent from '@/features/signal/components/SignalTabContent';
-import { Title, Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared';
+import { Tabs, TabsList, TabsTrigger, TabsContent, TitleWithoutRouter } from '@/shared';
 
 type TabType = 'orbit' | 'letters';
 
@@ -14,7 +14,7 @@ export default function SignalPage() {
   return (
     <main className="flex flex-col">
       <header>
-        <Title title="전파 거리" />
+        <TitleWithoutRouter title="전파 거리" />
       </header>
 
       <section aria-labelledby="signal-tabs">

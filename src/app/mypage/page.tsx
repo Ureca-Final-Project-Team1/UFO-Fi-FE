@@ -12,7 +12,7 @@ import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Honorific } from '@/features/mypage/types/Achievement';
-import { Button, Icon, IconType, Loading, Title } from '@/shared';
+import { Button, Icon, IconType, Loading, TitleWithoutRouter } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
 
 export default function MyPage() {
@@ -145,7 +145,7 @@ export default function MyPage() {
 
   return (
     <div>
-      <Title title="마이페이지" />
+      <TitleWithoutRouter title="마이페이지" />
       <div className="pb-6">
         {/* Signal Card */}
         <SignalCard
