@@ -164,7 +164,8 @@ export default function MyPage() {
           <MenuIconButton icon="Bell" label="알림 설정" onClick={navigateToNotification} />
         </div>
         <hr className="my-6 border-white/20" />
-        <div>
+        <div className="flex flex-col justify-start">
+          <MenuSection title="신호 따라가기" />
           <FollowCarousel />
         </div>
         <hr className="my-6 border-white/20" />

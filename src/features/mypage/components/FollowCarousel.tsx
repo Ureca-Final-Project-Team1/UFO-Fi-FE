@@ -82,7 +82,7 @@ export function FollowCarousel() {
 
   if (!neighbors.length) {
     return (
-      <div className="w-full h-[180px] flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20">
+      <div className="w-full h-[160px] flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20">
         <p className="body-16-regular text-white/70">팔로워 추천 결과가 없습니다.</p>
       </div>
     );
@@ -91,7 +91,7 @@ export function FollowCarousel() {
   return (
     <EmblaCarousel
       options={{ align: 'start', loop: false, dragFree: false, containScroll: 'trimSnaps' }}
-      className="flex gap-4 px-2"
+      className="flex gap-4"
       isDesktop={isDesktop}
     >
       {neighbors.map((n) => {
@@ -101,20 +101,20 @@ export function FollowCarousel() {
         return (
           <div
             key={n.id}
-            className="min-w-[130px] flex flex-col gap-2 justify-between items-center rounded-xl p-3 shadow-md bg-white/10 backdrop-blur-md border border-white/20"
+            className="min-w-[120px] flex flex-col gap-2 justify-between items-center rounded-xl p-3 shadow-md bg-white/10 backdrop-blur-md border border-white/20"
           >
             <Image
               src={n.profile}
               alt={`${n.nickname}-profile`}
-              width={80}
-              height={80}
+              width={75}
+              height={75}
               className="rounded-full object-cover border-2 border-white"
             />
             <p className="caption-14-bold text-center text-white drop-shadow">{n.nickname}</p>
             <Button
               variant={isFollowing ? 'following-button' : 'follow-button'}
               onClick={() => handleFollowToggle(n.id)}
-              className={`w-full h-7 rounded-md caption-14-bold bg-gradient-to-r ${
+              className={`w-full h-6 rounded-md caption-12-bold bg-gradient-to-r ${
                 isFollowing
                   ? 'from-gray-400 to-gray-500 text-white'
                   : 'from-purple-500 to-indigo-500 text-white'
@@ -122,7 +122,7 @@ export function FollowCarousel() {
               disabled={isButtonLoading}
             >
               {isButtonLoading ? (
-                <div className="size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                <div className="size-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
               ) : isFollowing ? (
                 '언팔로우'
               ) : (
