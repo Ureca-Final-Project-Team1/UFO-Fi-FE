@@ -8,7 +8,7 @@ import { IMAGE_PATHS } from '@/constants';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useProfile } from '@/features/profile/hooks/useProfile';
 import { ReportedModal, Title } from '@/shared';
-import { formatTimeAgo, getMobileDataTypeDisplay } from '@/shared/utils';
+import { formatPrice, formatTimeAgo, getMobileDataTypeDisplay } from '@/shared/utils';
 
 interface DataListViewProps {
   userId: number;
@@ -70,7 +70,7 @@ export function DataListView({ userId }: DataListViewProps) {
                     capacity={String(`${post.sellMobileDataAmountGB}GB`)}
                     sellerNickname={profile.nickname}
                     sellerProfileUrl={profile.profileImageUrl ?? IMAGE_PATHS.AVATAR}
-                    price={`${post.totalZet ?? 0}ZET`}
+                    price={`${formatPrice(String(post.totalZet)) ?? 0}ZET`}
                     timeLeft={formatTimeAgo(post.createdAt)}
                     sellerId={profile.userId}
                     carrier={carrier as Carrier}
