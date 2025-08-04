@@ -259,11 +259,11 @@
     box-sizing: border-box;
   }
 
-  /* 전역 스크롤 방지 */
-  html,
-  body,
-  #__next,
-  [data-nextjs-scroll-focus-boundary] {
+  /* 전역 스크롤 방지 - Storybook에서는 제외 */
+  html:not([data-storybook]),
+  body:not([data-storybook]),
+  #__next:not([data-storybook]),
+  [data-nextjs-scroll-focus-boundary]:not([data-storybook]) {
     height: 100% !important;
     overflow: hidden !important;
     position: fixed !important;
@@ -296,6 +296,20 @@
     touch-action: none; /* iOS 터치 스크롤 방지 */
   }
 
+  /* Storybook에서만 스크롤 허용 */
+  [data-storybook] body {
+    overflow: auto !important;
+    position: static !important;
+    height: auto !important;
+    width: auto !important;
+    top: auto !important;
+    left: auto !important;
+    margin: auto !important;
+    padding: auto !important;
+    max-height: none !important;
+    min-height: auto !important;
+  }
+
   /* 아이폰 Safari 전용 추가 스크롤 방지 */
   @supports (-webkit-touch-callout: none) {
     /* iOS Safari에서만 적용 */
@@ -313,16 +327,29 @@
     }
   }
 
-  /* 모든 스크롤 방지 */
-  html,
-  body {
+  /* 모든 스크롤 방지 - Storybook에서는 제외 */
+  html:not([data-storybook]),
+  body:not([data-storybook]) {
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
+  html:not([data-storybook])::-webkit-scrollbar,
+  body:not([data-storybook])::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Storybook에서만 스크롤바 표시 */
+  [data-storybook] html,
+  [data-storybook] body {
+    -webkit-overflow-scrolling: auto;
+    -ms-overflow-style: auto;
+    scrollbar-width: auto;
+  }
+
+  [data-storybook] html::-webkit-scrollbar,
+  [data-storybook] body::-webkit-scrollbar {
+    display: block;
   }
 }
