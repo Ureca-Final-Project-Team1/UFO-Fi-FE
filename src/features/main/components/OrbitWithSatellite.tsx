@@ -6,7 +6,8 @@ import { toast } from 'sonner';
 
 import { nextApiRequest } from '@/backend/client/axios';
 import { LetterDisplay } from '@/backend/types/letters';
-import { Modal, SpeechBubble } from '@/shared';
+import { IMAGE_PATHS } from '@/constants';
+import { SpeechBubble } from '@/shared';
 
 const ORBIT_BASE_SIZE = 600;
 const SATELLITE_WIDTH = 30;
@@ -23,11 +24,6 @@ const orbitConfigs = [
 
 export default function OrbitWithSatellite() {
   const [letters, setLetters] = useState<LetterDisplay[]>([]);
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const handleOpenMessage = (index: number) => {
-    setOpenIndex(index);
-  };
 
   useEffect(() => {
     async function fetchLetters() {
@@ -70,7 +66,7 @@ export default function OrbitWithSatellite() {
           return (
             <div key={i}>
               <div
-                className={`absolute rounded-full border-2 border-dashed ${speed} hover:cursor-pointer`}
+                className={`absolute rounded-full border-2 border-dashed ${speed}`}
                 style={{
                   width: orbitSize,
                   height: orbitSize,
@@ -79,7 +75,6 @@ export default function OrbitWithSatellite() {
                   borderColor: `${color}50`,
                   zIndex: 5 - i,
                 }}
-                onClick={() => handleOpenMessage(i)}
               >
                 <div
                   className="absolute"
@@ -97,14 +92,6 @@ export default function OrbitWithSatellite() {
                   />
                 </div>
               </div>
-              <Modal
-                headerAlign="left"
-                title="은하계 메세지"
-                description={letters.find(({ step }) => step === i + 1)?.content}
-                isOpen={openIndex === i}
-                onClose={() => setOpenIndex(null)}
-                hasCloseButton={false}
-              />
             </div>
           );
         }
@@ -118,7 +105,7 @@ export default function OrbitWithSatellite() {
         </div>
         {/* 외계인 */}
         <Image
-          src="/images/main/alien.svg"
+          src={IMAGE_PATHS.ALIEN}
           alt="Alien"
           width={100}
           height={100}
@@ -131,7 +118,7 @@ export default function OrbitWithSatellite() {
 
         {/* 행성 */}
         <Image
-          src="/images/main/myplanet.svg"
+          src={IMAGE_PATHS.MY_PLANET}
           alt="MyPlanet"
           width={200}
           height={200}

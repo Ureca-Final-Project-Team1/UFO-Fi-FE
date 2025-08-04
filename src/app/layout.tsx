@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.className} antialiased min-h-screen bg-transparent`}
+        className={`${pretendard.className} antialiased bg-transparent`}
         style={
           {
             '--font-pyeongchangpeace-bold': 'PyeongChangPeace-Bold',
