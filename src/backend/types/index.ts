@@ -15,3 +15,4 @@ export type * from './payment';
 export type * from './profile';
 export type * from './userInfo';
 export type * from './statistics';
+export type * from './zetRecovery';

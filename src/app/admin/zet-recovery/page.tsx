@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import { zetRecoveryAPI } from '@/backend';
+import type { ZetRecoveryRequest } from '@/backend/types/zetRecovery';
 import { Header, Sidebar } from '@/shared';
 
 export default function ZetRecoveryPage() {
   const [userId, setUserId] = useState('');
   const [zetAmount, setZetAmount] = useState('');
+  const [orderId, setOrderId] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async () => {
@@ -24,25 +27,45 @@ export default function ZetRecoveryPage() {
       return;
     }
 
+    if (!orderId.trim()) {
+      toast.error('주문 ID를 입력해주세요.');
+      return;
+    }
+
     setIsProcessing(true);
 
-    // 더미 처리 (실제로는 API 호출)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // 더미 딜레이
-      toast.success(
-        `사용자 ID ${userIdNum}에게 ${zetAmountNum.toLocaleString()} ZET 복구가 완료되었습니다.`,
-      );
-      setUserId('');
-      setZetAmount('');
-    } catch {
-      toast.error('복구 처리 중 오류가 발생했습니다.');
+      const requestData: ZetRecoveryRequest = {
+        userId: userIdNum,
+        recoveryZet: zetAmountNum,
+        orderId: orderId.trim(),
+      };
+
+      const response = await zetRecoveryAPI.recoverZet(requestData);
+
+      if (response.statusCode === 200) {
+        toast.success(
+          `사용자 ID ${userIdNum}에게 ${zetAmountNum.toLocaleString()} ZET 복구가 완료되었습니다.`,
+        );
+        // 폼 초기화
+        setUserId('');
+        setZetAmount('');
+        setOrderId('');
+      } else {
+        toast.error(response.message || 'ZET 복구에 실패했습니다.');
+      }
+    } catch (error: unknown) {
+      console.error('ZET 복구 오류:', error);
+      const errorMessage =
+        error instanceof Error ? error.message : 'ZET 복구 처리 중 오류가 발생했습니다.';
+      toast.error(errorMessage);
     } finally {
       setIsProcessing(false);
     }
   };
 
   const isFormValid =
-    userId && zetAmount && !isNaN(parseInt(userId)) && !isNaN(parseInt(zetAmount));
+    userId && zetAmount && orderId && !isNaN(parseInt(userId)) && !isNaN(parseInt(zetAmount));
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -71,6 +94,7 @@ export default function ZetRecoveryPage() {
                         onChange={(e) => setUserId(e.target.value)}
                         placeholder="사용자 ID를 입력하세요"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        disabled={isProcessing}
                       />
                     </div>
 
@@ -85,6 +109,22 @@ export default function ZetRecoveryPage() {
                         onChange={(e) => setZetAmount(e.target.value)}
                         placeholder="복구할 ZET 금액을 입력하세요"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        disabled={isProcessing}
+                      />
+                    </div>
+
+                    {/* 주문 ID 입력 */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        주문 ID
+                      </label>
+                      <input
+                        type="text"
+                        value={orderId}
+                        onChange={(e) => setOrderId(e.target.value)}
+                        placeholder="주문 ID를 입력하세요"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        disabled={isProcessing}
                       />
                     </div>
 
@@ -104,6 +144,17 @@ export default function ZetRecoveryPage() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* 사용 안내 */}
+              <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h3 className="text-sm font-medium text-blue-900 mb-2">사용 안내</h3>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  <li>• 관리자 권한으로 사용자의 ZET를 복구합니다.</li>
+                  <li>• 모든 필드는 필수 입력 항목입니다.</li>
+                  <li>• 주문 ID는 결제 시스템과 연동을 위해 필요합니다.</li>
+                  <li>• 복구 후에는 해당 사용자에게 알림이 전송됩니다.</li>
+                </ul>
               </div>
             </div>
           </div>

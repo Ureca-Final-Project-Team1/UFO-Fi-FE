@@ -65,6 +65,7 @@ export type LucideIconType =
   | 'Link'
   | 'Share'
   | 'Gift'
+  | 'History'
   | 'MoreHorizontal'
   | 'Check'
   | 'LogOut'
