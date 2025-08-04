@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -20,6 +21,7 @@ type Neighbor = {
 };
 
 export function FollowCarousel() {
+  const router = useRouter();
   const { isDesktop } = useViewportStore();
   const { data: myInfo } = useMyInfo();
   const isLoggedIn = !!myInfo;
@@ -33,7 +35,7 @@ export function FollowCarousel() {
     const fetchRecommendations = async () => {
       try {
         setLoading(true);
-        // await recommendAPI.updateQdrantCollection();
+        await recommendAPI.updateQdrantCollection();
         const data = await recommendAPI.findRecommendUsers();
         setNeighbors(data ?? []);
 
@@ -103,14 +105,20 @@ export function FollowCarousel() {
             key={n.id}
             className="min-w-[120px] flex flex-col gap-2 justify-between items-center rounded-xl p-3 shadow-md bg-white/10 backdrop-blur-md border border-white/20"
           >
-            <Image
-              src={n.profile}
-              alt={`${n.nickname}-profile`}
-              width={75}
-              height={75}
-              className="rounded-full object-cover border-2 border-white"
-            />
-            <p className="caption-14-bold text-center text-white drop-shadow">{n.nickname}</p>
+            <div
+              className="flex flex-col items-center gap-1 cursor-pointer"
+              onClick={() => router.push(`/profile/${n.id}`)}
+            >
+              <Image
+                src={n.profile}
+                alt={`${n.nickname}-profile`}
+                width={75}
+                height={75}
+                className="rounded-full object-cover border-2 border-white"
+              />
+              <p className="caption-14-bold text-center text-white drop-shadow">{n.nickname}</p>
+            </div>
+
             <Button
               variant={isFollowing ? 'following-button' : 'follow-button'}
               onClick={() => handleFollowToggle(n.id)}
