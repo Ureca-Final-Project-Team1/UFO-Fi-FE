@@ -33,6 +33,9 @@ export const useSellData = () => {
       setValue([5]);
       setPricePerGB(120);
     },
+    onError: (error) => {
+      toast.error(error.message || '판매 등록에 실패했습니다.');
+    },
   });
 
   const handleSubmit = async () => {
