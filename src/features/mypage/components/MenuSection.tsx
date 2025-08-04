@@ -7,7 +7,7 @@ interface MenuItemProps {
 
 interface MenuSectionProps {
   title: string;
-  items: MenuItemProps[];
+  items?: MenuItemProps[];
 }
 
 export default function MenuSection({ title, items }: MenuSectionProps) {
@@ -15,7 +15,7 @@ export default function MenuSection({ title, items }: MenuSectionProps) {
     <section>
       <h3 className="body-18-bold text-white mb-4">{title}</h3>
       <ul className="space-y-1 caption-16-regular">
-        {items.map((item) => (
+        {items?.map((item) => (
           <li
             key={item.label}
             className="hover:text-white cursor-pointer flex items-center justify-between group"

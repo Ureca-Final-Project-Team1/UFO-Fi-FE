@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
-import { useLetters } from '@/hooks/useLetters';
+import { useLetters } from '@/shared/hooks/useLetters';
 
 interface Planet {
   id: number;

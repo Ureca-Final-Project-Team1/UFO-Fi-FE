@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 
+import { IMAGE_PATHS } from '@/constants';
 import FollowTabContent from '@/features/mypage/follow/components/FollowTabContent';
 import { useFollowActions } from '@/features/mypage/follow/hooks/useFollowActions';
 import { useFollowers } from '@/features/mypage/follow/hooks/useFollowers';
@@ -19,7 +20,7 @@ export default function Page() {
 
     return followersData.followersReadRes.map((user) => ({
       id: `#${user.id}`,
-      profileImage: user.profilePhotoUrl || '/images/avatar.png',
+      profileImage: user.profilePhotoUrl || IMAGE_PATHS.AVATAR,
       isFollowing: false,
       username: user.username,
       nickname: user.nickname,
@@ -31,7 +32,7 @@ export default function Page() {
 
     return followingData.followingsReadRes.map((user) => ({
       id: `#${user.id}`,
-      profileImage: user.profilePhotoUrl || '/images/avatar.png',
+      profileImage: user.profilePhotoUrl || IMAGE_PATHS.AVATAR,
       isFollowing: true,
       username: user.username,
       nickname: user.nickname,

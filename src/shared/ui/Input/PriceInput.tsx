@@ -3,8 +3,8 @@
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
-import { formatPrice } from '@/utils/formatPrice';
-import { getOnlyNumbers } from '@/utils/getOnlyNumbers';
+import { formatPrice } from '@/shared/utils/formatPrice';
+import { getOnlyNumbers } from '@/shared/utils/getOnlyNumbers';
 
 import { Input } from './Input';
 import { CustomInputProps } from './Input.types';

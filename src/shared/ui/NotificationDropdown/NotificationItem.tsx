@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { DotBadge, Icon } from '@/shared';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
+import { formatTimeAgo } from '@/shared/utils/formatTimeAgo';
 
 import { NotificationType } from './NotificationDropdown.types';
 

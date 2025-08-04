@@ -5,6 +5,7 @@ export { signupAPI } from './services/auth/signup';
 export { plansAPI } from './services/auth/plans';
 export { sellAPI } from './services/sell/posts';
 export { myInfoAPI } from './services/mypage/myInfo';
+export { userPlanAPI } from './services/mypage/userPlan';
 export { fcmAPI } from './services/fcm/token';
 export { exchangeAPI } from './services/exchange/posts';
 export { followersAPI } from './services/follow/followers';

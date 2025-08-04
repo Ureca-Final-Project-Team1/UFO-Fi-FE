@@ -1,4 +1,4 @@
-import { Achievement } from '@/types/Achievement';
+import { Achievement } from '@/features/mypage/types/Achievement';
 
 import { SuccessApiResponse } from './api';
 import { Carrier } from './carrier';
@@ -11,6 +11,7 @@ export interface TradePost {
   sellMobileDataAmountGB: number;
   title: string;
   createdAt: string;
+  totalZet: number;
 }
 
 export interface ProfileUser {

@@ -1,14 +1,16 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI } from '@/backend';
+import { sellAPI, userPlanAPI } from '@/backend';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useEditContext } from '@/features/exchange/components/EditProvider';
+import { useMyInfo } from '@/features/mypage/hooks';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
@@ -18,12 +20,18 @@ import { useViewportStore } from '@/stores/useViewportStore';
 export default function SellEditPage() {
   const router = useRouter();
   const { postData } = useEditContext();
+  const { data: myInfo } = useMyInfo();
   const isMobile = useViewportStore((state) => state.isMobile);
 
   const [value, setValue] = useState<number[]>([1]);
   const [titleInput, setTitleInput] = useState('');
   const [pricePerGB, setPricePerGB] = useState(90);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { data: userPlan } = useQuery({
+    queryKey: ['userPlan'],
+    queryFn: () => userPlanAPI.get(),
+  });
 
   // postData로 초기값 설정
   useEffect(() => {
@@ -36,7 +44,7 @@ export default function SellEditPage() {
 
   if (!postData) return null;
 
-  const maxCapacity = 10;
+  const maxCapacity = myInfo?.sellableDataAmount || 0;
   const sellCapacity = value[0];
   const totalPrice = sellCapacity * pricePerGB;
 
@@ -78,7 +86,7 @@ export default function SellEditPage() {
       <Title title="데이터 판매 수정" iconVariant="back" />
 
       {/* 메인 컨텐츠 영역 */}
-      <div className="flex-1 space-y-6 py-4 pb-48 sm:pb-24">
+      <div className="flex-1 space-y-6 py-4">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -90,7 +98,7 @@ export default function SellEditPage() {
           <div className="flex items-center space-x-2 w-full">
             <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1 flex-shrink-0">
               <Icon
-                src={ICON_PATHS[postData.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
+                src={ICON_PATHS[userPlan?.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
               />
             </div>
 
@@ -149,36 +157,36 @@ export default function SellEditPage() {
           isValidPrice={isValidPrice}
         />
 
-        {/* 수정 버튼 */}
-        <div className="pt-4 flex justify-center sm:justify-end px-4">
+        <div className="pt-4 relative">
+          {/* 수정 버튼 */}
           <Button
             size={isMobile ? 'default' : 'lg'}
             onClick={handleSubmit}
             variant="exploration-button"
             disabled={!isValidTitle || !isValidPrice || !isValidCapacity || isSubmitting}
-            className="w-full sm:w-auto px-6 py-3 min-h-[48px]"
+            className="w-full px-6 py-3 min-h-[48px] relative z-10"
           >
             {isSubmitting ? '수정 중...' : '수정완료'}
           </Button>
+
+          {/* 캐릭터 */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              left: isMobile ? '0px' : '30px',
+              bottom: isMobile ? '-20px' : '-15px',
+            }}
+          >
+            <Image
+              src={IMAGE_PATHS.AL_SELL}
+              alt="판매 우주인"
+              width={isMobile ? 160 : 220}
+              height={isMobile ? 160 : 220}
+              priority
+            />
+          </div>
         </div>
       </div>
-
-      {/* 하단 캐릭터 */}
-      <div className="absolute bottom-0 left-0 pointer-events-none">
-        <div className="relative">
-          <Image
-            src={IMAGE_PATHS.AL_SELL}
-            alt="판매 우주인"
-            width={isMobile ? 180 : 250}
-            height={isMobile ? 180 : 250}
-            priority
-            className="opacity-80 sm:opacity-100"
-          />
-        </div>
-      </div>
-
-      {/* 작은 화면에서 추가 스크롤 여백 */}
-      <div className="h-4 sm:hidden" />
     </div>
   );
 }

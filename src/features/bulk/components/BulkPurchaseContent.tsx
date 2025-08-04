@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 
 import { bulkPurchaseAPI } from '@/backend';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
-import { Button, Loading, Title } from '@/shared';
+import { Button, Loading, TitleWithoutRouter } from '@/shared';
+import { formatTimeAgo } from '@/shared/utils';
 import { usePostIdsStore } from '@/stores/useBulkStore';
-import { formatTimeAgo } from '@/utils';
 
 import { BulkPurchaseItem, FailureBulkPurchaseItem } from '../types/bulkResult.types';
 
@@ -64,7 +64,7 @@ export function BulkPurchaseContent() {
 
   return (
     <div className="w-full h-full flex flex-col gap-6">
-      <Title title="일괄구매 결과" />
+      <TitleWithoutRouter title="일괄구매 결과" />
       <section>
         <p className="body-16-bold mb-3">구매한 데이터 ({postCounts[0] || 0}건)</p>
         {successBulkPurchase.length === 0 ? (
@@ -120,7 +120,13 @@ export function BulkPurchaseContent() {
         )}
       </section>
 
-      <Button onClick={handleClick} size="full-width" className="body-16-medium h-14 text-white">
+      <Button
+        type="button"
+        size="full-width"
+        onClick={handleClick}
+        variant="exploration-button"
+        className="px-8 py-3 min-w-[200px]"
+      >
         돌아가기
       </Button>
     </div>

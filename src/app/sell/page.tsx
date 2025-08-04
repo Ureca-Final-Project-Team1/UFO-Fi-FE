@@ -1,12 +1,14 @@
-// src/app/sell/page.tsx
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 
+import { userPlanAPI } from '@/backend';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useSellData } from '@/features/hooks/useSellData';
+import { useMyInfo } from '@/features/mypage/hooks';
 import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlider';
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
@@ -14,13 +16,13 @@ import { Icon, Input, Title, Button, PriceInput } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function SellPage() {
+  const { data: myInfo } = useMyInfo();
   const {
     value,
     setValue,
     titleInput,
     setTitleInput,
     pricePerGB,
-    maxCapacity,
     sellCapacity,
     totalPrice,
     handleSubmit,
@@ -31,6 +33,12 @@ export default function SellPage() {
     isSubmitting,
   } = useSellData();
 
+  const { data: userPlan } = useQuery({
+    queryKey: ['userPlan'],
+    queryFn: () => userPlanAPI.get(),
+  });
+
+  const maxCapacity = myInfo?.sellableDataAmount || 0;
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
   const isMobile = useViewportStore((state) => state.isMobile);
 
@@ -39,7 +47,7 @@ export default function SellPage() {
       <Title title="데이터 판매 등록" />
 
       {/* 메인 컨텐츠 영역 */}
-      <div className="flex-1 space-y-6 py-4 pb-48 sm:pb-24">
+      <div className="flex-1 space-y-6 py-4">
         {/* 거래명세서 타이틀 */}
         <div className="flex items-center space-x-3">
           <Icon name="FilePenLine" color="white" />
@@ -50,7 +58,9 @@ export default function SellPage() {
         <div className="rounded-lg p-3 space-y-2">
           <div className="flex items-center space-x-2 w-full">
             <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] inline-flex justify-center items-center gap-1 flex-shrink-0">
-              <Icon src={ICON_PATHS['LGU']} />
+              <Icon
+                src={ICON_PATHS[userPlan?.carrier as keyof typeof ICON_PATHS] || ICON_PATHS['LGU']}
+              />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -108,36 +118,35 @@ export default function SellPage() {
           isValidPrice={isValidPrice}
         />
 
-        {/* 등록 버튼 */}
-        <div className="pt-4 flex justify-center sm:justify-end px-4">
+        {/* 등록 버튼과 캐릭터 */}
+        <div className="pt-4 relative">
           <Button
             size={isMobile ? 'default' : 'lg'}
             onClick={handleSubmit}
             variant="exploration-button"
             disabled={!isFormValid || isSubmitting}
-            className="w-full px-6 py-3"
+            className="w-full px-6 py-3 relative z-10"
           >
             {isSubmitting ? '등록 중...' : '등록하기'}
           </Button>
+
+          <div
+            className="absolute h-full pointer-events-none"
+            style={{
+              left: isMobile ? '-20px' : '-40px',
+              bottom: isMobile ? '40px' : '10px',
+            }}
+          >
+            <Image
+              src={IMAGE_PATHS.AL_SELL}
+              alt="판매 우주인"
+              width={isMobile ? 200 : 300}
+              height={isMobile ? 200 : 300}
+              priority
+            />
+          </div>
         </div>
       </div>
-
-      {/* 하단 캐릭터  */}
-      <div className="absolute bottom-0 left-0 pointer-events-none">
-        <div className="relative">
-          <Image
-            src={IMAGE_PATHS.AL_SELL}
-            alt="판매 우주인"
-            width={isMobile ? 180 : 250}
-            height={isMobile ? 180 : 250}
-            priority
-            className="opacity-80 sm:opacity-100"
-          />
-        </div>
-      </div>
-
-      {/* 작은 화면에서 추가 스크롤 여백 */}
-      <div className="h-4 sm:hidden" />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { createPageMetadata } from '@/utils/metadata';
+import { createPageMetadata } from '@/shared/utils/metadata';
 
 export const metadata = createPageMetadata({
   title: '로그인',

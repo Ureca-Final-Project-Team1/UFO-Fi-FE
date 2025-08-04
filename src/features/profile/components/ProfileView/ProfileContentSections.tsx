@@ -13,7 +13,7 @@ import { nextApiRequest } from '@/backend/client/axios';
 import type { ProfileUser, UserStats } from '@/backend/types/profile';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { getMobileDataTypeDisplay } from '@/shared/utils/mobileData';
 
 interface ProfileContentSectionsProps {
   profile: ProfileUser;

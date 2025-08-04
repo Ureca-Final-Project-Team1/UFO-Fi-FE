@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getRangeLabel } from '@/utils/sliderUtils';
+import { getRangeLabel } from '@/shared/utils/sliderUtils';
 
 import BaseSlider from './BaseSlider';
 import type { DataSliderProps } from './Slider.types';

@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { plansAPI, editProfileAPI } from '@/backend';
 import type { Carrier } from '@/backend/types/carrier';
 import type { Plan } from '@/backend/types/plan';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { getMobileDataTypeDisplay } from '@/shared/utils/mobileData';
 
 export function useEditProfile() {
   const [nickname, setNickname] = useState('');

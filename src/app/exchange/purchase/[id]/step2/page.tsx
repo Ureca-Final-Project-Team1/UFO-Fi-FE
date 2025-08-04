@@ -7,8 +7,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useUserRole } from '@/features/signup/hooks/useUserRole';
 import { Button, Loading, Title } from '@/shared';
+import { analytics } from '@/shared/utils/analytics';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-import { analytics } from '@/utils/analytics';
 
 function Step2Content() {
   const router = useRouter();
