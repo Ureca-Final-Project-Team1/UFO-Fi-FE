@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { logoutAPI, ApiError } from '@/backend';
 import { achievementsAPI } from '@/backend/services/mypage/achievement';
 import { LogoutModal } from '@/features/mypage/components';
+import { FollowCarousel } from '@/features/mypage/components/FollowCarousel';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
@@ -161,6 +162,10 @@ export default function MyPage() {
           <MenuIconButton icon="Heart" label="팔로우 목록" onClick={navigateToFollow} />
           <MenuIconButton icon="Star" label="업적 목록" onClick={navigateToAchievement} />
           <MenuIconButton icon="Bell" label="알림 설정" onClick={navigateToNotification} />
+        </div>
+        <hr className="my-6 border-white/20" />
+        <div className="">
+          <FollowCarousel />
         </div>
         <hr className="my-6 border-white/20" />
         {/* 거래 내역 + 고객 지원 */}
