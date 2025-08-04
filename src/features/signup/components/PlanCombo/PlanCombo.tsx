@@ -17,25 +17,16 @@ import { planComboItemClass } from './planComboVariants';
 
 export function PlanCombo({ planNames = [], onSelect, value, disabled = false }: PlanComboProps) {
   const [input, setInput] = useState('');
-  const [selected, setSelected] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (value === '') {
-      setInput('');
-      setSelected('');
-    } else {
-      setInput(value);
-      setSelected(value);
-    }
+    setInput(value || '');
   }, [value]);
 
-  const handlePlanSelect = (value: string) => {
-    const newValue = value === selected ? '' : value;
-    setSelected(newValue);
-    setInput(newValue);
-    setIsOpen(false);
+  const handlePlanSelect = (selectedValue: string) => {
+    const newValue = selectedValue === value ? '' : selectedValue;
     onSelect?.(newValue);
+    setIsOpen(false);
   };
 
   return (
@@ -64,7 +55,7 @@ export function PlanCombo({ planNames = [], onSelect, value, disabled = false }:
                     className={planComboItemClass}
                   >
                     {name}
-                    {selected === name && <Icon name="Check" className="ml-auto opacity-100" />}
+                    {value === name && <Icon name="Check" className="ml-auto opacity-100" />}
                   </CommandItem>
                 ))}
               </CommandGroup>

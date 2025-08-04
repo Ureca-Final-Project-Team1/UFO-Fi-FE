@@ -89,16 +89,19 @@ const PlanPage = () => {
   };
 
   return (
-    <>
-      <div className="flex flex-1 flex-col">
-        <Title iconVariant="back" title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
+    <main>
+      <section className="flex flex-col flex-1">
+        <header className="w-full">
+          <Title iconVariant="back" title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
+        </header>
+
         <div className="flex flex-col items-start gap-6 w-full">
           <Stepper step={2} content="가입 신청" className="mb-5" />
-          <p className="heading-24-bold ml-2">
+          <h1 className="heading-24-bold ml-2">
             가입을 위한 정보를
             <br />
             입력해주세요
-          </p>
+          </h1>
 
           <OCRInputSection
             control={control}
@@ -115,7 +118,7 @@ const PlanPage = () => {
         </div>
 
         {watchedCarrier && watchedPlanName && maxData !== null && networkType && (
-          <div className="w-full flex flex-col gap-5 mt-8 mb-4">
+          <section className="w-full flex flex-col gap-5 mt-8 mb-4" aria-label="가입 정보 확인">
             <hr className="border-t border-[var(--color-hr-border)] w-full" />
             <div className="flex flex-col gap-5">
               <p className="text-start w-full text-white body-20-bold">
@@ -123,21 +126,20 @@ const PlanPage = () => {
               </p>
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between text-white body-16-bold">
-                  <p>판매할 수 있는 최대 데이터</p>
-                  <p className="caption-14-regular">{maxData}GB</p>
+                  <span>판매할 수 있는 최대 데이터</span>
+                  <span className="caption-14-regular">{maxData}GB</span>
                 </div>
                 <div className="flex justify-between text-white body-16-bold">
-                  <p>네트워크 타입</p>
-                  <p className="caption-14-regular">{networkType}</p>
+                  <span>네트워크 타입</span>
+                  <span className="caption-14-regular">{networkType}</span>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         )}
-      </div>
+      </section>
 
-      {/* 고정된 하단 버튼 */}
-      <div className="sticky bottom-0 bg-inherit pb-4">
+      <footer className="sticky bottom-0 bg-inherit pb-4 w-full">
         <Button
           onClick={handleSubmit(onSubmit)}
           type="submit"
@@ -147,8 +149,8 @@ const PlanPage = () => {
         >
           {isLoading ? '처리 중...' : '회원가입'}
         </Button>
-      </div>
-    </>
+      </footer>
+    </main>
   );
 };
 
