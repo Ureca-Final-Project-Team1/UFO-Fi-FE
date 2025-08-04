@@ -9,7 +9,7 @@ import { paymentAPI } from '@/backend';
 import { PACKAGES } from '@/constants';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Loading, Title } from '@/shared';
+import { Button, Loading, TitleWithoutRouter } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 function PaymentSuccessContent() {
@@ -88,7 +88,7 @@ function PaymentSuccessContent() {
 
   return (
     <div className="bg-gradient-to-b from-primary-900 to-primary-800 flex flex-col">
-      <Title title="" iconVariant="close" />
+      <TitleWithoutRouter title="" iconVariant="close" />
 
       <div className="flex-1 flex items-center justify-center px-6">
         <div

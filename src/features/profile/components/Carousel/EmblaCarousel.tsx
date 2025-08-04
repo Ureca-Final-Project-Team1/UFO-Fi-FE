@@ -19,10 +19,10 @@ const EmblaCarousel: React.FC<PropType> = ({ children, options, className, isDes
     usePrevNextButtons(emblaApi);
 
   return (
-    <section className="embla flex gap-2">
+    <section className="embla flex gap-2 w-full">
       {isDesktop && <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />}
-      <div className="embla__viewport overflow-hidden" ref={emblaRef}>
-        <div className={`embla__container ${className}`}>{children}</div>
+      <div className="embla__viewport overflow-hidden w-full" ref={emblaRef}>
+        <div className={`embla__container flex w-full ${className}`}>{children}</div>
       </div>
       {isDesktop && <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />}
     </section>

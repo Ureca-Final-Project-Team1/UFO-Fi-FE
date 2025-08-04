@@ -7,11 +7,12 @@ import { toast } from 'sonner';
 import { logoutAPI, ApiError } from '@/backend';
 import { achievementsAPI } from '@/backend/services/mypage/achievement';
 import { LogoutModal } from '@/features/mypage/components';
+import { FollowCarousel } from '@/features/mypage/components/FollowCarousel';
 import MenuSection from '@/features/mypage/components/MenuSection';
 import SignalCard from '@/features/mypage/components/SignalCard';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Honorific } from '@/features/mypage/types/Achievement';
-import { Button, Icon, IconType, Loading, Title } from '@/shared';
+import { Button, Icon, IconType, Loading, TitleWithoutRouter } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
 
 export default function MyPage() {
@@ -144,7 +145,7 @@ export default function MyPage() {
 
   return (
     <div>
-      <Title title="마이페이지" />
+      <TitleWithoutRouter title="마이페이지" />
       <div className="pb-6">
         {/* Signal Card */}
         <SignalCard
@@ -161,6 +162,11 @@ export default function MyPage() {
           <MenuIconButton icon="Heart" label="팔로우 목록" onClick={navigateToFollow} />
           <MenuIconButton icon="Star" label="업적 목록" onClick={navigateToAchievement} />
           <MenuIconButton icon="Bell" label="알림 설정" onClick={navigateToNotification} />
+        </div>
+        <hr className="my-6 border-white/20" />
+        <div className="flex flex-col justify-start">
+          <MenuSection title="팔로우할 사용자 추천" />
+          <FollowCarousel />
         </div>
         <hr className="my-6 border-white/20" />
         {/* 거래 내역 + 고객 지원 */}
