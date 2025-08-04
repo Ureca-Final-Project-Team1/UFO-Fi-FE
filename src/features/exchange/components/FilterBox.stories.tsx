@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Image from 'next/image';
 
 import { FilterBox } from './FilterBox';
 
@@ -7,79 +8,146 @@ const meta: Meta<typeof FilterBox> = {
   component: FilterBox,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    name: {
-      control: { type: 'text' },
-      description: '필터 박스의 제목',
-    },
-    isMultipleSelection: {
-      control: { type: 'boolean' },
-      description: '중복 선택 가능 여부',
-    },
+    name: { control: { type: 'text' } },
+    isMultipleSelection: { control: { type: 'boolean' } },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof FilterBox>;
 
 export const Default: Story = {
   args: {
     name: '통신사',
     isMultipleSelection: false,
     children: (
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <input type="checkbox" id="skt" />
-          <label htmlFor="skt" className="text-sm">
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="carrier"
+            id="skt"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <Image
+            src="/icons/carriers/skt.svg"
+            alt="SKT"
+            width={24}
+            height={24}
+            className="w-6 h-6"
+          />
+          <label htmlFor="skt" className="text-white text-sm">
             SKT
           </label>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="checkbox" id="kt" />
-          <label htmlFor="kt" className="text-sm">
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="carrier"
+            id="kt"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <Image src="/icons/carriers/kt.svg" alt="KT" width={24} height={24} className="w-6 h-6" />
+          <label htmlFor="kt" className="text-white text-sm">
             KT
           </label>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="checkbox" id="lgu" />
-          <label htmlFor="lgu" className="text-sm">
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="carrier"
+            id="lgu"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <Image
+            src="/icons/carriers/lgu.svg"
+            alt="LG U+"
+            width={24}
+            height={24}
+            className="w-6 h-6"
+          />
+          <label htmlFor="lgu" className="text-white text-sm">
             LG U+
           </label>
         </div>
       </div>
     ),
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const MultipleSelection: Story = {
   args: {
-    name: '데이터 용량',
+    name: '용량',
     isMultipleSelection: true,
     children: (
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <input type="checkbox" id="small" />
-          <label htmlFor="small" className="text-sm">
-            1-5GB
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="1gb"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <label htmlFor="1gb" className="text-white text-sm">
+            1GB
           </label>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="checkbox" id="medium" />
-          <label htmlFor="medium" className="text-sm">
-            6-10GB
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="5gb"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <label htmlFor="5gb" className="text-white text-sm">
+            5GB
           </label>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="checkbox" id="large" />
-          <label htmlFor="large" className="text-sm">
-            11GB+
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="10gb"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <label htmlFor="10gb" className="text-white text-sm">
+            10GB
+          </label>
+        </div>
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="20gb"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <label htmlFor="20gb" className="text-white text-sm">
+            20GB
           </label>
         </div>
       </div>
     ),
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const NetworkType: Story = {
@@ -87,22 +155,41 @@ export const NetworkType: Story = {
     name: '네트워크 타입',
     isMultipleSelection: false,
     children: (
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <input type="radio" name="network" id="4g" />
-          <label htmlFor="4g" className="text-sm">
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="network"
+            id="4g"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <label htmlFor="4g" className="text-white text-sm">
             4G
           </label>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="radio" name="network" id="5g" />
-          <label htmlFor="5g" className="text-sm">
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="network"
+            id="5g"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <label htmlFor="5g" className="text-white text-sm">
             5G
           </label>
         </div>
       </div>
     ),
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const PriceRange: Story = {
@@ -110,26 +197,50 @@ export const PriceRange: Story = {
     name: '가격 범위',
     isMultipleSelection: false,
     children: (
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <input type="radio" name="price" id="low" />
-          <label htmlFor="low" className="text-sm">
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="price"
+            id="low"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <label htmlFor="low" className="text-white text-sm">
             1,000 ZET 이하
           </label>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="radio" name="price" id="medium" />
-          <label htmlFor="medium" className="text-sm">
-            1,001-5,000 ZET
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="price"
+            id="medium"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <label htmlFor="medium" className="text-white text-sm">
+            1,000 - 3,000 ZET
           </label>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="radio" name="price" id="high" />
-          <label htmlFor="high" className="text-sm">
-            5,001 ZET 이상
+        <div className="flex items-center gap-3">
+          <input
+            type="radio"
+            name="price"
+            id="high"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+          />
+          <label htmlFor="high" className="text-white text-sm">
+            3,000 ZET 이상
           </label>
         </div>
       </div>
     ),
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };

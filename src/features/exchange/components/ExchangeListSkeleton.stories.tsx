@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Image from 'next/image';
 
-// Mock ExchangeListSkeleton for Storybook
+// Mock ExchangeListSkeleton for Storybook (실제 ExchangeListSkeleton과 동일한 구조)
 const MockExchangeListSkeleton = () => {
   return (
     <div className="w-full px-3" aria-label="게시물 로딩 중">
@@ -35,8 +36,16 @@ const MockExchangeListSkeleton = () => {
               </div>
             </div>
 
-            {/* Stone 받침대 */}
-            <div className="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 z-0 w-[260px] h-[70px] bg-gray-700 rounded-lg animate-pulse"></div>
+            {/* Stone 받침대 - 실제 stone 이미지 사용 */}
+            <div className="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 z-0">
+              <Image
+                src="/images/exchange/stone.svg"
+                alt="stone"
+                width={260}
+                height={70}
+                className="animate-pulse"
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -60,19 +69,6 @@ export default meta;
 type Story = StoryObj<typeof MockExchangeListSkeleton>;
 
 export const Default: Story = {
-  args: {},
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <Story />
-        </div>
-      </div>
-    ),
-  ],
-};
-
-export const WithBackground: Story = {
   args: {},
   decorators: [
     (Story) => (
