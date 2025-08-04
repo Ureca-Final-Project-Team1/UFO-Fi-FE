@@ -130,9 +130,11 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
           {!isNavigationHidden && (
             <div
               className="fixed bottom-0 left-0 w-full z-40"
-              style={{ height: `${BOTTOM_NAV_HEIGHT}px` }}
-              onTouchStart={(e) => e.preventDefault()}
-              onTouchMove={(e) => e.preventDefault()}
+              style={{
+                height: `${BOTTOM_NAV_HEIGHT}px`,
+                overscrollBehavior: 'contain',
+                touchAction: 'manipulation', // 터치 스크롤만 제어
+              }}
             >
               <BottomNav />
             </div>
