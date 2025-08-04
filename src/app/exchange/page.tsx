@@ -27,6 +27,9 @@ export default function ExchangePage() {
   const refetchExchangeData = () => {
     refetchList();
     queryClient.invalidateQueries({
+      queryKey: queryKeys.exchangePostsInfinite(),
+    });
+    queryClient.invalidateQueries({
       queryKey: queryKeys.myInfo(),
     });
   };
