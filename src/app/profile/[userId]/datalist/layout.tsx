@@ -4,7 +4,7 @@ import { profileAPI } from '@/backend';
 import { IMAGE_PATHS } from '@/constants/images';
 
 interface Props {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
   children: React.ReactNode;
 }
 
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const title = `${profile.nickname}님의 판매 데이터`;
     const description = `${profile.nickname}님의 UFO-Fi 판매중인 데이터를 확인해보세요.`;
-    const datalistUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${params.userId}/datalist`;
+    const datalistUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/profile/${userId}/datalist`;
     const imageUrl = profile.profileImageUrl || IMAGE_PATHS.AVATAR;
 
     return {
