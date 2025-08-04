@@ -23,23 +23,21 @@ interface ProvidersProps {
  */
 export default function Providers({ children }: ProvidersProps) {
   return (
-    <>
+    <ToastProvider>
       <AnalyticsProvider />
       <QueryProvider>
         <ViewportObserverProvider>
           <AppLayoutProvider>
             <AuthProvider>
               <FCMProvider>
-                <ToastProvider>
-                  {children}
-                  <Analytics />
-                </ToastProvider>
+                {children}
+                <Analytics />
               </FCMProvider>
             </AuthProvider>
           </AppLayoutProvider>
           <ModalProvider />
         </ViewportObserverProvider>
       </QueryProvider>
-    </>
+    </ToastProvider>
   );
 }

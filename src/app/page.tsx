@@ -3,7 +3,7 @@ import PlanetProgressBar from '@/features/main/components/PlanetProgressBar';
 
 export default function HomePage() {
   return (
-    <div className="w-full min-h-full flex flex-col">
+    <div className="w-full h-full flex flex-col">
       <div className="flex-1 flex items-center justify-center">
         <OrbitWithSatellite />
       </div>
