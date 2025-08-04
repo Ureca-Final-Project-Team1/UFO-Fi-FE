@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-// Mock ConfirmModal for Storybook
+import { Icon, Modal } from '@/shared';
+
+// Mock ConfirmModal for Storybook to avoid useRouter dependency
 const MockConfirmModal = ({
   isOpen = false,
   onClose,
@@ -19,39 +21,28 @@ const MockConfirmModal = ({
   onPrimaryClick?: () => void;
   redirectTo?: string;
 }) => {
-  if (!isOpen) return null;
-
   const handlePrimaryClick = () => {
-    onPrimaryClick?.();
+    if (onPrimaryClick) {
+      onPrimaryClick();
+    }
     if (redirectTo) {
       // Mock redirect functionality
+      // console.log(`Redirecting to: ${redirectTo}`);
     }
     onClose?.();
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-        <div className="text-center">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">{title}</h2>
-          {description && <p className="text-gray-600 mb-6">{description}</p>}
-          <div className="flex gap-3 justify-center">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              취소
-            </button>
-            <button
-              onClick={handlePrimaryClick}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              {primaryButtonText}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      description={description}
+      primaryButtonText={primaryButtonText}
+      onPrimaryClick={handlePrimaryClick}
+      hasCloseButton={false}
+      type="single"
+    />
   );
 };
 
@@ -60,22 +51,38 @@ const ConfirmModalWrapper = (args: {
   title?: string;
   description?: string;
   primaryButtonText?: string;
-  secondaryButtonText?: string;
   onPrimaryClick?: () => void;
-  onSecondaryClick?: () => void;
   onClose?: () => void;
   redirectTo?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-      >
-        모달 열기
-      </button>
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">확인 모달 테스트</h2>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              모달 열기
+            </button>
+          </div>
+        </div>
+      </div>
+
       <MockConfirmModal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
@@ -85,7 +92,10 @@ const meta: Meta<typeof ConfirmModalWrapper> = {
   title: 'Mypage/ConfirmModal',
   component: ConfirmModalWrapper,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -95,12 +105,12 @@ const meta: Meta<typeof ConfirmModalWrapper> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ConfirmModalWrapper>;
 
 export const Default: Story = {
   args: {
     title: '알림',
-    description: '정말로 이 작업을 진행하시겠습니까?',
+    description: '정말로 이 작업을 수행하시겠습니까?',
     primaryButtonText: '확인',
   },
 };
@@ -121,26 +131,58 @@ export const LogoutConfirmation: Story = {
   },
 };
 
-export const LongDescription: Story = {
-  args: {
-    title: '주의사항',
-    description:
-      '이 작업은 매우 중요한 작업입니다. 신중하게 결정하시기 바랍니다. 이 작업을 수행하면 기존 데이터가 변경되거나 삭제될 수 있습니다. 계속 진행하시겠습니까?',
-    primaryButtonText: '계속 진행',
-  },
+// Desktop Story Wrapper Component
+const DesktopStoryWrapper = (args: {
+  title?: string;
+  description?: string;
+  primaryButtonText?: string;
+  onPrimaryClick?: () => void;
+  onClose?: () => void;
+  redirectTo?: string;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">데스크톱 확인 모달 테스트</h2>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              모달 열기
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <MockConfirmModal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </div>
+  );
 };
 
-export const NoDescription: Story = {
+export const Desktop: Story = {
   args: {
-    title: '작업 완료',
+    title: '데스크톱 알림',
+    description: '데스크톱에서의 확인 모달 테스트입니다.',
     primaryButtonText: '확인',
   },
-};
-
-export const CustomButtonText: Story = {
-  args: {
-    title: '사용자 정의',
-    description: '버튼 텍스트를 사용자가 정의할 수 있습니다.',
-    primaryButtonText: '사용자 정의 버튼',
+  render: (args) => <DesktopStoryWrapper {...args} />,
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };

@@ -1,57 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Mock AchievementBadge for Storybook
-const MockAchievementBadge = ({
-  className = '',
-  i = 1,
-  j = 1,
-  isAchieve = true,
-  achievementName = '업적 이름',
-  showName = true,
-  onClick,
-}: {
-  className?: string;
-  i?: number;
-  j?: number;
-  isAchieve?: boolean;
-  achievementName?: string;
-  showName?: boolean;
-  onClick?: () => void;
-}) => {
-  const getBadgeEmoji = (level: number, index: number) => {
-    const emojis = ['🥉', '🥈', '🥇', '🏆', '👑', '💎', '⭐', '🌟'];
-    const emojiIndex = ((level - 1) * 3 + index - 1) % emojis.length;
-    return emojis[emojiIndex];
-  };
+import { Icon } from '@/shared';
 
-  return (
-    <div onClick={onClick} className={`${className} flex flex-col mb-5 cursor-pointer`}>
-      <div className="relative w-[70px] h-[70px] border-2 border-gray-400 rounded-[14px] object-cover overflow-hidden bg-gray-200">
-        <div
-          className={`w-full h-full flex items-center justify-center text-4xl ${
-            !isAchieve ? 'blur-sm' : ''
-          }`}
-        >
-          {getBadgeEmoji(i, j)}
-        </div>
-        {!isAchieve && (
-          <div className="w-[70px] h-[70px] flex justify-center items-center absolute inset-0">
-            <div className="w-[35px] h-[35px] bg-gray-600 rounded-full flex items-center justify-center text-white text-lg">
-              🔒
-            </div>
-          </div>
-        )}
-      </div>
-      {showName && <p className="text-center pt-2 text-sm text-gray-700">{achievementName}</p>}
-    </div>
-  );
-};
+import { AchievementBadge } from './AchievementBadge';
 
-const meta: Meta<typeof MockAchievementBadge> = {
+const meta: Meta<typeof AchievementBadge> = {
   title: 'Mypage/AchievementBadge',
-  component: MockAchievementBadge,
+  component: AchievementBadge,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -60,7 +20,7 @@ const meta: Meta<typeof MockAchievementBadge> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof AchievementBadge>;
 
 export const Default: Story = {
   args: {
@@ -70,6 +30,30 @@ export const Default: Story = {
     achievementName: '첫 번째 업적',
     showName: true,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">업적</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">업적 배지</h2>
+            <div className="flex justify-center">
+              <AchievementBadge {...args} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const Locked: Story = {
@@ -80,6 +64,30 @@ export const Locked: Story = {
     achievementName: '잠긴 업적',
     showName: true,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">업적</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">잠긴 업적 배지</h2>
+            <div className="flex justify-center">
+              <AchievementBadge {...args} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 export const WithoutName: Story = {
@@ -89,35 +97,106 @@ export const WithoutName: Story = {
     isAchieve: true,
     showName: false,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">업적</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">이름 없는 업적 배지</h2>
+            <div className="flex justify-center">
+              <AchievementBadge {...args} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
-export const HighLevel: Story = {
+export const MultipleBadges: Story = {
+  args: {
+    i: 1,
+    j: 1,
+    isAchieve: true,
+    achievementName: '업적 그리드',
+    showName: true,
+  },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">업적</h1>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">업적 배지 그리드</h2>
+            <div className="grid grid-cols-3 gap-4 justify-items-center">
+              <AchievementBadge {...args} i={1} j={1} isAchieve={true} achievementName="업적 1" />
+              <AchievementBadge {...args} i={1} j={2} isAchieve={false} achievementName="업적 2" />
+              <AchievementBadge {...args} i={1} j={3} isAchieve={true} achievementName="업적 3" />
+              <AchievementBadge {...args} i={2} j={1} isAchieve={true} achievementName="업적 4" />
+              <AchievementBadge {...args} i={2} j={2} isAchieve={false} achievementName="업적 5" />
+              <AchievementBadge {...args} i={2} j={3} isAchieve={true} achievementName="업적 6" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const Desktop: Story = {
   args: {
     i: 3,
     j: 3,
     isAchieve: true,
-    achievementName: '고급 업적',
+    achievementName: '데스크톱 업적',
     showName: true,
   },
-};
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">데스크톱 업적</h1>
+          </div>
+        </div>
 
-export const LongName: Story = {
-  args: {
-    i: 1,
-    j: 3,
-    isAchieve: true,
-    achievementName: '매우 긴 업적 이름입니다',
-    showName: true,
-  },
-};
-
-export const MultipleBadges: Story = {
-  render: () => (
-    <div className="flex gap-4">
-      <MockAchievementBadge i={1} j={1} isAchieve={true} achievementName="업적 1" />
-      <MockAchievementBadge i={1} j={2} isAchieve={false} achievementName="업적 2" />
-      <MockAchievementBadge i={1} j={3} isAchieve={true} achievementName="업적 3" />
-      <MockAchievementBadge i={2} j={1} isAchieve={true} achievementName="업적 4" />
+        <div className="flex flex-col gap-4">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">데스크톱 업적 배지</h2>
+            <div className="flex justify-center">
+              <AchievementBadge {...args} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
+  },
 };

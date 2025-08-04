@@ -1,17 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Image from 'next/image';
 
-// Mock OrbitWithSatellite for Storybook
+import { IMAGE_PATHS } from '@/constants/images';
+
+// Mock OrbitWithSatellite for Storybook (API 의존성 제거)
 const MockOrbitWithSatellite = ({ activeOrbits = 3 }: { activeOrbits?: number }) => {
   const ORBIT_BASE_SIZE = 600;
+  const SATELLITE_WIDTH = 30;
   const SATELLITE_HEIGHT = 60;
   const ORBIT_COUNT = 5;
 
   const orbitConfigs = [
-    { color: '#FFD230', speed: 'spin-slow', emoji: '🛰️' },
-    { color: '#70C3BB', speed: 'spin-fast', emoji: '🛰️' },
-    { color: '#67CBDC', speed: 'spin-reverse-slow', emoji: '🛰️' },
-    { color: '#735AB1', speed: 'spin-mid', emoji: '🛰️' },
-    { color: '#D24D9B', speed: 'spin-reverse-fast', emoji: '🛰️' },
+    { color: '#FFD230', speed: 'spin-slow', image: '/images/main/satellite1.svg' },
+    { color: '#70C3BB', speed: 'spin-fast', image: '/images/main/satellite2.svg' },
+    { color: '#67CBDC', speed: 'spin-reverse-slow', image: '/images/main/satellite3.svg' },
+    { color: '#735AB1', speed: 'spin-mid', image: '/images/main/satellite4.svg' },
+    { color: '#D24D9B', speed: 'spin-reverse-fast', image: '/images/main/satellite5.svg' },
   ];
 
   return (
@@ -25,7 +29,7 @@ const MockOrbitWithSatellite = ({ activeOrbits = 3 }: { activeOrbits?: number })
         transform: 'translate(-50%, -50%)',
       }}
     >
-      {orbitConfigs.map(({ color, speed, emoji }, i) => {
+      {orbitConfigs.map(({ color, speed, image }, i) => {
         const orbitSize = ORBIT_BASE_SIZE - (ORBIT_COUNT - 1 - i) * 80;
         const offset = (ORBIT_BASE_SIZE - orbitSize) / 2;
         const satelliteTransform = `translate(-50%, -${orbitSize / 2 + SATELLITE_HEIGHT / 2}px)`;
@@ -52,7 +56,12 @@ const MockOrbitWithSatellite = ({ activeOrbits = 3 }: { activeOrbits?: number })
                     transform: satelliteTransform,
                   }}
                 >
-                  <div className="text-2xl">{emoji}</div>
+                  <Image
+                    src={image}
+                    alt={`Satellite ${i + 1}`}
+                    width={SATELLITE_WIDTH}
+                    height={SATELLITE_HEIGHT}
+                  />
                 </div>
               </div>
             </div>
@@ -71,17 +80,19 @@ const MockOrbitWithSatellite = ({ activeOrbits = 3 }: { activeOrbits?: number })
         </div>
         {/* 외계인 */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 text-6xl"
+          className="absolute left-1/2 -translate-x-1/2"
           style={{
             top: '-15px',
             zIndex: 1,
           }}
         >
-          👽
+          <Image src={IMAGE_PATHS.ALIEN} alt="Alien" width={60} height={60} />
         </div>
 
         {/* 행성 */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-8xl">🌍</div>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+          <Image src={IMAGE_PATHS.MY_PLANET} alt="Planet" width={80} height={80} />
+        </div>
       </div>
 
       <style jsx>{`
@@ -129,7 +140,10 @@ const meta: Meta<typeof MockOrbitWithSatellite> = {
   title: 'Main/OrbitWithSatellite',
   component: MockOrbitWithSatellite,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -141,48 +155,74 @@ const meta: Meta<typeof MockOrbitWithSatellite> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockOrbitWithSatellite>;
 
 export const Default: Story = {
   args: {
     activeOrbits: 3,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="flex-1 flex items-center justify-center">
+        <MockOrbitWithSatellite {...args} />
+      </div>
+    </div>
+  ),
 };
 
-export const NoOrbits: Story = {
-  args: {
-    activeOrbits: 0,
-  },
-};
-
-export const OneOrbit: Story = {
-  args: {
-    activeOrbits: 1,
-  },
-};
-
-export const AllOrbits: Story = {
-  args: {
-    activeOrbits: 5,
-  },
-};
-
-export const WithBackground: Story = {
+export const WithProgressBar: Story = {
   args: {
     activeOrbits: 3,
   },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="flex-1 flex items-center justify-center">
+        <MockOrbitWithSatellite {...args} />
+      </div>
+
+      {/* 진행률 바 - 실제 메인 페이지와 동일한 위치 */}
+      <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+            <span className="text-white text-sm">진행률: 75%</span>
+          </div>
+          <div className="w-48 h-2 bg-gray-700 rounded-full mt-2">
+            <div className="w-3/4 h-full bg-blue-500 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const Desktop: Story = {
+  args: {
+    activeOrbits: 5,
+  },
+  render: (args) => (
+    <div className="w-full h-full flex flex-col bg-gray-900">
+      <div className="flex-1 flex items-center justify-center">
+        <MockOrbitWithSatellite {...args} />
+      </div>
+
+      {/* 진행률 바 - 실제 메인 페이지와 동일한 위치 */}
+      <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+            <span className="text-white text-sm">진행률: 100%</span>
+          </div>
+          <div className="w-48 h-2 bg-gray-700 rounded-full mt-2">
+            <div className="w-full h-full bg-blue-500 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
   parameters: {
-    docs: {
-      description: {
-        story: '배경이 있는 환경에서 궤도 애니메이션이 어떻게 보이는지 확인할 수 있습니다.',
-      },
+    viewport: {
+      defaultViewport: 'desktop',
     },
   },
-  decorators: [
-    (Story) => (
-      <div className="bg-gray-900 p-4 min-h-screen relative">
-        <Story />
-      </div>
-    ),
-  ],
 };
