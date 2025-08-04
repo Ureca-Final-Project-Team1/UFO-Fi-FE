@@ -293,7 +293,6 @@
     overscroll-behavior: none !important;
     touch-action: manipulation;
     overflow: hidden;
-    overscroll-behavior: none;
     touch-action: none; /* iOS 터치 스크롤 방지 */
   }
 
