@@ -7,37 +7,69 @@ const meta: Meta<typeof ScrollToTopButton> = {
   component: ScrollToTopButton,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
-  argTypes: {
-    onClick: { action: 'scroll to top clicked' },
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ScrollToTopButton>;
 
 export const Default: Story = {
   args: {},
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900 relative">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">스크롤 테스트 페이지</h1>
+          <div className="space-y-4">
+            {Array.from({ length: 20 }, (_, i) => (
+              <div key={i} className="bg-gray-800 p-4 rounded-lg">
+                <h2 className="text-white text-base font-semibold">섹션 {i + 1}</h2>
+                <p className="text-gray-300 text-sm mt-2">
+                  이것은 스크롤 테스트를 위한 콘텐츠입니다. 스크롤을 내려보세요.
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="fixed bottom-6 right-6 z-50">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const WithLongContent: Story = {
   args: {},
-  parameters: {
-    docs: {
-      description: {
-        story: '긴 콘텐츠가 있을 때 스크롤 버튼이 나타나는 상태를 시뮬레이션합니다.',
-      },
-    },
-  },
   decorators: [
     (Story) => (
-      <div style={{ height: '200vh', padding: '20px' }}>
-        <div style={{ marginBottom: '100vh' }}>
-          <h2>긴 콘텐츠</h2>
-          <p>스크롤을 내려보세요...</p>
+      <div className="h-full flex flex-col bg-gray-900 relative">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">긴 콘텐츠 페이지</h1>
+          <div className="space-y-4">
+            {Array.from({ length: 50 }, (_, i) => (
+              <div key={i} className="bg-gray-800 p-4 rounded-lg">
+                <h2 className="text-white text-base font-semibold">긴 섹션 {i + 1}</h2>
+                <p className="text-gray-300 text-sm mt-2">
+                  이것은 매우 긴 콘텐츠입니다. 스크롤을 많이 내려야 버튼이 나타납니다.
+                  {Array.from({ length: 5 }, (_, j) => (
+                    <span key={j}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                      incididunt ut labore et dolore magna aliqua.
+                    </span>
+                  ))}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-        <Story />
+        <div className="fixed bottom-6 right-6 z-50">
+          <Story />
+        </div>
       </div>
     ),
   ],
@@ -45,19 +77,23 @@ export const WithLongContent: Story = {
 
 export const Hidden: Story = {
   args: {},
-  parameters: {
-    docs: {
-      description: {
-        story: '스크롤이 상단에 가까울 때 버튼이 숨겨진 상태입니다.',
-      },
-    },
-  },
   decorators: [
     (Story) => (
-      <div style={{ height: '100px', padding: '20px' }}>
-        <h2>짧은 콘텐츠</h2>
-        <p>스크롤이 필요하지 않아 버튼이 보이지 않습니다.</p>
-        <Story />
+      <div className="h-full flex flex-col bg-gray-900 relative">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">짧은 콘텐츠 페이지</h1>
+          <div className="space-y-4">
+            <div className="bg-gray-800 p-4 rounded-lg">
+              <h2 className="text-white text-base font-semibold">짧은 섹션</h2>
+              <p className="text-gray-300 text-sm mt-2">
+                이것은 짧은 콘텐츠입니다. 스크롤이 필요하지 않아 버튼이 보이지 않습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="fixed bottom-6 right-6 z-50">
+          <Story />
+        </div>
       </div>
     ),
   ],

@@ -8,6 +8,9 @@ const meta: Meta<typeof UserCommand> = {
   component: UserCommand,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -17,9 +20,8 @@ const meta: Meta<typeof UserCommand> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof UserCommand>;
 
-// Wrapper component to handle state
 const UserCommandWrapper = (args: { search?: string; filterType?: string }) => {
   const [search, setSearch] = useState(args.search || '');
   const [filterType, setFilterType] = useState(args.filterType || 'nickname');
@@ -40,6 +42,13 @@ export const Default: Story = {
     search: '',
     filterType: 'nickname',
   },
+  decorators: [
+    (Story) => (
+      <div className="w-full max-w-7xl mx-auto p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const WithSearchValue: Story = {
@@ -48,14 +57,28 @@ export const WithSearchValue: Story = {
     search: 'user123',
     filterType: 'nickname',
   },
+  decorators: [
+    (Story) => (
+      <div className="w-full max-w-7xl mx-auto p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const WithEmailFilter: Story = {
   render: (args) => <UserCommandWrapper {...args} />,
   args: {
-    search: '',
+    search: 'test@example.com',
     filterType: 'email',
   },
+  decorators: [
+    (Story) => (
+      <div className="w-full max-w-7xl mx-auto p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const WithNameFilter: Story = {
@@ -64,12 +87,26 @@ export const WithNameFilter: Story = {
     search: '김철수',
     filterType: 'name',
   },
+  decorators: [
+    (Story) => (
+      <div className="w-full max-w-7xl mx-auto p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const WithLongSearch: Story = {
   render: (args) => <UserCommandWrapper {...args} />,
   args: {
-    search: 'verylongsearchtermthatmightoverflow',
+    search: 'very long search term that might overflow',
     filterType: 'email',
   },
+  decorators: [
+    (Story) => (
+      <div className="w-full max-w-7xl mx-auto p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };

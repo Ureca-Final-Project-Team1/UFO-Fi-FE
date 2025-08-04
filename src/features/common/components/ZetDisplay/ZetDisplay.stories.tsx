@@ -7,27 +7,20 @@ const meta: Meta<typeof ZetDisplay> = {
   component: ZetDisplay,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    amount: {
-      control: { type: 'number' },
-      description: '표시할 ZET 수량',
-    },
-    showUnit: {
-      control: { type: 'boolean' },
-      description: 'ZET 단위 표시 여부',
-    },
-    size: {
-      control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
-      description: '텍스트 크기',
-    },
+    amount: { control: { type: 'number' } },
+    showUnit: { control: { type: 'boolean' } },
+    size: { control: { type: 'select' }, options: ['sm', 'md', 'lg'] },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ZetDisplay>;
 
 export const Default: Story = {
   args: {
@@ -35,6 +28,18 @@ export const Default: Story = {
     showUnit: true,
     size: 'md',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const Small: Story = {
@@ -43,14 +48,38 @@ export const Small: Story = {
     showUnit: true,
     size: 'sm',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const Large: Story = {
   args: {
-    amount: 5000,
+    amount: 50000,
     showUnit: true,
     size: 'lg',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const WithoutUnit: Story = {
@@ -59,6 +88,18 @@ export const WithoutUnit: Story = {
     showUnit: false,
     size: 'md',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const Zero: Story = {
@@ -67,14 +108,38 @@ export const Zero: Story = {
     showUnit: true,
     size: 'md',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
 
-export const LargeNumber: Story = {
+export const LargeAmount: Story = {
   args: {
     amount: 99999,
     showUnit: true,
     size: 'md',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const OverLimit: Story = {
@@ -83,6 +148,18 @@ export const OverLimit: Story = {
     showUnit: true,
     size: 'md',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
 
 export const WithCommas: Story = {
@@ -91,4 +168,16 @@ export const WithCommas: Story = {
     showUnit: true,
     size: 'md',
   },
+  decorators: [
+    (Story) => (
+      <div className="h-full flex flex-col bg-gray-900">
+        <div className="px-4 pt-4">
+          <h1 className="text-white text-lg font-bold mb-4">ZET 표시 테스트</h1>
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <Story />
+          </div>
+        </div>
+      </div>
+    ),
+  ],
 };
