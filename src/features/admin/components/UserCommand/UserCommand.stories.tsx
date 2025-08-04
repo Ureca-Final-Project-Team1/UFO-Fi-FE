@@ -7,7 +7,7 @@ const meta: Meta<typeof UserCommand> = {
   title: 'Admin/UserCommand',
   component: UserCommand,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'desktop',
     },
@@ -37,76 +37,146 @@ const UserCommandWrapper = (args: { search?: string; filterType?: string }) => {
 };
 
 export const Default: Story = {
-  render: (args) => <UserCommandWrapper {...args} />,
+  render: (args) => (
+    <div className="flex h-screen bg-gray-50">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b border-gray-200">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-500">Admin</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 검색 및 필터링</h2>
+              <UserCommandWrapper {...args} />
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  ),
   args: {
     search: '',
     filterType: 'nickname',
   },
-  decorators: [
-    (Story) => (
-      <div className="w-full max-w-7xl mx-auto p-6">
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export const WithSearchValue: Story = {
-  render: (args) => <UserCommandWrapper {...args} />,
+  render: (args) => (
+    <div className="flex h-screen bg-gray-50">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b border-gray-200">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-500">Admin</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 검색 및 필터링</h2>
+              <UserCommandWrapper {...args} />
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  ),
   args: {
     search: 'user123',
     filterType: 'nickname',
   },
-  decorators: [
-    (Story) => (
-      <div className="w-full max-w-7xl mx-auto p-6">
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export const WithEmailFilter: Story = {
-  render: (args) => <UserCommandWrapper {...args} />,
+  render: (args) => (
+    <div className="flex h-screen bg-gray-50">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b border-gray-200">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-500">Admin</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 검색 및 필터링</h2>
+              <UserCommandWrapper {...args} />
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  ),
   args: {
     search: 'test@example.com',
     filterType: 'email',
   },
-  decorators: [
-    (Story) => (
-      <div className="w-full max-w-7xl mx-auto p-6">
-        <Story />
-      </div>
-    ),
-  ],
 };
 
-export const WithNameFilter: Story = {
-  render: (args) => <UserCommandWrapper {...args} />,
-  args: {
-    search: '김철수',
-    filterType: 'name',
-  },
-  decorators: [
-    (Story) => (
-      <div className="w-full max-w-7xl mx-auto p-6">
-        <Story />
-      </div>
-    ),
-  ],
-};
+export const Mobile: Story = {
+  render: (args) => (
+    <div className="flex h-screen bg-gray-50">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b border-gray-200">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-500">Admin</span>
+              </div>
+            </div>
+          </div>
+        </header>
 
-export const WithLongSearch: Story = {
-  render: (args) => <UserCommandWrapper {...args} />,
-  args: {
-    search: 'very long search term that might overflow',
-    filterType: 'email',
-  },
-  decorators: [
-    (Story) => (
-      <div className="w-full max-w-7xl mx-auto p-6">
-        <Story />
+        {/* Content */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 검색 및 필터링</h2>
+              <UserCommandWrapper {...args} />
+            </div>
+          </div>
+        </main>
       </div>
-    ),
-  ],
+    </div>
+  ),
+  args: {
+    search: 'user123',
+    filterType: 'nickname',
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
 };
