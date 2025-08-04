@@ -33,7 +33,6 @@ const BOTTOM_NAV_HEIGHT = 64;
 
 export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const pathname = usePathname();
-  // Next.js 15.4 SSR hydration mismatch 완전 방지
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -49,9 +48,6 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     pathname.startsWith('/blackhole') ||
     pathname.startsWith('/signup/privacy');
 
-  const isHomePage = pathname === '/';
-
-  // React Hook Rules 준수: 모든 hooks를 early return 전에 호출
   const contextValue: AppLayoutContextValue = useMemo(
     () => ({
       isAdminPage: isAdminRoute,
@@ -69,28 +65,20 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     ) {
       return IMAGE_PATHS.BG_LOGIN;
     }
-    if (isOnboardingPage || isPasswordPage) {
-      return '';
-    }
+    if (isOnboardingPage || isPasswordPage) return '';
     return IMAGE_PATHS.BG_BASIC;
   }, [pathname, isOnboardingPage, isPasswordPage]);
 
   const containerStyle = useMemo(() => {
-    if (isPasswordPage) {
-      return { backgroundColor: 'var(--color-password-bg)' };
-    }
-    if (isOnboardingPage) {
-      return { backgroundColor: 'var(--color-onboarding-bg)' };
-    }
-    if (backgroundImageUrl) {
+    if (isPasswordPage) return { backgroundColor: 'var(--color-password-bg)' };
+    if (isOnboardingPage) return { backgroundColor: 'var(--color-onboarding-bg)' };
+    if (backgroundImageUrl)
       return {
         backgroundImage: `url(${backgroundImageUrl})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        // backgroundAttachment: 'fixed'
       };
-    }
     return {};
   }, [isPasswordPage, isOnboardingPage, backgroundImageUrl]);
 
@@ -102,7 +90,6 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     );
   }
 
-  // SSR hydration mismatch 방지
   if (!isMounted) {
     return (
       <AppLayoutContext.Provider value={contextValue}>
@@ -115,39 +102,43 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     );
   }
 
-  // 클라이언트에서 레이아웃 적용
   return (
     <AppLayoutContext.Provider value={contextValue}>
-      <div className="min-h-screen w-full flex justify-center">
+      <div className="fixed inset-0 w-full h-full flex justify-center overflow-hidden bg-background">
         <div
-          className={`relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden ${
-            backgroundImageUrl ? 'nav-container-bg' : ''
-          }`}
+          className="relative w-full h-full min-w-[375px] max-w-[620px] flex flex-col"
           style={containerStyle}
         >
           {!isNavigationHidden && <TopNav />}
+
           <main
-            className={`overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white ${
-              isHomePage ? 'flex flex-col justify-center items-center' : 'flex flex-col'
-            }`}
+            className="flex-1 overflow-y-auto overflow-x-hidden hide-scrollbar sm:px-10.5 px-6 text-white relative z-10"
             style={{
-              minHeight: '100dvh',
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain',
               paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
               paddingBottom: isNavigationHidden
                 ? isOnboardingPage
                   ? '0px'
                   : '32px'
                 : `${BOTTOM_NAV_HEIGHT}px`,
-              height: isNavigationHidden
-                ? '100dvh'
-                : `calc(100dvh - ${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px)`,
-              WebkitOverflowScrolling: 'touch',
-              overscrollBehavior: 'contain',
             }}
           >
             {children}
           </main>
-          {!isNavigationHidden && <BottomNav />}
+
+          {!isNavigationHidden && (
+            <div
+              className="fixed bottom-0 left-0 w-full z-40"
+              style={{
+                height: `${BOTTOM_NAV_HEIGHT}px`,
+                overscrollBehavior: 'contain',
+                touchAction: 'manipulation', // 터치 스크롤만 제어
+              }}
+            >
+              <BottomNav />
+            </div>
+          )}
 
           {!isNavigationHidden && (
             <div className="absolute bottom-24 right-4 z-50">
