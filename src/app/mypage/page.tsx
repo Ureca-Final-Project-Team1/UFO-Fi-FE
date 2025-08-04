@@ -165,7 +165,7 @@ export default function MyPage() {
         </div>
         <hr className="my-6 border-white/20" />
         <div className="flex flex-col justify-start">
-          <MenuSection title="신호 따라가기" />
+          <MenuSection title="팔로우할 사용자 추천" />
           <FollowCarousel />
         </div>
         <hr className="my-6 border-white/20" />
