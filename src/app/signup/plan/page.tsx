@@ -139,7 +139,7 @@ const PlanPage = () => {
         )}
       </section>
 
-      <footer className="sticky bottom-0 bg-inherit pb-4 w-full">
+      <nav className="sticky bottom-0 bg-inherit pb-4 w-full">
         <Button
           onClick={handleSubmit(onSubmit)}
           type="submit"
@@ -149,7 +149,7 @@ const PlanPage = () => {
         >
           {isLoading ? '처리 중...' : '회원가입'}
         </Button>
-      </footer>
+      </nav>
     </main>
   );
 };
