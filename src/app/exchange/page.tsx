@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost } from '@/backend';
+import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost, Carrier } from '@/backend';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
+import { useUserPlan } from '@/shared/hooks/useUserPlan';
 import { queryKeys } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 
@@ -22,6 +23,7 @@ export default function ExchangePage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
   const [refetchList, setRefetchList] = useState<() => void>(() => () => {});
+  const { data: userPlan } = useUserPlan();
 
   // 캐시 무효화
   const refetchExchangeData = () => {
@@ -150,6 +152,7 @@ export default function ExchangePage() {
             onPurchase={handlePurchase}
             purchaseLoading={isPurchaseLoading}
             onRefetch={(refetchFunction) => setRefetchList(() => refetchFunction)}
+            myCarrier={userPlan?.carrier as Carrier}
           />
         </section>
       </main>

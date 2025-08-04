@@ -1,10 +1,8 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 
-import { userPlanAPI } from '@/backend';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { useSellData } from '@/features/hooks/useSellData';
@@ -13,6 +11,7 @@ import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlide
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
 import { Icon, Input, Title, Button, PriceInput } from '@/shared';
+import { useUserPlan } from '@/shared/hooks/useUserPlan';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function SellPage() {
@@ -33,10 +32,7 @@ export default function SellPage() {
     isSubmitting,
   } = useSellData();
 
-  const { data: userPlan } = useQuery({
-    queryKey: ['userPlan'],
-    queryFn: () => userPlanAPI.get(),
-  });
+  const { data: userPlan } = useUserPlan();
 
   const maxCapacity = myInfo?.sellableDataAmount || 0;
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;

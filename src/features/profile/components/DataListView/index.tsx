@@ -8,6 +8,7 @@ import { IMAGE_PATHS } from '@/constants';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useProfile } from '@/features/profile/hooks/useProfile';
 import { ReportedModal, Title } from '@/shared';
+import { useUserPlan } from '@/shared/hooks/useUserPlan';
 import { formatPrice, formatTimeAgo, getMobileDataTypeDisplay } from '@/shared/utils';
 
 interface DataListViewProps {
@@ -17,6 +18,7 @@ interface DataListViewProps {
 export function DataListView({ userId }: DataListViewProps) {
   const router = useRouter();
   const { data: profile, isLoading, error } = useProfile(userId);
+  const { data: userPlan } = useUserPlan();
   const [reportModal, setReportModal] = useState({ isOpen: false, postId: 0, sellerId: 0 });
 
   if (isLoading) {
@@ -77,6 +79,7 @@ export function DataListView({ userId }: DataListViewProps) {
                     {...post}
                     onPurchase={() => router.push(`/exchange/purchase/${post.postId}`)}
                     onReport={() => handleReport(post.postId, profile.userId)}
+                    myCarrier={userPlan?.carrier as Carrier}
                   />
                 ))}
             </div>

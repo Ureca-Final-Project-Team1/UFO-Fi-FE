@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 
 import { Carrier } from '@/backend/types/carrier';
@@ -20,6 +22,7 @@ interface SellingItemProps {
   onDelete?: () => void;
   onReport?: () => void;
   onPurchase?: () => void;
+  myCarrier?: Carrier;
 }
 
 const getCarrierIcon = (carrier: string) => {
@@ -52,8 +55,10 @@ export default function SellingItem({
   onDelete,
   onReport,
   onPurchase,
+  myCarrier,
 }: SellingItemProps) {
   const carrierIcon = getCarrierIcon(carrier);
+  const isAbled = carrier !== myCarrier;
 
   return (
     <div className="relative w-full max-w-[170px] sm:max-w-[190px] mb-8">
@@ -124,6 +129,7 @@ export default function SellingItem({
                 size="sm"
                 className="text-xs px-2 py-1"
                 onClick={onPurchase}
+                disabled={isAbled}
               >
                 구매하기
               </Button>
