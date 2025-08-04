@@ -28,16 +28,34 @@ interface AppLayoutProviderProps {
   children: React.ReactNode;
 }
 
-const NAV_HEIGHT = 56;
-const BOTTOM_NAV_HEIGHT = 64;
-
 export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const pathname = usePathname();
-  // Next.js 15.4 SSR hydration mismatch 완전 방지
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+
+    // body/html 레벨의 스크롤만 방지, main 영역 스크롤은 허용
+    const preventPageScroll = (e: Event) => {
+      // main 요소나 그 하위 요소에서 발생한 스크롤은 허용
+      const target = e.target as Element;
+      const mainElement = target?.closest('main');
+
+      // main 영역이 아닌 곳에서의 스크롤만 방지
+      if (!mainElement && window.scrollY !== 0) {
+        window.scrollTo(0, 0);
+      }
+    };
+
+    // 초기 스크롤 위치 설정
+    window.scrollTo(0, 0);
+
+    // 스크롤 이벤트 감지
+    window.addEventListener('scroll', preventPageScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', preventPageScroll);
+    };
   }, []);
 
   const isAdminRoute = pathname.startsWith('/admin');
@@ -51,7 +69,6 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
 
   const isHomePage = pathname === '/';
 
-  // React Hook Rules 준수: 모든 hooks를 early return 전에 호출
   const contextValue: AppLayoutContextValue = useMemo(
     () => ({
       isAdminPage: isAdminRoute,
@@ -69,9 +86,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
     ) {
       return IMAGE_PATHS.BG_LOGIN;
     }
-    if (isOnboardingPage || isPasswordPage) {
-      return '';
-    }
+    if (isOnboardingPage || isPasswordPage) return '';
     return IMAGE_PATHS.BG_BASIC;
   }, [pathname, isOnboardingPage, isPasswordPage]);
 
@@ -88,7 +103,6 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        // backgroundAttachment: 'fixed'
       };
     }
     return {};
@@ -97,58 +111,62 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   if (isAdminRoute) {
     return (
       <AppLayoutContext.Provider value={contextValue}>
-        <div className="min-h-screen w-full bg-gray-50">{children}</div>
+        <div className="h-screen w-full bg-gray-50">{children}</div>
       </AppLayoutContext.Provider>
     );
   }
 
-  // SSR hydration mismatch 방지
   if (!isMounted) {
     return (
       <AppLayoutContext.Provider value={contextValue}>
-        <div className="min-h-screen w-full flex justify-center">
+        <div className="w-full h-full flex justify-center fixed inset-0 overflow-hidden">
           <div className="relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden">
-            <main className="min-h-screen flex flex-col px-6 text-white">{children}</main>
+            <main className="h-full flex flex-col px-6 text-white overflow-y-auto">{children}</main>
           </div>
         </div>
       </AppLayoutContext.Provider>
     );
   }
 
-  // 클라이언트에서 레이아웃 적용
   return (
     <AppLayoutContext.Provider value={contextValue}>
-      <div className="min-h-screen w-full flex justify-center">
+      <div className="w-full h-screen flex justify-center overflow-hidden fixed inset-0">
         <div
-          className={`relative w-full h-full min-w-[375px] max-w-[620px] overflow-hidden ${
+          className={`relative flex flex-col w-full h-full min-w-[375px] max-w-[620px] ${
             backgroundImageUrl ? 'nav-container-bg' : ''
           }`}
           style={containerStyle}
         >
-          {!isNavigationHidden && <TopNav />}
+          {/* 상단 고정 */}
+          {!isNavigationHidden && (
+            <div className="shrink-0 z-50">
+              <TopNav />
+            </div>
+          )}
+
+          {/* 가운데 스크롤 영역 */}
           <main
-            className={`overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10 sm:px-10.5 px-6 text-white ${
-              isHomePage ? 'flex flex-col justify-center items-center' : 'flex flex-col'
-            }`}
+            className={`
+              flex-1 overflow-y-auto overflow-x-hidden hide-scrollbar relative z-10
+              sm:px-10.5 px-6 text-white
+              ${isHomePage ? 'flex flex-col justify-center items-center' : 'flex flex-col'}
+            `}
             style={{
-              minHeight: '100dvh',
-              paddingTop: isNavigationHidden ? '0px' : `${NAV_HEIGHT}px`,
-              paddingBottom: isNavigationHidden
-                ? isOnboardingPage
-                  ? '0px'
-                  : '32px'
-                : `${BOTTOM_NAV_HEIGHT}px`,
-              height: isNavigationHidden
-                ? '100dvh'
-                : `calc(100dvh - ${NAV_HEIGHT + BOTTOM_NAV_HEIGHT}px)`,
               WebkitOverflowScrolling: 'touch',
               overscrollBehavior: 'contain',
             }}
           >
             {children}
           </main>
-          {!isNavigationHidden && <BottomNav />}
 
+          {/* 하단 고정 */}
+          {!isNavigationHidden && (
+            <div className="shrink-0 z-50">
+              <BottomNav />
+            </div>
+          )}
+
+          {/* Scroll to top 버튼 */}
           {!isNavigationHidden && (
             <div className="absolute bottom-24 right-4 z-50">
               <ScrollToTopButton />
