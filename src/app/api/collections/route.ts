@@ -1,10 +1,27 @@
 import dayjs from 'dayjs';
 import { NextResponse } from 'next/server';
 
+import { API_SELF_URL } from '@/constants';
 import { prisma } from '@/lib/prisma';
 import { qdrantClient } from '@/lib/qdrantClient';
 import { createQdrantFieldIndex } from '@/lib/qdrantFieldIndex';
 import { getVectorFromProfile } from '@/lib/vectorizer';
+
+// CORS 설정을 위한 정확한 origin 도메인
+const ORIGIN = API_SELF_URL;
+
+// OPTIONS: 프리플라이트 요청
+export function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': ORIGIN,
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
 
 export async function POST() {
   const COLLECTION_NAME = 'ufo_fi';
@@ -31,7 +48,13 @@ export async function POST() {
       }
     } catch (err) {
       console.error('Qdrant 컬렉션 생성 실패: ', err);
-      return NextResponse.json({ error: 'Qdrant 초기화 실패' }, { status: 500 });
+      const res = NextResponse.json(
+        { success: false, error: 'Qdrant 초기화 실패' },
+        { status: 500 },
+      );
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     // Step 2. 유저 조회
@@ -49,7 +72,13 @@ export async function POST() {
       });
     } catch (err) {
       console.error('Prisma 조회 실패: ', err);
-      return NextResponse.json({ error: '유저 데이터 조회 실패' }, { status: 500 });
+      const res = NextResponse.json(
+        { success: false, error: '유저 데이터 조회 실패' },
+        { status: 500 },
+      );
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     // Step 3. 포인트 생성
@@ -135,20 +164,38 @@ export async function POST() {
       .filter((p): p is NonNullable<typeof p> => !!p);
 
     if (points.length === 0) {
-      return NextResponse.json({ error: '업서트할 벡터가 없습니다.' }, { status: 400 });
+      const res = NextResponse.json(
+        { success: false, error: '업서트할 벡터가 없습니다.' },
+        { status: 400 },
+      );
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
-    // Step 4. 업서트
+    // Step 4. Qdrant 업서트
     try {
       await qdrantClient.upsert(COLLECTION_NAME, { points });
     } catch (err) {
       console.error('Qdrant 업서트 실패: ', err);
-      return NextResponse.json({ error: 'Qdrant 업서트 실패' }, { status: 500 });
+      const res = NextResponse.json(
+        { success: false, error: 'Qdrant 업서트 실패' },
+        { status: 500 },
+      );
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
-    return NextResponse.json({ success: true });
+    const res = NextResponse.json({ success: true });
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   } catch (err) {
     console.error('Qdrant 시딩 전체 실패: ', err);
-    return NextResponse.json({ error: '시딩 실패' }, { status: 500 });
+    const res = NextResponse.json({ success: false, error: '시딩 실패' }, { status: 500 });
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   }
 }

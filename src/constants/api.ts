@@ -17,7 +17,9 @@ export const TIMEOUT = {
 // API 베이스 URL
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 // Next.js API 라우트 베이스 URL
-export const API_SELF_URL = process.env.NEXT_PUBLIC_API_SELF_URL;
+export const API_NEXT_URL = process.env.NEXT_PUBLIC_NEXT_SERVER_URL || 'http://localhost:3000';
+// Next.js API 라우트 URL
+export const API_SELF_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 // HTTP 상태 코드
 export const HTTP_STATUS = {

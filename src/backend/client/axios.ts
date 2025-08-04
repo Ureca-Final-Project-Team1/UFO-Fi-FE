@@ -7,7 +7,7 @@ import {
   HTTP_STATUS,
   API_MESSAGES,
   API_ENDPOINTS,
-  API_SELF_URL,
+  API_NEXT_URL,
 } from '@/constants/api';
 
 // 커스텀 에러 클래스 확장변경 (상태코드 포함)
@@ -35,7 +35,7 @@ const axiosInstance = axios.create({
 
 // Next.js API 라우트 전용 axios 인스턴스
 const nextAxiosInstance = axios.create({
-  baseURL: API_SELF_URL,
+  baseURL: API_NEXT_URL,
   timeout: TIMEOUT.NEXT_API, // 30초로 증가 (데이터베이스 쿼리 + OpenAI API 호출을 고려함)
   withCredentials: true,
   headers: {
