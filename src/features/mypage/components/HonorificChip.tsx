@@ -37,7 +37,7 @@ export const HonorificChip = ({ honorifics, onSelectHonorific, ...props }: Honor
               >
                 <div className="flex items-center">
                   <span className="mr-2">{getHonorificEmoji(h.level)}</span>
-                  <span className="truncate max-w-[140px]" title={h.name}>
+                  <span className="truncate max-w-[120px]" title={h.name}>
                     {h.name}
                   </span>
                 </div>
@@ -54,7 +54,7 @@ export const HonorificChip = ({ honorifics, onSelectHonorific, ...props }: Honor
       {...props}
       rightIcon={false}
       className={`
-    w-[90px] h-[70px] rounded-2xl px-2 py-1
+    w-17 h-full rounded-lg 
     flex flex-col items-center justify-center
     text-[var(--color-primary-foreground)] text-center leading-tight
     bg-[var(--color-primary-500)] shadow-[0_2px_4px_rgba(0,0,0,0.15)]
@@ -66,8 +66,8 @@ export const HonorificChip = ({ honorifics, onSelectHonorific, ...props }: Honor
     >
       {selected ? (
         <>
-          <span className="text-xl mb-1">{getHonorificEmoji(selected.level)}</span>
-          <span className="text-[11px] leading-tight break-keep">{selected.name}</span>
+          <span className="text-lg mb-[2px]">{getHonorificEmoji(selected.level)}</span>
+          <span className="text-xs leading-tight break-keep">{selected.name}</span>
         </>
       ) : (
         <span className="text-xs">칭호 없음</span>
