@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Icon } from '@/shared';
+
 import { MarkdownRenderer } from './MarkdownRenderer';
 
 const MarkdownRendererComponent = ({ text }: { text: string }) => {
@@ -10,7 +12,7 @@ const meta: Meta<typeof MarkdownRendererComponent> = {
   title: 'Common/MarkdownRenderer',
   component: MarkdownRendererComponent,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -28,18 +30,25 @@ export const Default: Story = {
   args: {
     text: '이것은 기본 마크다운 텍스트입니다.',
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <h1 className="text-white text-lg font-bold mb-4">마크다운 렌더러 테스트</h1>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <Story />
+  render: (args) => (
+    <div className="h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
           </div>
         </div>
+
+        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
+          <MarkdownRendererComponent {...args} />
+        </div>
       </div>
-    ),
-  ],
+    </div>
+  ),
 };
 
 export const Headings: Story = {
@@ -50,18 +59,25 @@ export const Headings: Story = {
 
 일반 텍스트입니다.`,
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <h1 className="text-white text-lg font-bold mb-4">마크다운 렌더러 테스트</h1>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <Story />
+  render: (args) => (
+    <div className="h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
           </div>
         </div>
+
+        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
+          <MarkdownRendererComponent {...args} />
+        </div>
       </div>
-    ),
-  ],
+    </div>
+  ),
 };
 
 export const Lists: Story = {
@@ -78,18 +94,25 @@ export const Lists: Story = {
 - 항목 2
 - 항목 3`,
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <h1 className="text-white text-lg font-bold mb-4">마크다운 렌더러 테스트</h1>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <Story />
+  render: (args) => (
+    <div className="h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
           </div>
         </div>
+
+        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
+          <MarkdownRendererComponent {...args} />
+        </div>
       </div>
-    ),
-  ],
+    </div>
+  ),
 };
 
 export const Links: Story = {
@@ -98,115 +121,142 @@ export const Links: Story = {
 
 이메일: test@example.com
 웹사이트: www.example.com
-https://ufo-fi.com
+깃허브: https://github.com/example
 
-연락처: contact@ufo-fi.com`,
+이것은 일반 텍스트입니다.`,
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <h1 className="text-white text-lg font-bold mb-4">마크다운 렌더러 테스트</h1>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <Story />
+  render: (args) => (
+    <div className="h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
           </div>
         </div>
+
+        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
+          <MarkdownRendererComponent {...args} />
+        </div>
       </div>
-    ),
-  ],
+    </div>
+  ),
 };
 
-export const Mixed: Story = {
+export const PrivacyPolicy: Story = {
   args: {
-    text: `# UFO-Fi 서비스 이용약관
+    text: `# 개인정보 처리방침
 
-## 1. 서비스 개요
-UFO-Fi는 외계 전파 코인 거래 플랫폼입니다.
+## 1. 개인정보의 처리 목적
 
-## 2. 주요 기능
-- ZET 코인 충전
-- 데이터 거래
-- 프로필 관리
+회사는 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다.
 
-## 3. 연락처
-- 이메일: support@ufo-fi.com
-- 웹사이트: https://ufo-fi.com
+- 회원 가입 및 관리
+- 서비스 제공 및 운영
+- 고객 상담 및 문의 응대
 
-## 4. 이용 절차
-1. 회원가입
-2. 본인인증
-3. 서비스 이용`,
+## 2. 개인정보의 처리 및 보유 기간
+
+회사는 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의받은 개인정보 보유·이용기간 내에서 개인정보를 처리·보유합니다.
+
+## 3. 개인정보의 제3자 제공
+
+회사는 정보주체의 개인정보를 제1조(개인정보의 처리 목적)에서 명시한 범위 내에서만 처리하며, 정보주체의 동의, 법률의 특별한 규정 등 개인정보 보호법 제17조 및 제18조에 해당하는 경우에만 개인정보를 제3자에게 제공합니다.
+
+## 4. 정보주체의 권리·의무 및 그 행사방법
+
+이용자는 개인정보주체로서 다음과 같은 권리를 행사할 수 있습니다.
+
+1. 개인정보 열람요구
+2. 오류 등이 있을 경우 정정 요구
+3. 삭제요구
+4. 처리정지 요구
+
+## 5. 개인정보의 안전성 확보 조치
+
+회사는 개인정보보호법 제29조에 따라 다음과 같은 안전성 확보 조치를 취하고 있습니다.
+
+- 개인정보의 암호화
+- 해킹 등에 대비한 기술적 대책
+- 개인정보에 대한 접근 제한
+
+## 6. 개인정보 보호책임자
+
+회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
+
+- 개인정보 보호책임자
+  - 성명: 홍길동
+  - 직책: 개인정보보호책임자
+  - 연락처: privacy@example.com
+
+## 7. 개인정보 처리방침의 변경
+
+이 개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.`,
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <h1 className="text-white text-lg font-bold mb-4">마크다운 렌더러 테스트</h1>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <Story />
+  render: (args) => (
+    <div className="h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">개인정보 처리방침</h1>
           </div>
         </div>
+
+        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
+          <MarkdownRendererComponent {...args} />
+        </div>
       </div>
-    ),
-  ],
+    </div>
+  ),
 };
 
-export const Empty: Story = {
+export const Desktop: Story = {
   args: {
-    text: '',
+    text: `# 데스크톱 마크다운 테스트
+
+## 제목 예제
+이것은 데스크톱에서의 마크다운 렌더러 테스트입니다.
+
+### 리스트 예제
+1. 첫 번째 항목
+2. 두 번째 항목
+3. 세 번째 항목
+
+### 링크 예제
+- 이메일: test@example.com
+- 웹사이트: www.example.com
+
+이것은 일반 텍스트입니다.`,
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <h1 className="text-white text-lg font-bold mb-4">마크다운 렌더러 테스트</h1>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <Story />
+  render: (args) => (
+    <div className="h-full flex flex-col bg-gray-900">
+      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
+        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+            </button>
+            <h1 className="text-white text-lg font-bold">데스크톱 마크다운 테스트</h1>
           </div>
         </div>
-      </div>
-    ),
-  ],
-};
 
-export const LongText: Story = {
-  args: {
-    text: `# 긴 텍스트 예제
-
-이것은 매우 긴 마크다운 텍스트입니다. 실제 서비스에서 사용되는 약관이나 정책 문서와 같은 형태로 작성되었습니다.
-
-## 섹션 1
-이 섹션에서는 서비스의 기본적인 내용을 설명합니다. 사용자가 이해하기 쉽도록 명확하게 작성되어야 합니다.
-
-### 하위 섹션 1.1
-- 첫 번째 항목: 서비스 이용 방법
-- 두 번째 항목: 주의사항
-- 세 번째 항목: 문의 방법
-
-## 섹션 2
-두 번째 섹션에서는 더 구체적인 내용을 다룹니다.
-
-1. 첫 번째 단계: 계정 생성
-2. 두 번째 단계: 정보 입력
-3. 세 번째 단계: 확인 및 완료
-
-## 연락처 정보
-- 이메일: contact@example.com
-- 전화: 02-1234-5678
-- 주소: 서울시 강남구 테헤란로 123
-
-자세한 내용은 웹사이트(www.example.com)를 참고하시기 바랍니다.`,
-  },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <div className="px-4 pt-4">
-          <h1 className="text-white text-lg font-bold mb-4">마크다운 렌더러 테스트</h1>
-          <div className="bg-gray-800 p-4 rounded-lg">
-            <Story />
-          </div>
+        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
+          <MarkdownRendererComponent {...args} />
         </div>
       </div>
-    ),
-  ],
+    </div>
+  ),
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
+  },
 };
