@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { Carrier } from '@/backend';
 import { IMAGE_PATHS } from '@/constants';
 import SellingItem from '@/features/exchange/components/SellingItem';
 import { useProfile } from '@/features/profile/hooks/useProfile';
@@ -62,7 +63,7 @@ export function DataListView({ userId }: DataListViewProps) {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-center">
               {profile.tradePostsRes
                 .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((post) => (
+                .map(({ carrier, ...post }) => (
                   <SellingItem
                     key={post.postId}
                     networkType={getMobileDataTypeDisplay(post.mobileDataType)}
@@ -73,6 +74,7 @@ export function DataListView({ userId }: DataListViewProps) {
                     price={`${post.sellMobileDataPrice ?? 0}ZET`}
                     timeLeft={formatTimeAgo(post.createdAt)}
                     sellerId={profile.userId}
+                    carrier={carrier as Carrier}
                     {...post}
                     onPurchase={() => router.push(`/exchange/purchase/${post.postId}`)}
                     onReport={() => handleReport(post.postId, profile.userId)}
