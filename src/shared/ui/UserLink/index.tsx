@@ -28,11 +28,10 @@ export function UserLink({
   const href = isValidUser ? `/profile/${numericUserId}` : undefined;
 
   const handleClick = (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
     // 커스텀 onClick이 있으면 먼저 실행
     if (onClick && event.type === 'click') {
+      event.preventDefault();
+      event.stopPropagation();
       onClick(event as React.MouseEvent<HTMLElement>);
     }
 
