@@ -1,4 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Image from 'next/image';
+
+import { IMAGE_PATHS } from '@/constants/images';
+import { SpeechBubble } from '@/shared';
 
 // Mock AlienWithSpeech for Storybook
 const MockAlienWithSpeech = ({
@@ -12,48 +16,36 @@ const MockAlienWithSpeech = ({
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }) => {
-  const getSizeClasses = (size: string) => {
-    switch (size) {
-      case 'sm':
-        return 'max-w-xs text-xs';
-      case 'lg':
-        return 'max-w-md text-base';
-      default:
-        return 'max-w-sm text-sm';
-    }
-  };
-
-  const getTailClasses = (direction: string) => {
-    return direction === 'left' ? 'ml-2' : 'mr-2';
-  };
-
   return (
-    <div
-      className={`w-full h-full flex justify-between items-center gap-6 relative px-4 z-40 ${className}`}
-    >
-      {/* 말풍선 */}
-      <div className="flex-1 flex justify-end">
-        <div
-          className={`bg-white rounded-lg p-3 shadow-lg ${getSizeClasses(size)} ${getTailClasses(tailDirection)}`}
-        >
-          <div className="relative">
-            <p className="text-gray-800">{message}</p>
-            {/* 말풍선 꼬리 */}
-            <div
-              className={`absolute top-1/2 transform -translate-y-1/2 ${
-                tailDirection === 'left'
-                  ? '-left-2 border-r-8 border-r-white'
-                  : '-right-2 border-l-8 border-l-white'
-              } border-t-4 border-t-transparent border-b-4 border-b-transparent`}
-            />
-          </div>
-        </div>
-      </div>
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">외계인과 말풍선</h2>
 
-      {/* 외계인 캐릭터 */}
-      <div className="flex-1 flex justify-center">
-        <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-4xl shadow-2xl animate-bounce">
-          👽
+          <div
+            className={`w-full h-full flex justify-between items-center gap-6 relative px-4 z-40 ${className}`}
+          >
+            {/* 말풍선 */}
+            <div className="flex-1 flex justify-end">
+              <SpeechBubble tailDirection={tailDirection} size={size} className="max-w-xs text-sm">
+                {message}
+              </SpeechBubble>
+            </div>
+
+            {/* 외계인 캐릭터 */}
+            <div className="flex-1 flex justify-center">
+              <div className="relative z-50 w-full h-full flex justify-center items-center">
+                <Image
+                  src={IMAGE_PATHS['AL_ONBOARDING']}
+                  alt="UFO-Fi 외계인"
+                  width={500}
+                  height={500}
+                  className="w-full h-full max-w-full max-h-full object-contain drop-shadow-2xl transition-all duration-300 animate-bounce aspect-square"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -65,6 +57,9 @@ const meta: Meta<typeof MockAlienWithSpeech> = {
   component: MockAlienWithSpeech,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -90,7 +85,7 @@ const meta: Meta<typeof MockAlienWithSpeech> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockAlienWithSpeech>;
 
 export const Default: Story = {
   args: {
@@ -138,5 +133,18 @@ export const WelcomeMessage: Story = {
     message: '우주 여행을 시작할 준비가 되셨나요? 🚀',
     tailDirection: 'left',
     size: 'lg',
+  },
+};
+
+export const Desktop: Story = {
+  args: {
+    message: '안녕하세요! UFO-Fi에 오신 것을 환영합니다! 👽',
+    tailDirection: 'right',
+    size: 'md',
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };
