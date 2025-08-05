@@ -5,27 +5,28 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+import { TooltipProviderProps, TooltipProps } from './Tooltip.types';
+import {
+  tooltipProviderVariants,
+  tooltipContentVariants,
+  tooltipArrowVariants,
+} from './TooltipVariants';
+
 // TooltipProvider는 그대로 유지
 function TooltipProvider({
   delayDuration = 0,
+  variant = 'default',
+  className,
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
+}: TooltipProviderProps) {
   return (
     <TooltipPrimitive.Provider
       data-slot="tooltip-provider"
       delayDuration={delayDuration}
+      className={cn(tooltipProviderVariants({ variant }), className)}
       {...props}
     />
   );
-}
-
-// content prop을 지원하는 래퍼 컴포넌트
-interface CustomTooltipProps extends React.ComponentProps<typeof TooltipPrimitive.Root> {
-  content: React.ReactNode;
-  children: React.ReactNode;
-  side?: 'top' | 'bottom' | 'left' | 'right';
-  sideOffset?: number;
-  className?: string;
 }
 
 function Tooltip({
@@ -33,11 +34,13 @@ function Tooltip({
   children,
   side = 'top',
   sideOffset = 0,
+  variant = 'default',
+  size = 'default',
   className,
   ...props
-}: CustomTooltipProps) {
+}: TooltipProps) {
   return (
-    <TooltipProvider>
+    <TooltipProvider variant={variant}>
       <TooltipPrimitive.Root data-slot="tooltip" {...props}>
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
@@ -45,13 +48,10 @@ function Tooltip({
             data-slot="tooltip-content"
             side={side}
             sideOffset={sideOffset}
-            className={cn(
-              'bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance',
-              className,
-            )}
+            className={cn(tooltipContentVariants({ variant, size }), className)}
           >
             {content}
-            <TooltipPrimitive.Arrow className="bg-primary fill-primary z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+            <TooltipPrimitive.Arrow className={cn(tooltipArrowVariants({ variant }))} />
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
