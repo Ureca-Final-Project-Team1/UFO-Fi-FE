@@ -1,9 +1,36 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj, Decorator } from '@storybook/react';
+import React from 'react';
 
 import { Icon } from '@/shared';
 
 import { HonorificChip } from './HonorificChip';
 import { Honorific } from '../types/Achievement';
+
+const HonorificPageDecorator: Decorator = (Story, context) => (
+  <div className="w-full h-full flex flex-col bg-gray-900">
+    <div className={`px-4 pt-4 ${context.parameters?.isDesktop ? 'max-w-2xl mx-auto w-full' : ''}`}>
+      {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+            <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+          </button>
+          <h1 className="text-white text-lg font-bold">
+            {context.parameters?.title || '마이페이지'}
+          </h1>
+        </div>
+      </div>
+      <div className="flex flex-col gap-4">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">
+            {context.parameters?.subtitle || '칭호 칩'}
+          </h2>
+          <Story />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 const meta: Meta<typeof HonorificChip> = {
   title: 'Mypage/HonorificChip',
@@ -33,29 +60,11 @@ export const Default: Story = {
     ] as Honorific[],
   },
   render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">칭호 칩</h2>
-            <div className="flex justify-center">
-              <HonorificChip {...args} />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="flex justify-center">
+      <HonorificChip {...args} />
     </div>
   ),
+  decorators: [HonorificPageDecorator],
 };
 
 export const MultipleHonorifics: Story = {
@@ -69,29 +78,14 @@ export const MultipleHonorifics: Story = {
     ] as Honorific[],
   },
   render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">다중 칭호 칩</h2>
-            <div className="flex justify-center">
-              <HonorificChip {...args} />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="flex justify-center">
+      <HonorificChip {...args} />
     </div>
   ),
+  decorators: [HonorificPageDecorator],
+  parameters: {
+    subtitle: '다중 칭호 칩',
+  },
 };
 
 export const NoHonorifics: Story = {
@@ -99,29 +93,14 @@ export const NoHonorifics: Story = {
     honorifics: [] as Honorific[],
   },
   render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">칭호 없음</h2>
-            <div className="flex justify-center">
-              <HonorificChip {...args} />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="flex justify-center">
+      <HonorificChip {...args} />
     </div>
   ),
+  decorators: [HonorificPageDecorator],
+  parameters: {
+    subtitle: '칭호 없음',
+  },
 };
 
 export const Desktop: Story = {
@@ -134,30 +113,15 @@ export const Desktop: Story = {
     ] as Honorific[],
   },
   render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">데스크톱 칭호 칩</h2>
-            <div className="flex justify-center">
-              <HonorificChip {...args} />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="flex justify-center">
+      <HonorificChip {...args} />
     </div>
   ),
+  decorators: [HonorificPageDecorator],
   parameters: {
+    title: '데스크톱 마이페이지',
+    subtitle: '데스크톱 칭호 칩',
+    isDesktop: true,
     viewport: {
       defaultViewport: 'desktop',
     },
