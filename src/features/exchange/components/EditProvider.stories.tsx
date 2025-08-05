@@ -171,41 +171,22 @@ const meta: Meta<typeof MockEditProvider> = {
 export default meta;
 type Story = StoryObj<typeof MockEditProvider>;
 
+const EditProviderDecorator = (Story: React.ComponentType) => (
+  <div className="h-full flex flex-col bg-gray-900">
+    <Story />
+  </div>
+);
+
 export const Default: Story = {
   args: {
     children: <MockSellEditPage />,
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [EditProviderDecorator],
 };
 
 export const Loading: Story = {
   args: {
     children: <MockLoading />,
   },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const WithFormContent: Story = {
-  args: {
-    children: <MockSellEditPage />,
-  },
-  decorators: [
-    (Story) => (
-      <div className="h-full flex flex-col bg-gray-900">
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [EditProviderDecorator],
 };
