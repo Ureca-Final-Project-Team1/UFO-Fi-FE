@@ -5,132 +5,29 @@ import { Icon } from '@/shared';
 
 import { NicknameEditor } from './NicknameEditor';
 
-// Story Wrapper Components
-const DefaultStoryWrapper = (args: {
+// 공통 Story Wrapper Component
+interface NicknameEditorStoryWrapperProps {
   nickname?: string;
   isLoading?: boolean;
   onSave?: () => void;
-}) => {
+  isDesktop?: boolean;
+}
+
+const NicknameEditorStoryWrapper = (args: NicknameEditorStoryWrapperProps) => {
   const [nickname, setNickname] = useState(args.nickname || '');
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
+      <div className={`px-4 pt-4 ${args.isDesktop ? 'max-w-2xl mx-auto w-full' : ''}`}>
         {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
               <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <NicknameEditor
-              {...args}
-              nickname={nickname}
-              setNickname={setNickname}
-              isLoading={args.isLoading || false}
-              onSave={() => {}}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const WithNicknameStoryWrapper = (args: {
-  nickname?: string;
-  isLoading?: boolean;
-  onSave?: () => void;
-}) => {
-  const [nickname, setNickname] = useState(args.nickname || '');
-
-  return (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <NicknameEditor
-              {...args}
-              nickname={nickname}
-              setNickname={setNickname}
-              isLoading={args.isLoading || false}
-              onSave={() => {}}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const LoadingStoryWrapper = (args: {
-  nickname?: string;
-  isLoading?: boolean;
-  onSave?: () => void;
-}) => {
-  const [nickname, setNickname] = useState(args.nickname || '');
-
-  return (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <NicknameEditor
-              {...args}
-              nickname={nickname}
-              setNickname={setNickname}
-              isLoading={args.isLoading || false}
-              onSave={() => {}}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const DesktopStoryWrapper = (args: {
-  nickname?: string;
-  isLoading?: boolean;
-  onSave?: () => void;
-}) => {
-  const [nickname, setNickname] = useState(args.nickname || '');
-
-  return (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
+            <h1 className="text-white text-lg font-bold">
+              {args.isDesktop ? '데스크톱 마이페이지' : '마이페이지'}
+            </h1>
           </div>
         </div>
 
@@ -184,7 +81,7 @@ export const Default: Story = {
     nickname: '',
     isLoading: false,
   },
-  render: (args) => <DefaultStoryWrapper {...args} />,
+  render: (args) => <NicknameEditorStoryWrapper {...args} />,
 };
 
 export const WithNickname: Story = {
@@ -192,7 +89,7 @@ export const WithNickname: Story = {
     nickname: '지구인123',
     isLoading: false,
   },
-  render: (args) => <WithNicknameStoryWrapper {...args} />,
+  render: (args) => <NicknameEditorStoryWrapper {...args} />,
 };
 
 export const Loading: Story = {
@@ -200,7 +97,7 @@ export const Loading: Story = {
     nickname: '새닉네임',
     isLoading: true,
   },
-  render: (args) => <LoadingStoryWrapper {...args} />,
+  render: (args) => <NicknameEditorStoryWrapper {...args} />,
 };
 
 export const InvalidNickname: Story = {
@@ -208,7 +105,7 @@ export const InvalidNickname: Story = {
     nickname: '매우긴닉네임입니다',
     isLoading: false,
   },
-  render: (args) => <DefaultStoryWrapper {...args} />,
+  render: (args) => <NicknameEditorStoryWrapper {...args} />,
 };
 
 export const Desktop: Story = {
@@ -216,7 +113,7 @@ export const Desktop: Story = {
     nickname: '데스크톱유저',
     isLoading: false,
   },
-  render: (args) => <DesktopStoryWrapper {...args} />,
+  render: (args) => <NicknameEditorStoryWrapper {...args} isDesktop />,
   parameters: {
     viewport: {
       defaultViewport: 'desktop',
