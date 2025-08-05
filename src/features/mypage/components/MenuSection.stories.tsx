@@ -8,8 +8,8 @@ import MenuSection from './MenuSection';
 // 공통 Story Wrapper Component
 interface StoryWrapperProps {
   args: {
-    title?: string;
-    items?: Array<{ label: string; onClick: () => void }>;
+    title: string;
+    items: Array<{ label: string; onClick?: () => void }>;
   };
   title?: string;
   isDesktop?: boolean;

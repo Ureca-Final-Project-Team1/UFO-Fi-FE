@@ -3,10 +3,22 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ProfileUser } from '@/backend/types/profile';
 import { Icon } from '@/shared';
 
-const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
+// 스토리북용 확장된 프로필 타입
+interface MockProfileUser extends ProfileUser {
+  honorific: string;
+  level: number;
+  totalZet: number;
+  totalTradeCount: number;
+  createdAt: string;
+}
+
+const createMockProfile = (overrides?: Partial<MockProfileUser>): MockProfileUser => ({
   userId: 12345,
   nickname: '우주탐험가',
-  profileImageUrl: null,
+  profileImageUrl: undefined,
+  followerCount: 10,
+  followingCount: 5,
+  tradePostsRes: [],
   honorific: '초보 탐험가',
   level: 1,
   totalZet: 15000,
@@ -16,7 +28,11 @@ const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
 });
 
 // Mock ProfileShareContent for Storybook
-const MockProfileShareContent = ({ profile = createMockProfile() }: { profile?: ProfileUser }) => {
+const MockProfileShareContent = ({
+  profile = createMockProfile(),
+}: {
+  profile?: MockProfileUser;
+}) => {
   const profileUrl = `https://ufo-fi.com/profile/${profile.userId}`;
 
   const handleCopyLink = () => {
