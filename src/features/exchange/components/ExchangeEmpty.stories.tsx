@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 // Mock ExchangeEmpty for Storybook (실제 ExchangeEmpty와 동일한 구조)
-const MockExchangeEmpty = () => {
+const MockExchangeEmpty = ({ onClick }: { onClick?: () => void }) => {
   return (
     <div className="flex flex-col items-center justify-center py-16">
       <div className="text-gray-400 text-center">
@@ -26,7 +26,10 @@ const MockExchangeEmpty = () => {
         <p className="text-lg mb-2">등록된 판매글이 없습니다</p>
         <p className="text-sm mb-6">첫 번째 거래글을 등록해보세요!</p>
         {/* exploration-button variant와 동일한 스타일 */}
-        <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer exploration-button font-semibold text-[16px] leading-[24px] px-6">
+        <button
+          onClick={onClick}
+          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer exploration-button font-semibold text-[16px] leading-[24px] px-6"
+        >
           판매글 등록하기
         </button>
       </div>
