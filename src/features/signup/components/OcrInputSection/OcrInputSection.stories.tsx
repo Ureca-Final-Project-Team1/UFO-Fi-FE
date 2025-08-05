@@ -1,127 +1,134 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useForm, FieldError } from 'react-hook-form';
+
+import { Carrier } from '@/backend/types/carrier';
+import type { Plan } from '@/backend/types/plan';
+
+import { OCRInputSection } from './OcrInputSection';
+
+// QueryClient 인스턴스 생성
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
 
 // Mock OcrInputSection for Storybook
 const MockOcrInputSection = ({
-  className = '',
-  plans = [
-    { planName: '5G 기본 요금제', sellMobileDataCapacityGB: 10, mobileDataType: '_5G' },
-    { planName: '5G 프리미엄 요금제', sellMobileDataCapacityGB: 20, mobileDataType: '_5G' },
-    { planName: '5G 무제한 요금제', sellMobileDataCapacityGB: 100, mobileDataType: '_5G' },
-  ],
   isLoading = false,
-  setMaxData,
-  setNetworkType,
-  setForm,
+  hasError = false,
+  isOcrProcessing = false,
 }: {
-  className?: string;
-  plans?: Array<{ planName: string; sellMobileDataCapacityGB: number; mobileDataType: string }>;
   isLoading?: boolean;
-  setMaxData?: (maxData: number | null) => void;
-  setNetworkType?: (networkType: string) => void;
-  setForm?: (form: { carrier?: string; planName?: string }) => void;
+  hasError?: boolean;
+  isOcrProcessing?: boolean;
 }) => {
-  const [selectedCarrier, setSelectedCarrier] = useState('');
-  const [selectedPlan, setSelectedPlan] = useState('');
-  const [carrierError, setCarrierError] = useState('');
-  const [planError, setPlanError] = useState('');
+  const [plans, setPlans] = useState<Plan[]>([
+    {
+      planId: 1,
+      planName: '5G 기본 요금제',
+      carrier: Carrier.SKT,
+      mobileDataAmount: 10,
+      isUltimatedAmount: false,
+      sellMobileDataCapacityGB: 10,
+      mobileDataType: '_5G',
+    },
+    {
+      planId: 2,
+      planName: '5G 프리미엄 요금제',
+      carrier: Carrier.SKT,
+      mobileDataAmount: 20,
+      isUltimatedAmount: false,
+      sellMobileDataCapacityGB: 20,
+      mobileDataType: '_5G',
+    },
+    {
+      planId: 3,
+      planName: '5G 무제한 요금제',
+      carrier: Carrier.SKT,
+      mobileDataAmount: 100,
+      isUltimatedAmount: true,
+      sellMobileDataCapacityGB: 100,
+      mobileDataType: '_5G',
+    },
+  ]);
 
-  const handleCarrierChange = (carrier: string) => {
-    setSelectedCarrier(carrier);
-    setSelectedPlan('');
-    setCarrierError('');
-    setForm?.({ carrier, planName: '' });
-    setMaxData?.(null);
-    setNetworkType?.('');
-  };
+  // 실제 react-hook-form 사용
+  const {
+    control,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm({
+    defaultValues: {
+      carrier: '',
+      planName: '',
+    },
+  });
 
-  const handlePlanChange = (planName: string) => {
-    setSelectedPlan(planName);
-    setPlanError('');
-    setForm?.({ planName });
+  const mockSetPlans = (newPlans: Plan[]) => setPlans(newPlans);
+  const mockSetMaxData = (maxData: number | null) => console.warn('Max Data:', maxData);
+  const mockSetNetworkType = (networkType: string) => console.warn('Network Type:', networkType);
+  const mockSetForm = (form: { carrier?: string; planName?: string }) =>
+    console.warn('Form:', form);
 
-    const selected = plans.find((p) => p.planName === planName);
-    if (selected) {
-      setMaxData?.(selected.sellMobileDataCapacityGB);
-      setNetworkType?.(selected.mobileDataType.replace(/^_/, ''));
-    }
-  };
-
-  const handleFileUpload = () => {
-    // Mock OCR functionality
-    console.log('OCR 처리 중...');
-  };
+  // 에러 상태 시뮬레이션
+  const mockErrors = hasError
+    ? {
+        carrier: { type: 'required', message: '통신사를 선택해주세요.' } as FieldError,
+        planName: { type: 'required', message: '요금제를 선택해주세요.' } as FieldError,
+      }
+    : errors;
 
   return (
-    <div className={`flex flex-col gap-5 w-full ${className}`}>
-      {/* 통신사 */}
-      <div className="w-full">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          통신사 정보
-          {carrierError && <p className="text-red-500 text-xs mt-1">{carrierError}</p>}
-        </label>
-        <select
-          value={selectedCarrier}
-          onChange={(e) => handleCarrierChange(e.target.value)}
-          disabled={isLoading}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-        >
-          <option value="">통신사 선택</option>
-          <option value="SKT">SKT</option>
-          <option value="LGU">LG U+</option>
-          <option value="KT">KT</option>
-        </select>
-      </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="w-full bg-gray-900 p-4">
+        <div className="max-w-md mx-auto">
+          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+            <h2 className="text-white text-base font-semibold mb-4">OCR 요금제 입력 섹션</h2>
 
-      {/* 요금제 */}
-      <div className="w-full">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          요금제 정보
-          {planError && <p className="text-red-500 text-xs mt-1">{planError}</p>}
-        </label>
-        <select
-          value={selectedPlan}
-          onChange={(e) => handlePlanChange(e.target.value)}
-          disabled={isLoading || !selectedCarrier}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
-        >
-          <option value="">요금제 선택</option>
-          {plans.map((plan) => (
-            <option key={plan.planName} value={plan.planName}>
-              {plan.planName}
-            </option>
-          ))}
-        </select>
-      </div>
+            <OCRInputSection
+              className=""
+              control={control}
+              errors={mockErrors}
+              setValue={setValue}
+              plans={plans}
+              setPlans={mockSetPlans}
+              setMaxData={mockSetMaxData}
+              setNetworkType={mockSetNetworkType}
+              isLoading={isLoading}
+              setIsLoading={() => {}}
+              setForm={mockSetForm}
+            />
 
-      {/* OCR 버튼 */}
-      <div className="w-full">
-        <div className="pb-4">
-          <button
-            type="button"
-            onClick={handleFileUpload}
-            disabled={isLoading}
-            className={`w-full p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors ${
-              isLoading ? 'bg-gray-100 cursor-not-allowed' : 'bg-white cursor-pointer'
-            }`}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <span className="text-2xl">📷</span>
-              <p className="text-gray-600">
-                {isLoading ? 'OCR 처리 중...' : '캡처 이미지로 요금제 자동 입력'}
+            {/* 상태 표시 */}
+            <div className="mt-4 p-3 bg-blue-500/20 border border-blue-500/30 rounded-lg">
+              <p className="text-blue-300 text-sm">
+                <strong>선택된 통신사:</strong> {watch('carrier') || '없음'}
               </p>
+              <p className="text-blue-300 text-sm">
+                <strong>선택된 요금제:</strong> {watch('planName') || '없음'}
+              </p>
+              <p className="text-blue-300 text-sm">
+                <strong>로딩 상태:</strong> {isLoading ? '로딩 중' : '완료'}
+              </p>
+              {isOcrProcessing && (
+                <p className="text-yellow-300 text-sm">
+                  <strong>OCR 처리 중...</strong>
+                </p>
+              )}
             </div>
-          </button>
+          </div>
         </div>
       </div>
-
-      {/* Mock status display */}
-      <div className="mt-4 p-4 bg-gray-100 rounded-lg text-sm">
-        <div>선택된 통신사: {selectedCarrier || '없음'}</div>
-        <div>선택된 요금제: {selectedPlan || '없음'}</div>
-        <div>로딩 상태: {isLoading ? '로딩 중' : '완료'}</div>
-      </div>
-    </div>
+    </QueryClientProvider>
   );
 };
 
@@ -130,63 +137,71 @@ const meta: Meta<typeof MockOcrInputSection> = {
   component: MockOcrInputSection,
   parameters: {
     layout: 'padded',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    setMaxData: { action: 'max data set' },
-    setNetworkType: { action: 'network type set' },
-    setForm: { action: 'form updated' },
+    isLoading: {
+      control: { type: 'boolean' },
+      description: '로딩 상태',
+    },
+    hasError: {
+      control: { type: 'boolean' },
+      description: '에러 상태',
+    },
+    isOcrProcessing: {
+      control: { type: 'boolean' },
+      description: 'OCR 처리 상태',
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockOcrInputSection>;
 
 export const Default: Story = {
   args: {
-    plans: [
-      { planName: '5G 기본 요금제', sellMobileDataCapacityGB: 10, mobileDataType: '_5G' },
-      { planName: '5G 프리미엄 요금제', sellMobileDataCapacityGB: 20, mobileDataType: '_5G' },
-      { planName: '5G 무제한 요금제', sellMobileDataCapacityGB: 100, mobileDataType: '_5G' },
-    ],
+    isLoading: false,
+    hasError: false,
+    isOcrProcessing: false,
   },
 };
 
 export const Loading: Story = {
   args: {
     isLoading: true,
-    plans: [
-      { planName: '5G 기본 요금제', sellMobileDataCapacityGB: 10, mobileDataType: '_5G' },
-      { planName: '5G 프리미엄 요금제', sellMobileDataCapacityGB: 20, mobileDataType: '_5G' },
-    ],
+    hasError: false,
+    isOcrProcessing: false,
   },
 };
 
-export const WithSelection: Story = {
+export const WithErrors: Story = {
   args: {
-    plans: [
-      { planName: '5G 기본 요금제', sellMobileDataCapacityGB: 10, mobileDataType: '_5G' },
-      { planName: '5G 프리미엄 요금제', sellMobileDataCapacityGB: 20, mobileDataType: '_5G' },
-      { planName: '5G 무제한 요금제', sellMobileDataCapacityGB: 100, mobileDataType: '_5G' },
-    ],
+    isLoading: false,
+    hasError: true,
+    isOcrProcessing: false,
   },
 };
 
-export const ManyPlans: Story = {
+export const OcrProcessing: Story = {
   args: {
-    plans: [
-      { planName: '5G 기본 요금제', sellMobileDataCapacityGB: 10, mobileDataType: '_5G' },
-      { planName: '5G 프리미엄 요금제', sellMobileDataCapacityGB: 20, mobileDataType: '_5G' },
-      { planName: '5G 무제한 요금제', sellMobileDataCapacityGB: 100, mobileDataType: '_5G' },
-      { planName: '4G 기본 요금제', sellMobileDataCapacityGB: 5, mobileDataType: '_4G' },
-      { planName: '4G 프리미엄 요금제', sellMobileDataCapacityGB: 15, mobileDataType: '_4G' },
-      { planName: '4G 무제한 요금제', sellMobileDataCapacityGB: 50, mobileDataType: '_4G' },
-    ],
+    isLoading: false,
+    hasError: false,
+    isOcrProcessing: true,
   },
 };
 
-export const NoPlans: Story = {
+export const Desktop: Story = {
   args: {
-    plans: [],
+    isLoading: false,
+    hasError: false,
+    isOcrProcessing: false,
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
   },
 };
