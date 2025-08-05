@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { nextApiRequest } from '@/backend/client/axios';
 import { LetterDisplay } from '@/backend/types/letters';
+import { API_ENDPOINTS } from '@/constants';
 import { Modal, SpeechBubble } from '@/shared';
 
 const ORBIT_BASE_SIZE = 600;
@@ -32,8 +33,8 @@ export default function OrbitWithSatellite() {
   useEffect(() => {
     async function fetchLetters() {
       try {
-        await nextApiRequest.post('/api/story/letters');
-        const res = await nextApiRequest.get('/api/story/letters');
+        await nextApiRequest.post(API_ENDPOINTS.STORY.POST_LETTERS);
+        const res = await nextApiRequest.get(API_ENDPOINTS.STORY.GET_LETTERS);
         const data = (await res.data) as LetterDisplay[];
         setLetters(
           data.map((letter) => ({

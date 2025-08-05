@@ -45,69 +45,57 @@ export const COOKIE_CONFIG = {
 
 // API 엔드포인트
 export const API_ENDPOINTS = {
+  // Plan(1)
+  PLANS: '/plans', // 요금제 조회
+
   // User(6)
   USER: {
-    SIGNUP_USER_INFO: '/signup/user-info',
-    PROFILE: (userId: number) => `/${userId}/profile`,
-    PROFILE_UPDATE: (userId: number) => `/${userId}/profile`,
-    ANOTHER_PROFILE: (anotherUserId: number) => `/${anotherUserId}/profile`,
-    ROLE: (userId: number) => `/${userId}/role`,
-    REPORTED_USERS: '/users/role/reported',
-  },
-
-  // UserPlan(3)
-  USER_PLAN: {
-    SIGNUP: '/user-plan',
-    GET_MY_PLAN: '/user-plan',
-    UPDATE_GET_MY_PLAN: (userPlanId: number) => `/user-plan/${userPlanId}`,
-  },
-
-  // Plan(1)
-  PLANS: '/plans',
-
-  // TradePost(5)
-  TRADE_POST: {
-    UPDATE: (postId: number) => `/posts/${postId}`,
-    DELETE: (postId: number) => `/posts/${postId}`,
-    LIST: '/posts', // 전체조회
-    CREATE: '/posts',
-    BULK_PURCHASE_GET: '/posts/bulk-purchase', // 일괄구매 조회
+    ROLE: (userId: number) => `/admin/users/${userId}/role`, // 사용자 비활성화 풀기
+    PROFILE_UPDATE: '/users/me/profile', // 나의 프로필 수정
+    REPORTED_USERS: '/users/role/reported', // 비활성 사용자 조회
+    SIGNUP_USER_INFO: '/users/me/user-info', // 회원가입
+    ANOTHER_PROFILE: (anotherUserId: number) => `/users/${anotherUserId}/profile`, // 상대방 유저 조회
+    PROFILE: '/users/me/profile', // 나의 프로필 조회
   },
 
   // Order(5)
   ORDER: {
-    SALE_HISTORIES: '/trade-histories/sale', // 판매내역 조회
-    PURCHASE_HISTORIES: '/trade-histories/purchase', // 구매내역 조회
-    PURCHASE_DETAIL: (tradeHistoryId: number) => `/trade-histories/${tradeHistoryId}`, // 내역 상세보기
-    PURCHASE: '/posts/purchase', // 구매
-    BULK_PURCHASE_POST: '/posts/bulk-purchase', // 일괄구매 요청
+    PURCHASE: '/posts/purchase', // 구매(Zet <-> Data)
+    BULK_PURCHASE_POST: '/posts/bulk-purchase', // 일괄 구매 요청
+    SALE_HISTORIES: '/trade-histories/sale', // 판매 내역 조회
+    PURCHASE_HISTORIES: '/trade-histories/purchase', // 구매 내역 조회
+    PURCHASE_DETAIL: (tradeHistoryId: number) => `/trade-histories/${tradeHistoryId}`, // 구매 내역 상세 보기
   },
 
-  // bannedword(4)
-  BANNED_WORDS: {
-    LIST: '/banned-words',
-    CREATE: '/banned-word',
-    DELETE_BULK: '/banned-words',
-    DELETE_SINGLE: (bannedWordId: number) => `/banned-words/${bannedWordId}`,
+  // InterestedPost(1)
+  INTERESTED_POST: {
+    NOTIFICATION_FILTER: '/notification-filters/interested-post', // 관심 상품 등록 조건 설정
   },
 
-  // Follow(4)
-  FOLLOW: {
-    FOLLOW: (followId: number) => `/follow/${followId}`,
-    UNFOLLOW: (followingId: number) => `/follow/${followingId}`,
-    FOLLOWINGS: '/follows/followings',
-    FOLLOWERS: '/follows/followers',
-  },
-
-  // Notification(4)
+  // Notification(1)
   NOTIFICATION: {
-    FCM_TOKEN: '/fcm/token',
-    INTERESTED_POST_FILTER: '/notification-filters/interested-post',
-    SETTINGS_GET: '/notification-settings',
-    SETTINGS_UPDATE: '/notification-settings',
+    NOTIFICATION: '/notifications', // 최근 알림 내역 조회
   },
 
-  // InterestedPost
+  // Report(3)
+  REPORT: {
+    ROLL_BACK: '/admin/reports/report', // 관리자용 신고 해지하기
+    REPORT_POST: (tradePostId: number) => `/trade-posts/${tradePostId}/report`, // 신고하기
+    REPORT_CHECK: '/admin/trade-posts/reported', // 관리자용 신고된 게시물 조회
+  },
+
+  // UserPlan(3)
+  USER_PLAN: {
+    UPDATE_GET_MY_PLAN: (userPlanId: number) => `/user-plan/${userPlanId}`, // 요금제 정보 변경
+    SIGNUP: '/user-plan', // 회원가입
+    GET_MY_PLAN: '/user-plan', // 나의 요금제 정보 조회
+  },
+
+  // Statistics(2)
+  STATISTICS: {
+    BASIC: '/admin/statistics', // 기본 통계
+    REPORTS: '/admin/statistics/reports', // 비활성화 통계
+  },
 
   // Payment(2)
   PAYMENT: {
@@ -115,36 +103,76 @@ export const API_ENDPOINTS = {
     CHARGE: '/payment', // 충전
   },
 
-  // Report(2)
-  REPORT: {
-    ROLL_BACK: '/reports/report', // 어드민 신고 해지
-    REPORT_POST: (tradePostId: number) => `/trade-posts/${tradePostId}/report`, // 신고하기
+  // FCM Token(1)
+  FCM: {
+    FCM_TOKEN: '/fcm/token', // FCM 토큰 저장
   },
 
-  // Statistics(2)
-  STATISTICS: {
-    BASIC: '/statistics',
-    REPORTS: '/statistics/reports',
+  // TradePost(6)
+  TRADE_POST: {
+    CHECK: (postId: number) => `posts/${postId}`, // 판매 게시물 상세 조회
+    UPDATE: (postId: number) => `/posts/${postId}`, // 판매 게시물 수정
+    DELETE: (postId: number) => `/posts/${postId}`, // 판매 게시물 삭제
+    LIST: '/posts', // 게시글 전체 조회
+    CREATE: '/posts', // 판매 게시물 생성
+    BULK_PURCHASE_GET: '/posts/bulk-purchase', // 일괄 구매 조회
+  },
+
+  // Follow(4)
+  FOLLOW: {
+    FOLLOW: (followId: number) => `/follow/${followId}`, // 팔로워 팔로잉 맺기
+    FOLLOWINGS: '/follows/followings', // 내 팔로잉 목록 조회
+    FOLLOWERS: '/follows/followers', // 내 팔로워 목록 조회
+    UNFOLLOW: (followingId: number) => `/follow/${followingId}`, // 팔로워 팔로잉 끊기
+  },
+
+  // Auth(2)
+  AUTH: {
+    LOGOUT: '/logout',
+    REFRESH: '/refresh',
+  },
+
+  // NotificationSetting(2)
+  NOTIFICATION_SETTING: {
+    SETTINGS_GET: '/notification-settings', // 알림 목록 조회
+    SETTINGS_UPDATE: '/notification-settings', // Notification ON/OFF
+  },
+
+  // bannedword(4)
+  BANNED_WORDS: {
+    LIST: '/admin/banned-words', // 금칙어 전체 조회
+    CREATE: '/admin/banned-word', // 금칙어 등록
+    DELETE_BULK: '/admin/banned-words', // 금칙어 일괄 삭제
+    DELETE_SINGLE: (bannedWordId: number) => `/admin/banned-words/${bannedWordId}`, // 금칙어 단일 삭제
   },
 
   //NextAPI
 
-  //Collections(2)
+  //Collections(3)
   COLLECTIONS: {
     CREATE: '/api/collections',
     SEARCH: '/api/collections/search',
+    USER_STAT: '/api/collections/user-stats',
   },
 
-  // Achievements(4)
+  // Achievements(3)
   ACHIEVEMENTS: {
     UPDATE: '/api/achievements/update',
     HONOR: '/api/achievements/honor',
     SELECT_HONOR: '/api/achievements/honor/select',
   },
 
-  // Story(1)
+  // Story(2)
   STORY: {
-    LETTERS: '/api/story/letters',
+    GET_LETTERS: '/api/story/letters',
+    POST_LETTERS: '/api/story/letters',
+  },
+
+  // NextNotification
+  NEXT_NOTIFICATION: {
+    GET_NOTIFICATION: '/api/notifications',
+    UPDATE_NOTIFICATION: '/api/notifications',
+    READ_NOTIFICATION: (notificationId: string) => `/api/notifications/${notificationId}/read`,
   },
 
   REFRESH: '/refresh',

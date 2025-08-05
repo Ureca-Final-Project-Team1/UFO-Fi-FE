@@ -9,7 +9,7 @@ export const profileAPI = {
     }
 
     const response = await apiRequest.get<GetProfileResponse>(
-      API_ENDPOINTS.USER.PROFILE(anotherUserId),
+      API_ENDPOINTS.USER.ANOTHER_PROFILE(anotherUserId),
     );
     return response.data;
   },

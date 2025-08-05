@@ -11,6 +11,7 @@ import 'swiper/css/free-mode';
 
 import { nextApiRequest } from '@/backend/client/axios';
 import type { ProfileUser, UserStats } from '@/backend/types/profile';
+import { API_ENDPOINTS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
 import { getMobileDataTypeDisplay } from '@/utils/mobileData';
@@ -33,7 +34,7 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
   useEffect(() => {
     const fetchUserStats = async () => {
       try {
-        const response = await nextApiRequest.get<UserStats>('/api/collections/user-stats', {
+        const response = await nextApiRequest.get<UserStats>(API_ENDPOINTS.COLLECTIONS.USER_STAT, {
           params: { userId: profile.userId },
         });
         const { trade_frequency, dominant_trade_time, achievements } = response.data;

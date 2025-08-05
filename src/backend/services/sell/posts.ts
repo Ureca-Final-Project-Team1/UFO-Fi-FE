@@ -35,7 +35,9 @@ export const sellAPI = {
 
   // 게시물 상세 조회
   async getPostDetail(postId: number): Promise<PostDetailResponse> {
-    const response = await apiRequest.get<PostDetailResponse>(`/v1/posts/${postId}`);
+    const response = await apiRequest.get<PostDetailResponse>(
+      API_ENDPOINTS.TRADE_POST.CHECK(postId),
+    );
     return response.data;
   },
 

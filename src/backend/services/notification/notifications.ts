@@ -10,16 +10,14 @@ import { API_ENDPOINTS } from '@/constants';
 export const notificationsAPI = {
   // 알림 목록 조회
   async getNotifications(): Promise<GetNotificationsResponse> {
-    const response = await apiRequest.get<GetNotificationsResponse>(
-      API_ENDPOINTS.NOTIFICATION.FCM_TOKEN,
-    );
+    const response = await apiRequest.get<GetNotificationsResponse>(API_ENDPOINTS.FCM.FCM_TOKEN);
     return response.data;
   },
 
   // 단일 알림 읽음 처리
   async markAsRead(data: MarkNotificationReadRequest): Promise<NotificationReadResponse> {
     const response = await apiRequest.patch<NotificationReadResponse>(
-      `${API_ENDPOINTS.NOTIFICATION.FCM_TOKEN}/${data.notificationId}/read`,
+      `${API_ENDPOINTS.FCM.FCM_TOKEN}/${data.notificationId}/read`,
     );
     return response.data;
   },
@@ -27,7 +25,7 @@ export const notificationsAPI = {
   // 모든 알림 읽음 처리
   async markAllAsRead(data?: MarkAllNotificationsReadRequest): Promise<NotificationReadResponse> {
     const response = await apiRequest.patch<NotificationReadResponse>(
-      API_ENDPOINTS.NOTIFICATION.SETTINGS_UPDATE,
+      API_ENDPOINTS.NOTIFICATION_SETTING.SETTINGS_UPDATE,
       data,
     );
     return response.data;
@@ -36,7 +34,7 @@ export const notificationsAPI = {
   // 읽지 않은 알림 개수 조회
   async getUnreadCount(): Promise<{ unreadCount: number }> {
     const response = await apiRequest.get<{ content: { unreadCount: number } }>(
-      API_ENDPOINTS.NOTIFICATION.SETTINGS_GET,
+      API_ENDPOINTS.NOTIFICATION_SETTING.SETTINGS_GET,
     );
     return response.data.content;
   },

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import { nextApiRequest } from '@/backend/client/axios';
 import type { NotificationItem } from '@/backend/types/notification';
+import { API_ENDPOINTS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
@@ -39,7 +40,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
           notifications: NotificationItem[];
           unreadCount: number;
         };
-      }>('/api/notifications');
+      }>(API_ENDPOINTS.NEXT_NOTIFICATION.GET_NOTIFICATION);
 
       if (response.data.statusCode === 200) {
         setNotifications(response.data.content.notifications);
@@ -62,7 +63,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
 
   const handleMarkAllRead = async () => {
     try {
-      await nextApiRequest.patch('/api/notifications');
+      await nextApiRequest.patch(API_ENDPOINTS.NEXT_NOTIFICATION.UPDATE_NOTIFICATION);
       // 모든 알림을 읽음 상태로 업데이트
       setNotifications((prev) =>
         prev.map((notification) => ({

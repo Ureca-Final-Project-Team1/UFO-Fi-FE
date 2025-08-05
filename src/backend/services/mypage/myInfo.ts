@@ -3,10 +3,10 @@ import { MyInfoResponse } from '@/backend/types/myInfo';
 import { API_ENDPOINTS } from '@/constants';
 
 export const myInfoAPI = {
-  async get(userId: number): Promise<MyInfoResponse['content'] | undefined> {
+  async get(): Promise<MyInfoResponse['content'] | undefined> {
     try {
       const response = await apiRequest.get<{ content: MyInfoResponse['content'] }>(
-        API_ENDPOINTS.USER.PROFILE(userId),
+        API_ENDPOINTS.USER.PROFILE,
       );
       return response.data.content;
     } catch (error) {
