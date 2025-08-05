@@ -112,9 +112,11 @@ export default function OrbitWithSatellite() {
 
       {/* 중앙 행성 + 외계인 */}
       <div className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 relative w-auto h-[220px]">
+        {/* 말풍선 */}
         <div className="absolute top-[-90px] left-1/2 -translate-x-1/2 z-20">
           <SpeechBubble tailDirection="bottom">지구인님, 오늘 거래하실 건가요?</SpeechBubble>
         </div>
+        {/* 외계인 */}
         <Image
           src={IMAGE_PATHS.ALIEN}
           alt="Alien"
@@ -123,6 +125,7 @@ export default function OrbitWithSatellite() {
           className="absolute left-1/2 -translate-x-1/2"
           style={{ top: '-15px', zIndex: 1 }}
         />
+        {/* 행성 */}
         <Image
           src={IMAGE_PATHS.MY_PLANET}
           alt="MyPlanet"
