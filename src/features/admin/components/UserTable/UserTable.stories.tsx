@@ -51,37 +51,39 @@ const mockData = [
   },
 ];
 
+const AdminLayoutWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex h-screen bg-gray-50">
+    <div className="flex-1 flex flex-col overflow-hidden">
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-500">Admin</span>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-6">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 목록</h2>
+            {children}
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+);
+
 export const Default: Story = {
   args: {
     data: mockData,
   },
   render: (args) => (
-    <div className="flex h-screen bg-gray-50">
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-500">Admin</span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 목록</h2>
-              <UserTable {...args} />
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
+    <AdminLayoutWrapper>
+      <UserTable {...args} />
+    </AdminLayoutWrapper>
   ),
 };
 
@@ -90,32 +92,9 @@ export const Empty: Story = {
     data: [],
   },
   render: (args) => (
-    <div className="flex h-screen bg-gray-50">
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-500">Admin</span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 목록</h2>
-              <UserTable {...args} />
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
+    <AdminLayoutWrapper>
+      <UserTable {...args} />
+    </AdminLayoutWrapper>
   ),
 };
 
@@ -153,32 +132,9 @@ export const WithManyUsers: Story = {
     ],
   },
   render: (args) => (
-    <div className="flex h-screen bg-gray-50">
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-500">Admin</span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 목록</h2>
-              <UserTable {...args} />
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
+    <AdminLayoutWrapper>
+      <UserTable {...args} />
+    </AdminLayoutWrapper>
   ),
 };
 
@@ -187,32 +143,9 @@ export const Mobile: Story = {
     data: mockData,
   },
   render: (args) => (
-    <div className="flex h-screen bg-gray-50">
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <h1 className="text-xl font-semibold text-gray-900">사용자 관리</h1>
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-500">Admin</span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">사용자 목록</h2>
-              <UserTable {...args} />
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
+    <AdminLayoutWrapper>
+      <UserTable {...args} />
+    </AdminLayoutWrapper>
   ),
   parameters: {
     viewport: {
