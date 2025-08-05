@@ -14,21 +14,26 @@ export const FixedScaleWrapper = ({ children, heightPercent = 1 }: FixedScaleWra
   const BASE_WIDTH = 390;
   const BASE_HEIGHT = 844;
   const [scale, setScale] = useState(1);
+  const [vw, setVw] = useState(typeof window !== 'undefined' ? window.innerWidth : BASE_WIDTH);
 
   useEffect(() => {
     const resize = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const scaleW = vw / BASE_WIDTH;
-      // 세로 기준 100%를 항상 차지하도록 scale 계산
+      setVw(vw);
+      // 1. 세로 기준 스케일
       const scaleH = (vh * heightPercent) / BASE_HEIGHT;
-      setScale(Math.min(scaleW, scaleH));
+      // 2. 가로 기준 스케일 (8px 여유)
+      const scaleW = (vw - 8) / BASE_WIDTH;
+      // 3. 둘 중 더 작은 값 사용 (양쪽 모두 넘지 않도록)
+      const scale = Math.min(scaleH, scaleW);
+      setScale(scale);
     };
 
     resize();
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
-  }, []);
+  }, [heightPercent]);
 
   return (
     <div className="w-full h-full flex justify-center items-center" style={{ overflow: 'hidden' }}>
@@ -45,7 +50,7 @@ export const FixedScaleWrapper = ({ children, heightPercent = 1 }: FixedScaleWra
       </div>
       <div
         style={{
-          width: BASE_WIDTH,
+          width: Math.min(BASE_WIDTH, vw),
           height: 'auto',
           transform: `scale(${scale})`,
         }}
