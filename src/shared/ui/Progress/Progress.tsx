@@ -20,14 +20,16 @@ export function Progress({
   const percentage = Math.min((usedStorage / totalStorage) * 100, 100);
 
   return (
-    <div className={cn('space-y-2', className)}>
+    <div className={cn('space-y-1', className)}>
       {/* 현재 사용 용량 표시 */}
       {showCurrentUsage && (
         <div className="flex items-center gap-2">
           {/* 신호 아이콘 */}
-          <Icon name="Signal" size={20} color="positive" />
+          <Icon name="Signal" size={10} color="positive" />
           {/* 사용량 텍스트 (chart-4 색상 적용) */}
-          <span className="body-18-bold font-bold leading-none text-chart-4">{usedStorage}GB</span>
+          <span className="text-[14px] font-bold leading-none text-chart-4 mb-1">
+            {usedStorage}GB
+          </span>
         </div>
       )}
 
@@ -45,7 +47,7 @@ export function Progress({
 
       {/* 최소값과 최대값 표시 */}
       {showMinMaxLabels && (
-        <div className="flex justify-between items-center text-[10px] text-gray-600">
+        <div className="flex justify-between items-center text-[8px] text-gray-600 -mt-1">
           <span>0GB</span>
           <span>{totalStorage}GB</span>
         </div>

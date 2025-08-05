@@ -41,7 +41,7 @@ export function PriceInput(props: CustomInputProps) {
       maxLength={4}
       placeholder="금액 입력"
       className={cn(
-        'bg-[var(--color-badge-bg-dark)] text-[var(--color-text-selling)] text-center font-semibold placeholder-[var(--color-text-selling)]',
+        'bg-[#001f9c] text-cyan-400 text-center font-semibold placeholder-cyan-400 text-base md:text-lg',
         props.className,
       )}
     />

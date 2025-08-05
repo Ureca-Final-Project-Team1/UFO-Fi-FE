@@ -41,29 +41,45 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
     ) : undefined;
 
     return (
-      <div style={{ position: 'relative', display: 'inline-block' }}>
+      <div>
         <button
           ref={ref}
           type="button"
           disabled={disabled}
           className={`
-            px-3 py-1 rounded-full text-sm font-medium
-            border transition-colors flex items-center gap-1
+            rounded-full font-medium
+            border transition-colors flex items-center 
             ${selected ? 'bg-primary-600 text-white border-primary-600' : 'bg-gray-800 text-gray-200 border-gray-700'}
             ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary-400 hover:text-primary-400'}
             ${className}
           `}
+          style={{
+            fontSize: 'clamp(10px, 1.4vw, 14px)',
+            ...rest.style,
+          }}
           onClick={handleDropdownOpenClick}
           {...rest}
         >
-          {leftIcon && <span className="mr-1 flex items-center">{leftIcon}</span>}
+          {leftIcon && (
+            <span className="flex items-center" style={{ marginRight: 'clamp(2px, 0.5vw, 8px)' }}>
+              {leftIcon}
+            </span>
+          )}
           {children}
           {(rightIcon ?? autoRightIcon) && (
-            <span className="ml-1 flex items-center">{rightIcon ?? autoRightIcon}</span>
+            <span className="flex items-center" style={{ marginLeft: 'clamp(2px, 0.5vw, 8px)' }}>
+              {rightIcon ?? autoRightIcon}
+            </span>
           )}
         </button>
         {dropdown && open && (
-          <div className="absolute z-10 mt-2 min-w-[120px] bg-white rounded-sm shadow-lg text-black">
+          <div
+            className="absolute z-10 bg-white rounded-sm shadow-lg text-black"
+            style={{
+              marginTop: 'clamp(4px, 1vw, 8px)',
+              minWidth: 'clamp(100px, 15vw, 120px)',
+            }}
+          >
             {typeof dropdown === 'function' ? dropdown({ closeDropdown }) : dropdown}
           </div>
         )}
