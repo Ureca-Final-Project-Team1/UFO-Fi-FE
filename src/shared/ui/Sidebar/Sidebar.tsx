@@ -4,18 +4,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import { cn } from '@/lib/utils';
+
 import { IconType } from '../Icons';
+import { SidebarProps, MenuItem } from './Sidebar.types';
+import {
+  sidebarVariants,
+  sidebarNavVariants,
+  menuItemContainerVariants,
+  menuItemVariants,
+  menuItemIconVariants,
+  chevronIconVariants,
+  submenuContainerVariants,
+  submenuItemsContainerVariants,
+} from './SidebarVariants';
 import { Icon } from '../Icons/Icon';
 
-interface MenuItem {
-  id: string;
-  label: string;
-  icon: IconType;
-  href?: string;
-  children?: MenuItem[];
-}
-
-const menuItems: MenuItem[] = [
+const defaultMenuItems: MenuItem[] = [
   {
     id: 'dashboard',
     label: '대시보드',
@@ -68,7 +73,12 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar: React.FC<SidebarProps> = ({
+  className = '',
+  menuItems = defaultMenuItems,
+  variant = 'default',
+  size = 'default',
+}) => {
   const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
   const pathname = usePathname();
 
@@ -81,7 +91,7 @@ const Sidebar = () => {
     if (currentMenuItem && currentMenuItem.children) {
       setOpenMenus(new Set([currentMenuItem.id]));
     }
-  }, [pathname]);
+  }, [pathname, menuItems]);
 
   const toggleMenu = (menuId: string) => {
     const newOpenMenus = new Set(openMenus);
@@ -105,47 +115,69 @@ const Sidebar = () => {
     const isActive = isMenuActive(item);
     const hasChildren = item.children && item.children.length > 0;
 
+    // level을 variants에서 기대하는 타입으로 처리
+    const levelVariant = level <= 2 ? (level as 0 | 1 | 2) : 0;
+
     return (
-      <div key={item.id} className={level === 0 ? 'mb-1' : ''}>
+      <div key={item.id} className={cn(menuItemContainerVariants({ level: levelVariant }))}>
         {item.href ? (
           <Link
             href={item.href}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group ${
-              isActive
-                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-            } ${level > 0 ? 'ml-6 py-2' : ''}`}
+            className={cn(
+              menuItemVariants({
+                variant,
+                size,
+                level: levelVariant,
+                state: isActive ? 'active' : 'inactive',
+              }),
+            )}
           >
             <Icon
               name={item.icon as IconType}
-              className={`size-5 transition-colors ${
-                isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
-              }`}
+              className={cn(
+                menuItemIconVariants({
+                  variant,
+                  size,
+                  state: isActive ? 'active' : 'inactive',
+                }),
+              )}
             />
             <span className="flex-1">{item.label}</span>
           </Link>
         ) : (
           <button
             onClick={() => hasChildren && toggleMenu(item.id)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 w-full group ${
-              isActive
-                ? 'bg-blue-50 text-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-            }`}
+            className={cn(
+              menuItemVariants({
+                variant,
+                size,
+                level: levelVariant,
+                state: isActive ? 'active' : 'inactive',
+              }),
+              'w-full',
+            )}
           >
             <Icon
               name={item.icon as IconType}
-              className={`size-5 transition-colors ${
-                isActive ? 'text-blue-700' : 'text-gray-500 group-hover:text-gray-700'
-              }`}
+              className={cn(
+                menuItemIconVariants({
+                  variant,
+                  size,
+                  state: isActive ? 'active' : 'inactive',
+                }),
+              )}
             />
             <span className="flex-1 text-left">{item.label}</span>
             {hasChildren && (
               <Icon
                 name={isOpen ? 'ChevronUp' : 'ChevronDown'}
-                className={`size-4 transition-all duration-200 ${
-                  isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-600'
-                }`}
+                className={cn(
+                  chevronIconVariants({
+                    variant,
+                    size,
+                    state: isActive ? 'active' : 'inactive',
+                  }),
+                )}
               />
             )}
           </button>
@@ -153,12 +185,8 @@ const Sidebar = () => {
 
         {/* 하위 메뉴 */}
         {hasChildren && (
-          <div
-            className={`overflow-hidden transition-all duration-300 ease-in-out ${
-              isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-            }`}
-          >
-            <div className="mt-1 space-y-1">
+          <div className={cn(submenuContainerVariants({ isOpen }))}>
+            <div className={cn(submenuItemsContainerVariants({ variant, size }))}>
               {item.children?.map((child) => renderMenuItem(child, level + 1))}
             </div>
           </div>
@@ -168,9 +196,9 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-72 h-screen bg-white border-r border-gray-200 flex flex-col">
+    <aside className={cn(sidebarVariants({ variant, size }), className)}>
       {/* 메뉴 목록 */}
-      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+      <nav className={cn(sidebarNavVariants({ variant, size }))}>
         {menuItems.map((item) => renderMenuItem(item))}
       </nav>
     </aside>
