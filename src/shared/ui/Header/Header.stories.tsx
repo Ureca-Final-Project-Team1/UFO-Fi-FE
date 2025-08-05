@@ -13,6 +13,13 @@ import {
   userNameVariants,
 } from './HeaderVariants';
 
+interface MockHeaderProps {
+  userName?: string;
+  variant?: 'default' | 'dark' | 'transparent';
+  size?: 'default' | 'compact' | 'large';
+  className?: string;
+}
+
 // Storybook용 MockHeader 컴포넌트
 function MockHeader({
   userName = 'Admin',
@@ -20,12 +27,7 @@ function MockHeader({
   size = 'default',
   className,
   ...props
-}: {
-  userName?: string;
-  variant?: 'default' | 'dark' | 'transparent';
-  size?: 'default' | 'compact' | 'large';
-  className?: string;
-}) {
+}: MockHeaderProps) {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
