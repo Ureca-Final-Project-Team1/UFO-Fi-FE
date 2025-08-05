@@ -12,7 +12,7 @@ import {
 } from './Command';
 
 const meta: Meta<typeof CommandDialog> = {
-  title: 'UI/CommandDialog',
+  title: 'UI/Command',
   component: CommandDialog,
   tags: ['autodocs'],
   parameters: {
