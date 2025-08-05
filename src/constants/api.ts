@@ -50,7 +50,7 @@ export const API_ENDPOINTS = {
 
   // User(6)
   USER: {
-    ROLE: (userId: number) => `/admin/users/${userId}/role`, // 사용자 비활성화 풀기
+    ROLE: '/admin/user/grant-user', // 사용자 비활성화 풀기
     PROFILE_UPDATE: '/users/me/profile', // 나의 프로필 수정
     REPORTED_USERS: '/users/role/reported', // 비활성 사용자 조회
     SIGNUP_USER_INFO: '/users/me/user-info', // 회원가입
@@ -60,10 +60,10 @@ export const API_ENDPOINTS = {
 
   // Order(5)
   ORDER: {
-    PURCHASE: '/posts/purchase', // 구매(Zet <-> Data)
-    BULK_PURCHASE_POST: '/posts/bulk-purchase', // 일괄 구매 요청
-    SALE_HISTORIES: '/trade-histories/sale', // 판매 내역 조회
-    PURCHASE_HISTORIES: '/trade-histories/purchase', // 구매 내역 조회
+    PURCHASE: '/trade-posts/purchase', // 구매(Zet <-> Data)
+    BULK_PURCHASE_POST: '/trade-posts/bulk-purchase', // 일괄 구매 요청
+    SALE_HISTORIES: '/trade-histories/sales', // 판매 내역 조회
+    PURCHASE_HISTORIES: '/trade-histories/purchases', // 구매 내역 조회
     PURCHASE_DETAIL: (tradeHistoryId: number) => `/trade-histories/${tradeHistoryId}`, // 구매 내역 상세 보기
   },
 
@@ -97,10 +97,11 @@ export const API_ENDPOINTS = {
     REPORTS: '/admin/statistics/reports', // 비활성화 통계
   },
 
-  // Payment(2)
+  // Payment(3)
   PAYMENT: {
     STATUS: '/payment/status', // 결제 정보 검증 및 승인
     CHARGE: '/payment', // 충전
+    RECOVERY: '/admin/zet-recovery', // 관리자 zet 복구
   },
 
   // FCM Token(1)
@@ -110,7 +111,7 @@ export const API_ENDPOINTS = {
 
   // TradePost(6)
   TRADE_POST: {
-    CHECK: (postId: number) => `posts/${postId}`, // 판매 게시물 상세 조회
+    CHECK: (postId: number) => `/posts/${postId}`, // 판매 게시물 상세 조회
     UPDATE: (postId: number) => `/posts/${postId}`, // 판매 게시물 수정
     DELETE: (postId: number) => `/posts/${postId}`, // 판매 게시물 삭제
     LIST: '/posts', // 게시글 전체 조회
@@ -120,10 +121,10 @@ export const API_ENDPOINTS = {
 
   // Follow(4)
   FOLLOW: {
-    FOLLOW: (followId: number) => `/follow/${followId}`, // 팔로워 팔로잉 맺기
+    FOLLOW: (followId: number) => `/follows/${followId}`, // 팔로워 팔로잉 맺기
     FOLLOWINGS: '/follows/followings', // 내 팔로잉 목록 조회
     FOLLOWERS: '/follows/followers', // 내 팔로워 목록 조회
-    UNFOLLOW: (followingId: number) => `/follow/${followingId}`, // 팔로워 팔로잉 끊기
+    UNFOLLOW: (followingId: number) => `/follows/${followingId}`, // 팔로워 팔로잉 끊기
   },
 
   // Auth(2)
@@ -141,7 +142,7 @@ export const API_ENDPOINTS = {
   // bannedword(4)
   BANNED_WORDS: {
     LIST: '/admin/banned-words', // 금칙어 전체 조회
-    CREATE: '/admin/banned-word', // 금칙어 등록
+    CREATE: '/admin/banned-words', // 금칙어 등록
     DELETE_BULK: '/admin/banned-words', // 금칙어 일괄 삭제
     DELETE_SINGLE: (bannedWordId: number) => `/admin/banned-words/${bannedWordId}`, // 금칙어 단일 삭제
   },
