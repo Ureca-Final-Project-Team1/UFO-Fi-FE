@@ -22,8 +22,14 @@ const MockShareButtons = ({
   profileUrl?: string;
 }) => {
   const onCopyLink = () => {
-    navigator.clipboard.writeText(profileUrl);
-    // 링크가 복사되었습니다
+    navigator.clipboard
+      .writeText(profileUrl)
+      .then(() => {
+        // 링크가 복사되었습니다
+      })
+      .catch((err) => {
+        console.error('링크 복사 실패:', err);
+      });
   };
 
   const shareOptions = [
