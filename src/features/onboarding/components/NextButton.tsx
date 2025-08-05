@@ -16,23 +16,26 @@ export const NextButton = ({ isLast, onClick, className = '' }: NextButtonProps)
   const altText = isLast ? '시작하기' : '다음';
   const buttonAnimation = isLast ? '' : 'animate-pulse';
 
-  if (isLast) {
-    queryClient.setQueryData(['userInfo'], (prev: getUserInfoResponse | undefined) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        content: {
-          ...prev.content,
-          role: 'ROLE_USER',
-        },
-      };
-    });
-  }
+  const handleClick = () => {
+    if (isLast) {
+      queryClient.setQueryData(['userInfo'], (prev: getUserInfoResponse | undefined) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          content: {
+            ...prev.content,
+            role: 'ROLE_USER',
+          },
+        };
+      });
+    }
+    onClick();
+  };
 
   return (
     <div className="flex justify-center">
       <button
-        onClick={onClick}
+        onClick={handleClick}
         className={`transition-all duration-300 transform hover:scale-110 active:scale-95 ${buttonAnimation} ${className}`}
         aria-label={altText}
       >
