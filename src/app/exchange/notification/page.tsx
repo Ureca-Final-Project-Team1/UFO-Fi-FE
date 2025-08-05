@@ -12,7 +12,6 @@ import { useFilterState } from '@/features/exchange/hooks/useFilterState';
 import { Button, Chip, DataRangeSlider, DataSlider, Icon, Title } from '@/shared';
 
 import '@/styles/globals.css';
-import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 const FilterNotificationPage = () => {
   const { data, range, minData, maxData, minValue, maxValue, setData, setRange } = useFilterState();
@@ -34,7 +33,15 @@ const FilterNotificationPage = () => {
   // TODO: 마이페이지 커스텀 훅 들어오면 변경 예정
   const checkAuthStatus = async (): Promise<boolean> => {
     try {
-      const userId = getUserFromToken();
+      const cookie = document.cookie.split('; ').find((row) => row.startsWith('Authorization='));
+
+      const token = cookie?.split('=')[1];
+      if (!token) return false;
+
+      const decoded = JSON.parse(atob(token.split('.')[1])) as { userId?: number };
+      const userId = decoded?.userId;
+      if (!userId) return false;
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${userId}/profile`,
         {
