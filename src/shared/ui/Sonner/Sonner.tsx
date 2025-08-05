@@ -1,24 +1,29 @@
 'use client';
 
-import { Toaster as Sonner, ToasterProps } from 'sonner';
+import { Toaster as Sonner } from 'sonner';
 
-import { TOAST_CONFIG } from '@/constants';
+import { cn } from '@/lib/utils';
 
-const Toaster = ({ ...props }: ToasterProps) => {
+import { SonnerProps } from './Sonner.types';
+import { sonnerVariants, sonnerStyleVariants, sonnerConfigVariants } from './SonnerVariants';
+
+const Toaster = ({
+  variant = 'default',
+  position = 'bottom-center',
+  className,
+  ...props
+}: SonnerProps) => {
+  const configVariant = variant as keyof typeof sonnerConfigVariants;
+  const styleVariant = variant as keyof typeof sonnerStyleVariants;
+
   return (
     <Sonner
-      className="toaster group"
-      style={
-        {
-          '--normal-bg': 'var(--popover)',
-          '--normal-text': 'var(--popover-foreground)',
-          '--normal-border': 'var(--border)',
-        } as React.CSSProperties
-      }
-      position={TOAST_CONFIG.POSITION}
-      expand={TOAST_CONFIG.EXPAND}
-      richColors={TOAST_CONFIG.RICH_COLORS}
-      closeButton={TOAST_CONFIG.CLOSE_BUTTON}
+      className={cn(sonnerVariants({ variant, position }), className)}
+      style={sonnerStyleVariants[styleVariant] as React.CSSProperties}
+      position={position}
+      expand={sonnerConfigVariants[configVariant].expand}
+      richColors={sonnerConfigVariants[configVariant].richColors}
+      closeButton={sonnerConfigVariants[configVariant].closeButton}
       {...props}
     />
   );
