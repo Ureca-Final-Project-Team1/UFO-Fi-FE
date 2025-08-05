@@ -33,12 +33,10 @@ const ProfilePage = () => {
   };
 
   return (
-    <main>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col gap-6">
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full min-h-full flex flex-col gap-6">
         <section className="flex-1 flex flex-col justify-start items-start">
-          <header className="w-full">
-            <Title iconVariant="back" title="회원가입" className="body-20-bold pl-0 mb-6" />
-          </header>
+          <Title iconVariant="back" title="회원가입" className="body-20-bold pl-0 mb-6" />
 
           <div className="flex flex-col gap-6 w-full">
             <Stepper step={1} content="정보 입력" className="mb-5" />
@@ -84,7 +82,7 @@ const ProfilePage = () => {
           </Button>
         </nav>
       </form>
-    </main>
+    </>
   );
 };
 

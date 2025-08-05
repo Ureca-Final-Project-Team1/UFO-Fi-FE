@@ -55,7 +55,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
 
       // 2. 회원정보 미입력 유저 → 회원가입 절차로 이동
-      if (userRole === 'ROLE_NO_INFO' && !pathname.startsWith('/signup')) {
+      if (
+        userRole === 'ROLE_NO_INFO' &&
+        !pathname.startsWith('/signup') &&
+        !pathname.startsWith('/onboarding')
+      ) {
         // eslint-disable-next-line no-console
         console.log('AuthProvider - ROLE_NO_INFO user, redirecting to signup');
         setHasRedirected(true);

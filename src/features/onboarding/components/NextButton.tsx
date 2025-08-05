@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
+import { getUserInfoResponse } from '@/backend';
 import { IMAGE_PATHS } from '@/constants/images';
+import queryClient from '@/shared/utils/queryClient';
 
 interface NextButtonProps {
   isLast: boolean;
@@ -14,10 +16,26 @@ export const NextButton = ({ isLast, onClick, className = '' }: NextButtonProps)
   const altText = isLast ? '시작하기' : '다음';
   const buttonAnimation = isLast ? '' : 'animate-pulse';
 
+  const handleClick = () => {
+    if (isLast) {
+      queryClient.setQueryData(['userInfo'], (prev: getUserInfoResponse | undefined) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          content: {
+            ...prev.content,
+            role: 'ROLE_USER',
+          },
+        };
+      });
+    }
+    onClick();
+  };
+
   return (
     <div className="flex justify-center">
       <button
-        onClick={onClick}
+        onClick={handleClick}
         className={`transition-all duration-300 transform hover:scale-110 active:scale-95 ${buttonAnimation} ${className}`}
         aria-label={altText}
       >
