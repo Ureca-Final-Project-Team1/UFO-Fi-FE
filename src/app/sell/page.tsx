@@ -4,7 +4,6 @@ import Image from 'next/image';
 import React from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { SellFormContent } from '@/features/sell/components/SellFormContent';
 import { FolderBackground, Title } from '@/shared';
 
 export default function SellPage() {
@@ -16,11 +15,7 @@ export default function SellPage() {
 
         {/* 폴더와 외계인 컨테이너 */}
         <div className="relative flex flex-col items-center justify-start mt-2 w-full h-full">
-          <div className="relative flex flex-col items-center justify-end w-full max-w-[390px] h-[581px]">
-            <FolderBackground title="거래명세서">
-              <SellFormContent />
-            </FolderBackground>
-          </div>
+          <FolderBackground title="거래명세서" />
           {/* 외계인 */}
           <div className="absolute bottom-0 left-0 z-20">
             <Image
