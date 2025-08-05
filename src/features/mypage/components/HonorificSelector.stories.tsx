@@ -6,138 +6,40 @@ import { Icon } from '@/shared';
 import { HonorificSelector } from './HonorificSelector';
 import { Honorific } from '../types/Achievement';
 
-// Story Wrapper Components
-const DefaultStoryWrapper = (args: {
+// 공통 Story Wrapper Component
+interface StoryWrapperProps {
   honorific?: Honorific[];
   selectedId?: number | null;
   onSelect?: (id: number) => void;
-}) => {
+  title?: string;
+  subtitle?: string;
+  isDesktop?: boolean;
+}
+
+const StoryWrapper = ({
+  title = '마이페이지',
+  subtitle = '칭호 선택기',
+  isDesktop = false,
+  ...args
+}: StoryWrapperProps) => {
   const [selectedId, setSelectedId] = useState(args.selectedId || null);
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
+      <div className={`px-4 pt-4 ${isDesktop ? 'max-w-2xl mx-auto w-full' : ''}`}>
         {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
               <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+            <h1 className="text-white text-lg font-bold">{title}</h1>
           </div>
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">칭호 선택기</h2>
-            <HonorificSelector
-              {...args}
-              honorific={args.honorific || []}
-              selectedId={selectedId}
-              onSelect={(id) => setSelectedId(id)}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const WithSelectionStoryWrapper = (args: {
-  honorific?: Honorific[];
-  selectedId?: number | null;
-  onSelect?: (id: number) => void;
-}) => {
-  const [selectedId, setSelectedId] = useState(args.selectedId || null);
-
-  return (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">선택된 칭호</h2>
-            <HonorificSelector
-              {...args}
-              honorific={args.honorific || []}
-              selectedId={selectedId}
-              onSelect={(id) => setSelectedId(id)}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ManyHonorificsStoryWrapper = (args: {
-  honorific?: Honorific[];
-  selectedId?: number | null;
-  onSelect?: (id: number) => void;
-}) => {
-  const [selectedId, setSelectedId] = useState(args.selectedId || null);
-
-  return (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">다중 칭호 선택기</h2>
-            <HonorificSelector
-              {...args}
-              honorific={args.honorific || []}
-              selectedId={selectedId}
-              onSelect={(id) => setSelectedId(id)}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const DesktopStoryWrapper = (args: {
-  honorific?: Honorific[];
-  selectedId?: number | null;
-  onSelect?: (id: number) => void;
-}) => {
-  const [selectedId, setSelectedId] = useState(args.selectedId || null);
-
-  return (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">데스크톱 칭호 선택기</h2>
+            <h2 className="text-white text-base font-semibold mb-4">{subtitle}</h2>
             <HonorificSelector
               {...args}
               honorific={args.honorific || []}
@@ -179,7 +81,7 @@ export const Default: Story = {
     ] as Honorific[],
     selectedId: null,
   },
-  render: (args) => <DefaultStoryWrapper {...args} />,
+  render: (args) => <StoryWrapper {...args} />,
 };
 
 export const WithSelection: Story = {
@@ -192,7 +94,7 @@ export const WithSelection: Story = {
     ] as Honorific[],
     selectedId: 2,
   },
-  render: (args) => <WithSelectionStoryWrapper {...args} />,
+  render: (args) => <StoryWrapper {...args} subtitle="선택된 칭호" />,
 };
 
 export const ManyHonorifics: Story = {
@@ -209,7 +111,7 @@ export const ManyHonorifics: Story = {
     ] as Honorific[],
     selectedId: null,
   },
-  render: (args) => <ManyHonorificsStoryWrapper {...args} />,
+  render: (args) => <StoryWrapper {...args} subtitle="다중 칭호 선택기" />,
 };
 
 export const Desktop: Story = {
@@ -222,7 +124,14 @@ export const Desktop: Story = {
     ] as Honorific[],
     selectedId: 3,
   },
-  render: (args) => <DesktopStoryWrapper {...args} />,
+  render: (args) => (
+    <StoryWrapper
+      {...args}
+      title="데스크톱 마이페이지"
+      subtitle="데스크톱 칭호 선택기"
+      isDesktop={true}
+    />
+  ),
   parameters: {
     viewport: {
       defaultViewport: 'desktop',
