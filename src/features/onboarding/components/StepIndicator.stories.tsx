@@ -3,6 +3,16 @@ import { useState } from 'react';
 
 import { Indicator } from '@/shared';
 
+// Mock StepIndicator Props Interface
+interface MockStepIndicatorProps {
+  step?: number;
+  total?: number;
+  className?: string;
+  showHover?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  spacing?: 'tight' | 'normal' | 'wide';
+}
+
 // Mock StepIndicator for Storybook
 const MockStepIndicator = ({
   step = 0,
@@ -11,14 +21,7 @@ const MockStepIndicator = ({
   showHover = true,
   size = 'md',
   spacing = 'normal',
-}: {
-  step?: number;
-  total?: number;
-  className?: string;
-  showHover?: boolean;
-  size?: 'sm' | 'md' | 'lg';
-  spacing?: 'tight' | 'normal' | 'wide';
-}) => {
+}: MockStepIndicatorProps) => {
   const [currentStep, setCurrentStep] = useState(step);
 
   const handleClick = (clickedStep: number) => {
