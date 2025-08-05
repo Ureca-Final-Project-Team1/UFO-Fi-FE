@@ -14,6 +14,23 @@ const meta: Meta<typeof Skeleton> = {
       },
     },
   },
+  argTypes: {
+    variant: {
+      control: { type: 'select' },
+      options: ['pulse', 'shimmer', 'none'],
+      description: '스켈레톤의 애니메이션 타입',
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['default', 'sm', 'lg', 'full'],
+      description: '스켈레톤의 크기 (border-radius)',
+    },
+    as: {
+      control: { type: 'select' },
+      options: ['div', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      description: '렌더링할 HTML 요소',
+    },
+  },
 };
 
 export default meta;
@@ -23,6 +40,56 @@ export const Default: StoryObj<typeof Skeleton> = {
     style: { width: 200, height: 20 },
   },
   render: (args) => <Skeleton {...args} />,
+};
+
+export const Pulse: StoryObj<typeof Skeleton> = {
+  args: {
+    variant: 'pulse',
+    style: { width: 200, height: 20 },
+  },
+  render: (args) => <Skeleton {...args} />,
+};
+
+export const Shimmer: StoryObj<typeof Skeleton> = {
+  args: {
+    variant: 'shimmer',
+    style: { width: 200, height: 20 },
+  },
+  render: (args) => <Skeleton {...args} />,
+};
+
+export const None: StoryObj<typeof Skeleton> = {
+  args: {
+    variant: 'none',
+    style: { width: 200, height: 20 },
+  },
+  render: (args) => <Skeleton {...args} />,
+};
+
+export const Sizes: StoryObj<typeof Skeleton> = {
+  render: (args) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div>
+        <h3 className="text-sm font-medium mb-2">Default (rounded-md)</h3>
+        <Skeleton {...args} size="default" style={{ width: 200, height: 20 }} />
+      </div>
+      <div>
+        <h3 className="text-sm font-medium mb-2">Small (rounded-sm)</h3>
+        <Skeleton {...args} size="sm" style={{ width: 200, height: 20 }} />
+      </div>
+      <div>
+        <h3 className="text-sm font-medium mb-2">Large (rounded-lg)</h3>
+        <Skeleton {...args} size="lg" style={{ width: 200, height: 20 }} />
+      </div>
+      <div>
+        <h3 className="text-sm font-medium mb-2">Full (rounded-full)</h3>
+        <Skeleton {...args} size="full" style={{ width: 200, height: 20 }} />
+      </div>
+    </div>
+  ),
+  args: {
+    variant: 'pulse',
+  },
 };
 
 export const Playground: StoryObj<typeof Skeleton> = {
