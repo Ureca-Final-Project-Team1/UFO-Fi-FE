@@ -11,7 +11,6 @@ import { SellCapacitySlider } from '@/features/sell/components/SellCapacitySlide
 import { SellTotalPrice } from '@/features/sell/components/SellTotalPrice';
 import { getSellErrorMessages } from '@/features/sell/utils/sellValidation';
 import { Icon, Input, Button, PriceInput } from '@/shared';
-import { useViewportStore } from '@/stores/useViewportStore';
 
 export const SellFormContent = () => {
   const { data: myInfo } = useMyInfo();
@@ -38,7 +37,6 @@ export const SellFormContent = () => {
 
   const maxCapacity = myInfo?.sellableDataAmount || 0;
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
-  const isMobile = useViewportStore((state) => state.isMobile);
 
   return (
     <div className="flex flex-col w-full h-full justify-between">
@@ -103,11 +101,11 @@ export const SellFormContent = () => {
         </div>
         <div className="flex justify-center w-full">
           <Button
-            size={isMobile ? 'default' : 'lg'}
+            size={'sm'}
             onClick={handleSubmit}
             variant="exploration-button"
             disabled={!isFormValid || isSubmitting}
-            className="w-60 ml-auto px-6 py-3"
+            className="h-15 ml-auto px-6 py-3"
           >
             {isSubmitting ? '등록 중...' : '등록하기'}
           </Button>
