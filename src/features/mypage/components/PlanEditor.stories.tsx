@@ -125,6 +125,39 @@ const MockPlanEditor = ({
   );
 };
 
+// 공통 렌더 함수
+const renderWithLayout = (
+  args: {
+    carrier?: Carrier | '';
+    setCarrier?: (carrier: Carrier) => void;
+    plan?: string;
+    setPlan?: (plan: string) => void;
+    plans?: Plan[];
+    isLoading?: boolean;
+    onSave?: () => void;
+  },
+  title: string = '마이페이지',
+  isDesktop = false,
+) => (
+  <div className="w-full h-full flex flex-col bg-gray-900">
+    <div className={`px-4 pt-4 ${isDesktop ? 'max-w-2xl mx-auto w-full' : ''}`}>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+            <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+          </button>
+          <h1 className="text-white text-lg font-bold">{title}</h1>
+        </div>
+      </div>
+      <div className="flex flex-col gap-4">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <MockPlanEditor {...args} />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const meta: Meta<typeof MockPlanEditor> = {
   title: 'Mypage/PlanEditor',
   component: MockPlanEditor,
@@ -180,27 +213,7 @@ export const Default: Story = {
     ] as Plan[],
     isLoading: false,
   },
-  render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <MockPlanEditor {...args} />
-          </div>
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const WithCarrierSelected: Story = {
@@ -238,27 +251,7 @@ export const WithCarrierSelected: Story = {
     ] as Plan[],
     isLoading: false,
   },
-  render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <MockPlanEditor {...args} />
-          </div>
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const WithPlanSelected: Story = {
@@ -296,27 +289,7 @@ export const WithPlanSelected: Story = {
     ] as Plan[],
     isLoading: false,
   },
-  render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <MockPlanEditor {...args} />
-          </div>
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const Loading: Story = {
@@ -354,27 +327,7 @@ export const Loading: Story = {
     ] as Plan[],
     isLoading: true,
   },
-  render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <MockPlanEditor {...args} />
-          </div>
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const Desktop: Story = {
@@ -412,25 +365,10 @@ export const Desktop: Story = {
     ] as Plan[],
     isLoading: false,
   },
-  render: (args) => (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <MockPlanEditor {...args} />
-          </div>
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args, '마이페이지', true),
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
+  },
 };
