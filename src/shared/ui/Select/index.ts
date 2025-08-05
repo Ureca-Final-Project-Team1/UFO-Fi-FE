@@ -1,23 +1,15 @@
 export {
   Select,
-  SelectTrigger,
   SelectContent,
-  SelectItem,
-  SelectValue,
   SelectGroup,
+  SelectItem,
   SelectLabel,
-  SelectScrollUpButton,
   SelectScrollDownButton,
+  SelectScrollUpButton,
   SelectSeparator,
+  SelectTrigger,
+  SelectValue,
 } from './Select';
 
-export {
-  selectTriggerVariants,
-  selectContentVariants,
-  selectItemVariants,
-  selectLabelVariants,
-  selectSeparatorVariants,
-  selectScrollButtonVariants,
-} from './selectVariants';
-
-export type { SelectProps } from './Select.types';
+export * from './Select.types';
+export * from './selectVariants';
