@@ -10,18 +10,20 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseErrorRecovery';
 import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';
 import { Button, Loading, Title } from '@/shared';
+import { analytics } from '@/shared/utils/analytics';
+import queryClient, { queryKeys } from '@/shared/utils/queryClient';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-import { analytics } from '@/utils/analytics';
 
 function Step3Content() {
   const router = useRouter();
   const params = useParams();
-  const { productData, userZetBalance, isFirstPurchase, resetPurchaseFlow } =
-    usePurchaseFlowStore();
+  const { productData, userZetBalance, isFirstPurchase } = usePurchaseFlowStore();
 
   const [postId, setPostId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const { state, executePurchase, reset, needsRecovery } = usePurchaseRetry({
     maxRetries: 3,
@@ -62,12 +64,12 @@ function Step3Content() {
         product_price: productData.totalPrice,
         user_zet: userZetBalance,
       });
-    } else {
+    } else if (!isNavigating) {
       // Store에 데이터가 없음 - 거래소로 리다이렉트
       setError('상품 정보가 없습니다. 거래소에서 다시 선택해주세요.');
       setIsLoading(false);
     }
-  }, [postId, productData, isFirstPurchase, userZetBalance]);
+  }, [postId, productData, isFirstPurchase, userZetBalance, isNavigating]);
 
   const handlePurchase = async () => {
     if (!productData || !postId) return;
@@ -80,6 +82,7 @@ function Step3Content() {
     };
 
     await executePurchase(purchaseRequest);
+    queryClient.invalidateQueries({ queryKey: queryKeys.myInfo() });
   };
 
   const handleErrorRetry = () => {
@@ -90,11 +93,11 @@ function Step3Content() {
     handlePurchase();
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     analytics.event('purchase_completed_confirmed', {
       post_id: postId?.toString() || '',
     });
-    resetPurchaseFlow(); // Store 초기화
+    setIsNavigating(true);
     router.push('/exchange');
   };
 

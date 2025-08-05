@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { getGbLabel } from '@/utils/sliderUtils';
+import { getGbLabel } from '@/shared/utils/sliderUtils';
 
 import BaseSlider from './BaseSlider';
 import type { DataSliderProps } from './Slider.types';
@@ -21,7 +21,7 @@ export function DataSlider({
     <div className="relative w-full px-4">
       {/* 중앙 값 라벨 */}
       {showMiddleLabels && (
-        <div className="text-center text-cyan-300 font-bold text-lg mb-2">{value[0]}GB</div>
+        <div className="text-center text-cyan-300 font-bold text-2xl mb-2">{value[0]}GB</div>
       )}
       <div className="relative w-full mx-auto">
         {/* 눈금선 + 숫자 (min/max label은 하단에서만 표시) */}

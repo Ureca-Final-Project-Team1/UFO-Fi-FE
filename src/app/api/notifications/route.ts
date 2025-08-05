@@ -1,18 +1,37 @@
 import { NextResponse } from 'next/server';
 
-import { HttpStatusCode, SuccessApiResponse, ErrorApiResponse } from '@/backend/types/api';
+import { API_SELF_URL } from '@/constants';
 import { prisma } from '@/lib/prisma';
-import { getUserFromToken } from '@/utils/getUserFromToken';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
+// CORS 설정을 위한 정확한 origin 도메인
+const ORIGIN = API_SELF_URL;
+
+// 프리플라이트 요청 처리
+export function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': ORIGIN,
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
+// 알림 전체 조회
 export async function GET() {
   try {
     const result = await getUserFromToken();
     if ('error' in result) {
-      const response: ErrorApiResponse = {
-        statusCode: result.status ?? HttpStatusCode.UNAUTHORIZED,
-        message: result.error ?? '인증 오류',
-      };
-      return NextResponse.json(response, { status: response.statusCode });
+      const res = NextResponse.json(
+        { success: false, error: result.error ?? '인증 오류' },
+        { status: result.status ?? 401 },
+      );
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     const { userId } = result;
@@ -34,38 +53,40 @@ export async function GET() {
       isRead: n.is_read,
     }));
 
-    const response: SuccessApiResponse<{
-      notifications: typeof serializedNotifications;
-      unreadCount: number;
-    }> = {
-      statusCode: HttpStatusCode.OK,
-      message: 'OK',
+    const res = NextResponse.json({
+      success: true,
       content: {
         notifications: serializedNotifications,
         unreadCount,
       },
-    };
-
-    return NextResponse.json(response);
+    });
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   } catch (error) {
     console.error('Notification fetch error:', error);
-    const response: ErrorApiResponse = {
-      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      message: 'Internal Server Error',
-    };
-    return NextResponse.json(response, { status: response.statusCode });
+    const res = NextResponse.json(
+      { success: false, error: '알림 조회 중 오류가 발생했습니다.' },
+      { status: 500 },
+    );
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   }
 }
 
+// 알림 전체 읽음 처리
 export async function PATCH() {
   try {
     const result = await getUserFromToken();
     if ('error' in result) {
-      const response: ErrorApiResponse = {
-        statusCode: result.status ?? HttpStatusCode.UNAUTHORIZED,
-        message: result.error ?? '인증 오류',
-      };
-      return NextResponse.json(response, { status: response.statusCode });
+      const res = NextResponse.json(
+        { success: false, error: result.error ?? '인증 오류' },
+        { status: result.status ?? 401 },
+      );
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     const { userId } = result;
@@ -80,22 +101,23 @@ export async function PATCH() {
       },
     });
 
-    const response: SuccessApiResponse<{ success: boolean; updatedCount: number }> = {
-      statusCode: HttpStatusCode.OK,
-      message: 'All notifications marked as read',
+    const res = NextResponse.json({
+      success: true,
       content: {
-        success: true,
         updatedCount: count,
       },
-    };
-
-    return NextResponse.json(response);
+    });
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   } catch (error) {
     console.error('Mark all read error:', error);
-    const response: ErrorApiResponse = {
-      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      message: 'Internal Server Error',
-    };
-    return NextResponse.json(response, { status: response.statusCode });
+    const res = NextResponse.json(
+      { success: false, error: '알림 읽음 처리 중 오류가 발생했습니다.' },
+      { status: 500 },
+    );
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   }
 }

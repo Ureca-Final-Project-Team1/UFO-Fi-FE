@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { plansAPI } from '@/backend';
 import { Carrier } from '@/backend/types/carrier';
 import { OCRInputSectionProps, ocrInputVariants, PlanCombo } from '@/features/signup/components';
-import { useOCRToGptMutation } from '@/hooks/useOCRToGptMutation';
+import { useOCRToGptMutation } from '@/features/signup/hooks/useOCRToGptMutation';
 import {
   Button,
   Icon,
@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { getMobileDataTypeDisplay } from '@/shared/utils/mobileData';
 
 const VALID_CARRIERS = ['SKT', 'LGU', 'KT'] as const;
 
@@ -36,12 +36,12 @@ export const OCRInputSection = ({
 }: OCRInputSectionProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const prevCarrier = useRef('');
+  const hasToastedRef = useRef(false); // toast 중복 방지
+
   const [planNameOCR, setPlanNameOCR] = useState('');
   const [carrierOCR, setCarrierOCR] = useState('');
-  const watchedCarrier = useWatch({
-    control,
-    name: 'carrier',
-  });
+  const watchedCarrier = useWatch({ control, name: 'carrier' });
+
   const { mutate: runOCRAndGPT } = useOCRToGptMutation((result) => {
     setPlanNameOCR(result[0]);
     setCarrierOCR(result[1]);
@@ -78,55 +78,65 @@ export const OCRInputSection = ({
   }, [watchedCarrier, setValue, setPlans, setForm, setMaxData, setNetworkType, setIsLoading]);
 
   useEffect(() => {
-    if (carrierOCR) {
-      const matched = VALID_CARRIERS.find(
-        (c) => carrierOCR.toUpperCase().includes(c) || (c === 'LGU' && carrierOCR.includes('LG')),
-      );
-      if (matched) {
-        setValue('carrier', matched as Carrier);
-        setForm({ carrier: matched as Carrier });
-      } else {
-        toast.error('인식된 통신사가 유효하지 않습니다.');
-      }
-    }
+    if (!carrierOCR) return;
 
-    if (planNameOCR) {
+    const matched = VALID_CARRIERS.find(
+      (c) => carrierOCR.toUpperCase().includes(c) || (c === 'LGU' && carrierOCR.includes('LG')),
+    );
+
+    if (matched) {
+      setValue('carrier', matched as Carrier);
+      setForm({ carrier: matched as Carrier });
+    } else if (!hasToastedRef.current) {
+      toast.error('인식된 통신사가 유효하지 않습니다.');
+      hasToastedRef.current = true;
+    }
+  }, [carrierOCR, setValue, setForm]);
+
+  useEffect(() => {
+    if (!planNameOCR || plans.length === 0) return;
+
+    const selected = plans.find((p) => p.planName === planNameOCR);
+
+    if (selected) {
       setValue('planName', planNameOCR, {
         shouldDirty: true,
         shouldTouch: true,
         shouldValidate: true,
       });
-
-      const selected = plans.find((p) => p.planName === planNameOCR);
-
-      if (selected) {
-        setMaxData(selected.sellMobileDataCapacityGB);
-        setNetworkType(selected.mobileDataType.replace(/^_/, ''));
-      } else {
-        setMaxData(null);
-        setNetworkType('');
-        toast.error('요금제를 찾을 수 없습니다. 직접 선택해주세요.');
-      }
+      setForm({ planName: planNameOCR });
+      setMaxData(selected.sellMobileDataCapacityGB);
+      setNetworkType(getMobileDataTypeDisplay(selected.mobileDataType));
+    } else if (!hasToastedRef.current) {
+      toast.error('요금제를 찾을 수 없습니다. 직접 선택해주세요.');
+      setValue('planName', '', {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      setForm({ planName: '' });
+      setMaxData(null);
+      setNetworkType('');
+      hasToastedRef.current = true;
     }
-  }, [carrierOCR, planNameOCR, plans, setValue, setForm, setMaxData, setNetworkType]);
+  }, [planNameOCR, plans, setValue, setForm, setMaxData, setNetworkType]);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     e.target.value = '';
-
     if (!file.type.startsWith('image/')) {
       toast.error('이미지 파일만 업로드 가능합니다.');
       return;
     }
 
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
+    if (file.size > 10 * 1024 * 1024) {
       toast.error('파일 크기는 10MB 이하여야 합니다.');
       return;
     }
 
+    hasToastedRef.current = false; // OCR 시작 전 초기화
     const formData = new FormData();
     formData.append('file', file);
     setIsLoading(true);

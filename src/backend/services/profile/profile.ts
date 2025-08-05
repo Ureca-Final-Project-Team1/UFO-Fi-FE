@@ -1,6 +1,5 @@
-import { apiRequest } from '@/backend/client/axios';
-import type { GetProfileResponse, ProfileUser } from '@/backend/types/profile';
-import { API_ENDPOINTS } from '@/constants';
+import { apiRequest, nextApiRequest } from '@/backend/client/axios';
+import type { GetProfileResponse, ProfileUser, UserStats } from '@/backend/types/profile';
 
 export const profileAPI = {
   async getProfile(anotherUserId: number): Promise<GetProfileResponse> {
@@ -17,5 +16,18 @@ export const profileAPI = {
   async getProfileData(anotherUserId: number): Promise<ProfileUser> {
     const response = await this.getProfile(anotherUserId);
     return response.content;
+  },
+
+  async getUserStats(anotherUserId: number): Promise<{
+    success: boolean;
+    content: UserStats;
+  }> {
+    const response = await nextApiRequest.get<{
+      success: boolean;
+      content: UserStats;
+    }>('/api/collections/user-stats', {
+      params: { userId: anotherUserId },
+    });
+    return response.data;
   },
 };

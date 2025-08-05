@@ -1,6 +1,6 @@
 import { PurchaseStatus, PurchaseErrorType } from '@/backend/types/exchange';
-import type { EcommerceItem } from '@/types/analytics';
-import { analytics } from '@/utils/analytics';
+import type { EcommerceItem } from '@/shared/types/analytics';
+import { analytics } from '@/shared/utils/analytics';
 
 export interface PurchaseTrackingData {
   postId: string;

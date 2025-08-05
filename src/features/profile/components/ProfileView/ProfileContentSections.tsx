@@ -9,12 +9,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-import { nextApiRequest } from '@/backend/client/axios';
+import { profileAPI } from '@/backend';
 import type { ProfileUser, UserStats } from '@/backend/types/profile';
-import { API_ENDPOINTS } from '@/constants';
 import { ICON_PATHS } from '@/constants/icons';
 import { Icon } from '@/shared';
-import { getMobileDataTypeDisplay } from '@/utils/mobileData';
+import { getMobileDataTypeDisplay } from '@/shared/utils/mobileData';
 
 interface ProfileContentSectionsProps {
   profile: ProfileUser;
@@ -34,26 +33,21 @@ export function ProfileContentSections({ profile }: ProfileContentSectionsProps)
   useEffect(() => {
     const fetchUserStats = async () => {
       try {
-        const response = await nextApiRequest.get<UserStats>(API_ENDPOINTS.COLLECTIONS.USER_STAT, {
-          params: { userId: profile.userId },
-        });
-        const { trade_frequency, dominant_trade_time, achievements } = response.data;
+        const data = await profileAPI.getUserStats(profile.userId);
 
-        setUserStats({
-          trade_frequency,
-          dominant_trade_time,
-          achievements,
-        });
-      } catch {
+        if (!data.success || !data.content) {
+          throw new Error('유저 통계 정보를 불러오는 데 실패했습니다.');
+        }
+        setUserStats(data.content);
+      } catch (err) {
+        console.error('[user-stats 에러]', err);
         setUserStats(null);
-        toast.error('유저 통계 정보를 불러오는 데 실패했습니다.');
+        toast.error((err as Error).message);
       }
     };
 
-    if (profile?.userId) {
-      fetchUserStats();
-    }
-  }, [profile?.userId]);
+    fetchUserStats();
+  }, [profile.userId]);
 
   const handleDataListClick = () => {
     router.push(`/profile/${profile.userId}/datalist`);

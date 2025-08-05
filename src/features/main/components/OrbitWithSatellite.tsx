@@ -5,9 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { nextApiRequest } from '@/backend/client/axios';
-import { LetterDisplay } from '@/backend/types/letters';
-import { API_ENDPOINTS } from '@/constants';
-import { Modal, SpeechBubble } from '@/shared';
+import { LetterDisplayExtend } from '@/backend/types/letters';
+import { API_ENDPOINTS, IMAGE_PATHS } from '@/constants';
+import { SpeechBubble } from '@/shared';
+import { SpaceMailModal } from '@/shared/ui/Modal/SpaceMailModal';
 
 const ORBIT_BASE_SIZE = 600;
 const SATELLITE_WIDTH = 30;
@@ -23,25 +24,32 @@ const orbitConfigs = [
 ];
 
 export default function OrbitWithSatellite() {
-  const [letters, setLetters] = useState<LetterDisplay[]>([]);
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const handleOpenMessage = (index: number) => {
-    setOpenIndex(index);
-  };
+  const [letters, setLetters] = useState<LetterDisplayExtend[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchLetters() {
       try {
-        await nextApiRequest.post(API_ENDPOINTS.STORY.POST_LETTERS);
-        const res = await nextApiRequest.get(API_ENDPOINTS.STORY.GET_LETTERS);
-        const data = (await res.data) as LetterDisplay[];
-        setLetters(
-          data.map((letter) => ({
-            step: Number(letter.step),
-            content: letter.content,
-          })),
-        );
+        // 먼저 POST 요청 → 생성 여부 확인
+        const postRes = await nextApiRequest.post(API_ENDPOINTS.STORY.POST_LETTERS);
+        const { isAdded } = postRes.data as { isAdded: boolean };
+
+        // 그 다음 GET 요청 → 편지 리스트 가져오기
+        const getRes = await nextApiRequest.get(API_ENDPOINTS.STORY.GET_LETTERS);
+        const data = getRes.data as LetterDisplayExtend[];
+
+        const mapped = data.map((letter) => ({
+          step: Number(letter.step),
+          content: letter.content,
+          recipient_name: letter.recipient_name,
+        }));
+
+        setLetters(mapped);
+
+        // 새로 생성된 경우만 모달 열기
+        if (isAdded) {
+          setIsModalOpen(true);
+        }
       } catch (e) {
         console.error('편지 불러오기 실패:', e);
         toast.error('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');
@@ -71,7 +79,7 @@ export default function OrbitWithSatellite() {
           return (
             <div key={i}>
               <div
-                className={`absolute rounded-full border-2 border-dashed ${speed} hover:cursor-pointer`}
+                className={`absolute rounded-full border-2 border-dashed ${speed}`}
                 style={{
                   width: orbitSize,
                   height: orbitSize,
@@ -80,7 +88,6 @@ export default function OrbitWithSatellite() {
                   borderColor: `${color}50`,
                   zIndex: 5 - i,
                 }}
-                onClick={() => handleOpenMessage(i)}
               >
                 <div
                   className="absolute"
@@ -98,14 +105,6 @@ export default function OrbitWithSatellite() {
                   />
                 </div>
               </div>
-              <Modal
-                headerAlign="left"
-                title="은하계 메세지"
-                description={letters.find(({ step }) => step === i + 1)?.content}
-                isOpen={openIndex === i}
-                onClose={() => setOpenIndex(null)}
-                hasCloseButton={false}
-              />
             </div>
           );
         }
@@ -119,20 +118,16 @@ export default function OrbitWithSatellite() {
         </div>
         {/* 외계인 */}
         <Image
-          src="/images/main/alien.svg"
+          src={IMAGE_PATHS.ALIEN}
           alt="Alien"
           width={100}
           height={100}
           className="absolute left-1/2 -translate-x-1/2"
-          style={{
-            top: '-15px',
-            zIndex: 1,
-          }}
+          style={{ top: '-15px', zIndex: 1 }}
         />
-
         {/* 행성 */}
         <Image
-          src="/images/main/myplanet.svg"
+          src={IMAGE_PATHS.MY_PLANET}
           alt="MyPlanet"
           width={200}
           height={200}
@@ -177,6 +172,14 @@ export default function OrbitWithSatellite() {
           animation: spin-reverse 10s linear infinite;
         }
       `}</style>
+
+      {letters.length > 0 && (
+        <SpaceMailModal
+          isOpen={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          name={letters.at(-1)?.recipient_name ?? '웃기는 지구인'}
+        />
+      )}
     </div>
   );
 }

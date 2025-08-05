@@ -1,13 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import '@/styles/globals.css';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { getUserInfoResponse, Plan, signupAPI } from '@/backend';
+import { Plan, signupAPI } from '@/backend';
 import { Carrier } from '@/backend/types/carrier';
 import { OCRInputSection, Stepper } from '@/features/signup/components';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
@@ -20,7 +20,7 @@ const PlanPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [maxData, setMaxData] = useState<number | null>(null);
   const [networkType, setNetworkType] = useState('');
-  const queryClient = useQueryClient();
+  const router = useRouter();
 
   const {
     control,
@@ -69,17 +69,7 @@ const PlanPage = () => {
       });
       toast.success('회원가입이 완료되었습니다!');
       useSignupStore.getState().reset();
-      queryClient.setQueryData(['userInfo'], (prev: getUserInfoResponse | undefined) => {
-        if (!prev) return prev;
-
-        return {
-          ...prev,
-          content: {
-            ...prev.content,
-            role: 'ROLE_USER',
-          },
-        };
-      });
+      router.push('/onboarding');
     } catch (error) {
       console.error('회원가입 에러:', error);
       toast.error('회원가입 중 오류가 발생했습니다.');
@@ -90,15 +80,16 @@ const PlanPage = () => {
 
   return (
     <>
-      <div className="flex flex-1 flex-col">
-        <Title iconVariant="back" title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
+      <section className="flex flex-col w-full min-h-full">
+        <Title iconVariant="back" title="회원가입" className=" body-20-bold w-full pl-0 mb-6" />
+
         <div className="flex flex-col items-start gap-6 w-full">
           <Stepper step={2} content="가입 신청" className="mb-5" />
-          <p className="heading-24-bold ml-2">
+          <h1 className="heading-24-bold ml-2">
             가입을 위한 정보를
             <br />
             입력해주세요
-          </p>
+          </h1>
 
           <OCRInputSection
             control={control}
@@ -115,7 +106,7 @@ const PlanPage = () => {
         </div>
 
         {watchedCarrier && watchedPlanName && maxData !== null && networkType && (
-          <div className="w-full flex flex-col gap-5 mt-8 mb-4">
+          <section className="w-full flex flex-col gap-5 mt-8 mb-4" aria-label="가입 정보 확인">
             <hr className="border-t border-[var(--color-hr-border)] w-full" />
             <div className="flex flex-col gap-5">
               <p className="text-start w-full text-white body-20-bold">
@@ -123,21 +114,20 @@ const PlanPage = () => {
               </p>
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between text-white body-16-bold">
-                  <p>판매할 수 있는 최대 데이터</p>
-                  <p className="caption-14-regular">{maxData}GB</p>
+                  <span>판매할 수 있는 최대 데이터</span>
+                  <span className="caption-14-regular">{maxData}GB</span>
                 </div>
                 <div className="flex justify-between text-white body-16-bold">
-                  <p>네트워크 타입</p>
-                  <p className="caption-14-regular">{networkType}</p>
+                  <span>네트워크 타입</span>
+                  <span className="caption-14-regular">{networkType}</span>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         )}
-      </div>
+      </section>
 
-      {/* 고정된 하단 버튼 */}
-      <div className="sticky bottom-0 bg-inherit pb-4">
+      <nav className="sticky bottom-0 bg-inherit pb-4 w-full">
         <Button
           onClick={handleSubmit(onSubmit)}
           type="submit"
@@ -147,7 +137,7 @@ const PlanPage = () => {
         >
           {isLoading ? '처리 중...' : '회원가입'}
         </Button>
-      </div>
+      </nav>
     </>
   );
 };

@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { achievementsAPI } from '@/backend/services/mypage/achievement';
 import { IMAGE_PATHS } from '@/constants';
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
+import { Achievement, SelectedAchievementState } from '@/features/mypage/types/Achievement';
 import { Loading, Title, AchievementModal } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
-import { Achievement, SelectedAchievementState } from '@/types/Achievement';
 
 export default function AchievementPage() {
   const [selectedAchievement, setSelectedAchievement] = useState<SelectedAchievementState | null>(

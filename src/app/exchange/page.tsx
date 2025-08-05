@@ -5,12 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost } from '@/backend';
+import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost, Carrier } from '@/backend';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
+import { useUserPlan } from '@/shared/hooks/useUserPlan';
+import { queryKeys } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-import { queryKeys } from '@/utils';
 
 export default function ExchangePage() {
   const router = useRouter();
@@ -21,6 +22,19 @@ export default function ExchangePage() {
   const [reportModal, setReportModal] = useState({ isOpen: false, postId: 0, sellerId: 0 });
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
+  const [refetchList, setRefetchList] = useState<() => void>(() => () => {});
+  const { data: userPlan } = useUserPlan();
+
+  // 캐시 무효화
+  const refetchExchangeData = () => {
+    refetchList();
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.exchangePostsInfinite(),
+    });
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.myInfo(),
+    });
+  };
 
   // 수정 핸들러
   const handleEdit = (id: number) => {
@@ -101,12 +115,7 @@ export default function ExchangePage() {
       setDeleteModal({ isOpen: false, postId: 0 });
 
       // 캐시 무효화
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.exchangePostsInfinite(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.myInfo(),
-      });
+      refetchExchangeData();
     } catch (error) {
       console.error('Delete error:', error);
       toast.error('삭제 중 오류가 발생했습니다.');
@@ -142,6 +151,8 @@ export default function ExchangePage() {
             onReport={handleReport}
             onPurchase={handlePurchase}
             purchaseLoading={isPurchaseLoading}
+            onRefetch={(refetchFunction) => setRefetchList(() => refetchFunction)}
+            myCarrier={userPlan?.carrier as Carrier}
           />
         </section>
       </main>
@@ -164,6 +175,7 @@ export default function ExchangePage() {
         onClose={handleCancelReport}
         postId={reportModal.postId}
         postOwnerUserId={reportModal.sellerId}
+        onSuccess={refetchExchangeData}
       />
     </div>
   );

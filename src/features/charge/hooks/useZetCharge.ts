@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { paymentAPI } from '@/backend';
 import type { PaymentRequest } from '@/backend/types/payment';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { generateCustomerKey } from '@/utils/uuid';
+import { generateCustomerKey } from '@/shared/utils/uuid';
 
 import { useTossPayments } from './useTossPayments';
 

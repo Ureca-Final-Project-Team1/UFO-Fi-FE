@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -11,10 +10,10 @@ import { IMAGE_PATHS } from '@/constants/images';
 import { formatZetAmount } from '@/features/common/components/ZetDisplay';
 import { generateQRCodeDataURL } from '@/features/profile/utils/qrCodeUtils';
 import { generateQRCodeValue } from '@/features/profile/utils/shareUtils';
-import { Avatar, Button, Progress } from '@/shared';
-import { Honorific } from '@/types/Achievement';
+import { Button, Progress } from '@/shared';
 
 import { HonorificChip } from './HonorificChip';
+import { Honorific } from '../types/Achievement';
 
 interface SignalCardProps {
   userId: string;
@@ -90,167 +89,172 @@ export default function SignalCard({
 
   return (
     <section
-      className="rounded-xl shadow-lg border-[4px] w-full max-w-[620px] mx-auto"
+      className="rounded-xl shadow-lg border-[4px] mx-auto overflow-hidden p-2"
       style={{
         borderColor: 'var(--chart-4)',
         backgroundColor: 'var(--color-background-card)',
+        width: '85%',
+        maxWidth: '20rem',
+        minWidth: '19rem',
+        aspectRatio: '1.5/1',
       }}
       role="region"
       aria-labelledby="signal-card-title"
     >
-      {/* 헤더 */}
-      <header className="text-center py-2 px-2">
-        <h2
-          id="signal-card-title"
-          className="heading-20-bold font-black"
-          style={{ color: 'var(--color-badge-hover-dark)' }}
+      <div className="w-full h-full flex flex-col justify-center mb-2">
+        {/* 헤더 */}
+        <header
+          className="text-center flex flex-col justify-center"
+          style={{ height: '20%', padding: '1% 2%' }}
         >
-          UPHONIAN SIGNAL CARD
-        </h2>
-        <p
-          className="caption-8-regular sm:caption-10-regular"
-          style={{
-            color: 'var(--color-badge-hover-dark)',
-            opacity: 0.6,
-          }}
-        >
-          EARTH-BASED FIELD IDENTIFICATION
-        </p>
-        <hr className="my-1 border-black/30" />
-      </header>
-
-      {/* 메인 컨텐츠 */}
-      <div className="flex justify-between items-start px-2 sm:px-4 md:px-6 pb-3 gap-2 sm:gap-3 md:gap-4">
-        {/* 왼쪽 프로필 */}
-        <div className="flex flex-col items-center shrink-0">
-          <Avatar
-            size="sm"
-            className="border w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20"
-            variant="default"
+          <h2
+            id="signal-card-title"
+            className="font-black leading-tight"
+            style={{
+              color: 'var(--color-badge-hover-dark)',
+              fontSize: '14px',
+            }}
           >
-            <Image
-              src={profileImageUrl || IMAGE_PATHS.AVATAR}
-              alt={`${userId}의 프로필 이미지`}
-              width={48}
-              height={48}
-              className="rounded-md w-full h-full object-cover"
-              style={{ borderColor: 'var(--chart-4)' }}
-            />
-          </Avatar>
+            UPHONIAN SIGNAL CARD
+          </h2>
+          <p
+            className="mt-[0.5%]"
+            style={{
+              color: 'var(--color-badge-hover-dark)',
+              opacity: 0.6,
+              fontSize: '8px',
+            }}
+          >
+            EARTH-BASED FIELD IDENTIFICATION
+          </p>
+          <hr className="mt-[1%] border-black/30" />
+        </header>
 
-          {/* 칭호 */}
-          <div className="mt-1 sm:mt-2">
-            {activeHonorific ? (
-              <HonorificChip
-                honorifics={honorifics}
-                onSelectHonorific={async (name: string) => {
-                  setHonorifics((prev) =>
-                    prev.map((h) => ({
-                      ...h,
-                      isActive: h.name === name,
-                    })),
-                  );
-
-                  try {
-                    await achievementsAPI.updateUserHonorific(name);
-                  } catch (error) {
-                    console.error('칭호 변경 실패:', error);
-                    setHonorifics(initialHonorifics);
-                    toast.error('칭호 변경에 실패했습니다. 다시 시도해주세요.');
-                  }
-                }}
-                className="w-[4.5rem] sm:w-[5rem] px-2 py-0.5 rounded-md text-[10px] sm:text-xs text-white font-medium"
-                style={{ backgroundColor: 'var(--chart-4)' }}
+        {/* 메인 컨텐츠 */}
+        <div className="flex items-stretch gap-3 min-h-0 flex-1" style={{ padding: '2%' }}>
+          {/* 왼쪽 프로필 */}
+          <div className="flex flex-col items-center flex-shrink-0 w-18">
+            <div className="relative">
+              <div
+                className="border rounded-md overflow-hidden w-18 h-18"
+                style={{ borderColor: 'var(--chart-4)' }}
               >
-                {activeHonorific.name}
-              </HonorificChip>
-            ) : (
-              <div className="w-[4.5rem] sm:w-[5rem] px-2 py-0.5 rounded-md text-[10px] sm:text-xs text-gray-500 bg-gray-100 font-medium border border-gray-200 text-center">
-                신분 미확인
+                <Image
+                  src={profileImageUrl || IMAGE_PATHS.AVATAR}
+                  alt={`${userId}의 프로필 이미지`}
+                  width={100}
+                  height={100}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* 가운데 사용자 정보 */}
-        <div className="flex-1 space-y-1 min-w-0 max-w-[180px] sm:max-w-none">
-          <div className="flex justify-between items-start gap-2">
-            <h3 className="body-16-bold sm:body-20-bold text-black truncate flex-1">
-              {userId || '지구인'}
-            </h3>
-          </div>
+            {/* 칭호 */}
+            <div className="mt-2">
+              {activeHonorific ? (
+                <HonorificChip
+                  honorifics={honorifics}
+                  onSelectHonorific={async (name: string) => {
+                    setHonorifics((prev) =>
+                      prev.map((h) => ({
+                        ...h,
+                        isActive: h.name === name,
+                      })),
+                    );
 
-          <div className="caption-10-bold sm:caption-12-bold text-gray-800">
-            <span className="truncate">이번 달 판매 가능 용량</span>
-          </div>
-
-          <Progress
-            usedStorage={availableData}
-            totalStorage={maxData}
-            size="sm"
-            aria-label={`데이터 사용량: ${availableData}/${maxData}GB`}
-          />
-          <hr className="border-black/30" />
-
-          <div className="caption-12-bold flex flex-col text-gray-800">
-            <span>보유중인 ZET</span>
-            <div className="flex justify-between items-center gap-1">
-              <span className="body-16-bold font-bold text-chart-4 truncate">
-                {formattedZet} ZET
-              </span>
-              <Link href="/charge" aria-label="ZET 충전하기">
-                <button
-                  type="button"
-                  className="whitespace-nowrap caption-12-medium sm:body-14-medium rounded-md px-2 py-1 sm:px-3 sm:py-1.5 flex items-center justify-center exploration-button text-xs flex-shrink-0"
+                    try {
+                      await achievementsAPI.updateUserHonorific(name);
+                    } catch (error) {
+                      console.error('칭호 변경 실패:', error);
+                      setHonorifics(initialHonorifics);
+                      toast.error('칭호 변경에 실패했습니다. 다시 시도해주세요.');
+                    }
+                  }}
+                  className="w-full px-1 py-1 rounded text-white font-medium text-center truncate text-xs"
+                  style={{ backgroundColor: 'var(--chart-4)' }}
                 >
-                  충전
-                </button>
-              </Link>
+                  {activeHonorific.name}
+                </HonorificChip>
+              ) : (
+                <div className="w-full px-1 py-1 rounded text-xs text-gray-500 bg-gray-100 font-medium border border-gray-200 text-center truncate">
+                  신분 미확인
+                </div>
+              )}
             </div>
           </div>
-        </div>
 
-        {/* 오른쪽 QR & 액션 */}
-        <div className="flex flex-col items-end gap-1 sm:gap-2 shrink-0">
-          <Button
-            type="button"
-            variant="outline"
-            size="compact"
-            className="sm:block text-gray-800 caption-6-medium sm:caption-8-medium h-6 sm:h-7 px-1 py-1 whitespace-nowrap text-[8px] sm:text-[10px]"
-            onClick={() => router.push('/mypage/edit-profile')}
-            aria-label="프로필 수정하기"
-          >
-            ✏️&nbsp;프로필 수정
-          </Button>
+          {/* 가운데 사용자 정보 */}
+          <div className="flex-1 min-w-0 px-1 gap-1">
+            <div className="flex justify-between items-start mb-1 gap-2">
+              <h3 className="font-bold text-black truncate flex-1 text-sm">{userId || '지구인'}</h3>
+            </div>
 
-          {/* QR코드 */}
-          <div className="size-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white rounded-lg flex items-center justify-center">
-            {isQRLoading ? (
-              <div className="animate-spin size-6 border-2 border-gray-300 border-t-gray-600 rounded-full" />
-            ) : qrCodeDataURL ? (
-              <img
-                src={qrCodeDataURL}
-                alt={`${userId}의 프로필 QR 코드`}
-                className="w-full h-full object-contain rounded-lg"
+            <div className="font-bold text-gray-800 text-[11px]">
+              <span className="block truncate mb-1">이번 달 판매 가능 용량</span>
+              <Progress
+                usedStorage={availableData}
+                totalStorage={maxData}
+                size="sm"
+                aria-label={`데이터 사용량: ${availableData}/${maxData}GB`}
               />
-            ) : (
-              <Image
-                src={IMAGE_PATHS.QR}
-                alt="기본 QR 코드"
-                width={48}
-                height={48}
-                className="sm:w-[64px] sm:h-[64px] md:w-[80px] md:h-[80px]"
-              />
-            )}
+            </div>
+
+            <hr className="border-black/20 my-2" />
+
+            <div className="font-bold flex flex-col text-gray-800 space-y-1">
+              <span className="text-xs">보유중인 ZET</span>
+              <div className="flex justify-between items-center gap-2">
+                <span className="font-bold text-chart-4 truncate flex-1 text-sm">
+                  {formattedZet} ZET
+                </span>
+              </div>
+            </div>
           </div>
 
-          <Image
-            src={IMAGE_PATHS.IC}
-            alt="신분증 칩"
-            width={32}
-            height={32}
-            className="mt-1 sm:mt-2 sm:w-[40px] sm:h-[40px] md:w-[50px] md:h-[50px]"
-          />
+          {/* 오른쪽 QR & 액션 */}
+          <div className="flex flex-col items-end justify-start flex-shrink-0 w-16 space-y-1 h-full overflow-hidden">
+            <Button
+              type="button"
+              variant="outline"
+              size="compact"
+              className="text-gray-800 whitespace-nowrap w-full text-xs h-6 px-1 py-0.5 rounded-full flex-shrink-0"
+              onClick={() => router.push('/mypage/edit-profile')}
+              aria-label="프로필 수정하기"
+            >
+              ✏️ 수정
+            </Button>
+
+            {/* QR코드 */}
+            <div className="w-15 h-15 bg-white rounded-lg flex items-center justify-center border border-gray-200 flex-shrink-0">
+              {isQRLoading ? (
+                <div className="animate-spin w-7 h-7 border border-gray-300 border-t-gray-600 rounded-full" />
+              ) : qrCodeDataURL ? (
+                <img
+                  src={qrCodeDataURL}
+                  alt={`${userId}의 프로필 QR 코드`}
+                  className="w-full h-full object-contain rounded-lg p-1"
+                />
+              ) : (
+                <Image
+                  src={IMAGE_PATHS.QR}
+                  alt="기본 QR 코드"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8"
+                />
+              )}
+            </div>
+
+            <div className="flex-1 flex items-end justify-center min-h-0">
+              <Image
+                src={IMAGE_PATHS.IC}
+                alt="신분증 칩"
+                width={50}
+                height={50}
+                className="w-6 h-6"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

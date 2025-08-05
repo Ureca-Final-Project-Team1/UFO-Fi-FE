@@ -1,5 +1,5 @@
 import { nextApiRequest } from '@/backend/client/axios';
-import { FindRecommendUsersResponse } from '@/backend/types';
+import { FindRecommendUsersResponse, FindRecommendUsersResponseContent } from '@/backend/types';
 import { API_ENDPOINTS } from '@/constants';
 
 export const recommendAPI = {
@@ -12,10 +12,10 @@ export const recommendAPI = {
   },
 
   // 유사 사용자 추천 (GET)
-  async findRecommendUsers(): Promise<FindRecommendUsersResponse[]> {
-    const response = await nextApiRequest.get<{ neighbors: FindRecommendUsersResponse[] }>(
+  async findRecommendUsers(): Promise<FindRecommendUsersResponseContent[]> {
+    const response = await nextApiRequest.get<FindRecommendUsersResponse>(
       API_ENDPOINTS.COLLECTIONS.SEARCH,
     );
-    return response.data.neighbors;
+    return response.data.content.neighbors;
   },
 };

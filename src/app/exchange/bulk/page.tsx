@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { BulkCapacitySlider } from '@/features/bulk/components/BulkCapacitySlider';
 import { useBulkPurchase } from '@/features/bulk/hooks/useBulkPurchase';
 import { Icon, Title, Button, PriceInput } from '@/shared';
+import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function BulkPurchasePage() {
@@ -22,12 +23,18 @@ export default function BulkPurchasePage() {
     isSubmitting,
   } = useBulkPurchase();
 
+  const { resetPurchaseFlow } = usePurchaseFlowStore();
+
   const isMobile = useViewportStore((state) => state.isMobile);
   const isFormValid = isValidCapacity && isValidPrice;
 
   const setNewCapacityValue = (value: React.SetStateAction<number[]>) => {
     setCapacityValue(value);
   };
+
+  useEffect(() => {
+    resetPurchaseFlow();
+  }, [resetPurchaseFlow]);
 
   return (
     <div className="pb-10">
@@ -89,12 +96,19 @@ export default function BulkPurchasePage() {
           </div>
 
           {/* 외계인 캐릭터 */}
-          <div className="absolute bottom-[-90px] right-0" aria-hidden="true">
+          <div
+            className="absolute h-full right-0"
+            aria-hidden="true"
+            style={{
+              right: isMobile ? '-30px' : '-50px',
+              bottom: isMobile ? '-100px' : '-150px',
+            }}
+          >
             <Image
               src={IMAGE_PATHS.AL_BULK_PURCHASE}
               alt=""
-              width={isMobile ? 140 : 220}
-              height={isMobile ? 140 : 220}
+              width={isMobile ? 200 : 300}
+              height={isMobile ? 200 : 300}
               priority
             />
           </div>

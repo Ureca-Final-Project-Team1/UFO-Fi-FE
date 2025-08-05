@@ -21,6 +21,7 @@ export { purchaseAPI } from './services/exchange/purchase';
 export { bulkPurchaseAPI } from './services/exchange/bulkPurchase';
 export { purchaseHistory } from './services/history/purchaseHistory';
 export { sellHistory } from './services/history/sellHistory';
+export { zetRecoveryAPI } from './services/admin/zetRecovery';
 
 // 타입들 re-export
 export type * from './types';

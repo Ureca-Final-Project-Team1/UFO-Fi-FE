@@ -3,49 +3,76 @@ import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 
+import { API_SELF_URL } from '@/constants';
 import { prisma } from '@/lib/prisma';
-import { getUserFromToken } from '@/utils/getUserFromToken';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// CORS 설정을 위한 정확한 origin 도메인
+const ORIGIN = API_SELF_URL;
+
+// 프리플라이트 요청 처리
+export function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': ORIGIN,
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
 
 // GET: 현재 사용자에 대한 최장 경로 편지를 조회
 export async function GET() {
   try {
     const result = await getUserFromToken();
     if ('error' in result) {
-      return NextResponse.json({ error: result.error }, { status: result.status });
+      const res = NextResponse.json({ error: result.error }, { status: result.status });
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     const { userId } = result;
 
-    const queryStartTime = Date.now();
-    const letters = await prisma.$transaction(
-      async (prisma) => {
-        return await prisma.voyage_letters.findMany({
-          where: { user_id: userId, isLongestPath: true },
-          orderBy: { step: 'asc' },
-          take: 10,
-        });
-      },
-      {
-        timeout: 20000,
-      },
-    );
+    // 1. 편지 조회 (step 내림차순 정렬)
+    const letters = await prisma.voyage_letters.findMany({
+      where: { user_id: userId, isLongestPath: true },
+      orderBy: { step: 'asc' },
+      take: 10,
+    });
 
-    const queryDuration = Date.now() - queryStartTime;
-    console.warn('조회된 편지 수:', letters.length, '쿼리 시간:', queryDuration + 'ms');
+    // 2. recipient_id 목록 수집
+    const recipientIds = letters.map((l) => l.recipient_id);
 
-    return NextResponse.json(
+    // 3. users 테이블에서 recipient 이름 조회
+    const recipients = await prisma.users.findMany({
+      where: { id: { in: recipientIds } },
+      select: { id: true, nickname: true },
+    });
+
+    const recipientMap = new Map(recipients.map((r) => [r.id.toString(), r.nickname]));
+
+    // 4. 응답 구성
+    const res = NextResponse.json(
       letters.map((l) => ({
         id: l.id.toString(),
         user_id: l.user_id.toString(),
         step: l.step,
         recipient_id: l.recipient_id.toString(),
+        recipient_name: recipientMap.get(l.recipient_id.toString()) ?? '이름 없음',
         content: l.content,
         isLongestPath: l.isLongestPath,
         created_at: l.created_at.toISOString(),
       })),
     );
+
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   } catch (error) {
     console.error('편지 조회 실패:', error);
 
@@ -62,11 +89,15 @@ export async function GET() {
 }
 
 // POST: 사용자 기준으로 새로운 편지를 생성
+// POST: 사용자 기준으로 새로운 편지를 생성
 export async function POST() {
   try {
     const result = await getUserFromToken();
     if ('error' in result) {
-      return NextResponse.json({ error: result.error }, { status: result.status });
+      const res = NextResponse.json({ error: result.error }, { status: result.status });
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     const { userId } = result;
@@ -79,7 +110,10 @@ export async function POST() {
 
     if (maxExistingStep >= 5) {
       console.log('편지 최대 5단계 도달 → 생성 생략');
-      return new NextResponse(null, { status: 204 });
+      const res = NextResponse.json({ isAdded: false }, { status: 200 });
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     const visited = new Set<bigint>();
@@ -109,12 +143,15 @@ export async function POST() {
     const bfsStep = path.length - 1;
     if (bfsStep <= maxExistingStep) {
       console.log(`BFS 경로(${bfsStep}) <= 기존 편지 최대 단계(${maxExistingStep}) → 생성 생략`);
-      return new NextResponse(null, { status: 204 });
+      const res = NextResponse.json({ isAdded: false }, { status: 200 });
+      res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+      res.headers.set('Access-Control-Allow-Credentials', 'true');
+      return res;
     }
 
     const users = await prisma.users.findMany({
       where: { id: { in: path } },
-      select: { id: true, name: true },
+      select: { id: true, nickname: true },
     });
 
     const newLetters = [];
@@ -124,8 +161,8 @@ export async function POST() {
       const toId = path[i];
       const step = i;
 
-      const fromName = users.find((u) => u.id === fromId)?.name ?? '어느 항해자';
-      const toName = users.find((u) => u.id === toId)?.name ?? '다른 별';
+      const fromName = users.find((u) => u.id === fromId)?.nickname ?? '어느 항해자';
+      const toName = users.find((u) => u.id === toId)?.nickname ?? '다른 별';
 
       const existing = await prisma.voyage_letters.findUnique({
         where: {
@@ -163,7 +200,6 @@ export async function POST() {
         content = `${fromName}의 데이터가 ${toName}에게 안전하게 도달했습니다.`;
       }
 
-      // 경쟁 조건 대비: create 시도 → 실패 시 continue
       try {
         const created = await prisma.voyage_letters.create({
           data: {
@@ -187,9 +223,7 @@ export async function POST() {
               },
             },
           });
-          if (fallback) {
-            newLetters.push(fallback);
-          }
+          if (fallback) newLetters.push(fallback);
           continue;
         }
         throw error;
@@ -207,9 +241,16 @@ export async function POST() {
       data: { isLongestPath: false },
     });
 
-    return new NextResponse(null, { status: 201 });
+    const res = NextResponse.json({ isAdded: true }, { status: 201 });
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   } catch (error) {
     console.error('편지 생성 오류:', error);
-    return NextResponse.json({ error: '편지 생성 중 오류가 발생했습니다.' }, { status: 500 });
+
+    const res = NextResponse.json({ error: '편지 생성 중 오류가 발생했습니다.' }, { status: 500 });
+    res.headers.set('Access-Control-Allow-Origin', ORIGIN);
+    res.headers.set('Access-Control-Allow-Credentials', 'true');
+    return res;
   }
 }

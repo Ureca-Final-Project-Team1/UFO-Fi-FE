@@ -34,17 +34,18 @@ const ProfilePage = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col gap-6">
-        <div className="flex-1 flex flex-col justify-start items-start">
-          <Title iconVariant="back" title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full min-h-full flex flex-col gap-6">
+        <section className="flex-1 flex flex-col justify-start items-start">
+          <Title iconVariant="back" title="회원가입" className="body-20-bold pl-0 mb-6" />
 
           <div className="flex flex-col gap-6 w-full">
             <Stepper step={1} content="정보 입력" className="mb-5" />
-            <p className="heading-24-bold ml-2">
+            <h1 className="heading-24-bold ml-2">
               가입을 위한 정보를
               <br />
               입력해주세요
-            </p>
+            </h1>
+
             <div className="flex flex-col gap-3 w-full text-left">
               <label className="flex items-center gap-5 body-16-bold">
                 이름
@@ -73,14 +74,13 @@ const ProfilePage = () => {
               />
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* 고정된 하단 버튼 */}
-        <div className="sticky bottom-0 bg-inherit pb-4">
+        <nav className="sticky bottom-0 bg-inherit pb-4 w-full">
           <Button type="submit" size="full-width" className="body-16-medium h-14 text-white">
             다음
           </Button>
-        </div>
+        </nav>
       </form>
     </>
   );

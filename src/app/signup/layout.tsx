@@ -1,28 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
+import { ReactNode } from 'react';
 
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import SignupClientLayout from '@/features/signup/components/SignupClientLayout';
 
-import { useUserRole } from '@/features/signup/hooks/useUserRole';
-import { useSignupStore } from '@/stores/useSignupStore';
+export const metadata: Metadata = {
+  title: 'UFO-Fi 회원가입',
+  description: 'UFO-Fi 회원가입 페이지',
+  robots: 'index, follow',
+};
 
-export default function SignupLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { isProfileComplete } = useSignupStore();
-  const { userRole, isLoading } = useUserRole();
-
-  useEffect(() => {
-    if (pathname === '/signup/plan' && !isProfileComplete()) {
-      router.replace('/signup/profile');
-    }
-  }, [pathname, isProfileComplete, router]);
-
-  useEffect(() => {
-    if (!isLoading && userRole === 'ROLE_USER') {
-      router.replace('/');
-    }
-  }, [userRole, isLoading, router]);
-
-  return <>{children}</>;
+export default function SignupLayout({ children }: { children: ReactNode }) {
+  return <SignupClientLayout>{children}</SignupClientLayout>;
 }

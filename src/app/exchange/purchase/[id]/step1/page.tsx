@@ -7,8 +7,9 @@ import { useEffect, useState, Suspense } from 'react';
 import { IMAGE_PATHS } from '@/constants/images';
 import { InsufficientZetModal } from '@/features/payment/components/InsufficientZetModal';
 import { Button, Loading, Title } from '@/shared';
+import { getMobileDataTypeDisplay } from '@/shared/utils';
+import { analytics } from '@/shared/utils/analytics';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-import { analytics } from '@/utils/analytics';
 
 function Step1Content() {
   const router = useRouter();
@@ -112,7 +113,7 @@ function Step1Content() {
           <p className="text-lg mb-2">{productData.title}</p>
           <p className="text-sm text-gray-300 mb-4">
             {productData.sellMobileDataCapacityGb}GB • {productData.carrier} •{' '}
-            {productData.mobileDataType}
+            {getMobileDataTypeDisplay(productData.mobileDataType as '_5G' | 'LTE')}
           </p>
         </div>
 

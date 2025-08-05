@@ -28,6 +28,13 @@ export interface FollowActionRequest {
 
 // 추천 친구 조회 응답
 export interface FindRecommendUsersResponse {
+  success: boolean;
+  content: {
+    neighbors: FindRecommendUsersResponseContent[];
+  };
+}
+
+export interface FindRecommendUsersResponseContent {
   id: number;
   nickname: string;
   profile: string;

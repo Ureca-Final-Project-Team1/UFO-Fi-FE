@@ -4,7 +4,7 @@ import { purchaseAPI } from '@/backend';
 import { ApiError } from '@/backend/client/axios';
 import type { PurchaseRequest, PurchaseResponse } from '@/backend/types/exchange';
 import { PurchaseErrorType } from '@/backend/types/exchange';
-import { analytics } from '@/utils/analytics';
+import { analytics } from '@/shared/utils/analytics';
 
 export type RetryState =
   | { status: 'idle' }

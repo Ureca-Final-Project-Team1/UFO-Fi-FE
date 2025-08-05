@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { profileAPI } from '@/backend';
 import type { ProfileUser } from '@/backend/types/profile';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { queryKeys } from '@/utils';
+import { queryKeys } from '@/shared/utils';
 
 interface ProfileWithFollowState extends ProfileUser {
   isMyProfile: boolean;

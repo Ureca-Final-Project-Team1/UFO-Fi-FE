@@ -13,7 +13,7 @@ export const CompletionImage = () => {
         className="absolute -top-11"
       />
       <Image
-        src={IMAGE_PATHS['MY_PLANET_HALF']}
+        src={IMAGE_PATHS['MY_PLANET']}
         alt="my-planet"
         width={300}
         height={300}

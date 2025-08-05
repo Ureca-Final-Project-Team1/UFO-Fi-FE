@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import React from 'react';
 
 interface UserLinkProps {
@@ -22,33 +22,23 @@ export function UserLink({
   children,
   asButton = false,
 }: UserLinkProps) {
-  const router = useRouter();
+  const numericUserId = typeof userId === 'string' ? parseInt(userId, 10) : userId;
+  const isValidUser =
+    !disabled && userId && nickname && !isNaN(Number(numericUserId)) && Number(numericUserId) > 0;
+  const href = isValidUser ? `/profile/${numericUserId}` : undefined;
 
   const handleClick = (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
     // 커스텀 onClick이 있으면 먼저 실행
     if (onClick && event.type === 'click') {
+      event.preventDefault();
+      event.stopPropagation();
       onClick(event as React.MouseEvent<HTMLElement>);
     }
 
-    // userId가 유효하지 않거나 disabled 상태면 이동하지 않음
-    if (disabled || !userId || !nickname) {
-      return;
-    }
-
-    const numericUserId = typeof userId === 'string' ? parseInt(userId, 10) : userId;
-
-    if (isNaN(numericUserId) || numericUserId <= 0) {
-      console.warn('Invalid userId for UserLink:', userId);
-      return;
-    }
-
-    router.push(`/profile/${numericUserId}`);
+    if (!isValidUser) return;
   };
 
-  if (!userId || !nickname) {
+  if (!userId || !nickname || !isValidUser) {
     return (
       <span className={`text-gray-400 ${className}`}>
         {children || nickname || '알 수 없는 사용자'}
@@ -66,21 +56,23 @@ export function UserLink({
   // children이 있으면 클릭 가능한 div로 래핑
   if (children) {
     return (
-      <div
-        onClick={handleClick}
-        className={finalClassName}
-        role="button"
-        tabIndex={disabled ? -1 : 0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleClick(e);
-          }
-        }}
-        style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-      >
-        {children}
-      </div>
+      <Link href={href || '#'}>
+        <div
+          onClick={handleClick}
+          className={finalClassName}
+          role="button"
+          tabIndex={disabled ? -1 : 0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleClick(e);
+            }
+          }}
+          style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+        >
+          {children}
+        </div>
+      </Link>
     );
   }
 
@@ -93,19 +85,21 @@ export function UserLink({
   }
 
   return (
-    <span
-      onClick={handleClick}
-      className={`${finalClassName} text-cyan-400 hover:text-cyan-300 hover:underline underline-offset-4`}
-      role="button"
-      tabIndex={disabled ? -1 : 0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleClick(e);
-        }
-      }}
-    >
-      {nickname}
-    </span>
+    <Link href={href || '#'}>
+      <span
+        onClick={handleClick}
+        className={`${finalClassName} text-cyan-400 hover:text-cyan-300 hover:underline underline-offset-4`}
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleClick(e);
+          }
+        }}
+      >
+        {nickname}
+      </span>
+    </Link>
   );
 }

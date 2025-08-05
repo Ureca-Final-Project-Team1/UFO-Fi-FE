@@ -55,6 +55,25 @@ const menuItems: MenuItem[] = [
     href: '/admin/banned-words',
   },
   {
+    id: 'zet-management',
+    label: 'ZET 관리',
+    icon: 'Coins',
+    children: [
+      {
+        id: 'zet-recovery',
+        label: 'ZET 복구',
+        icon: 'RefreshCw',
+        href: '/admin/zet-recovery',
+      },
+      {
+        id: 'zet-charge-logs',
+        label: '충전 내역 로그',
+        icon: 'History',
+        href: '/admin/zet-charge-logs',
+      },
+    ],
+  },
+  {
     id: 'settings',
     label: '시스템 설정',
     icon: 'Settings',

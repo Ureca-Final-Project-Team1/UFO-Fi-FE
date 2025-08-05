@@ -8,8 +8,8 @@ import { Suspense } from 'react';
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { Title, Icon, Button, Loading } from '@/shared';
+import { analytics } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-import { analytics } from '@/utils/analytics';
 
 function PurchaseContent() {
   const router = useRouter();

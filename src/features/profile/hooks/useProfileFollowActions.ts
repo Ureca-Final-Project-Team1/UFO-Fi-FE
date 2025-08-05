@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 import { followActionsAPI } from '@/backend';
 import { ApiError } from '@/backend/client/axios';
-import { queryKeys } from '@/utils';
+import { queryKeys } from '@/shared/utils';
 
 export function useProfileFollowActions() {
   const queryClient = useQueryClient();

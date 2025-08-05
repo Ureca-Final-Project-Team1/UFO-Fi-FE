@@ -8,6 +8,10 @@ export interface Letter {
   created_at: string;
 }
 
+export interface LetterDisplayExtend extends LetterDisplay {
+  recipient_name: string;
+}
+
 export interface LetterDisplay {
   step: number;
   content: string;

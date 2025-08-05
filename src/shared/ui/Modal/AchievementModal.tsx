@@ -1,6 +1,7 @@
 'use client';
 
 import { AchievementBadge } from '@/features/mypage/components/AchievementBadge';
+import { getAchievedDate } from '@/features/mypage/utils/getAchievedDate';
 import {
   Button,
   Dialog,
@@ -10,7 +11,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/shared';
-import { getAchievedDate } from '@/utils/getAchievedDate';
 
 import { AchievementModalProps } from './Modal.types';
 

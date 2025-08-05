@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 
 import { sellAPI } from '@/backend';
 import { validatePricePerGB, validateTotalPrice } from '@/lib/validate';
+import queryClient, { queryKeys } from '@/shared/utils/queryClient';
 
 export const useSellData = () => {
   const [value, setValue] = useState([5]);
@@ -33,6 +34,9 @@ export const useSellData = () => {
       setValue([5]);
       setPricePerGB(120);
     },
+    onError: (error) => {
+      toast.error(error.message || '판매 등록에 실패했습니다.');
+    },
   });
 
   const handleSubmit = async () => {
@@ -61,6 +65,7 @@ export const useSellData = () => {
     };
 
     await sellMutation.mutateAsync(requestData);
+    queryClient.invalidateQueries({ queryKey: queryKeys.myInfo() });
   };
 
   const handlePriceChange = (e: { target: { value: unknown } }) => {
