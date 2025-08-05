@@ -1,35 +1,37 @@
 'use client';
 
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
-import * as React from 'react';
+import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-import { RadioGroupItemProps } from './Radio.types';
-import { radioItemVariants } from './RadioVariants';
+import { radioItemVariants } from './radioVariants';
+
+export interface RadioGroupItemProps
+  extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
+  'aria-label'?: string;
+  color?: string;
+  variant?: 'default' | 'filled' | 'outlined';
+  size?: 'default' | 'sm' | 'lg';
+}
 
 export function RadioGroupItem({
   className,
-  value,
-  color,
   variant = 'default',
   size = 'default',
-  'aria-label': ariaLabel,
-  ...rest
+  color,
+  ...props
 }: RadioGroupItemProps) {
   return (
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
-      className={cn(radioItemVariants({ variant, size, color }), className)}
-      value={value}
-      aria-label={ariaLabel || 'Radio option'}
-      {...rest}
+      data-variant={variant}
+      data-size={size}
+      className={cn(radioItemVariants({ variant, size, color: color as string }), className)}
+      {...props}
     >
-      <RadioGroupPrimitive.Indicator
-        data-slot="radio-group-indicator"
-        className="relative flex items-center justify-center"
-      >
-        <div className={`rounded-full size-3 bg-${color}`} />
+      <RadioGroupPrimitive.Indicator asChild>
+        <Check className="size-full p-0.5" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

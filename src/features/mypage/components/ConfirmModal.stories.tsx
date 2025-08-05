@@ -35,7 +35,7 @@ const MockConfirmModal = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={onClose || (() => {})}
       title={title}
       description={description}
       primaryButtonText={primaryButtonText}

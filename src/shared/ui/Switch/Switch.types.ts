@@ -5,7 +5,7 @@ import * as React from 'react';
 import { switchRootVariants, switchThumbVariants } from './SwitchVariants';
 
 export interface SwitchProps
-  extends Omit<React.ComponentProps<typeof SwitchPrimitive.Root>, 'className'>,
+  extends Omit<React.ComponentProps<typeof SwitchPrimitive.Root>, 'className' | 'disabled'>,
     VariantProps<typeof switchRootVariants> {
   className?: string;
 }

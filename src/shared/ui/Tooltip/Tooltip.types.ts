@@ -9,7 +9,7 @@ import {
 } from './TooltipVariants';
 
 export interface TooltipProviderProps
-  extends React.ComponentProps<typeof TooltipPrimitive.Provider>,
+  extends Omit<React.ComponentProps<typeof TooltipPrimitive.Provider>, 'className'>,
     VariantProps<typeof tooltipProviderVariants> {
   delayDuration?: number;
 }

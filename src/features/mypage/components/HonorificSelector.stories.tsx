@@ -12,7 +12,7 @@ const DefaultStoryWrapper = (args: {
   selectedId?: number | null;
   onSelect?: (id: number) => void;
 }) => {
-  const [selectedId, setSelectedId] = useState(args.selectedId);
+  const [selectedId, setSelectedId] = useState(args.selectedId || null);
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -32,6 +32,7 @@ const DefaultStoryWrapper = (args: {
             <h2 className="text-white text-base font-semibold mb-4">칭호 선택기</h2>
             <HonorificSelector
               {...args}
+              honorific={args.honorific || []}
               selectedId={selectedId}
               onSelect={(id) => setSelectedId(id)}
             />
@@ -47,7 +48,7 @@ const WithSelectionStoryWrapper = (args: {
   selectedId?: number | null;
   onSelect?: (id: number) => void;
 }) => {
-  const [selectedId, setSelectedId] = useState(args.selectedId);
+  const [selectedId, setSelectedId] = useState(args.selectedId || null);
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -67,6 +68,7 @@ const WithSelectionStoryWrapper = (args: {
             <h2 className="text-white text-base font-semibold mb-4">선택된 칭호</h2>
             <HonorificSelector
               {...args}
+              honorific={args.honorific || []}
               selectedId={selectedId}
               onSelect={(id) => setSelectedId(id)}
             />
@@ -82,7 +84,7 @@ const ManyHonorificsStoryWrapper = (args: {
   selectedId?: number | null;
   onSelect?: (id: number) => void;
 }) => {
-  const [selectedId, setSelectedId] = useState(args.selectedId);
+  const [selectedId, setSelectedId] = useState(args.selectedId || null);
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -102,6 +104,7 @@ const ManyHonorificsStoryWrapper = (args: {
             <h2 className="text-white text-base font-semibold mb-4">다중 칭호 선택기</h2>
             <HonorificSelector
               {...args}
+              honorific={args.honorific || []}
               selectedId={selectedId}
               onSelect={(id) => setSelectedId(id)}
             />
@@ -117,7 +120,7 @@ const DesktopStoryWrapper = (args: {
   selectedId?: number | null;
   onSelect?: (id: number) => void;
 }) => {
-  const [selectedId, setSelectedId] = useState(args.selectedId);
+  const [selectedId, setSelectedId] = useState(args.selectedId || null);
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -137,6 +140,7 @@ const DesktopStoryWrapper = (args: {
             <h2 className="text-white text-base font-semibold mb-4">데스크톱 칭호 선택기</h2>
             <HonorificSelector
               {...args}
+              honorific={args.honorific || []}
               selectedId={selectedId}
               onSelect={(id) => setSelectedId(id)}
             />

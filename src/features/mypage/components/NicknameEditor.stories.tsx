@@ -11,7 +11,7 @@ const DefaultStoryWrapper = (args: {
   isLoading?: boolean;
   onSave?: () => void;
 }) => {
-  const [nickname, setNickname] = useState(args.nickname);
+  const [nickname, setNickname] = useState(args.nickname || '');
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -32,6 +32,7 @@ const DefaultStoryWrapper = (args: {
               {...args}
               nickname={nickname}
               setNickname={setNickname}
+              isLoading={args.isLoading || false}
               onSave={() => {}}
             />
           </div>
@@ -46,7 +47,7 @@ const WithNicknameStoryWrapper = (args: {
   isLoading?: boolean;
   onSave?: () => void;
 }) => {
-  const [nickname, setNickname] = useState(args.nickname);
+  const [nickname, setNickname] = useState(args.nickname || '');
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -67,6 +68,7 @@ const WithNicknameStoryWrapper = (args: {
               {...args}
               nickname={nickname}
               setNickname={setNickname}
+              isLoading={args.isLoading || false}
               onSave={() => {}}
             />
           </div>
@@ -81,7 +83,7 @@ const LoadingStoryWrapper = (args: {
   isLoading?: boolean;
   onSave?: () => void;
 }) => {
-  const [nickname, setNickname] = useState(args.nickname);
+  const [nickname, setNickname] = useState(args.nickname || '');
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -102,6 +104,7 @@ const LoadingStoryWrapper = (args: {
               {...args}
               nickname={nickname}
               setNickname={setNickname}
+              isLoading={args.isLoading || false}
               onSave={() => {}}
             />
           </div>
@@ -116,7 +119,7 @@ const DesktopStoryWrapper = (args: {
   isLoading?: boolean;
   onSave?: () => void;
 }) => {
-  const [nickname, setNickname] = useState(args.nickname);
+  const [nickname, setNickname] = useState(args.nickname || '');
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
@@ -137,6 +140,7 @@ const DesktopStoryWrapper = (args: {
               {...args}
               nickname={nickname}
               setNickname={setNickname}
+              isLoading={args.isLoading || false}
               onSave={() => {}}
             />
           </div>

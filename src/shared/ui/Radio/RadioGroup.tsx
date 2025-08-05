@@ -1,14 +1,23 @@
 'use client';
 
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
-import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Label } from '@/shared';
+import { Label } from '@/shared/ui/Label';
 
-import { RadioGroupProps } from './Radio.types';
 import { RadioGroupItem } from './RadioGroupItem';
-import { radioGroupVariants } from './RadioVariants';
+import { radioGroupVariants } from './radioVariants';
+
+export interface RadioGroupProps
+  extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
+  options: string[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  color?: string;
+  variant?: 'default' | 'vertical' | 'horizontal';
+  size?: 'default' | 'compact' | 'large';
+}
 
 export function RadioGroup({
   options,

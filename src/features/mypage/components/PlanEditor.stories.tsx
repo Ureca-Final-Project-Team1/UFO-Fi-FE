@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { Plan } from '@/backend';
 import { Carrier } from '@/backend/types/carrier';
-import { Icon, Button } from '@/shared';
+import { Plan } from '@/backend/types/plan';
+import { Button } from '@/shared/ui/Button';
+import { Icon } from '@/shared/ui/Icons';
 
-// Mock PlanEditor for Storybook to avoid React Query dependency
 const MockPlanEditor = ({
   carrier = '' as Carrier | '',
   setCarrier,
@@ -26,19 +26,20 @@ const MockPlanEditor = ({
   const [localCarrier, setLocalCarrier] = useState<Carrier | ''>(carrier);
   const [localPlan, setLocalPlan] = useState(plan);
   const [localMaxData, setLocalMaxData] = useState<number | null>(null);
-  const [localNetworkType, setLocalNetworkType] = useState('');
+  const [localNetworkType, setLocalNetworkType] = useState<string>('');
 
   const handleCarrierChange = (newCarrier: Carrier) => {
     setLocalCarrier(newCarrier);
-    setCarrier?.(newCarrier);
     setLocalPlan('');
-    setPlan?.('');
+    setLocalMaxData(null);
+    setLocalNetworkType('');
+    setCarrier?.(newCarrier);
   };
 
   const handlePlanChange = (newPlan: string) => {
     setLocalPlan(newPlan);
     setPlan?.(newPlan);
-    // Mock data for demonstration
+
     if (newPlan.includes('기본')) {
       setLocalMaxData(10);
       setLocalNetworkType('5G');
@@ -83,8 +84,8 @@ const MockPlanEditor = ({
             {plans
               .filter((p) => p.carrier === localCarrier)
               .map((p) => (
-                <option key={p.id} value={p.name}>
-                  {p.name}
+                <option key={p.planId} value={p.planName}>
+                  {p.planName}
                 </option>
               ))}
           </select>
@@ -137,8 +138,6 @@ const meta: Meta<typeof MockPlanEditor> = {
   argTypes: {
     setCarrier: { action: 'carrier changed' },
     setPlan: { action: 'plan changed' },
-    setPlans: { action: 'plans changed' },
-    setIsLoading: { action: 'loading changed' },
     onSave: { action: 'save clicked' },
   },
 };
@@ -151,9 +150,33 @@ export const Default: Story = {
     carrier: '' as Carrier | '',
     plan: '',
     plans: [
-      { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
-      { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
-      { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
+      {
+        planId: 1,
+        planName: '5G 기본 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 10,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 10,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 2,
+        planName: '5G 프리미엄 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 20,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 20,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 3,
+        planName: '5G 무제한 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 100,
+        isUltimatedAmount: true,
+        sellMobileDataCapacityGB: 100,
+        mobileDataType: '_5G',
+      },
     ] as Plan[],
     isLoading: false,
   },
@@ -185,9 +208,33 @@ export const WithCarrierSelected: Story = {
     carrier: Carrier.SKT,
     plan: '',
     plans: [
-      { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
-      { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
-      { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
+      {
+        planId: 1,
+        planName: '5G 기본 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 10,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 10,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 2,
+        planName: '5G 프리미엄 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 20,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 20,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 3,
+        planName: '5G 무제한 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 100,
+        isUltimatedAmount: true,
+        sellMobileDataCapacityGB: 100,
+        mobileDataType: '_5G',
+      },
     ] as Plan[],
     isLoading: false,
   },
@@ -219,9 +266,33 @@ export const WithPlanSelected: Story = {
     carrier: Carrier.SKT,
     plan: '5G 기본 요금제',
     plans: [
-      { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
-      { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
-      { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
+      {
+        planId: 1,
+        planName: '5G 기본 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 10,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 10,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 2,
+        planName: '5G 프리미엄 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 20,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 20,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 3,
+        planName: '5G 무제한 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 100,
+        isUltimatedAmount: true,
+        sellMobileDataCapacityGB: 100,
+        mobileDataType: '_5G',
+      },
     ] as Plan[],
     isLoading: false,
   },
@@ -253,9 +324,33 @@ export const Loading: Story = {
     carrier: Carrier.SKT,
     plan: '5G 기본 요금제',
     plans: [
-      { id: 1, name: '5G 기본 요금제', carrier: 'SKT', data: 10 },
-      { id: 2, name: '5G 프리미엄 요금제', carrier: 'SKT', data: 20 },
-      { id: 3, name: '5G 무제한 요금제', carrier: 'SKT', data: 100 },
+      {
+        planId: 1,
+        planName: '5G 기본 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 10,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 10,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 2,
+        planName: '5G 프리미엄 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 20,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 20,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 3,
+        planName: '5G 무제한 요금제',
+        carrier: 'SKT',
+        mobileDataAmount: 100,
+        isUltimatedAmount: true,
+        sellMobileDataCapacityGB: 100,
+        mobileDataType: '_5G',
+      },
     ] as Plan[],
     isLoading: true,
   },
@@ -287,9 +382,33 @@ export const Desktop: Story = {
     carrier: Carrier.KT,
     plan: '5G 프리미엄 요금제',
     plans: [
-      { id: 1, name: '5G 기본 요금제', carrier: 'KT', data: 10 },
-      { id: 2, name: '5G 프리미엄 요금제', carrier: 'KT', data: 20 },
-      { id: 3, name: '5G 무제한 요금제', carrier: 'KT', data: 100 },
+      {
+        planId: 1,
+        planName: '5G 기본 요금제',
+        carrier: 'KT',
+        mobileDataAmount: 10,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 10,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 2,
+        planName: '5G 프리미엄 요금제',
+        carrier: 'KT',
+        mobileDataAmount: 20,
+        isUltimatedAmount: false,
+        sellMobileDataCapacityGB: 20,
+        mobileDataType: '_5G',
+      },
+      {
+        planId: 3,
+        planName: '5G 무제한 요금제',
+        carrier: 'KT',
+        mobileDataAmount: 100,
+        isUltimatedAmount: true,
+        sellMobileDataCapacityGB: 100,
+        mobileDataType: '_5G',
+      },
     ] as Plan[],
     isLoading: false,
   },
@@ -302,7 +421,7 @@ export const Desktop: Story = {
             <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
               <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
+            <h1 className="text-white text-lg font-bold">마이페이지</h1>
           </div>
         </div>
 
@@ -314,9 +433,4 @@ export const Desktop: Story = {
       </div>
     </div>
   ),
-  parameters: {
-    viewport: {
-      defaultViewport: 'desktop',
-    },
-  },
 };

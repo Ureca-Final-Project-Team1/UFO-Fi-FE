@@ -84,7 +84,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
 
       <DropdownMenuContent
         align="end"
-        className={cn(notificationDropdownVariants({ variant }))}
+        className={cn(notificationDropdownVariants({ variant: variant || undefined }))}
         sideOffset={12}
         avoidCollisions={true}
       >
@@ -131,7 +131,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                   }
                   notification={notification}
                   onClick={() => handleNotificationClick(notification)}
-                  variant={variant}
+                  variant={variant || undefined}
                 />
               ))}
             </div>

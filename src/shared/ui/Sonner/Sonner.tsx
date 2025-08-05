@@ -20,7 +20,7 @@ const Toaster = ({
     <Sonner
       className={cn(sonnerVariants({ variant, position }), className)}
       style={sonnerStyleVariants[styleVariant] as React.CSSProperties}
-      position={position}
+      position={position || undefined}
       expand={sonnerConfigVariants[configVariant].expand}
       richColors={sonnerConfigVariants[configVariant].richColors}
       closeButton={sonnerConfigVariants[configVariant].closeButton}

@@ -24,18 +24,9 @@ const meta: Meta<typeof Select> = {
     },
   },
   argTypes: {
-    size: {
-      control: { type: 'select' },
-      options: ['sm', 'default'],
-      description: 'Select의 크기',
-    },
     disabled: {
       control: 'boolean',
       description: '비활성화 상태',
-    },
-    className: {
-      control: 'text',
-      description: '추가 CSS 클래스',
     },
   },
 };
@@ -48,7 +39,7 @@ export const Default: Story = {
   render: (args) => (
     <div className="p-6 bg-white rounded-lg border">
       <Select {...args}>
-        <SelectTrigger size={args.size}>
+        <SelectTrigger size="default">
           <SelectValue placeholder="통신사를 선택하세요" />
         </SelectTrigger>
         <SelectContent>
@@ -60,7 +51,6 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    size: 'default',
     disabled: false,
   },
   parameters: {
@@ -77,7 +67,7 @@ export const DarkTheme: Story = {
   render: (args) => (
     <div className="p-6 bg-gray-900 rounded-lg">
       <Select {...args}>
-        <SelectTrigger size={args.size}>
+        <SelectTrigger size="default">
           <SelectValue placeholder="다크 테마에서 선택하세요" />
         </SelectTrigger>
         <SelectContent>
@@ -89,7 +79,6 @@ export const DarkTheme: Story = {
     </div>
   ),
   args: {
-    size: 'default',
     disabled: false,
   },
   parameters: {
@@ -148,7 +137,7 @@ export const WithGroupsAndLabels: Story = {
   render: (args) => (
     <div className="p-6 bg-white rounded-lg border">
       <Select {...args}>
-        <SelectTrigger size={args.size}>
+        <SelectTrigger size="default">
           <SelectValue placeholder="카테고리를 선택하세요" />
         </SelectTrigger>
         <SelectContent>
@@ -166,7 +155,6 @@ export const WithGroupsAndLabels: Story = {
     </div>
   ),
   args: {
-    size: 'default',
     disabled: false,
   },
   parameters: {
@@ -183,7 +171,7 @@ export const ManyOptions: Story = {
   render: (args) => (
     <div className="p-6 bg-white rounded-lg border">
       <Select {...args}>
-        <SelectTrigger size={args.size}>
+        <SelectTrigger size="default">
           <SelectValue placeholder="많은 옵션 중 선택하세요" />
         </SelectTrigger>
         <SelectContent>
@@ -204,7 +192,6 @@ export const ManyOptions: Story = {
     </div>
   ),
   args: {
-    size: 'default',
     disabled: false,
   },
   parameters: {
@@ -221,7 +208,7 @@ export const Disabled: Story = {
   render: (args) => (
     <div className="p-6 bg-white rounded-lg border">
       <Select {...args} disabled>
-        <SelectTrigger size={args.size} disabled>
+        <SelectTrigger size="default" disabled>
           <SelectValue placeholder="비활성화된 Select" />
         </SelectTrigger>
         <SelectContent>
@@ -233,7 +220,6 @@ export const Disabled: Story = {
     </div>
   ),
   args: {
-    size: 'default',
     disabled: true,
   },
   parameters: {
@@ -257,7 +243,7 @@ const InteractiveSelect = (args: React.ComponentProps<typeof Select>) => {
         </p>
       </div>
       <Select {...args} value={value} onValueChange={setValue}>
-        <SelectTrigger size={args.size}>
+        <SelectTrigger size="default">
           <SelectValue placeholder="인터랙티브하게 선택하세요" />
         </SelectTrigger>
         <SelectContent>
@@ -273,7 +259,6 @@ const InteractiveSelect = (args: React.ComponentProps<typeof Select>) => {
 export const Interactive: Story = {
   render: (args) => <InteractiveSelect {...args} />,
   args: {
-    size: 'default',
     disabled: false,
   },
   parameters: {
@@ -292,7 +277,7 @@ export const ColorfulBackgrounds: Story = {
       <div className="p-4 bg-blue-100 rounded-lg">
         <h3 className="text-sm font-medium text-blue-900 mb-3">파란색 배경</h3>
         <Select {...args}>
-          <SelectTrigger size={args.size}>
+          <SelectTrigger size="default">
             <SelectValue placeholder="파란색 배경에서 선택" />
           </SelectTrigger>
           <SelectContent>
@@ -306,7 +291,7 @@ export const ColorfulBackgrounds: Story = {
       <div className="p-4 bg-green-100 rounded-lg">
         <h3 className="text-sm font-medium text-green-900 mb-3">초록색 배경</h3>
         <Select {...args}>
-          <SelectTrigger size={args.size}>
+          <SelectTrigger size="default">
             <SelectValue placeholder="초록색 배경에서 선택" />
           </SelectTrigger>
           <SelectContent>
@@ -320,7 +305,7 @@ export const ColorfulBackgrounds: Story = {
       <div className="p-4 bg-red-100 rounded-lg">
         <h3 className="text-sm font-medium text-red-900 mb-3">빨간색 배경</h3>
         <Select {...args}>
-          <SelectTrigger size={args.size}>
+          <SelectTrigger size="default">
             <SelectValue placeholder="빨간색 배경에서 선택" />
           </SelectTrigger>
           <SelectContent>
@@ -333,7 +318,6 @@ export const ColorfulBackgrounds: Story = {
     </div>
   ),
   args: {
-    size: 'default',
     disabled: false,
   },
   parameters: {

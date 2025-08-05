@@ -8,7 +8,7 @@ import { useTableSelection, useTableGrid } from '@/shared/hooks';
 import { BaseTableProps, BaseTableRow } from './Table.types';
 import { TableActions } from './TableActions/TableActions';
 import { TableCheckbox } from './TableCheckbox/TableCheckbox';
-import { TableSkeleton } from './TableSkeleton';
+import { TableSkeleton } from './TableSkeleton/TableSkeleton';
 import Pagination from '../Pagination/Pagination';
 
 export function Table<T extends BaseTableRow>({

@@ -1,12 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { ComponentProps } from 'react';
+import React from 'react';
 
 import { cn } from '@/lib/utils';
 
 import { Icon } from '../Icons';
-import type { TitleIconVariant } from './Title.types';
+import type { TitleProps, TitleIconVariant } from './Title.types';
 
 type IconType = 'ChevronLeft' | 'X';
 
@@ -20,12 +20,6 @@ const iconVariantMap = {
 const getIconName = (variant: TitleIconVariant | undefined): IconType | null => {
   if (!variant || variant === 'none') return null;
   return iconVariantMap[variant] || null;
-};
-
-type TitleProps = ComponentProps<'div'> & {
-  title?: string;
-  iconVariant?: TitleIconVariant;
-  onIconClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const Title: React.FC<TitleProps> = (props) => {

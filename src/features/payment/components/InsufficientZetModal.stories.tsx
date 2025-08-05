@@ -70,7 +70,7 @@ const InteractiveDemo = () => {
           </p>
 
           <div className="space-y-4">
-            <Button onClick={() => setIsOpen(true)} className="w-full" variant="default">
+            <Button onClick={() => setIsOpen(true)} className="w-full" variant="primary">
               ZET 부족 충전 유도 모달 열기
             </Button>
 

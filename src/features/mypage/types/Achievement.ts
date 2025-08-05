@@ -1,4 +1,4 @@
-import type { achievements } from '@prisma/client';
+import type { achievement } from '@prisma/client';
 
 export type UpdateAchievementResponse = {
   message: string;
@@ -11,7 +11,7 @@ export interface UpdateAchievement {
   follow_level: number;
   rotate_level: number;
   total_level: number;
-  achievements: (achievements & { achievedAt: string | null })[];
+  achievements: (achievement & { achievedAt: string | null })[];
   newly_achieved_ids: number[];
   title_name: string[];
 }

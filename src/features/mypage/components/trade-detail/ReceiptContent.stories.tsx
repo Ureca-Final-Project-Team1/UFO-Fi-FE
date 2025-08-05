@@ -28,11 +28,14 @@ type Story = StoryObj<typeof ReceiptContent>;
 export const Default: Story = {
   args: {
     purchaseDetail: {
-      purchaseHistoryId: 'PUR-2024-001',
+      postId: 1,
+      purchaseHistoryId: 1,
       carrier: 'SKT',
       totalGB: 10,
       createdAt: '2024-01-15T10:30:00Z',
       totalZet: 1500,
+      title: 'SKT 5G 데이터 판매',
+      mobileDataType: '5G',
     } as PurchaseDetail,
   },
   render: (args) => (
@@ -50,11 +53,14 @@ export const Default: Story = {
 export const KT: Story = {
   args: {
     purchaseDetail: {
-      purchaseHistoryId: 'PUR-2024-002',
+      postId: 2,
+      purchaseHistoryId: 2,
       carrier: 'KT',
       totalGB: 5,
       createdAt: '2024-01-16T14:20:00Z',
       totalZet: 800,
+      title: 'KT 5G 데이터 판매',
+      mobileDataType: '5G',
     } as PurchaseDetail,
   },
   render: (args) => (
@@ -72,11 +78,14 @@ export const KT: Story = {
 export const LGU: Story = {
   args: {
     purchaseDetail: {
-      purchaseHistoryId: 'PUR-2024-003',
+      postId: 3,
+      purchaseHistoryId: 3,
       carrier: 'LG U+',
       totalGB: 20,
       createdAt: '2024-01-17T09:15:00Z',
       totalZet: 2500,
+      title: 'LG U+ 5G 데이터 판매',
+      mobileDataType: '5G',
     } as PurchaseDetail,
   },
   render: (args) => (
@@ -94,11 +103,14 @@ export const LGU: Story = {
 export const LargeAmount: Story = {
   args: {
     purchaseDetail: {
-      purchaseHistoryId: 'PUR-2024-004',
+      postId: 4,
+      purchaseHistoryId: 4,
       carrier: 'SKT',
       totalGB: 100,
       createdAt: '2024-01-18T16:45:00Z',
       totalZet: 10000,
+      title: 'SKT 5G 대용량 데이터 판매',
+      mobileDataType: '5G',
     } as PurchaseDetail,
   },
   render: (args) => (
@@ -116,11 +128,14 @@ export const LargeAmount: Story = {
 export const Desktop: Story = {
   args: {
     purchaseDetail: {
-      purchaseHistoryId: 'PUR-2024-001',
+      postId: 1,
+      purchaseHistoryId: 1,
       carrier: 'SKT',
       totalGB: 10,
       createdAt: '2024-01-15T10:30:00Z',
       totalZet: 1500,
+      title: 'SKT 5G 데이터 판매',
+      mobileDataType: '5G',
     } as PurchaseDetail,
   },
   render: (args) => (
