@@ -146,7 +146,7 @@ export async function POST() {
             id: Number(user.id),
             vector,
             payload: {
-              id: user.id,
+              id: Number(user.id),
               name: user.name ?? 'Unknown',
               role: user.role === 'ROLE_REPORTED' ? 0 : 1,
               type,
