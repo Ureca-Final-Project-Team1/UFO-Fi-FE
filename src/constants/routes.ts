@@ -14,7 +14,7 @@ export const ROUTE_CONFIG = {
   ],
 
   // 공개 라우트 (인증 불필요)
-  PUBLIC_ROUTES: ['/login', '/signup'],
+  PUBLIC_ROUTES: ['/login', '/signup', '/onboading'],
 
   // 회원가입 관련 라우트
   SIGNUP_ROUTES: ['/signup/privacy', '/signup/profile', '/signup/plan'],

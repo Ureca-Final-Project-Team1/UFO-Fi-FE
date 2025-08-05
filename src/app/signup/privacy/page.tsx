@@ -14,14 +14,10 @@ const PrivacyPage = () => {
   };
 
   return (
-    <main>
-      <header className="sr-only">
-        <h1>UFO-Fi 회원가입 시작</h1>
-      </header>
-
+    <>
       <section
         aria-labelledby="privacy-intro-title"
-        className="flex flex-col justify-center items-center text-center gap-7 sm:gap-10 w-full h-full"
+        className="flex flex-col justify-center items-center text-center gap-7 sm:gap-10 w-full h-full overflow-hidden"
       >
         <div className="flex flex-col gap-5 sm:gap-8 pb-5">
           <h2 id="privacy-intro-title" className="body-20-bold">
@@ -44,19 +40,19 @@ const PrivacyPage = () => {
             혜택과 거래 알림도 놓치지 않도록 알려드릴게요!
           </div>
         </div>
-      </section>
 
-      <nav className="w-full mt-10">
-        <Button
-          onClick={handleNext}
-          size="full-width"
-          className="body-16-medium h-10 sm:h-14 text-white"
-          aria-label="회원가입 프로필 입력 화면으로 이동"
-        >
-          다음
-        </Button>
-      </nav>
-    </main>
+        <nav className="w-full mt-10">
+          <Button
+            onClick={handleNext}
+            size="full-width"
+            className="body-16-medium h-10 sm:h-14 text-white"
+            aria-label="회원가입 프로필 입력 화면으로 이동"
+          >
+            다음
+          </Button>
+        </nav>
+      </section>
+    </>
   );
 };
 

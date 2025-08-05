@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
+import { getUserInfoResponse } from '@/backend';
 import { IMAGE_PATHS } from '@/constants/images';
+import queryClient from '@/shared/utils/queryClient';
 
 interface NextButtonProps {
   isLast: boolean;
@@ -13,6 +15,19 @@ export const NextButton = ({ isLast, onClick, className = '' }: NextButtonProps)
   const imageSrc = isLast ? IMAGE_PATHS.FIRE_BTN_ONBOARDING : IMAGE_PATHS.NEXT_BTN_ONBOARDING;
   const altText = isLast ? '시작하기' : '다음';
   const buttonAnimation = isLast ? '' : 'animate-pulse';
+
+  if (isLast) {
+    queryClient.setQueryData(['userInfo'], (prev: getUserInfoResponse | undefined) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        content: {
+          ...prev.content,
+          role: 'ROLE_USER',
+        },
+      };
+    });
+  }
 
   return (
     <div className="flex justify-center">

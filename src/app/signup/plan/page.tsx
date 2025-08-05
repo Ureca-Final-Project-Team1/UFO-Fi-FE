@@ -1,13 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import '@/styles/globals.css';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { getUserInfoResponse, Plan, signupAPI } from '@/backend';
+import { Plan, signupAPI } from '@/backend';
 import { Carrier } from '@/backend/types/carrier';
 import { OCRInputSection, Stepper } from '@/features/signup/components';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
@@ -20,7 +20,7 @@ const PlanPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [maxData, setMaxData] = useState<number | null>(null);
   const [networkType, setNetworkType] = useState('');
-  const queryClient = useQueryClient();
+  const router = useRouter();
 
   const {
     control,
@@ -69,17 +69,7 @@ const PlanPage = () => {
       });
       toast.success('회원가입이 완료되었습니다!');
       useSignupStore.getState().reset();
-      queryClient.setQueryData(['userInfo'], (prev: getUserInfoResponse | undefined) => {
-        if (!prev) return prev;
-
-        return {
-          ...prev,
-          content: {
-            ...prev.content,
-            role: 'ROLE_USER',
-          },
-        };
-      });
+      router.push('/onboarding');
     } catch (error) {
       console.error('회원가입 에러:', error);
       toast.error('회원가입 중 오류가 발생했습니다.');
@@ -89,11 +79,9 @@ const PlanPage = () => {
   };
 
   return (
-    <main>
-      <section className="flex flex-col flex-1">
-        <header className="w-full">
-          <Title iconVariant="back" title="회원가입" className="body-20-bold w-full pl-0 mb-6" />
-        </header>
+    <>
+      <section className="flex flex-col w-full min-h-full">
+        <Title iconVariant="back" title="회원가입" className=" body-20-bold w-full pl-0 mb-6" />
 
         <div className="flex flex-col items-start gap-6 w-full">
           <Stepper step={2} content="가입 신청" className="mb-5" />
@@ -150,7 +138,7 @@ const PlanPage = () => {
           {isLoading ? '처리 중...' : '회원가입'}
         </Button>
       </nav>
-    </main>
+    </>
   );
 };
 
