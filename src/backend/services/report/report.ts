@@ -33,7 +33,7 @@ export const reportAPI = {
 
   // 신고 해지
   rollBackReport: async (payload: RollBackReportRequest): Promise<RollBackReportResponse> => {
-    const res = await apiRequest.put<RollBackReportResponse>('admin/reports/report', payload);
+    const res = await apiRequest.put<RollBackReportResponse>('/admin/reports/report', payload);
     return res.data;
   },
 
