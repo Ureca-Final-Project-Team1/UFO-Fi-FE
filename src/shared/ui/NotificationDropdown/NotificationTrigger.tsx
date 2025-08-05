@@ -1,16 +1,20 @@
 import React from 'react';
 
+import { cn } from '@/lib/utils';
 import { DotBadge, Icon } from '@/shared';
 import { NotificationTriggerProps } from '@/shared';
+
+import { notificationTriggerVariants } from './NotificationDropdownVariants';
 
 export const NotificationTrigger: React.FC<NotificationTriggerProps> = ({
   unreadCount,
   onClick,
   className = '',
+  variant = 'default',
 }) => {
   return (
     <button
-      className={`relative size-10 rounded-full transition-all duration-200 hover:bg-white/10 active:scale-95 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/30 ${className}`}
+      className={cn(notificationTriggerVariants({ variant }), className)}
       onClick={onClick}
       aria-label={`알림 ${unreadCount > 0 ? `(${unreadCount}개의 새 알림)` : ''}`}
     >

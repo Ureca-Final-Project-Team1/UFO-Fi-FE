@@ -4,9 +4,21 @@ import React from 'react';
 
 import type { NotificationItem as NotificationItemType } from '@/backend';
 import { nextApiRequest } from '@/backend/client/axios';
+import { cn } from '@/lib/utils';
 import { Icon, NotificationTrigger, NotificationDropdownProps, NotificationItem } from '@/shared';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';
+import {
+  notificationDropdownVariants,
+  notificationHeaderVariants,
+  notificationTitleVariants,
+  notificationBadgeVariants,
+  markAllReadButtonVariants,
+  emptyStateContainerVariants,
+  emptyStateIconVariants,
+  emptyStateTitleVariants,
+  emptyStateDescriptionVariants,
+} from './NotificationDropdownVariants';
 
 // 메인 드롭다운 컴포넌트
 export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
@@ -17,6 +29,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   className = '',
   notifications = [],
   isLoading = false,
+  variant = 'default',
 }) => {
   // 단일 알림 읽음 처리
   const handleNotificationClick = async (notification: NotificationItemType) => {
@@ -60,32 +73,35 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
     <DropdownMenu open={isOpen} onOpenChange={onToggle}>
       <DropdownMenuTrigger asChild>
         <div>
-          <NotificationTrigger unreadCount={unreadCount} onClick={onToggle} className={className} />
+          <NotificationTrigger
+            unreadCount={unreadCount}
+            onClick={onToggle}
+            className={className}
+            variant={variant}
+          />
         </div>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="end"
-        className="w-80 max-h-[500px] overflow-hidden p-0 shadow-xl border border-gray-200 bg-white"
+        className={cn(notificationDropdownVariants({ variant }))}
         sideOffset={12}
         avoidCollisions={true}
       >
         {/* 헤더 */}
-        <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/80 backdrop-blur-sm">
+        <div className={cn(notificationHeaderVariants({ variant }))}>
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+            <h3 className={cn(notificationTitleVariants({ variant }))}>
               <Icon name="Bell" className="size-4" color="white" />
               알림
               {unreadCount > 0 && (
-                <span className="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
-                  {unreadCount}
-                </span>
+                <span className={cn(notificationBadgeVariants({ variant }))}>{unreadCount}</span>
               )}
             </h3>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-xs text-blue-600 hover:text-blue-800 font-semibold transition-colors hover:underline"
+                className={cn(markAllReadButtonVariants({ variant }))}
               >
                 모두 읽음
               </button>
@@ -96,12 +112,14 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
         {/* 알림 목록 */}
         <div className="max-h-96 overflow-y-auto overscroll-contain">
           {isLoading ? null : notifications.length === 0 ? (
-            <div className="py-12 px-6 text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className={cn(emptyStateContainerVariants({ variant }))}>
+              <div className={cn(emptyStateIconVariants({ variant }))}>
                 <Icon name="Bell" className="w-8 h-8 text-gray-400" color="white" />
               </div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-2">알림이 없습니다</h4>
-              <p className="text-xs text-gray-500">새로운 알림이 도착하면 여기에 표시됩니다</p>
+              <h4 className={cn(emptyStateTitleVariants({ variant }))}>알림이 없습니다</h4>
+              <p className={cn(emptyStateDescriptionVariants({ variant }))}>
+                새로운 알림이 도착하면 여기에 표시됩니다
+              </p>
             </div>
           ) : (
             <div className="divide-y divide-gray-50">
@@ -113,6 +131,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                   }
                   notification={notification}
                   onClick={() => handleNotificationClick(notification)}
+                  variant={variant}
                 />
               ))}
             </div>

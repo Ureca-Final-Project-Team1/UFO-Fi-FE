@@ -1,10 +1,7 @@
 export { NotificationDropdown } from './NotificationDropdown';
-export { NotificationItem } from './NotificationItem';
 export { NotificationTrigger } from './NotificationTrigger';
+export { NotificationItem } from './NotificationItem';
+export { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';
 
-export type {
-  NotificationDropdownProps,
-  NotificationItemProps,
-  NotificationTriggerProps,
-  NotificationType,
-} from './NotificationDropdown.types';
+export * from './NotificationDropdown.types';
+export * from './NotificationDropdownVariants';
