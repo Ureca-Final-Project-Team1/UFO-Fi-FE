@@ -54,7 +54,7 @@ export const FolderBackground: React.FC<FolderBackgroundProps> = ({ title, class
           </div>
         )}
 
-        <div className="absolute inset-0 z-10 px-4 pt-24 pb-6">
+        <div className="absolute inset-0 z-10 px-4 pt-19 pb-6">
           <SellFormContent />
         </div>
       </div>

@@ -5,11 +5,20 @@ type Props = {
   setValue: React.Dispatch<React.SetStateAction<number[]>>;
   maxCapacity: number;
   errorMessage?: string;
+  showTicks?: boolean;
+  showLabels?: boolean;
 };
 
-export function SellCapacitySlider({ value, setValue, maxCapacity, errorMessage }: Props) {
+export function SellCapacitySlider({
+  value,
+  setValue,
+  maxCapacity,
+  errorMessage,
+  showTicks = true,
+  showLabels = true,
+}: Props) {
   return (
-    <div className="space-y-4 items-center">
+    <div className="space-y-1 items-center">
       <div className="flex items-center justify-between">
         <h3 className="text-white font-bold text-lg">판매 용량 설정</h3>
         {errorMessage && <div className="text-red-400 text-sm font-medium">{errorMessage}</div>}
@@ -17,13 +26,15 @@ export function SellCapacitySlider({ value, setValue, maxCapacity, errorMessage 
       <DataSlider
         value={value}
         onValueChange={setValue}
-        showTicks
-        showLabels
+        showTicks={showTicks}
+        showLabels={showLabels}
         minLabel="0GB"
         maxLabel={`${maxCapacity}GB`}
         max={maxCapacity}
       />
-      <div className="text-white/80 text-sm pt-4">남은 최대 판매 가능 용량 : {maxCapacity}GB</div>
+      <div className="text-cyan-400 text-sm pt-7 px-4">
+        남은 최대 판매 가능 용량 : {maxCapacity}GB
+      </div>
     </div>
   );
 }

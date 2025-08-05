@@ -42,8 +42,8 @@ export const SellFormContent = () => {
 
   return (
     <div className="flex flex-col w-full h-full justify-between">
-      <div className="flex flex-col space-y-4">
-        <div className="rounded-lg bg-white/10 p-2 space-y-1">
+      <div className="flex flex-col space-y-2">
+        <div className="rounded-lg ">
           <div className="flex items-center space-x-2 w-full">
             <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-md flex justify-center items-center">
               <Icon
@@ -76,8 +76,11 @@ export const SellFormContent = () => {
           setValue={setValue}
           maxCapacity={maxCapacity}
           errorMessage={getSellErrorMessages.price(isValidPrice, pricePerGB)}
+          showTicks={false}
+          showLabels={false}
         />
 
+        <h3 className="mt-3 text-white font-bold text-lg">희망 판매 가격</h3>
         <div className="flex justify-center items-center gap-4 px-4 py-2">
           <span className="text-cyan-400 text-sm font-semibold whitespace-nowrap">1GB 당</span>
           <div className="w-28 h-10 flex justify-center items-center px-1">
