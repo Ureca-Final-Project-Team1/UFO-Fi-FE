@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { ICON_PATHS } from '@/constants/icons';
 import { IMAGE_PATHS } from '@/constants/images';
 import { BulkCapacitySlider } from '@/features/bulk/components/BulkCapacitySlider';
 import { useBulkPurchase } from '@/features/bulk/hooks/useBulkPurchase';
 import { Icon, Title, Button, PriceInput } from '@/shared';
+import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 export default function BulkPurchasePage() {
@@ -22,12 +23,18 @@ export default function BulkPurchasePage() {
     isSubmitting,
   } = useBulkPurchase();
 
+  const { resetPurchaseFlow } = usePurchaseFlowStore();
+
   const isMobile = useViewportStore((state) => state.isMobile);
   const isFormValid = isValidCapacity && isValidPrice;
 
   const setNewCapacityValue = (value: React.SetStateAction<number[]>) => {
     setCapacityValue(value);
   };
+
+  useEffect(() => {
+    resetPurchaseFlow();
+  }, [resetPurchaseFlow]);
 
   return (
     <div className="pb-10">

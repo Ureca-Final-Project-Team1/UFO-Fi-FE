@@ -12,6 +12,7 @@ export const IMAGE_PATHS = {
   AL_FAIL: '/images/alien-fail.svg',
   AL_PW_WRONG: '/images/alien-wrong.svg',
   AL_EXCHANGE: '/images/exchange/exchange_alien.svg',
+  AL_SPACE: '/images/alien-space.svg',
   STONE: '/images/exchange/stone.svg',
   NEXT_BTN_ONBOARDING: '/images/next-btn.svg',
   FIRE_BTN_ONBOARDING: '/images/fire-btn.svg',
