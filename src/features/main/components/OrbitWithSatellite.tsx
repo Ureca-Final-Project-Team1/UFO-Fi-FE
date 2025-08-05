@@ -8,6 +8,7 @@ import { nextApiRequest } from '@/backend/client/axios';
 import { LetterDisplay } from '@/backend/types/letters';
 import { IMAGE_PATHS } from '@/constants';
 import { SpeechBubble } from '@/shared';
+import { SpaceMailModal } from '@/shared/ui/Modal/SpaceMailModal';
 
 const ORBIT_BASE_SIZE = 600;
 const SATELLITE_WIDTH = 30;
@@ -24,19 +25,31 @@ const orbitConfigs = [
 
 export default function OrbitWithSatellite() {
   const [letters, setLetters] = useState<LetterDisplay[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchLetters() {
       try {
-        await nextApiRequest.post('/api/story/letters');
-        const res = await nextApiRequest.get('/api/story/letters');
-        const data = (await res.data) as LetterDisplay[];
-        setLetters(
-          data.map((letter) => ({
-            step: Number(letter.step),
-            content: letter.content,
-          })),
-        );
+        // 먼저 POST 요청 → 생성 여부 확인
+        const postRes = await nextApiRequest.post('/api/story/letters');
+        const { isAdded } = postRes.data as { isAdded: boolean };
+
+        // 그 다음 GET 요청 → 편지 리스트 가져오기
+        const getRes = await nextApiRequest.get('/api/story/letters');
+        const data = getRes.data as LetterDisplay[];
+
+        const mapped = data.map((letter) => ({
+          step: Number(letter.step),
+          content: letter.content,
+          recipient_name: letter.recipient_name,
+        }));
+
+        setLetters(mapped);
+
+        // 새로 생성된 경우만 모달 열기
+        if (isAdded) {
+          setIsModalOpen(true);
+        }
       } catch (e) {
         console.error('편지 불러오기 실패:', e);
         toast.error('편지를 불러오는데 실패했습니다. 다시 시도해주세요.');
@@ -99,24 +112,17 @@ export default function OrbitWithSatellite() {
 
       {/* 중앙 행성 + 외계인 */}
       <div className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 relative w-auto h-[220px]">
-        {/* 말풍선 */}
         <div className="absolute top-[-90px] left-1/2 -translate-x-1/2 z-20">
           <SpeechBubble tailDirection="bottom">지구인님, 오늘 거래하실 건가요?</SpeechBubble>
         </div>
-        {/* 외계인 */}
         <Image
           src={IMAGE_PATHS.ALIEN}
           alt="Alien"
           width={100}
           height={100}
           className="absolute left-1/2 -translate-x-1/2"
-          style={{
-            top: '-15px',
-            zIndex: 1,
-          }}
+          style={{ top: '-15px', zIndex: 1 }}
         />
-
-        {/* 행성 */}
         <Image
           src={IMAGE_PATHS.MY_PLANET}
           alt="MyPlanet"
@@ -163,6 +169,14 @@ export default function OrbitWithSatellite() {
           animation: spin-reverse 10s linear infinite;
         }
       `}</style>
+
+      {letters.length > 0 && (
+        <SpaceMailModal
+          isOpen={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          name={letters.at(-1)?.recipient_name ?? '웃기는 지구인'}
+        />
+      )}
     </div>
   );
 }

@@ -11,6 +11,7 @@ export interface Letter {
 export interface LetterDisplay {
   step: number;
   content: string;
+  recipient_name: string;
 }
 
 export interface LetterResponse {
