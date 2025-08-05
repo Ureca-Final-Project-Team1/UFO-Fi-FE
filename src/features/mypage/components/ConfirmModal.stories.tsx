@@ -46,7 +46,7 @@ const MockConfirmModal = ({
   );
 };
 
-// Wrapper component to manage modal state
+// 단일 Wrapper로 통합 (isDesktop prop 분기)
 const ConfirmModalWrapper = (args: {
   title?: string;
   description?: string;
@@ -54,25 +54,30 @@ const ConfirmModalWrapper = (args: {
   onPrimaryClick?: () => void;
   onClose?: () => void;
   redirectTo?: string;
+  isDesktop?: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
+      <div className={`px-4 pt-4 ${args.isDesktop ? 'max-w-2xl mx-auto w-full' : ''}`}>
         {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
               <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
             </button>
-            <h1 className="text-white text-lg font-bold">마이페이지</h1>
+            <h1 className="text-white text-lg font-bold">
+              {args.isDesktop ? '데스크톱 마이페이지' : '마이페이지'}
+            </h1>
           </div>
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">확인 모달 테스트</h2>
+            <h2 className="text-white text-base font-semibold mb-4">
+              {args.isDesktop ? '데스크톱 확인 모달 테스트' : '확인 모달 테스트'}
+            </h2>
             <button
               onClick={() => setIsOpen(true)}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -131,55 +136,13 @@ export const LogoutConfirmation: Story = {
   },
 };
 
-// Desktop Story Wrapper Component
-const DesktopStoryWrapper = (args: {
-  title?: string;
-  description?: string;
-  primaryButtonText?: string;
-  onPrimaryClick?: () => void;
-  onClose?: () => void;
-  redirectTo?: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="w-full h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">데스크톱 마이페이지</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
-            <h2 className="text-white text-base font-semibold mb-4">데스크톱 확인 모달 테스트</h2>
-            <button
-              onClick={() => setIsOpen(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              모달 열기
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <MockConfirmModal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />
-    </div>
-  );
-};
-
 export const Desktop: Story = {
   args: {
     title: '데스크톱 알림',
     description: '데스크톱에서의 확인 모달 테스트입니다.',
     primaryButtonText: '확인',
+    isDesktop: true,
   },
-  render: (args) => <DesktopStoryWrapper {...args} />,
   parameters: {
     viewport: {
       defaultViewport: 'desktop',
