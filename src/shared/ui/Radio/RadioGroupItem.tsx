@@ -10,7 +10,7 @@ import { radioItemVariants } from './radioVariants';
 export interface RadioGroupItemProps
   extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
   'aria-label'?: string;
-  color?: string;
+  color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
   variant?: 'default' | 'filled' | 'outlined';
   size?: 'default' | 'sm' | 'lg';
 }
@@ -19,7 +19,7 @@ export function RadioGroupItem({
   className,
   variant = 'default',
   size = 'default',
-  color,
+  color = 'default',
   ...props
 }: RadioGroupItemProps) {
   return (
@@ -27,7 +27,7 @@ export function RadioGroupItem({
       data-slot="radio-group-item"
       data-variant={variant}
       data-size={size}
-      className={cn(radioItemVariants({ variant, size, color: color as string }), className)}
+      className={cn(radioItemVariants({ variant, size, color }), className)}
       {...props}
     >
       <RadioGroupPrimitive.Indicator asChild>

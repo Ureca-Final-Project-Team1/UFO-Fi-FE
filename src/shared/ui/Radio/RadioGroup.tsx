@@ -14,7 +14,7 @@ export interface RadioGroupProps
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-  color?: string;
+  color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
   variant?: 'default' | 'vertical' | 'horizontal';
   size?: 'default' | 'compact' | 'large';
 }
@@ -22,7 +22,7 @@ export interface RadioGroupProps
 export function RadioGroup({
   options,
   value,
-  color,
+  color = 'default',
   defaultValue,
   onValueChange,
   className,
@@ -41,8 +41,8 @@ export function RadioGroup({
       {options.map((label) => {
         const val = label.toLowerCase();
         return (
-          <div key={val} className={`flex items-center text-${color || 'white'} space-x-2`}>
-            <RadioGroupItem id={val} value={val} color={color || 'white'} />
+          <div key={val} className="flex items-center space-x-2">
+            <RadioGroupItem id={val} value={val} color={color} />
             <Label htmlFor={val}>{label}</Label>
           </div>
         );

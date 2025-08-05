@@ -13,7 +13,7 @@ export const modalConfig = {
   imageSize: { width: 150, height: 150 },
   type: 'double' as const,
   hasCloseButton: false,
-  color: 'black' as const,
+  color: 'default' as const,
 } as const;
 
 // 입력 필드 variants

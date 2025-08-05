@@ -81,23 +81,33 @@ export async function GET(req: NextRequest) {
     // Step 4: 유저가 획득한 업적 조회
     const userAchievements = await prisma.user_achievements.findMany({
       where: { user_id: userId },
-      include: {
-        achievement: true,
+    });
+
+    // Step 5: 업적 정보 조회
+    const achievementIds = userAchievements.map((ua) => ua.achievement_id);
+    const achievementsData = await prisma.achievement.findMany({
+      where: {
+        id: { in: achievementIds },
       },
     });
 
-    // Step 5: 직렬화
+    // Step 6: 직렬화
     const achievements = userAchievements
-      .filter((ua) => ua.achievement !== null)
-      .map((ua) => ({
-        id: Number(ua.achievement.id),
-        name: ua.achievement.name,
-        level: Number(ua.achievement.level),
-        type: ua.achievement.type,
-        condition_value: Number(ua.achievement.condition_value),
-        description: ua.achievement.description,
-        achievedAt: ua.achieved_at ? ua.achieved_at.toISOString() : null,
-      }));
+      .map((ua) => {
+        const achievement = achievementsData.find((a) => a.id === ua.achievement_id);
+        if (!achievement) return null;
+
+        return {
+          id: Number(achievement.id),
+          name: achievement.name,
+          level: Number(achievement.level),
+          type: achievement.type,
+          condition_value: Number(achievement.condition_value),
+          description: achievement.description,
+          achievedAt: ua.achieved_at ? ua.achieved_at.toISOString() : null,
+        };
+      })
+      .filter(Boolean);
 
     // Step 6: 결과 응답
     const res = NextResponse.json({

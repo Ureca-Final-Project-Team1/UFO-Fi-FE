@@ -76,7 +76,7 @@ export const Default: Story = {
   args: {
     options: ['Option 1', 'Option 2', 'Option 3'],
     defaultValue: 'option 1',
-    color: 'black',
+    color: 'default',
     variant: 'default',
     size: 'default',
   },
@@ -99,7 +99,7 @@ export const DarkTheme: Story = {
   args: {
     options: ['Dark Option 1', 'Dark Option 2', 'Dark Option 3'],
     defaultValue: 'dark option 1',
-    color: 'white',
+    color: 'default',
     variant: 'default',
     size: 'default',
   },
@@ -122,7 +122,7 @@ export const HorizontalLayout: Story = {
   args: {
     options: ['Option 1', 'Option 2', 'Option 3'],
     defaultValue: 'option 1',
-    color: 'black',
+    color: 'default',
     variant: 'horizontal',
     size: 'default',
   },
@@ -158,7 +158,7 @@ export const Sizes: Story = {
   args: {
     options: ['Size Option 1', 'Size Option 2', 'Size Option 3'],
     defaultValue: 'size option 1',
-    color: 'black',
+    color: 'default',
     variant: 'default',
   },
   parameters: {
@@ -176,22 +176,22 @@ export const ColorfulOptions: Story = {
     <div className="space-y-6">
       <div className="p-4 bg-blue-100 rounded-lg">
         <h3 className="text-sm font-medium text-blue-900 mb-3">파란색 테마</h3>
-        <RadioGroup {...args} color="blue" />
+        <RadioGroup {...args} color="primary" />
       </div>
 
       <div className="p-4 bg-green-100 rounded-lg">
         <h3 className="text-sm font-medium text-green-900 mb-3">초록색 테마</h3>
-        <RadioGroup {...args} color="green" />
+        <RadioGroup {...args} color="success" />
       </div>
 
       <div className="p-4 bg-red-100 rounded-lg">
         <h3 className="text-sm font-medium text-red-900 mb-3">빨간색 테마</h3>
-        <RadioGroup {...args} color="red" />
+        <RadioGroup {...args} color="error" />
       </div>
 
       <div className="p-4 bg-yellow-100 rounded-lg">
         <h3 className="text-sm font-medium text-yellow-900 mb-3">노란색 테마</h3>
-        <RadioGroup {...args} color="yellow" />
+        <RadioGroup {...args} color="warning" />
       </div>
     </div>
   ),
@@ -225,7 +225,7 @@ export const LongOptions: Story = {
     ],
     defaultValue:
       '매우 긴 옵션 텍스트입니다. 이것은 라디오 버튼이 긴 텍스트를 어떻게 처리하는지 보여줍니다.',
-    color: 'black',
+    color: 'default',
     variant: 'default',
     size: 'default',
   },
@@ -259,7 +259,7 @@ export const ManyOptions: Story = {
       'Option 10',
     ],
     defaultValue: 'option 1',
-    color: 'black',
+    color: 'default',
     variant: 'default',
     size: 'default',
   },
@@ -277,7 +277,7 @@ export const Interactive: Story = {
   render: (args) => <InteractiveRadioGroup {...args} />,
   args: {
     options: ['Interactive Option 1', 'Interactive Option 2', 'Interactive Option 3'],
-    color: 'blue',
+    color: 'default',
     variant: 'default',
     size: 'default',
   },

@@ -47,7 +47,7 @@ export async function POST() {
 
     // STEP 3. 모든 업적 및 유저 업적 조회
     const [allAchievements, alreadyAchieved] = await Promise.all([
-      prisma.achievements.findMany({ orderBy: [{ level: 'asc' }] }),
+      prisma.achievement.findMany({ orderBy: [{ level: 'asc' }] }),
       prisma.user_achievements.findMany({
         where: { user_id: userId },
         select: { achievement_id: true, achieved_at: true },
@@ -56,8 +56,8 @@ export async function POST() {
 
     const achievedMap = new Map<number, Date>(
       alreadyAchieved
-        .filter((a): a is { achievement_id: bigint; achieved_at: Date } => !!a.achieved_at)
-        .map((a) => [Number(a.achievement_id), a.achieved_at]),
+        .filter((a) => !!a.achieved_at)
+        .map((a) => [Number(a.achievement_id), a.achieved_at!]),
     );
 
     const isMet = (type: 'trade' | 'follow' | 'rotate', value: number, required: number): boolean =>
@@ -115,11 +115,8 @@ export async function POST() {
     const rotateLevel = calculateLevel('rotate', step5Count);
     const totalLevel = Math.min(tradeLevel, followLevel, rotateLevel);
 
-    // STEP 8. 칭호명 조회
-    const titleNames = await prisma.honorific.findMany({
-      orderBy: { level: 'asc' },
-      select: { name: true },
-    });
+    // STEP 8. 칭호명 조회 - honorific 모델이 없으므로 빈 배열 반환
+    const titleNames: { name: string }[] = [];
 
     // STEP 9. 응답 반환
     const res = NextResponse.json({
@@ -131,7 +128,7 @@ export async function POST() {
         total_level: totalLevel,
         achievements: achievementsWithMeta,
         newly_achieved_ids: newlyAchieved.map((a) => Number(a.id)),
-        title_name: titleNames.map((t) => t.name),
+        title_name: titleNames.map((t: { name: string }) => t.name),
       },
     });
     res.headers.set('Access-Control-Allow-Origin', ORIGIN);
