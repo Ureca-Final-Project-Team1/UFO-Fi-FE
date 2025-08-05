@@ -1,16 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import type { ProfileUser } from '@/backend/types/profile';
-import { IMAGE_PATHS } from '@/constants/images';
 import { Icon } from '@/shared';
 
 const createMockProfile = (overrides?: Partial<ProfileUser>): ProfileUser => ({
-  userId: 308,
-  nickname: '신나는 지구인 #308',
-  profileImageUrl: IMAGE_PATHS.AVATAR,
-  followerCount: 21,
-  followingCount: 6,
-  tradePostsRes: [],
+  userId: 12345,
+  nickname: '우주탐험가',
+  profileImageUrl: null,
+  honorific: '초보 탐험가',
+  level: 1,
+  totalZet: 15000,
+  totalTradeCount: 25,
+  createdAt: '2024-01-15T10:30:00Z',
   ...overrides,
 });
 
@@ -19,8 +20,14 @@ const MockProfileShareContent = ({ profile = createMockProfile() }: { profile?: 
   const profileUrl = `https://ufo-fi.com/profile/${profile.userId}`;
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(profileUrl);
-    // 링크가 복사되었습니다
+    navigator.clipboard
+      .writeText(profileUrl)
+      .then(() => {
+        // 링크가 복사되었습니다
+      })
+      .catch((err) => {
+        console.error('링크 복사 실패:', err);
+      });
   };
 
   const handleClose = () => {
@@ -113,22 +120,31 @@ export const Default: Story = {
 export const WithProfileImage: Story = {
   args: {
     profile: createMockProfile({
-      userId: 67890,
-      nickname: '프로필이미지',
-      profileImageUrl: IMAGE_PATHS.AVATAR,
-      followerCount: 250,
-      followingCount: 100,
+      profileImageUrl: 'https://example.com/profile.jpg',
     }),
   },
 };
 
-export const HighFollowers: Story = {
+export const HighLevelUser: Story = {
   args: {
     profile: createMockProfile({
-      userId: 11111,
-      nickname: '인기유저',
-      followerCount: 1000,
-      followingCount: 200,
+      nickname: '우주마스터',
+      honorific: '전설의 탐험가',
+      level: 10,
+      totalZet: 500000,
+      totalTradeCount: 150,
+    }),
+  },
+};
+
+export const NewUser: Story = {
+  args: {
+    profile: createMockProfile({
+      nickname: '새로운탐험가',
+      honorific: '초보 탐험가',
+      level: 1,
+      totalZet: 1000,
+      totalTradeCount: 0,
     }),
   },
 };
