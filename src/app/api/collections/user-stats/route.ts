@@ -85,7 +85,7 @@ export async function GET(req: NextRequest) {
 
     // Step 5: 업적 정보 조회
     const achievementIds = userAchievements.map((ua) => ua.achievement_id);
-    const achievementsData = await prisma.achievement.findMany({
+    const achievementsData = await prisma.achievements.findMany({
       where: {
         id: { in: achievementIds },
       },
@@ -94,7 +94,9 @@ export async function GET(req: NextRequest) {
     // Step 6: 직렬화
     const achievements = userAchievements
       .map((ua) => {
-        const achievement = achievementsData.find((a) => a.id === ua.achievement_id);
+        const achievement = achievementsData.find(
+          (a: { id: bigint }) => a.id === ua.achievement_id,
+        );
         if (!achievement) return null;
 
         return {

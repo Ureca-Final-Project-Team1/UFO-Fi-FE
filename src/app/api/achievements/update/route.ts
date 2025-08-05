@@ -47,7 +47,7 @@ export async function POST() {
 
     // STEP 3. 모든 업적 및 유저 업적 조회
     const [allAchievements, alreadyAchieved] = await Promise.all([
-      prisma.achievement.findMany({ orderBy: [{ level: 'asc' }] }),
+      prisma.achievements.findMany({ orderBy: [{ level: 'asc' }] }),
       prisma.user_achievements.findMany({
         where: { user_id: userId },
         select: { achievement_id: true, achieved_at: true },
@@ -56,28 +56,33 @@ export async function POST() {
 
     const achievedMap = new Map<number, Date>(
       alreadyAchieved
-        .filter((a) => !!a.achieved_at)
-        .map((a) => [Number(a.achievement_id), a.achieved_at!]),
+        .filter((a: { achievement_id: bigint; achieved_at: Date | null }) => !!a.achieved_at)
+        .map((a: { achievement_id: bigint; achieved_at: Date | null }) => [
+          Number(a.achievement_id),
+          a.achieved_at!,
+        ]),
     );
 
     const isMet = (type: 'trade' | 'follow' | 'rotate', value: number, required: number): boolean =>
       value >= required;
 
     // STEP 4. 새롭게 달성한 업적 계산
-    const newlyAchieved = allAchievements.filter((a) => {
-      const currentValue =
-        a.type === 'trade' ? tradeCount : a.type === 'follow' ? followerCount : step5Count;
+    const newlyAchieved = allAchievements.filter(
+      (a: { type: string; id: bigint; condition_value: number }) => {
+        const currentValue =
+          a.type === 'trade' ? tradeCount : a.type === 'follow' ? followerCount : step5Count;
 
-      return (
-        isMet(a.type as 'trade' | 'follow' | 'rotate', currentValue, a.condition_value) &&
-        !achievedMap.has(Number(a.id))
-      );
-    });
+        return (
+          isMet(a.type as 'trade' | 'follow' | 'rotate', currentValue, a.condition_value) &&
+          !achievedMap.has(Number(a.id))
+        );
+      },
+    );
 
     // STEP 5. 새로 달성한 업적 저장
     if (newlyAchieved.length > 0) {
       await prisma.$transaction(
-        newlyAchieved.map((a) =>
+        newlyAchieved.map((a: { id: bigint }) =>
           prisma.user_achievements.create({
             data: {
               user_id: userId,
@@ -90,22 +95,36 @@ export async function POST() {
     }
 
     // STEP 6. 업적 응답 포맷 구성
-    const achievementsWithMeta = allAchievements.map((a) => ({
-      ...a,
-      id: Number(a.id),
-      level: Number(a.level),
-      condition_value: Number(a.condition_value),
-      achievedAt:
-        achievedMap.get(Number(a.id)) ??
-        (newlyAchieved.some((n) => n.id === a.id) ? new Date().toISOString() : null),
-    }));
+    const achievementsWithMeta = allAchievements.map(
+      (a: {
+        id: bigint;
+        level: number;
+        condition_value: number;
+        type: string;
+        name: string;
+        description: string;
+      }) => ({
+        ...a,
+        id: Number(a.id),
+        level: Number(a.level),
+        condition_value: Number(a.condition_value),
+        achievedAt:
+          achievedMap.get(Number(a.id)) ??
+          (newlyAchieved.some((n: { id: bigint }) => n.id === a.id)
+            ? new Date().toISOString()
+            : null),
+      }),
+    );
 
     // STEP 7. 레벨 계산
     const calculateLevel = (type: 'trade' | 'follow' | 'rotate', currentValue: number): number => {
       return Math.max(
         ...allAchievements
-          .filter((a) => a.type === type && currentValue >= a.condition_value)
-          .map((a) => a.level),
+          .filter(
+            (a: { type: string; condition_value: number; level: number }) =>
+              a.type === type && currentValue >= a.condition_value,
+          )
+          .map((a: { level: number }) => a.level),
         0,
       );
     };
@@ -127,7 +146,7 @@ export async function POST() {
         rotate_level: rotateLevel,
         total_level: totalLevel,
         achievements: achievementsWithMeta,
-        newly_achieved_ids: newlyAchieved.map((a) => Number(a.id)),
+        newly_achieved_ids: newlyAchieved.map((a: { id: bigint }) => Number(a.id)),
         title_name: titleNames.map((t: { name: string }) => t.name),
       },
     });
