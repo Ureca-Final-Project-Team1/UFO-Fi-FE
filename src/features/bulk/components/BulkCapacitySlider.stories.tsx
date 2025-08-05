@@ -64,7 +64,7 @@ export const Default: Story = {
           <header className="flex items-center justify-between px-4 py-4 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-                <Icon name="ArrowLeft" className="w-5 h-5 text-white" />
+                <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
               </button>
               <h1 className="text-white font-bold text-lg">일괄구매</h1>
             </div>
@@ -178,7 +178,7 @@ export const InitialZero: Story = {
           <header className="flex items-center justify-between px-4 py-4 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-                <Icon name="ArrowLeft" className="w-5 h-5 text-white" />
+                <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
               </button>
               <h1 className="text-white font-bold text-lg">일괄구매</h1>
             </div>
@@ -292,7 +292,7 @@ export const Desktop: Story = {
           <header className="flex items-center justify-between px-4 py-4 border-b border-gray-800">
             <div className="flex items-center gap-3">
               <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-                <Icon name="ArrowLeft" className="w-5 h-5 text-white" />
+                <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
               </button>
               <h1 className="text-white font-bold text-lg">일괄구매</h1>
             </div>
