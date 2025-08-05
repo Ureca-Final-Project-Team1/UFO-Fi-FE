@@ -3,14 +3,14 @@ import Image from 'next/image';
 
 import { IMAGE_PATHS } from '@/constants/images';
 
-// Mock NextButton for Storybook
-const MockNextButton = ({
-  isLast = false,
-  className = '',
-}: {
+// Mock NextButton Props Interface
+interface MockNextButtonProps {
   isLast?: boolean;
   className?: string;
-}) => {
+}
+
+// Mock NextButton for Storybook
+const MockNextButton = ({ isLast = false, className = '' }: MockNextButtonProps) => {
   const handleClick = () => {
     // isLast ? '시작하기 클릭됨' : '다음 클릭됨'
   };
