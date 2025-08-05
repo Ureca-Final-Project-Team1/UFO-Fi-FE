@@ -26,29 +26,33 @@ const meta: Meta<typeof MarkdownRendererComponent> = {
 export default meta;
 type Story = StoryObj<typeof MarkdownRendererComponent>;
 
+const renderWithLayout = (
+  args: { text: string },
+  title: string = '마크다운 렌더러 테스트',
+  isDesktop = false,
+) => (
+  <div className="h-full flex flex-col bg-gray-900">
+    <div className={`px-4 pt-4 ${isDesktop ? 'max-w-2xl mx-auto w-full' : ''}`}>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+            <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
+          </button>
+          <h1 className="text-white text-lg font-bold">{title}</h1>
+        </div>
+      </div>
+      <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
+        <MarkdownRendererComponent {...args} />
+      </div>
+    </div>
+  </div>
+);
+
 export const Default: Story = {
   args: {
     text: '이것은 기본 마크다운 텍스트입니다.',
   },
-  render: (args) => (
-    <div className="h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-          <MarkdownRendererComponent {...args} />
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const Headings: Story = {
@@ -59,25 +63,7 @@ export const Headings: Story = {
 
 일반 텍스트입니다.`,
   },
-  render: (args) => (
-    <div className="h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-          <MarkdownRendererComponent {...args} />
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const Lists: Story = {
@@ -94,25 +80,7 @@ export const Lists: Story = {
 - 항목 2
 - 항목 3`,
   },
-  render: (args) => (
-    <div className="h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-          <MarkdownRendererComponent {...args} />
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const Links: Story = {
@@ -125,25 +93,7 @@ export const Links: Story = {
 
 이것은 일반 텍스트입니다.`,
   },
-  render: (args) => (
-    <div className="h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">마크다운 렌더러 테스트</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-          <MarkdownRendererComponent {...args} />
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args),
 };
 
 export const PrivacyPolicy: Story = {
@@ -196,25 +146,7 @@ export const PrivacyPolicy: Story = {
 
 이 개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.`,
   },
-  render: (args) => (
-    <div className="h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">개인정보 처리방침</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-          <MarkdownRendererComponent {...args} />
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args, '개인정보 처리방침'),
 };
 
 export const Desktop: Story = {
@@ -235,25 +167,7 @@ export const Desktop: Story = {
 
 이것은 일반 텍스트입니다.`,
   },
-  render: (args) => (
-    <div className="h-full flex flex-col bg-gray-900">
-      <div className="px-4 pt-4 max-w-2xl mx-auto w-full">
-        {/* 헤더 - Title 컴포넌트 대신 직접 구현 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-              <Icon name="ChevronLeft" className="w-5 h-5 text-white" />
-            </button>
-            <h1 className="text-white text-lg font-bold">데스크톱 마크다운 테스트</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 leading-relaxed hide-scrollbar">
-          <MarkdownRendererComponent {...args} />
-        </div>
-      </div>
-    </div>
-  ),
+  render: (args) => renderWithLayout(args, '데스크톱 마크다운 테스트', true),
   parameters: {
     viewport: {
       defaultViewport: 'desktop',
