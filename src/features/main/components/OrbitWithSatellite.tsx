@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { nextApiRequest } from '@/backend/client/axios';
-import { LetterDisplay } from '@/backend/types/letters';
+import { LetterDisplayExtend } from '@/backend/types/letters';
 import { IMAGE_PATHS } from '@/constants';
 import { SpeechBubble } from '@/shared';
 import { SpaceMailModal } from '@/shared/ui/Modal/SpaceMailModal';
@@ -24,7 +24,7 @@ const orbitConfigs = [
 ];
 
 export default function OrbitWithSatellite() {
-  const [letters, setLetters] = useState<LetterDisplay[]>([]);
+  const [letters, setLetters] = useState<LetterDisplayExtend[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function OrbitWithSatellite() {
 
         // 그 다음 GET 요청 → 편지 리스트 가져오기
         const getRes = await nextApiRequest.get('/api/story/letters');
-        const data = getRes.data as LetterDisplay[];
+        const data = getRes.data as LetterDisplayExtend[];
 
         const mapped = data.map((letter) => ({
           step: Number(letter.step),
