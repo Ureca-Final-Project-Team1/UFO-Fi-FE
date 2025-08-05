@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { usePagination } from '../../hooks/usePagination';
+import { cn } from '@/lib/utils';
 
-interface PaginationProps {
-  page: number;
-  total: number;
-  onChange: (page: number) => void;
-  siblingCount?: number;
-  className?: string;
-}
+import { PaginationProps } from './Pagination.types';
+import {
+  paginationVariants,
+  paginationButtonVariants,
+  pageNumberVariants,
+  paginationDotsVariants,
+  paginationContainerVariants,
+} from './PaginationVariants';
+import { usePagination } from '../../hooks/usePagination';
 
 const Pagination: React.FC<PaginationProps> = ({
   page,
@@ -16,6 +18,8 @@ const Pagination: React.FC<PaginationProps> = ({
   onChange,
   siblingCount = 1,
   className = '',
+  variant = 'default',
+  size = 'default',
 }) => {
   const { pageNumbers, canGoPrevious, canGoNext } = usePagination({
     currentPage: page,
@@ -28,18 +32,16 @@ const Pagination: React.FC<PaginationProps> = ({
   const DOTS = '...';
 
   return (
-    <nav className={`flex items-center justify-center gap-2 select-none ${className}`}>
+    <nav className={cn(paginationVariants({ variant, size }), className)}>
       {/* 첫 페이지 버튼 */}
       <button
-        className={`
-          flex items-center justify-center size-10 rounded-lg border border-gray-200 
-          transition-all duration-200 ease-in-out
-          ${
-            !canGoPrevious
-              ? 'opacity-30 cursor-not-allowed bg-gray-50 text-gray-400'
-              : 'hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:scale-95'
-          }
-        `}
+        className={cn(
+          paginationButtonVariants({
+            variant,
+            size,
+            state: canGoPrevious ? 'enabled' : 'disabled',
+          }),
+        )}
         onClick={() => onChange(1)}
         disabled={!canGoPrevious}
         aria-label="첫 페이지"
@@ -56,15 +58,13 @@ const Pagination: React.FC<PaginationProps> = ({
 
       {/* 이전 페이지 버튼 */}
       <button
-        className={`
-          flex items-center justify-center size-10 rounded-lg border border-gray-200 
-          transition-all duration-200 ease-in-out
-          ${
-            !canGoPrevious
-              ? 'opacity-30 cursor-not-allowed bg-gray-50 text-gray-400'
-              : 'hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:scale-95'
-          }
-        `}
+        className={cn(
+          paginationButtonVariants({
+            variant,
+            size,
+            state: canGoPrevious ? 'enabled' : 'disabled',
+          }),
+        )}
         onClick={() => onChange(page - 1)}
         disabled={!canGoPrevious}
         aria-label="이전 페이지"
@@ -75,27 +75,22 @@ const Pagination: React.FC<PaginationProps> = ({
       </button>
 
       {/* 페이지 번호들 */}
-      <div className="flex items-center gap-1">
+      <div className={cn(paginationContainerVariants({ variant, size }))}>
         {pageNumbers?.map((pageNumber, idx) =>
           pageNumber === DOTS ? (
-            <span
-              key={`dots-${idx}`}
-              className="flex items-center justify-center size-10 text-gray-400 font-medium"
-            >
+            <span key={`dots-${idx}`} className={cn(paginationDotsVariants({ variant, size }))}>
               {DOTS}
             </span>
           ) : (
             <button
               key={`page-${pageNumber}`}
-              className={`
-                flex items-center justify-center size-10 rounded-lg border font-medium
-                transition-all duration-200 ease-in-out
-                ${
-                  pageNumber === page
-                    ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-200'
-                    : 'border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:scale-95'
-                }
-              `}
+              className={cn(
+                pageNumberVariants({
+                  variant,
+                  size,
+                  state: pageNumber === page ? 'active' : 'inactive',
+                }),
+              )}
               onClick={() => onChange(Number(pageNumber))}
               aria-current={pageNumber === page ? 'page' : undefined}
             >
@@ -107,15 +102,13 @@ const Pagination: React.FC<PaginationProps> = ({
 
       {/* 다음 페이지 버튼 */}
       <button
-        className={`
-          flex items-center justify-center size-10 rounded-lg border border-gray-200 
-          transition-all duration-200 ease-in-out
-          ${
-            !canGoNext
-              ? 'opacity-30 cursor-not-allowed bg-gray-50 text-gray-400'
-              : 'hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:scale-95'
-          }
-        `}
+        className={cn(
+          paginationButtonVariants({
+            variant,
+            size,
+            state: canGoNext ? 'enabled' : 'disabled',
+          }),
+        )}
         onClick={() => onChange(page + 1)}
         disabled={!canGoNext}
         aria-label="다음 페이지"
@@ -127,15 +120,13 @@ const Pagination: React.FC<PaginationProps> = ({
 
       {/* 마지막 페이지 버튼 */}
       <button
-        className={`
-          flex items-center justify-center size-10 rounded-lg border border-gray-200 
-          transition-all duration-200 ease-in-out
-          ${
-            !canGoNext
-              ? 'opacity-30 cursor-not-allowed bg-gray-50 text-gray-400'
-              : 'hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 active:scale-95'
-          }
-        `}
+        className={cn(
+          paginationButtonVariants({
+            variant,
+            size,
+            state: canGoNext ? 'enabled' : 'disabled',
+          }),
+        )}
         onClick={() => onChange(total)}
         disabled={!canGoNext}
         aria-label="마지막 페이지"

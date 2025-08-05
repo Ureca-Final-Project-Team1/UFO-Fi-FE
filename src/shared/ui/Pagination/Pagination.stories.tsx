@@ -6,6 +6,7 @@ import Pagination from './Pagination';
 const meta: Meta<typeof Pagination> = {
   title: 'UI/Pagination',
   component: Pagination,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
