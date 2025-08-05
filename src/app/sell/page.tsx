@@ -10,30 +10,27 @@ import { FolderBackground, Title } from '@/shared';
 export default function SellPage() {
   return (
     <>
-      <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-transparent">
         {/* 제목 */}
-        <div className="relative w-full h-full flex flex-col overflow-hidden">
-          <Title title="데이터 판매 등록" />
+        <Title title="데이터 판매 등록" />
 
-          {/* 폴더 컨테이너 */}
-          <div className="relative w-[390px] h-[840px] overflow-hidden">
-            <div className="absolute top-[88px] left-[16px] z-10">
-              <FolderBackground title="거래명세서">
-                <SellFormContent />
-              </FolderBackground>
-            </div>
-
-            {/* 외계인 */}
-            <div className="absolute bottom-0 -left-10 z-20">
-              <Image
-                src={IMAGE_PATHS.AL_SELL}
-                alt="판매 우주인"
-                width={200}
-                height={200}
-                className="w-48 h-auto"
-                priority
-              />
-            </div>
+        {/* 폴더와 외계인 컨테이너 */}
+        <div className="relative flex flex-col items-center justify-start mt-2 w-full h-full">
+          <div className="relative flex flex-col items-center justify-end w-full max-w-[390px] h-[581px]">
+            <FolderBackground title="거래명세서">
+              <SellFormContent />
+            </FolderBackground>
+          </div>
+          {/* 외계인 */}
+          <div className="absolute bottom-0 left-0 z-20">
+            <Image
+              src={IMAGE_PATHS.AL_SELL}
+              alt="판매 우주인"
+              width={200}
+              height={200}
+              className="w-48 h-auto"
+              priority
+            />
           </div>
         </div>
       </div>

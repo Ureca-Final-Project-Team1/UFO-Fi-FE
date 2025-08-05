@@ -39,7 +39,7 @@ export const FolderBackground: React.FC<FolderBackgroundProps> = ({
 
       {title && (
         <div
-          className="absolute z-20"
+          className="absolute z-20 gap-1"
           style={{
             left: '2%',
             top: '2%',
@@ -52,7 +52,7 @@ export const FolderBackground: React.FC<FolderBackgroundProps> = ({
           }}
         >
           <Icon name="FilePenLine" className="text-white mr-1" />
-          <h2 className="text-white  body-20-bold drop-shadow">{title}</h2>
+          <h2 className="text-white body-16-medium drop-shadow">{title}</h2>
         </div>
       )}
 
