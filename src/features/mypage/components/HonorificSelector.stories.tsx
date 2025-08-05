@@ -43,7 +43,7 @@ const StoryWrapper = ({
             <HonorificSelector
               {...args}
               honorific={args.honorific || []}
-              selectedId={selectedId}
+              selectedId={selectedId ?? null}
               onSelect={(id) => setSelectedId(id)}
             />
           </div>
