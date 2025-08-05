@@ -53,7 +53,7 @@ const MockProfileHeader = ({
             <div className="flex items-center gap-4">
               <div className="flex-shrink-0">
                 <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
-                  <Icon name="astronaut" className="size-8 text-purple-200" />
+                  <Icon name="astronaut" className="size-8 text-purple-600" />
                 </div>
               </div>
 

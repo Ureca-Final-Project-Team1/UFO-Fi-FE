@@ -62,7 +62,7 @@ export const Selling: Story = {
   },
   render: (args) => (
     <Avatar {...args}>
-      <Icon name="astronaut" className="w-8 h-8 text-purple-200" />
+      <Icon name="astronaut" className="w-8 h-8 text-purple-600" />
     </Avatar>
   ),
 };
@@ -73,19 +73,19 @@ export const AllSizes: Story = {
     <div className="flex items-center gap-4">
       <div className="text-center">
         <Avatar size="sm" variant="selling">
-          <Icon name="astronaut" className="size-5 text-purple-200" />
+          <Icon name="astronaut" className="size-5 text-purple-600" />
         </Avatar>
         <p className="text-xs mt-1 text-gray-600">Small</p>
       </div>
       <div className="text-center">
         <Avatar size="md" variant="selling">
-          <Icon name="astronaut" className="w-8 h-8 text-purple-200" />
+          <Icon name="astronaut" className="w-8 h-8 text-purple-600" />
         </Avatar>
         <p className="text-xs mt-1 text-gray-600">Medium</p>
       </div>
       <div className="text-center">
         <Avatar size="lg" variant="selling">
-          <Icon name="astronaut" className="size-12 text-purple-200" />
+          <Icon name="astronaut" className="size-12 text-purple-600" />
         </Avatar>
         <p className="text-xs mt-1 text-gray-600">Large</p>
       </div>
@@ -112,7 +112,7 @@ export const AllVariants: Story = {
       </div>
       <div className="text-center">
         <Avatar variant="selling">
-          <Icon name="astronaut" className="w-8 h-8 text-purple-200" />
+          <Icon name="astronaut" className="w-8 h-8 text-purple-600" />
         </Avatar>
         <p className="text-xs mt-1 text-gray-600">Selling</p>
       </div>

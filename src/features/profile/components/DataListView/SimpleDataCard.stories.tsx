@@ -67,7 +67,7 @@ const MockSimpleDataCard = ({
             <div className="flex gap-4 items-center">
               {/* 아바타 */}
               <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                <Icon name="astronaut" className="w-8 h-8 text-purple-200" />
+                <Icon name="astronaut" className="w-8 h-8 text-white" />
               </div>
 
               <div className="flex-1 flex flex-col gap-1">

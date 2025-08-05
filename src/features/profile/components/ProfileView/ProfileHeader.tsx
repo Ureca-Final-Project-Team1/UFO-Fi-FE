@@ -76,7 +76,7 @@ export function ProfileHeader({ profile, isMyProfile }: ProfileHeaderProps) {
               className="w-full h-full object-cover rounded-full"
             />
           ) : (
-            <Icon name="astronaut" className="size-12 text-purple-200" />
+            <Icon name="astronaut" className="size-12 text-gray-600" />
           )}
         </Avatar>
 

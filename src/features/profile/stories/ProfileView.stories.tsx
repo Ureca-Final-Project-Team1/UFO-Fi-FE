@@ -118,7 +118,7 @@ const MockProfileView = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
-                    <Icon name="astronaut" className="size-8 text-purple-200" />
+                    <Icon name="astronaut" className="size-8 text-purple-600" />
                   </div>
                   <div className="flex flex-col">
                     <h1 className="text-white text-xl font-bold">{profile.nickname}</h1>

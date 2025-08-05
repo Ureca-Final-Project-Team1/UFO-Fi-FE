@@ -52,7 +52,7 @@ export function SimpleDataCard({ post, sellerNickname }: SimpleDataCardProps) {
       <div className="flex gap-4 items-center">
         {/* 아바타 */}
         <Avatar variant="selling" size="md">
-          <Icon name="astronaut" className="w-8 h-8 text-purple-200" />
+          <Icon name="astronaut" className="w-8 h-8 text-purple-600" />
         </Avatar>
 
         <div className="flex-1 flex flex-col gap-1">
