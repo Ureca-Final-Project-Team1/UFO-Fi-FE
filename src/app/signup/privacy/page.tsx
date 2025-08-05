@@ -17,7 +17,7 @@ const PrivacyPage = () => {
     <>
       <section
         aria-labelledby="privacy-intro-title"
-        className="flex flex-col justify-center items-center text-center gap-7 sm:gap-10 w-full h-full overflow-hidden"
+        className="flex flex-col justify-center items-center text-center gap-7 sm:gap-10 w-full h-full"
       >
         <div className="flex flex-col gap-5 sm:gap-8 pb-5">
           <h2 id="privacy-intro-title" className="body-20-bold">
