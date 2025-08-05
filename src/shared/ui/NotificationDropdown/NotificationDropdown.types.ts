@@ -108,4 +108,6 @@ export interface NotificationItemTimeProps
   time: string;
 }
 
-export type NotificationItemBadgeProps = VariantProps<typeof notificationItemBadgeVariants>;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface NotificationItemBadgeProps
+  extends VariantProps<typeof notificationItemBadgeVariants> {}
