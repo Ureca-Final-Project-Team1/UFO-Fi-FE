@@ -24,10 +24,18 @@ type ReportedModalProps = ComponentProps<'div'> & {
   postId?: number;
   isOpen?: boolean;
   onClose?: () => void;
+  onSuccess?: () => void;
 };
 
 export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
-  const { postOwnerUserId = 0, postId = 0, isOpen = false, onClose = () => {}, ...rest } = props;
+  const {
+    postOwnerUserId = 0,
+    postId = 0,
+    isOpen = false,
+    onClose = () => {},
+    onSuccess = () => {},
+    ...rest
+  } = props;
 
   const reportOption = Object.entries(ReportReason).map(([key, label]) => ({
     label,
@@ -74,6 +82,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
             response.statusCode === HttpStatusCode.NO_CONTENT
           ) {
             setCompleteOpen(true);
+            onSuccess?.();
           } else {
             setError(response.message ?? errorMessages.default);
             setFaultOpen(true);
@@ -88,7 +97,7 @@ export const ReportedModal: React.FC<ReportedModalProps> = (props) => {
 
       fetchReport();
     }
-  }, [selectedOption, customReason, postOwnerUserId, postId]);
+  }, [selectedOption, customReason, postOwnerUserId, postId, onSuccess]);
 
   return (
     <div {...rest}>

@@ -29,7 +29,12 @@ export default function EditProfilePage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSaveNickname = async () => {
-    if (await saveNickname()) setModalType('nickname');
+    const result = await saveNickname();
+    if (result === true) {
+      setModalType('nickname');
+    } else {
+      toast.error(result);
+    }
   };
 
   const handleSavePlan = async () => {
@@ -37,7 +42,13 @@ export default function EditProfilePage() {
       toast.error('요금제를 선택해주세요.');
       return;
     }
-    if (await savePlan()) setModalType('plan');
+
+    const result = await savePlan();
+    if (result === true) {
+      setModalType('plan');
+    } else {
+      toast.error(result);
+    }
   };
 
   const handleModalConfirm = () => {

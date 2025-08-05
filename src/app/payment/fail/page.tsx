@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 
 import { IMAGE_PATHS } from '@/constants/images';
-import { Button, Loading, Title, Icon } from '@/shared';
+import { Button, Loading, Icon, TitleWithoutRouter } from '@/shared';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 interface ErrorInfo {
@@ -35,7 +35,7 @@ function PaymentFailContent() {
 
   return (
     <div className="bg-gradient-to-b from-primary-900 to-primary-800 flex flex-col">
-      <Title title="" iconVariant="close" />
+      <TitleWithoutRouter title="" iconVariant="close" />
 
       {/* 메인 컨텐츠 영역 - 완전한 중앙정렬 */}
       <div className="flex-1 flex items-center justify-center px-6">

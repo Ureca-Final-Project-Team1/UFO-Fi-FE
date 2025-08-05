@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { bulkPurchaseAPI } from '@/backend';
 import { BulkResultCard } from '@/features/bulk/components/BulkResultCard';
-import { Button, Loading, Title } from '@/shared';
+import { Button, Loading, TitleWithoutRouter } from '@/shared';
 import { formatTimeAgo } from '@/shared/utils';
 import { usePostIdsStore } from '@/stores/useBulkStore';
 
@@ -64,7 +64,7 @@ export function BulkPurchaseContent() {
 
   return (
     <div className="w-full h-full flex flex-col gap-6">
-      <Title title="일괄구매 결과" />
+      <TitleWithoutRouter title="일괄구매 결과" />
       <section>
         <p className="body-16-bold mb-3">구매한 데이터 ({postCounts[0] || 0}건)</p>
         {successBulkPurchase.length === 0 ? (

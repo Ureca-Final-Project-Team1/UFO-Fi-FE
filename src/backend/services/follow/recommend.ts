@@ -1,5 +1,5 @@
 import { nextApiRequest } from '@/backend/client/axios';
-import { FindRecommendUsersResponse } from '@/backend/types';
+import { FindRecommendUsersResponse, FindRecommendUsersResponseContent } from '@/backend/types';
 
 export const recommendAPI = {
   // Qdrant 컬렉션 생성 및 시딩 (POST)
@@ -9,10 +9,9 @@ export const recommendAPI = {
   },
 
   // 유사 사용자 추천 (GET)
-  async findRecommendUsers(): Promise<FindRecommendUsersResponse[]> {
-    const response = await nextApiRequest.get<{ neighbors: FindRecommendUsersResponse[] }>(
-      '/api/collections/search',
-    );
-    return response.data.neighbors;
+  async findRecommendUsers(): Promise<FindRecommendUsersResponseContent[]> {
+    const response =
+      await nextApiRequest.get<FindRecommendUsersResponse>('/api/collections/search');
+    return response.data.content.neighbors;
   },
 };

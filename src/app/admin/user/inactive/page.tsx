@@ -14,6 +14,7 @@ import {
   AdminTable,
   TableColumn,
   TableActions,
+  TablePagination,
   BaseTableRow,
 } from '@/shared';
 import { useModal } from '@/shared/hooks/useModal';
@@ -27,7 +28,20 @@ interface ReportedUserTableRow extends ReportedUser, BaseTableRow {
 }
 
 export default function AdminInactiveUsersPage() {
-  const { reportedUsers, isLoading, error, grantUser, refreshData } = useReportedUsers();
+  const {
+    reportedUsers,
+    totalPages,
+    totalElements,
+    currentPage,
+    pageSize,
+    isLoading,
+    error,
+    grantUser,
+    refreshData,
+    setCurrentPage,
+    setPageSize,
+  } = useReportedUsers();
+
   const [reportsStatistics, setReportsStatistics] = useState<ReportsStatisticsData | null>(null);
   const [statisticsLoading, setStatisticsLoading] = useState(true);
   const [statisticsError, setStatisticsError] = useState<string | null>(null);
@@ -54,6 +68,7 @@ export default function AdminInactiveUsersPage() {
     refreshData();
     fetchReportsStatistics();
   };
+
   const { showConfirm } = useModal();
 
   const columns: TableColumn<ReportedUserTableRow>[] = [
@@ -93,6 +108,18 @@ export default function AdminInactiveUsersPage() {
       onClick: handleActivateUser,
       tooltip: '사용자 활성화',
     },
+  };
+
+  // 페이지네이션 설정
+  const pagination: TablePagination = {
+    enabled: true,
+    currentPage,
+    totalPages,
+    pageSize,
+    totalElements,
+    onPageChange: setCurrentPage,
+    onPageSizeChange: setPageSize,
+    pageSizeOptions: [10, 20, 50],
   };
 
   // 사용자 활성화
@@ -158,8 +185,8 @@ export default function AdminInactiveUsersPage() {
                 )}
               </div>
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-sm font-medium text-gray-500 mb-2">처리 대기</h3>
-                <p className="text-2xl font-bold text-orange-600">{reportedUsers.length}</p>
+                <h3 className="text-sm font-medium text-gray-500 mb-2">현재 페이지</h3>
+                <p className="text-2xl font-bold text-orange-600">{totalElements}</p>
               </div>
             </div>
 
@@ -170,6 +197,7 @@ export default function AdminInactiveUsersPage() {
               columns={columns}
               data={tableData}
               actions={actions}
+              pagination={pagination}
               isLoading={isLoading}
               emptyMessage="비활성화된 사용자가 없습니다."
             />
