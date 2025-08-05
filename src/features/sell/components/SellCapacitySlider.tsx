@@ -32,9 +32,7 @@ export function SellCapacitySlider({
         maxLabel={`${maxCapacity}GB`}
         max={maxCapacity}
       />
-      <div className="text-cyan-400 text-sm pt-7 px-4">
-        남은 최대 판매 가능 용량 : {maxCapacity}GB
-      </div>
+      <div className="text-cyan-400 text-sm px-4">남은 최대 판매 가능 용량 : {maxCapacity}GB</div>
     </div>
   );
 }
