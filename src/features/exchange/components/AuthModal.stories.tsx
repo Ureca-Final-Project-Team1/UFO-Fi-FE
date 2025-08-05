@@ -1,18 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
+interface MockAuthModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  description?: string;
+}
+
 // Mock AuthModal for Storybook (실제 Modal 컴포넌트와 동일한 구조)
 const MockAuthModal = ({
   isOpen,
   onClose,
   title = '접근 권한 없음',
   description = '본인이 작성한 글만 수정할 수 있습니다.\n다시 확인해 주세요.',
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  title?: string;
-  description?: string;
-}) => {
+}: MockAuthModalProps) => {
   if (!isOpen) return null;
 
   const handleConfirm = () => {
