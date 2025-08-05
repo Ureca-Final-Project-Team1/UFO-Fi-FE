@@ -5,12 +5,28 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-function Switch({ className, ...props }: React.ComponentProps<typeof SwitchPrimitive.Root>) {
+import { SwitchProps } from './Switch.types';
+import { switchRootVariants, switchThumbVariants } from './SwitchVariants';
+
+function Switch({
+  className,
+  variant = 'default',
+  size = 'default',
+  disabled = false,
+  ...props
+}: SwitchProps) {
+  const [checked, setChecked] = React.useState(props.checked || false);
+
+  // checked 상태가 변경될 때마다 업데이트
+  React.useEffect(() => {
+    setChecked(props.checked || false);
+  }, [props.checked]);
+
   return (
     <SwitchPrimitive.Root
       data-slot="switch"
       className={cn(
-        'peer data-[state=checked]:bg-yellow-200 data-[state=unchecked]:bg-gray-300 focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all duration-300 outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
+        switchRootVariants({ variant, size, state: checked ? 'checked' : 'unchecked', disabled }),
         className,
       )}
       {...props}
@@ -18,7 +34,7 @@ function Switch({ className, ...props }: React.ComponentProps<typeof SwitchPrimi
       <SwitchPrimitive.Thumb
         data-slot="switch-thumb"
         className={cn(
-          'bg-background dark:data-[state=unchecked]:bg-foreground dark:data-[state=checked]:bg-primary-foreground pointer-events-none block size-4 rounded-full ring-0 transition-transform duration-200 data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0',
+          switchThumbVariants({ variant, size, state: checked ? 'checked' : 'unchecked' }),
         )}
       />
     </SwitchPrimitive.Root>
