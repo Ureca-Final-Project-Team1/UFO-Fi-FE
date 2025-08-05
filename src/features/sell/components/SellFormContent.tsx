@@ -42,7 +42,7 @@ export const SellFormContent = () => {
 
   return (
     <div className="flex flex-col w-full h-full justify-between">
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-4">
         <div className="rounded-lg ">
           <div className="flex items-center space-x-2 w-full">
             <div className="w-9 h-9 px-0.5 bg-white/50 rounded-lg shadow-md flex justify-center items-center">
@@ -82,7 +82,7 @@ export const SellFormContent = () => {
 
         <h3 className="mt-3 text-white font-bold text-lg">희망 판매 가격</h3>
         <div className="flex justify-center items-center gap-4 px-4 py-2">
-          <span className="text-cyan-400 text-sm font-semibold whitespace-nowrap">1GB 당</span>
+          <span className="text-cyan-400 text-md font-semibold whitespace-nowrap">1GB 당</span>
           <div className="w-28 h-10 flex justify-center items-center px-1">
             <PriceInput
               value={String(pricePerGB)}
@@ -91,7 +91,7 @@ export const SellFormContent = () => {
               variant="blueFill"
             />
           </div>
-          <span className="text-cyan-400 text-sm font-semibold whitespace-nowrap">ZET</span>
+          <span className="text-cyan-400 text-smd font-semibold whitespace-nowrap">ZET</span>
         </div>
 
         <div className="flex justify-center">
@@ -101,18 +101,17 @@ export const SellFormContent = () => {
             isValidPrice={isValidPrice}
           />
         </div>
-      </div>
-
-      <div className="pt-2">
-        <Button
-          size={isMobile ? 'default' : 'lg'}
-          onClick={handleSubmit}
-          variant="exploration-button"
-          disabled={!isFormValid || isSubmitting}
-          className="w-full px-6 py-3"
-        >
-          {isSubmitting ? '등록 중...' : '등록하기'}
-        </Button>
+        <div className="flex justify-center w-full">
+          <Button
+            size={isMobile ? 'default' : 'lg'}
+            onClick={handleSubmit}
+            variant="exploration-button"
+            disabled={!isFormValid || isSubmitting}
+            className="w-60 ml-auto px-6 py-3"
+          >
+            {isSubmitting ? '등록 중...' : '등록하기'}
+          </Button>
+        </div>
       </div>
     </div>
   );
