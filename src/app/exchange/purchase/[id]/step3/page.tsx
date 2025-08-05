@@ -11,6 +11,7 @@ import { PurchaseErrorRecovery } from '@/features/purchase/components/PurchaseEr
 import { usePurchaseRetry } from '@/features/purchase/hooks/usePurchaseRetry';
 import { Button, Loading, Title } from '@/shared';
 import { analytics } from '@/shared/utils/analytics';
+import queryClient, { queryKeys } from '@/shared/utils/queryClient';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 
 function Step3Content() {
@@ -80,6 +81,7 @@ function Step3Content() {
     };
 
     await executePurchase(purchaseRequest);
+    queryClient.invalidateQueries({ queryKey: queryKeys.myInfo() });
   };
 
   const handleErrorRetry = () => {

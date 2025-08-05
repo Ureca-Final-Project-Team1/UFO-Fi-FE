@@ -22,6 +22,7 @@ interface ExchangeListProps {
   onPurchase: (id: number) => void;
   purchaseLoading?: boolean;
   onRefetch?: (refetchFunction: () => void) => void;
+  myCarrier?: Carrier;
 }
 
 // 게시물 변환 함수
@@ -46,6 +47,7 @@ export const ExchangeList = ({
   onReport,
   onPurchase,
   onRefetch,
+  myCarrier,
 }: ExchangeListProps) => {
   // 사용자 정보 조회
   const { data: userInfo } = useMyInfo();
@@ -120,6 +122,7 @@ export const ExchangeList = ({
                 onDelete={() => onDelete(item.id)}
                 onReport={() => onReport(item.id, item.sellerId)}
                 onPurchase={() => onPurchase(item.id)}
+                myCarrier={myCarrier}
               />
             </div>
           ))}
