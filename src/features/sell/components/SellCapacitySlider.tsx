@@ -19,9 +19,22 @@ export function SellCapacitySlider({
 }: Props) {
   return (
     <div className="space-y-1 items-center">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start justify-between">
         <h3 className="text-white font-bold text-lg">판매 용량 설정</h3>
-        {errorMessage && <div className="text-red-400 text-sm font-medium">{errorMessage}</div>}
+      </div>
+      <div className="w-full flex justify-center">
+        <div
+          className="text-red-400 text-sm font-medium text-center"
+          style={{
+            minHeight: '10px',
+            height: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {errorMessage || ''}
+        </div>
       </div>
       <DataSlider
         value={value}
