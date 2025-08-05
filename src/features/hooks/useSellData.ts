@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 
 import { sellAPI } from '@/backend';
 import { validatePricePerGB, validateTotalPrice } from '@/lib/validate';
+import queryClient, { queryKeys } from '@/shared/utils/queryClient';
 
 export const useSellData = () => {
   const [value, setValue] = useState([5]);
@@ -64,6 +65,7 @@ export const useSellData = () => {
     };
 
     await sellMutation.mutateAsync(requestData);
+    queryClient.invalidateQueries({ queryKey: queryKeys.myInfo() });
   };
 
   const handlePriceChange = (e: { target: { value: unknown } }) => {
