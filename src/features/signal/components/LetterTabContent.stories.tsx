@@ -1,62 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import LetterComponent from './LetterListComponent';
+import SignalProgressBar from './SignalProgressBar';
+
 // Mock LetterTabContent for Storybook
 const MockLetterTabContent = () => {
   return (
-    <section
-      aria-label="전파거리 관련 탭 콘텐츠"
-      className="w-full h-full flex flex-col justify-center items-center space-y-4"
-    >
-      <div className="z-30 scale-90">
-        {/* Mock SignalProgressBar */}
-        <div className="flex flex-col items-center w-full gap-4 px-4">
-          <p className="text-white text-lg mb-5">3번째 은하까지 탐사 완료...</p>
-          <div className="relative flex items-center justify-center w-full">
-            <div className="absolute inset-x-4 top-1/2 rounded-full border border-dashed border-gray-400 -translate-y-1/2" />
-            <div className="flex gap-3 relative z-10">
-              {[true, true, true, false, false].map((isArrived, index) => (
-                <div key={index} className="relative">
-                  <div
-                    className={`w-15 h-15 rounded-full flex items-center justify-center text-2xl ${
-                      isArrived ? 'bg-blue-500' : 'bg-gray-600'
-                    }`}
-                    style={{ width: 60, height: 60 }}
-                  >
-                    {isArrived ? '🪐' : '🌑'}
-                  </div>
-                  <div className="absolute -top-4 -right-4 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs">
-                    📡
-                  </div>
-                </div>
-              ))}
+    <div className="w-full bg-gray-900 p-4">
+      <div className="max-w-md mx-auto">
+        <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-gray-700">
+          <h2 className="text-white text-base font-semibold mb-4">전파거리 관련 탭 콘텐츠</h2>
+
+          <section
+            aria-label="전파거리 관련 탭 콘텐츠"
+            className="w-full h-full flex flex-col justify-center items-center space-y-4"
+          >
+            <div className="z-30 scale-90">
+              <SignalProgressBar />
             </div>
-            <div
-              className="flex items-center justify-center size-12 rounded-full text-white text-sm ml-3 relative z-10 flex-shrink-0"
-              style={{ backgroundColor: '#222' }}
-            >
-              3/5
-            </div>
-          </div>
+            <article>
+              <LetterComponent />
+            </article>
+          </section>
         </div>
       </div>
-      <article>
-        {/* Mock LetterComponent */}
-        <div className="bg-white rounded-lg p-4 max-w-md">
-          <h3 className="text-lg font-semibold mb-2">📨 편지 목록</h3>
-          <div className="space-y-2">
-            <div className="p-3 bg-gray-100 rounded">
-              <p className="text-sm text-gray-700">첫 번째 편지 내용...</p>
-            </div>
-            <div className="p-3 bg-gray-100 rounded">
-              <p className="text-sm text-gray-700">두 번째 편지 내용...</p>
-            </div>
-            <div className="p-3 bg-gray-100 rounded">
-              <p className="text-sm text-gray-700">세 번째 편지 내용...</p>
-            </div>
-          </div>
-        </div>
-      </article>
-    </section>
+    </div>
   );
 };
 
@@ -64,14 +32,26 @@ const meta: Meta<typeof MockLetterTabContent> = {
   title: 'Signal/LetterTabContent',
   component: MockLetterTabContent,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof MockLetterTabContent>;
 
 export const Default: Story = {
-  args: {},
+  render: () => <MockLetterTabContent />,
+};
+
+export const Desktop: Story = {
+  render: () => <MockLetterTabContent />,
+  parameters: {
+    viewport: {
+      defaultViewport: 'desktop',
+    },
+  },
 };
