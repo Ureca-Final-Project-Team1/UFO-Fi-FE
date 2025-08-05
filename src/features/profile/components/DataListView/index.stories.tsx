@@ -18,6 +18,15 @@ const createMockTradePost = (overrides?: Partial<TradePost>): TradePost => ({
   ...overrides,
 });
 
+// Mock DataListView Props Interface
+interface MockDataListViewProps {
+  userId?: number;
+  isLoading?: boolean;
+  hasError?: boolean;
+  tradePosts?: TradePost[];
+  nickname?: string;
+}
+
 // Mock DataListView for Storybook
 const MockDataListView = ({
   userId = 12345,
@@ -25,13 +34,7 @@ const MockDataListView = ({
   hasError = false,
   tradePosts = [],
   nickname = '우주탐험가',
-}: {
-  userId?: number;
-  isLoading?: boolean;
-  hasError?: boolean;
-  tradePosts?: TradePost[];
-  nickname?: string;
-}) => {
+}: MockDataListViewProps) => {
   const [reportModal, setReportModal] = useState({ isOpen: false, postId: 0, sellerId: 0 });
 
   const handleReport = (postId: number, sellerId: number) => {
