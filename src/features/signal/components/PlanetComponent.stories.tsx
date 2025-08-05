@@ -5,18 +5,20 @@ import { IMAGE_PATHS } from '@/constants';
 
 import PlanetComponent from './PlanetComponent';
 
+interface MockPlanetComponentProps {
+  planetSrc?: string;
+  satelliteSrc?: string;
+  planetSize?: number;
+  isArrived?: boolean;
+}
+
 // Mock PlanetComponent for Storybook
 const MockPlanetComponent = ({
   planetSrc = IMAGE_PATHS.PLANET_1,
   satelliteSrc = IMAGE_PATHS.SATELLITE_1,
   planetSize = 145,
   isArrived = true,
-}: {
-  planetSrc?: string;
-  satelliteSrc?: string;
-  planetSize?: number;
-  isArrived?: boolean;
-}) => {
+}: MockPlanetComponentProps) => {
   return (
     <div className="w-full bg-gray-900 p-4">
       <div className="max-w-md mx-auto">
