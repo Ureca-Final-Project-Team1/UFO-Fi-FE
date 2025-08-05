@@ -9,7 +9,7 @@ import type {
 export const notificationsAPI = {
   // 알림 목록 조회
   async getNotifications(): Promise<GetNotificationsResponse> {
-    const response = await apiRequest.get<GetNotificationsResponse>('/v1/notifications');
+    const response = await apiRequest.get<GetNotificationsResponse>('/notifications');
     return response.data;
   },
 

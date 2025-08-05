@@ -6,6 +6,6 @@ export const sellHistory = async (): Promise<SellHistoryResponse[] | undefined> 
     content: {
       saleHistoriesRes: SellHistoryResponse[];
     };
-  }>('/v1/mypage/sale-histories');
+  }>('/trade-histories/sale');
   return response.data.content.saleHistoriesRes;
 };

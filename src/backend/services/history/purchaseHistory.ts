@@ -6,6 +6,6 @@ export const purchaseHistory = async (): Promise<PurchaseHistoryResponse[] | und
     content: {
       purchaseHistoriesRes: PurchaseHistoryResponse[];
     };
-  }>('/v1/mypage/purchase-histories');
+  }>('/trade-histories/purchase');
   return response.data.content.purchaseHistoriesRes;
 };

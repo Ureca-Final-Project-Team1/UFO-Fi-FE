@@ -7,11 +7,11 @@ import type {
 
 export const fcmAPI = {
   async saveToken(data: FCMTokenRequest): Promise<FCMTokenResponse> {
-    const response = await apiRequest.post<FCMTokenResponse>('/v1/fcm/token', data);
+    const response = await apiRequest.post<FCMTokenResponse>('/fcm/token', data);
     return response.data;
   },
 
   async setInterestedPostFilter(data: NotificationFilterRequest): Promise<void> {
-    await apiRequest.patch('/v1/notification-filters/interested-post', data);
+    await apiRequest.patch('/notification-filters/interested-post', data);
   },
 };

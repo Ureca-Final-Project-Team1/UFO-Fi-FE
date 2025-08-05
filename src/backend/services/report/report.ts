@@ -16,7 +16,7 @@ export const reportAPI = {
     page?: number;
     size?: number;
   }): Promise<GetReportedUsersResponse> {
-    const response = await apiRequest.get<GetReportedUsersResponse>('/v1/users/reported', {
+    const response = await apiRequest.get<GetReportedUsersResponse>('/users/role/reported', {
       params: {
         page: params?.page || 0,
         size: params?.size || 10,
@@ -27,19 +27,19 @@ export const reportAPI = {
 
   // 신고된 게시물 목록 조회
   getReportedPosts: async (): Promise<GetReportedPostsResponse> => {
-    const res = await apiRequest.get<GetReportedPostsResponse>('/v1/admin/trade-posts/reported');
+    const res = await apiRequest.get<GetReportedPostsResponse>('/admin/trade-posts/reported');
     return res.data;
   },
 
   // 신고 해지
   rollBackReport: async (payload: RollBackReportRequest): Promise<RollBackReportResponse> => {
-    const res = await apiRequest.put<RollBackReportResponse>('/v1/admin/roll-back-report', payload);
+    const res = await apiRequest.put<RollBackReportResponse>('admin/reports/report', payload);
     return res.data;
   },
 
   // 사용자 비활성화 해제
   grantUser: async (payload: GrantUserRequest): Promise<GrantUserResponse> => {
-    const res = await apiRequest.put<GrantUserResponse>('/v1/user/grant-user', payload);
+    const res = await apiRequest.put<GrantUserResponse>(`/admin/users/${payload.userId}/role`);
     return res.data;
   },
 
@@ -47,7 +47,7 @@ export const reportAPI = {
   reportPosts: async (payload: ReportPostsRequest): Promise<ReportPostsResponse> => {
     const { tradePostId, ...body } = payload;
     const res = await apiRequest.post<ReportPostsResponse>(
-      `/v1/trade-posts/${tradePostId}/report`,
+      `/trade-posts/${tradePostId}/report`,
       body,
     );
     return res.data;

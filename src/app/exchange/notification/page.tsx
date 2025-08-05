@@ -12,6 +12,7 @@ import { useFilterState } from '@/features/exchange/hooks/useFilterState';
 import { Button, Chip, DataRangeSlider, DataSlider, Icon, Title } from '@/shared';
 
 import '@/styles/globals.css';
+import { getUserFromToken } from '@/shared/utils/getUserFromToken';
 
 const FilterNotificationPage = () => {
   const { data, range, minData, maxData, minValue, maxValue, setData, setRange } = useFilterState();
@@ -33,11 +34,15 @@ const FilterNotificationPage = () => {
   // TODO: 마이페이지 커스텀 훅 들어오면 변경 예정
   const checkAuthStatus = async (): Promise<boolean> => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/v1/mypage`, {
-        credentials: 'include',
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-      });
+      const userId = getUserFromToken();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${userId}/profile`,
+        {
+          credentials: 'include',
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+        },
+      );
       return response.ok;
     } catch (error) {
       console.error('인증 상태 확인 실패:', error);

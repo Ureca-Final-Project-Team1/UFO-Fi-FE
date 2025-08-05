@@ -18,9 +18,9 @@ export const purchaseDetailService = {
    * @param purchaseHistoryId 구매 내역 ID
    * @returns 구매 내역 상세 정보
    */
-  getPurchaseDetail: async (purchaseHistoryId: string): Promise<PurchaseDetail> => {
+  getPurchaseDetail: async (tradeHistoryId: string): Promise<PurchaseDetail> => {
     const response = await apiRequest.get<SuccessApiResponse<PurchaseDetail>>(
-      `/v1/mypage/purchase-histories/${purchaseHistoryId}`,
+      `/trade-histories/${tradeHistoryId}`,
     );
 
     if (response.data.statusCode === 200) {

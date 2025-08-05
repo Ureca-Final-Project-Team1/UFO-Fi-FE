@@ -3,7 +3,7 @@ import { UserPlanResponse } from '@/backend/types/userPlan';
 
 export const userPlanAPI = {
   async get(): Promise<UserPlanResponse['content']> {
-    const response = await apiRequest.get<UserPlanResponse>('/v1/mypage/user-plan');
+    const response = await apiRequest.get<UserPlanResponse>('/user-plan');
     return response.data.content;
   },
 };

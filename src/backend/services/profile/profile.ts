@@ -7,7 +7,7 @@ export const profileAPI = {
       throw new Error('유효하지 않은 사용자 ID입니다.');
     }
 
-    const response = await apiRequest.get<GetProfileResponse>(`/v1/profile/${anotherUserId}`);
+    const response = await apiRequest.get<GetProfileResponse>(`/users/${anotherUserId}/profile`);
     return response.data;
   },
 

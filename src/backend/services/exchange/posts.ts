@@ -3,7 +3,7 @@ import type { GetExchangePostsRequest, GetExchangePostsResponse } from '@/backen
 
 export const exchangeAPI = {
   async getPosts(params?: GetExchangePostsRequest): Promise<GetExchangePostsResponse> {
-    const response = await apiRequest.get<{ content: GetExchangePostsResponse }>('/v1/posts', {
+    const response = await apiRequest.get<{ content: GetExchangePostsResponse }>('/posts', {
       params,
     });
     return response.data.content;

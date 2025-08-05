@@ -3,7 +3,7 @@ import { getUserInfoResponse } from '@/backend/types/userInfo';
 
 export const getUserInfoAPI = {
   async getInfo(): Promise<getUserInfoResponse> {
-    const response = await apiRequest.get<getUserInfoResponse>('/v1/signup/user-info');
+    const response = await apiRequest.get<getUserInfoResponse>('/users/me/users-info');
     return response.data;
   },
 };

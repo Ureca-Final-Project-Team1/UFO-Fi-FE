@@ -3,17 +3,17 @@ import type { FollowActionResponse } from '@/backend/types/follow';
 
 export const followActionsAPI = {
   // 다른 유저에게 팔로우 신청
-  async followUser(targetUserId: number): Promise<FollowActionResponse> {
+  async followUser(followId: number): Promise<FollowActionResponse> {
     const response = await apiRequest.post<{ content: FollowActionResponse }>(
-      `/v1/follow/${targetUserId}`,
+      `/follow/${followId}`,
     );
     return response.data.content;
   },
 
   // 팔로우 취소 (언팔로우)
-  async unfollowUser(targetUserId: number): Promise<FollowActionResponse> {
+  async unfollowUser(followingId: number): Promise<FollowActionResponse> {
     const response = await apiRequest.delete<{ content: FollowActionResponse }>(
-      `/v1/unfollow/${targetUserId}`,
+      `/follow/${followingId}`,
     );
     return response.data.content;
   },

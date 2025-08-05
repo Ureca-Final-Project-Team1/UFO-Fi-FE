@@ -7,12 +7,12 @@ import type {
 export const notificationAPI = {
   async getSettings(): Promise<NotificationSettings | undefined> {
     const response = await apiRequest.get<{ content: NotificationSettings }>(
-      '/v1/mypage/notification-settings',
+      '/notification-settings',
     );
     return response.data.content;
   },
 
   async updateSetting(params: UpdateNotificationSettingRequest): Promise<void> {
-    await apiRequest.patch('/v1/mypage/notification-settings', null, { params });
+    await apiRequest.patch('/notification-settings', null, { params });
   },
 };
