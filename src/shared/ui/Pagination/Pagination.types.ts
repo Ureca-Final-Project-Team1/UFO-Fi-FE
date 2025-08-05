@@ -29,9 +29,7 @@ export interface PageNumberProps extends VariantProps<typeof pageNumberVariants>
   onClick: () => void;
 }
 
-export interface PaginationDotsProps extends VariantProps<typeof paginationDotsVariants> {
-  key: string;
-}
+export type PaginationDotsProps = VariantProps<typeof paginationDotsVariants>;
 
 export interface PaginationContainerProps extends VariantProps<typeof paginationContainerVariants> {
   children: React.ReactNode;
