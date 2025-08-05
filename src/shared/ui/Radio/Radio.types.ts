@@ -1,8 +1,22 @@
 import type * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import { VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
 
-export type RadioGroupProps = ComponentProps<typeof RadioGroupPrimitive.Root>;
+import { radioGroupVariants, radioItemVariants } from './RadioVariants';
 
-export type RadioGroupItemProps = ComponentProps<typeof RadioGroupPrimitive.Item> & {
+export interface RadioGroupProps
+  extends ComponentProps<typeof RadioGroupPrimitive.Root>,
+    VariantProps<typeof radioGroupVariants> {
+  options: string[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  color?: string;
+}
+
+export interface RadioGroupItemProps
+  extends ComponentProps<typeof RadioGroupPrimitive.Item>,
+    VariantProps<typeof radioItemVariants> {
   'aria-label'?: string;
-};
+  color?: string;
+}

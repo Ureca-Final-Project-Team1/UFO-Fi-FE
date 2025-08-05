@@ -6,16 +6,9 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Label } from '@/shared';
 
+import { RadioGroupProps } from './Radio.types';
 import { RadioGroupItem } from './RadioGroupItem';
-
-type RadioGroupProps = {
-  options: string[];
-  value?: string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-  className?: string;
-  color?: string;
-};
+import { radioGroupVariants } from './RadioVariants';
 
 export function RadioGroup({
   options,
@@ -24,13 +17,17 @@ export function RadioGroup({
   defaultValue,
   onValueChange,
   className,
+  variant = 'default',
+  size = 'default',
+  ...props
 }: RadioGroupProps) {
   return (
     <RadioGroupPrimitive.Root
-      className={cn('grid gap-2', className)}
+      className={cn(radioGroupVariants({ variant, size }), className)}
       value={value}
       defaultValue={defaultValue}
       onValueChange={onValueChange}
+      {...props}
     >
       {options.map((label) => {
         const val = label.toLowerCase();
