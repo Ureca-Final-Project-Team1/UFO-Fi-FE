@@ -1,9 +1,19 @@
 import * as React from 'react';
 
+import { cn } from '@/lib/utils';
 import { getGbLabel } from '@/shared/utils/sliderUtils';
 
 import BaseSlider from './BaseSlider';
 import type { DataSliderProps } from './Slider.types';
+import {
+  dataSliderContainerVariants,
+  dataSliderMiddleLabelVariants,
+  dataSliderTicksContainerVariants,
+  dataSliderTickLineVariants,
+  dataSliderTickTextVariants,
+  dataSliderLabelsContainerVariants,
+  dataSliderBottomLabelsVariants,
+} from './SliderVariants';
 
 export function DataSlider({
   value,
@@ -14,25 +24,33 @@ export function DataSlider({
   maxLabel,
   showMiddleLabels = true,
   max = 10, // 기본값 10, props로 받을 수 있게
+  variant = 'default',
+  size = 'default',
+  className,
 }: DataSliderProps & { max?: number }) {
   const steps = max;
 
   return (
-    <div className="relative w-full px-4">
+    <div className={cn(dataSliderContainerVariants({ variant }), className)}>
       {/* 중앙 값 라벨 */}
       {showMiddleLabels && (
-        <div className="text-center text-cyan-300 font-bold text-lg mb-2">{value[0]}GB</div>
+        <div className={cn(dataSliderMiddleLabelVariants({ variant }))}>{value[0]}GB</div>
       )}
       <div className="relative w-full mx-auto">
         {/* 눈금선 + 숫자 (min/max label은 하단에서만 표시) */}
         {showTicks && (
-          <div className="absolute left-0 right-0 flex justify-between px-[2px] z-10">
+          <div className={cn(dataSliderTicksContainerVariants({ variant }))}>
             {Array.from({ length: steps + 1 }).map((_, i) => (
               <div key={i} className="flex flex-col items-center w-0">
                 <div
-                  className={`h-4 w-0.5 ${i === 0 || i === steps ? 'invisible' : 'bg-white opacity-70'}`}
+                  className={cn(
+                    dataSliderTickLineVariants({ variant }),
+                    i === 0 || i === steps ? 'invisible' : '',
+                  )}
                 />
-                <span className="text-xs text-white mt-1">{getGbLabel(i, steps)}</span>
+                <span className={cn(dataSliderTickTextVariants({ variant }))}>
+                  {getGbLabel(i, steps)}
+                </span>
               </div>
             ))}
           </div>
@@ -48,11 +66,13 @@ export function DataSlider({
           onValueChange={onValueChange}
           className="relative z-20 flex w-full touch-none select-none items-center"
           getThumbValueText={(v) => `${v}GB`}
+          variant={variant}
+          size={size}
         />
 
         {/* showTicks가 false일 때만 minLabel, maxLabel 표시 */}
         {!showTicks && (minLabel || maxLabel) && (
-          <div className="flex justify-between text-xs text-gray-400 mt-2">
+          <div className={cn(dataSliderLabelsContainerVariants({ variant }))}>
             <span>{minLabel}</span>
             <span>{maxLabel}</span>
           </div>
@@ -60,7 +80,7 @@ export function DataSlider({
 
         {/* 아래쪽 라벨만 따로 쓰고 싶을 때 */}
         {showLabels && !showTicks && (
-          <div className="mt-2 flex justify-between text-white text-xs w-full px-[2px]">
+          <div className={cn(dataSliderBottomLabelsVariants({ variant }))}>
             {Array.from({ length: steps + 1 }).map((_, i) => (
               <span key={i} className="w-[1px] -translate-x-1/2 text-center">
                 {getGbLabel(i, steps)}
