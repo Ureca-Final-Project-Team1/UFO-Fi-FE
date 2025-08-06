@@ -6,6 +6,7 @@ import { SpeechBubble } from '@/shared';
 import { AlienCharacter } from './AlienCharacter';
 
 interface AlienWithSpeechProps {
+  title: string;
   message: string;
   tailDirection?: 'left' | 'right';
   size?: 'sm' | 'md' | 'lg';
@@ -15,6 +16,7 @@ interface AlienWithSpeechProps {
 const DEFAULT_BUBBLE_STYLE = 'max-w-xs text-sm';
 
 export const AlienWithSpeech = ({
+  title,
   message,
   tailDirection = 'right',
   size = 'md',
@@ -27,7 +29,10 @@ export const AlienWithSpeech = ({
       {/* 말풍선 */}
       <div className="flex-1 flex justify-end">
         <SpeechBubble tailDirection={tailDirection} size={size} className={DEFAULT_BUBBLE_STYLE}>
-          {message}
+          <div className="flex flex-col gap-3">
+            <p className="font-bold text-[15px]">{title}</p>
+            <p className="text-sm">{message}</p>
+          </div>
         </SpeechBubble>
       </div>
 

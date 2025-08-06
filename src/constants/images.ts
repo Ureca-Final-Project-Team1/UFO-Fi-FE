@@ -55,6 +55,11 @@ export const IMAGE_PATHS = {
   WINDOW_BORDER: '/images/onboarding/window-border.svg',
   WINDOW_MASK: '/images/onboarding/window-mask.svg',
   WINDOW_BOTTOM: '/images/onboarding/window-bottom.svg',
+  ONBOARDING_STEP1: '/images/onboarding/step/step1.gif',
+  ONBOARDING_STEP2: '/images/onboarding/step/step2.gif',
+  ONBOARDING_STEP3: '/images/onboarding/step/step3.gif',
+  ONBOARDING_STEP4: '/images/onboarding/step/step4.gif',
+  ONBOARDING_STEP5: '/images/onboarding/step/step5.gif',
 } as const;
 
 export const BADGE_ICONS: Record<string, string> = {};
