@@ -1,11 +1,12 @@
 import { apiRequest } from '@/backend/client/axios';
 import type { GetFollowingResponse } from '@/backend/types/follow';
+import { API_ENDPOINTS } from '@/constants';
 
 export const followingAPI = {
   // 내가 팔로우하는 목록 조회
   async getFollowing(): Promise<GetFollowingResponse> {
     const response = await apiRequest.get<{ content: GetFollowingResponse }>(
-      '/v1/mypage/followings',
+      API_ENDPOINTS.FOLLOW.FOLLOWINGS,
     );
     return response.data.content;
   },

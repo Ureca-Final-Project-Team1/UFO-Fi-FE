@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { fcmAPI } from '@/backend';
 import { Carrier, CARRIER_DISPLAY_NAMES } from '@/backend/types/carrier';
+import { API_ENDPOINTS } from '@/constants';
 import { FilterBox } from '@/features/exchange/components/FilterBox';
 import { useFilteredItemCount } from '@/features/exchange/hooks/useFilteredItemCount';
 import { useFilterState } from '@/features/exchange/hooks/useFilterState';
@@ -33,11 +34,14 @@ const FilterNotificationPage = () => {
   // TODO: 마이페이지 커스텀 훅 들어오면 변경 예정
   const checkAuthStatus = async (): Promise<boolean> => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/v1/mypage`, {
-        credentials: 'include',
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}${API_ENDPOINTS.USER.PROFILE}`,
+        {
+          credentials: 'include',
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+        },
+      );
       return response.ok;
     } catch (error) {
       console.error('인증 상태 확인 실패:', error);

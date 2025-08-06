@@ -1,5 +1,6 @@
 import { nextApiRequest } from '@/backend/client/axios';
 import { Letter, LetterDisplay } from '@/backend/types/letters';
+import { API_ENDPOINTS } from '@/constants';
 
 /**
  * 편지를 생성하고 가져오는 함수
@@ -11,10 +12,10 @@ export async function fetchAndCreateLetters(): Promise<{
 }> {
   try {
     // 편지 생성 요청
-    await nextApiRequest.post('/api/story/letters');
+    await nextApiRequest.post(API_ENDPOINTS.STORY.POST_LETTERS);
 
     // 편지 목록 가져오기
-    const res = await nextApiRequest.get('/api/story/letters');
+    const res = await nextApiRequest.get(API_ENDPOINTS.STORY.GET_LETTERS);
     const data = res.data as Letter[];
 
     return {
@@ -44,7 +45,7 @@ export async function fetchLetters(): Promise<{
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const res = await nextApiRequest.get('/api/story/letters');
+      const res = await nextApiRequest.get(API_ENDPOINTS.STORY.GET_LETTERS);
       const data = res.data as Letter[];
 
       return {
