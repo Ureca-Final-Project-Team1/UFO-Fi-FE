@@ -10,6 +10,7 @@ interface Planet {
   src: string;
   active: boolean;
   color: string;
+  index?: number; // 순차 애니메이션을 위한 index
 }
 
 const getCSSVariable = (name: string): string => {
@@ -60,8 +61,8 @@ export default function PlanetProgressBar() {
 
         {/* 행성들 */}
         <div className="flex gap-3 relative z-10">
-          {planets.map((p) => (
-            <Planet key={p.id} {...p} />
+          {planets.map((p, i) => (
+            <Planet key={p.id} {...p} index={i} />
           ))}
         </div>
         <div className="flex items-center justify-center size-12 rounded-full bg-[#222] text-white text-sm ml-3 relative z-10 flex-shrink-0">
@@ -72,22 +73,60 @@ export default function PlanetProgressBar() {
   );
 }
 
-function Planet({ src, active, color }: Planet) {
+function Planet({ src, active, color, index = 0 }: Planet) {
+  const animationName = `planet-spread-${color.replace(/[^a-zA-Z0-9]/g, '')}`;
+  // 각 행성마다 0.3초씩 딜레이
+  const animationDelay = `${index * 0.3}s`;
   return (
-    <div
-      className="relative size-10 rounded-full flex items-center justify-center"
-      style={{
-        backgroundColor: active ? color : 'transparent',
-        boxShadow: active
-          ? `
-            0 0 0 6px ${hexToRgba(color, 0.6)},
-            0 0 0 12px ${hexToRgba(color, 0.4)},
-            0 0 0 18px ${hexToRgba(color, 0.2)}
-          `
-          : 'none',
-      }}
-    >
-      <Image src={src} alt="planet" width={42} height={42} />
+    <div className="relative size-10 flex items-center justify-center">
+      <div
+        className="absolute inset-0 rounded-full z-0"
+        style={{
+          backgroundColor: active ? color : 'transparent',
+          boxShadow: active
+            ? `0 0 0 6px ${hexToRgba(color, 0.6)}, 0 0 0 12px ${hexToRgba(color, 0.4)}, 0 0 0 18px ${hexToRgba(color, 0.2)}`
+            : 'none',
+          opacity: active ? 1 : 0,
+          animation: active ? `${animationName} 3s linear infinite` : 'none',
+          animationDelay: active ? animationDelay : undefined,
+          transition: 'background-color 0.3s',
+        }}
+      />
+      <span className="relative z-10">
+        <Image src={src} alt="planet" width={42} height={42} />
+      </span>
+      <style jsx>{`
+        @keyframes ${animationName} {
+          0% {
+            box-shadow:
+              0 0 0 6px ${hexToRgba(color, 0.6)},
+              0 0 0 12px ${hexToRgba(color, 0.4)},
+              0 0 0 18px ${hexToRgba(color, 0.2)};
+            opacity: 1;
+          }
+          30% {
+            box-shadow:
+              0 0 0 6px ${hexToRgba(color, 0.4)},
+              0 0 0 12px ${hexToRgba(color, 0.2)},
+              0 0 0 18px ${hexToRgba(color, 0)};
+            opacity: 0.6;
+          }
+          60% {
+            box-shadow:
+              0 0 0 6px ${hexToRgba(color, 0.2)},
+              0 0 0 12px ${hexToRgba(color, 0)},
+              0 0 0 18px ${hexToRgba(color, 0)};
+            opacity: 0.2;
+          }
+          100% {
+            box-shadow:
+              0 0 0 6px ${hexToRgba(color, 0.6)},
+              0 0 0 12px ${hexToRgba(color, 0.4)},
+              0 0 0 18px ${hexToRgba(color, 0.2)};
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 }
