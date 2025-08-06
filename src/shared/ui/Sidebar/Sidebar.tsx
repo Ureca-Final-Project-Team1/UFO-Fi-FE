@@ -4,18 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
+import { cn } from '@/lib/utils';
+
 import { IconType } from '../Icons';
+import type { SidebarProps, MenuItem } from './Sidebar.types';
+import { sidebarVariants, sidebarNavigationVariants } from './SidebarVariants';
 import { Icon } from '../Icons/Icon';
 
-interface MenuItem {
-  id: string;
-  label: string;
-  icon: IconType;
-  href?: string;
-  children?: MenuItem[];
-}
-
-const menuItems: MenuItem[] = [
+const defaultMenuItems: MenuItem[] = [
   {
     id: 'dashboard',
     label: '대시보드',
@@ -81,7 +77,16 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar: React.FC<SidebarProps> = ({
+  className,
+  menuItems = defaultMenuItems,
+  onMenuItemClick,
+  variant = 'default',
+  size = 'md',
+  position = 'left',
+  padding = 'md',
+  spacing = 'md',
+}) => {
   const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
   const pathname = usePathname();
 
@@ -94,7 +99,7 @@ const Sidebar = () => {
     if (currentMenuItem && currentMenuItem.children) {
       setOpenMenus(new Set([currentMenuItem.id]));
     }
-  }, [pathname]);
+  }, [pathname, menuItems]);
 
   const toggleMenu = (menuId: string) => {
     const newOpenMenus = new Set(openMenus);
@@ -128,6 +133,7 @@ const Sidebar = () => {
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
                 : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
             } ${level > 0 ? 'ml-6 py-2' : ''}`}
+            onClick={() => onMenuItemClick?.(item)}
           >
             <Icon
               name={item.icon as IconType}
@@ -139,7 +145,12 @@ const Sidebar = () => {
           </Link>
         ) : (
           <button
-            onClick={() => hasChildren && toggleMenu(item.id)}
+            onClick={() => {
+              if (hasChildren) {
+                toggleMenu(item.id);
+              }
+              onMenuItemClick?.(item);
+            }}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 w-full group ${
               isActive
                 ? 'bg-blue-50 text-blue-700'
@@ -181,9 +192,25 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-72 h-screen bg-white border-r border-gray-200 flex flex-col">
+    <aside
+      className={cn(
+        sidebarVariants({
+          variant,
+          size,
+          position,
+        }),
+        className,
+      )}
+    >
       {/* 메뉴 목록 */}
-      <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+      <nav
+        className={cn(
+          sidebarNavigationVariants({
+            padding,
+            spacing,
+          }),
+        )}
+      >
         {menuItems.map((item) => renderMenuItem(item))}
       </nav>
     </aside>
