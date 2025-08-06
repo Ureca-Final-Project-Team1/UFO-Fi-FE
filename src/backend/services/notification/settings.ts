@@ -3,16 +3,17 @@ import type {
   NotificationSettings,
   UpdateNotificationSettingRequest,
 } from '@/backend/types/notification';
+import { API_ENDPOINTS } from '@/constants';
 
 export const notificationAPI = {
   async getSettings(): Promise<NotificationSettings | undefined> {
     const response = await apiRequest.get<{ content: NotificationSettings }>(
-      '/v1/mypage/notification-settings',
+      API_ENDPOINTS.NOTIFICATION_SETTING.SETTINGS_GET,
     );
     return response.data.content;
   },
 
   async updateSetting(params: UpdateNotificationSettingRequest): Promise<void> {
-    await apiRequest.patch('/v1/mypage/notification-settings', null, { params });
+    await apiRequest.patch(API_ENDPOINTS.NOTIFICATION_SETTING.SETTINGS_UPDATE, null, { params });
   },
 };

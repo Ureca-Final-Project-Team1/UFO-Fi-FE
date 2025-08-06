@@ -89,7 +89,6 @@ export async function GET() {
 }
 
 // POST: 사용자 기준으로 새로운 편지를 생성
-// POST: 사용자 기준으로 새로운 편지를 생성
 export async function POST() {
   try {
     const result = await getUserFromToken();

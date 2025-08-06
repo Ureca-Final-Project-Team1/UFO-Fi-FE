@@ -1,5 +1,6 @@
 import { apiRequest } from '@/backend/client/axios';
 import { SuccessApiResponse } from '@/backend/types/api';
+import { API_ENDPOINTS } from '@/constants';
 
 export interface PurchaseDetail {
   postId: number;
@@ -18,9 +19,9 @@ export const purchaseDetailService = {
    * @param purchaseHistoryId 구매 내역 ID
    * @returns 구매 내역 상세 정보
    */
-  getPurchaseDetail: async (purchaseHistoryId: string): Promise<PurchaseDetail> => {
+  getPurchaseDetail: async (purchaseHistoryId: number): Promise<PurchaseDetail> => {
     const response = await apiRequest.get<SuccessApiResponse<PurchaseDetail>>(
-      `/v1/mypage/purchase-histories/${purchaseHistoryId}`,
+      API_ENDPOINTS.ORDER.PURCHASE_DETAIL(purchaseHistoryId), // 매개변수로 전달
     );
 
     if (response.data.statusCode === 200) {

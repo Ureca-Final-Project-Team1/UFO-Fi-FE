@@ -5,12 +5,13 @@ import type {
   PaymentConfirmRequest,
   PaymentConfirmResponse,
 } from '@/backend/types/payment';
+import { API_ENDPOINTS } from '@/constants';
 
 export const paymentAPI = {
   // 1단계: 충전 요청
   async charge(data: PaymentRequest): Promise<PaymentResponse> {
     const response = await apiRequest.post<{ content: PaymentResponse }>(
-      '/v1/mypage/zet-charges',
+      API_ENDPOINTS.PAYMENT.CHARGE,
       data,
     );
     return response.data.content;
@@ -19,7 +20,7 @@ export const paymentAPI = {
   // 2단계: 결제 승인 확인
   async confirm(data: PaymentConfirmRequest): Promise<PaymentConfirmResponse> {
     const response = await apiRequest.post<{ content: PaymentConfirmResponse }>(
-      '/v1/payment/confirm',
+      API_ENDPOINTS.PAYMENT.STATUS,
       data,
     );
     return response.data.content;

@@ -42,7 +42,7 @@ export const usePurchaseDetail = (purchaseHistoryId: string | null): UsePurchase
         }
 
         // 2. 권한이 확인되면 상세 정보를 가져옴
-        const data = await purchaseDetailService.getPurchaseDetail(purchaseHistoryId);
+        const data = await purchaseDetailService.getPurchaseDetail(Number(purchaseHistoryId));
         setPurchaseDetail(data);
       } catch (error) {
         console.error('Failed to fetch purchase detail:', error);

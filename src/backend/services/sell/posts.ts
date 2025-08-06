@@ -1,4 +1,5 @@
 import { apiRequest } from '@/backend/client/axios';
+import { API_ENDPOINTS } from '@/constants';
 
 import {
   SellDataRequest,
@@ -11,25 +12,32 @@ import {
 export const sellAPI = {
   // 판매 게시물 생성
   async createPost(data: SellDataRequest): Promise<SellDataResponse> {
-    const response = await apiRequest.post<SellDataResponse>('/v1/posts', data);
+    const response = await apiRequest.post<SellDataResponse>(API_ENDPOINTS.TRADE_POST.CREATE, data);
     return response.data;
   },
 
   // 판매 게시물 수정
   async updatePost(postId: number, data: UpdateSellDataRequest): Promise<SellDataResponse> {
-    const response = await apiRequest.put<SellDataResponse>(`/v1/posts/${postId}`, data);
+    const response = await apiRequest.put<SellDataResponse>(
+      API_ENDPOINTS.TRADE_POST.UPDATE(postId),
+      data,
+    );
     return response.data;
   },
 
   // 판매 게시물 삭제
   async deletePost(postId: number): Promise<SellDataResponse> {
-    const response = await apiRequest.delete<SellDataResponse>(`/v1/posts/${postId}`);
+    const response = await apiRequest.delete<SellDataResponse>(
+      API_ENDPOINTS.TRADE_POST.DELETE(postId),
+    );
     return response.data;
   },
 
   // 게시물 상세 조회
   async getPostDetail(postId: number): Promise<PostDetailResponse> {
-    const response = await apiRequest.get<PostDetailResponse>(`/v1/posts/${postId}`);
+    const response = await apiRequest.get<PostDetailResponse>(
+      API_ENDPOINTS.TRADE_POST.CHECK(postId),
+    );
     return response.data;
   },
 
@@ -44,7 +52,9 @@ export const sellAPI = {
     cursorId?: number;
     size?: number;
   }): Promise<GetPostsResponse> {
-    const response = await apiRequest.get<GetPostsResponse>('/v1/posts', { params });
+    const response = await apiRequest.get<GetPostsResponse>(API_ENDPOINTS.TRADE_POST.LIST, {
+      params,
+    });
     return response.data;
   },
 };

@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { nextApiRequest } from '@/backend/client/axios';
 import { LetterDisplayExtend } from '@/backend/types/letters';
-import { IMAGE_PATHS } from '@/constants';
+import { API_ENDPOINTS, IMAGE_PATHS } from '@/constants';
 import { SpeechBubble } from '@/shared';
 import { SpaceMailModal } from '@/shared/ui/Modal/SpaceMailModal';
 
@@ -31,11 +31,11 @@ export default function OrbitWithSatellite() {
     async function fetchLetters() {
       try {
         // 먼저 POST 요청 → 생성 여부 확인
-        const postRes = await nextApiRequest.post('/api/story/letters');
+        const postRes = await nextApiRequest.post(API_ENDPOINTS.STORY.POST_LETTERS);
         const { isAdded } = postRes.data as { isAdded: boolean };
 
         // 그 다음 GET 요청 → 편지 리스트 가져오기
-        const getRes = await nextApiRequest.get('/api/story/letters');
+        const getRes = await nextApiRequest.get(API_ENDPOINTS.STORY.GET_LETTERS);
         const data = getRes.data as LetterDisplayExtend[];
 
         const mapped = data.map((letter) => ({

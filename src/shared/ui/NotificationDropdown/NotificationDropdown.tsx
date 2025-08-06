@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { NotificationItem as NotificationItemType } from '@/backend';
 import { nextApiRequest } from '@/backend/client/axios';
+import { API_ENDPOINTS } from '@/constants';
 import { Icon, NotificationTrigger, NotificationDropdownProps, NotificationItem } from '@/shared';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './DropdownMenu';
@@ -23,7 +24,9 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
     try {
       // 읽지 않은 알림인 경우 읽음 처리
       if (!notification.isRead && notification.id) {
-        await nextApiRequest.patch(`/api/notifications/${notification.id}/read`);
+        await nextApiRequest.patch(
+          API_ENDPOINTS.NEXT_NOTIFICATION.READ_NOTIFICATION(notification.id),
+        );
       }
 
       if (notification.url) {
@@ -44,7 +47,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   // 모든 알림 읽음 처리
   const handleMarkAllRead = async () => {
     try {
-      await nextApiRequest.patch('/api/notifications');
+      await nextApiRequest.patch(API_ENDPOINTS.NEXT_NOTIFICATION.READ_NOTIFICATION_ALL);
       onMarkAllRead?.();
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);

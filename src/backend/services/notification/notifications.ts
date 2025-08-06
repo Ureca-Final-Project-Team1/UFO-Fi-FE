@@ -5,18 +5,21 @@ import type {
   MarkAllNotificationsReadRequest,
   NotificationReadResponse,
 } from '@/backend/types/notification';
+import { API_ENDPOINTS } from '@/constants';
 
 export const notificationsAPI = {
   // 알림 목록 조회
   async getNotifications(): Promise<GetNotificationsResponse> {
-    const response = await apiRequest.get<GetNotificationsResponse>('/v1/notifications');
+    const response = await apiRequest.get<GetNotificationsResponse>(
+      API_ENDPOINTS.NEXT_NOTIFICATION.GET_NOTIFICATION,
+    );
     return response.data;
   },
 
   // 단일 알림 읽음 처리
   async markAsRead(data: MarkNotificationReadRequest): Promise<NotificationReadResponse> {
     const response = await apiRequest.patch<NotificationReadResponse>(
-      `/v1/notifications/${data.notificationId}/read`,
+      API_ENDPOINTS.NEXT_NOTIFICATION.READ_NOTIFICATION(data.notificationId),
     );
     return response.data;
   },
@@ -24,16 +27,16 @@ export const notificationsAPI = {
   // 모든 알림 읽음 처리
   async markAllAsRead(data?: MarkAllNotificationsReadRequest): Promise<NotificationReadResponse> {
     const response = await apiRequest.patch<NotificationReadResponse>(
-      '/v1/notifications/read-all',
+      API_ENDPOINTS.NEXT_NOTIFICATION.READ_NOTIFICATION_ALL,
       data,
     );
     return response.data;
   },
 
   // 읽지 않은 알림 개수 조회
-  async getUnreadCount(): Promise<{ unreadCount: number }> {
+  async getUnreadCount(data: MarkNotificationReadRequest): Promise<{ unreadCount: number }> {
     const response = await apiRequest.get<{ content: { unreadCount: number } }>(
-      '/v1/notifications/unread-count',
+      API_ENDPOINTS.NEXT_NOTIFICATION.COUNT_UNNOTIFICATION(data.notificationId),
     );
     return response.data.content;
   },
