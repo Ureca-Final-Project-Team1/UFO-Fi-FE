@@ -35,7 +35,7 @@ export const switchVariants = cva(
         auto: 'dark:data-[state=unchecked]:bg-input/80',
       },
       disabled: {
-        true: 'opacity-50 cursor-not-allowed',
+        true: '',
         false: '',
       },
     },
