@@ -2,13 +2,14 @@
 
 import React from 'react';
 
-import type { TutorialStep } from '../types/tutorial';
+import type { TutorialStep, TutorialKey } from '../types/tutorial';
 
 interface TutorialOverlayProps {
   step: TutorialStep;
   descriptions: string[];
   onNext: () => void;
   onClose: () => void;
+  tutorialKey?: TutorialKey; // 추가
 }
 
 export const TutorialOverlay = ({ step, descriptions, onNext, onClose }: TutorialOverlayProps) => {
