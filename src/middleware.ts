@@ -16,11 +16,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 루트 경로는 허용
-  if (pathname === '/') {
-    return NextResponse.next();
-  }
-
   // 공개 라우트 확인
   if (routeUtils.isPublicRoute(pathname) || routeUtils.isSignupRoute(pathname)) {
     return NextResponse.next();
