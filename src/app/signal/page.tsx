@@ -64,12 +64,16 @@ export default function SignalPage() {
           <div className="flex-1">
             <TabsContent value="orbit">
               <SignalTabContent
+                key={isTutorialReady ? `tutorial-${step}` : 'real'}
                 tutorialStep={isTutorialReady ? step : -1}
                 onLoaded={() => setIsOrbitLoaded(true)}
               />
             </TabsContent>
             <TabsContent value="letters">
-              <LetterTabContent tutorialStep={showTutorial && step >= 1 ? step : -1} />
+              <LetterTabContent
+                key={showTutorial && step >= 1 ? `tutorial-${step}` : 'real'}
+                tutorialStep={showTutorial && step >= 1 ? step : -1}
+              />
             </TabsContent>
           </div>
         </Tabs>

@@ -12,10 +12,10 @@ export const LetterTabContent = ({ tutorialStep }: LetterTabContentProps) => {
       className="w-full h-full flex flex-col justify-center items-center space-y-4"
     >
       <div className={`scale-90${tutorialStep === 1 ? ' relative z-50' : ''}`}>
-        <SignalProgressBar />
+        <SignalProgressBar tutorialStep={tutorialStep} />
       </div>
       <article className={tutorialStep === 2 ? 'relative z-50 overflow-y-hidden' : ''}>
-        <LetterComponent />
+        <LetterComponent tutorialStep={tutorialStep} />
       </article>
     </section>
   );

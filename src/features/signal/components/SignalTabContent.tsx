@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 import { IMAGE_PATHS } from '@/constants';
 import { Loading } from '@/shared';
@@ -34,7 +34,16 @@ export default function SignalTabContent({
 
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
 
+  // 튜토리얼일 때만 더미데이터, 그 외에는 실제 데이터
+  const isTutorial = typeof tutorialStep === 'number' && tutorialStep >= 0;
+  const displayCompletedPlanets = isTutorial ? 3 : completedPlanets;
+  const displayPlanetStatus = isTutorial ? [true, true, true, false, false] : planetStatus;
+
   useEffect(() => {
+    if (isTutorial) {
+      setIsLoading(false);
+      return;
+    }
     const loadData = async () => {
       try {
         await initializeLetters();
@@ -43,7 +52,7 @@ export default function SignalTabContent({
       }
     };
     loadData();
-  }, [initializeLetters]);
+  }, [initializeLetters, isTutorial]);
 
   useEffect(() => {
     if (!isLoading && onLoaded) {
@@ -87,20 +96,20 @@ export default function SignalTabContent({
   };
 
   const getConnectionColor = (fromIndex: number, toIndex: number) => {
-    return planetStatus[fromIndex] && planetStatus[toIndex] ? '#7BD5FF' : '#666666';
+    return displayPlanetStatus[fromIndex] && displayPlanetStatus[toIndex] ? '#7BD5FF' : '#666666';
   };
 
-  const calculateScale = () => {
+  const calculateScale = useCallback(() => {
     const availableHeight = maxHeight || window.innerHeight * 0.8;
     const newScale = Math.min(1, availableHeight / CONTAINER_HEIGHT);
     setScale(newScale);
-  };
+  }, [maxHeight]);
 
   useEffect(() => {
     calculateScale();
     window.addEventListener('resize', calculateScale);
     return () => window.removeEventListener('resize', calculateScale);
-  }, [maxHeight]);
+  }, [calculateScale]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -154,7 +163,7 @@ export default function SignalTabContent({
       <div className={isLoading ? 'opacity-0' : 'opacity-100'}>
         <div className={tutorialStep === 0 ? 'relative z-50 ring-4 ring-yellow-300' : ''}>
           <p className="text-white text-md pyeongchangpeace-title-2 mb-5" aria-live="polite">
-            {completedPlanets}번째 은하까지 탐사 완료...
+            {displayCompletedPlanets}번째 은하까지 탐사 완료...
           </p>
 
           {canScrollLeft && (
@@ -231,7 +240,7 @@ export default function SignalTabContent({
                     planetSrc={PLANETS[index]}
                     satelliteSrc={SATELLITES[index]}
                     planetSize={PLANET_SIZES[index]}
-                    isArrived={planetStatus[index]}
+                    isArrived={displayPlanetStatus[index]}
                   />
                 </div>
               ))}
