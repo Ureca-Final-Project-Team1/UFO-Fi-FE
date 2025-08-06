@@ -9,7 +9,11 @@ import PlanetWithSatellite from './PlanetWithSatellite';
 
 const PLANET_SIZE = 60;
 
-export default function SignalProgressBar() {
+interface SignalProgressBarProps {
+  tutorialStep?: number;
+}
+
+export default function SignalProgressBar({ tutorialStep }: SignalProgressBarProps) {
   const PLANETS = [
     IMAGE_PATHS.PLANET_1,
     IMAGE_PATHS.PLANET_2,
@@ -26,21 +30,34 @@ export default function SignalProgressBar() {
     IMAGE_PATHS.SATELLITE_5,
   ];
 
+  const isTutorial = typeof tutorialStep === 'number' && tutorialStep >= 0;
   const { planetStatus, completedPlanets, initializeLetters } = useLetters();
 
   useEffect(() => {
-    initializeLetters();
-  }, [initializeLetters]);
+    if (!isTutorial) {
+      initializeLetters();
+    }
+  }, [initializeLetters, isTutorial]);
+
+  let displayCompletedPlanets: number;
+  let displayPlanetStatus: boolean[];
+  if (isTutorial) {
+    displayCompletedPlanets = 3;
+    displayPlanetStatus = [true, true, true, false, false];
+  } else {
+    displayCompletedPlanets = completedPlanets;
+    displayPlanetStatus = planetStatus;
+  }
 
   return (
     <section aria-label="탐사 진행 현황" className="flex flex-col items-center w-full gap-4 px-4">
       {/* 진행 텍스트 */}
       <p className="text-white text-md pyeongchangpeace-title-2 mb-5" aria-live="polite">
-        {completedPlanets}번째 은하까지 탐사 완료...
+        {displayCompletedPlanets}번째 은하까지 탐사 완료...
       </p>
 
       {/* 선 + 행성 아이콘 */}
-      <div className="relative flex items-center justify-center w-full">
+      <div className="relative flex items-center justify-center w-full sm:scale-100 scale-90 transition-transform">
         {/* 가운데 점선 선 */}
         <div className="absolute inset-x-4 top-1/2 rounded-full border border-dashed border-gray-400 -translate-y-1/2" />
 
@@ -52,7 +69,7 @@ export default function SignalProgressBar() {
               planetSrc={planet}
               satelliteSrc={SATELLITES[index]}
               planetSize={PLANET_SIZE}
-              isArrived={planetStatus[index]}
+              isArrived={displayPlanetStatus[index]}
             />
           ))}
         </div>
@@ -62,7 +79,7 @@ export default function SignalProgressBar() {
           className="flex items-center justify-center size-12 rounded-full text-white text-sm ml-3 relative z-10 flex-shrink-0"
           style={{ backgroundColor: '#222' }}
         >
-          {completedPlanets}/{PLANETS.length}
+          {displayCompletedPlanets}/{PLANETS.length}
         </div>
       </div>
     </section>

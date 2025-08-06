@@ -2,50 +2,54 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost, Carrier } from '@/backend';
-import { ExchangeFilters } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
+import { TutorialOverlay } from '@/shared/components/TutorialOverlay';
 import { useUserPlan } from '@/shared/hooks/useUserPlan';
 import { queryKeys } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
-
-interface FilterState {
-  carrier?: Carrier;
-  minTotalZet?: number;
-  maxTotalZet?: number;
-  minCapacity?: number;
-  maxCapacity?: number;
-}
 
 export default function ExchangePage() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { setProductData, setUserZetBalance, setIsFirstPurchase } = usePurchaseFlowStore();
 
-  // 기존 상태들
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, postId: 0 });
   const [reportModal, setReportModal] = useState({ isOpen: false, postId: 0, sellerId: 0 });
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
   const [refetchList, setRefetchList] = useState<() => void>(() => () => {});
   const { data: userPlan } = useUserPlan();
-  const [filters, setFilters] = useState<FilterState>({});
 
-  const handleFiltersChange = useCallback((newFilters: FilterState) => {
-    setFilters(newFilters);
+  // Add missing tutorial state
+  const [step, setStep] = useState(0);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  useEffect(() => {
+    const seen = localStorage.getItem('tutorial_exchange');
+    if (!seen) setShowTutorial(true);
   }, []);
 
-  const handleResetFilters = useCallback(() => {
-    setFilters({});
-  }, []);
+  const handleNext = () => {
+    if (step < 1) {
+      setStep((prev) => prev + 1);
+    } else {
+      handleClose();
+    }
+  };
+
+  const handleClose = () => {
+    localStorage.setItem('tutorial_exchange', 'true');
+    setShowTutorial(false);
+  };
 
   // 캐시 무효화
-  const refetchExchangeData = useCallback(() => {
+  const refetchExchangeData = () => {
     refetchList();
     queryClient.invalidateQueries({
       queryKey: queryKeys.exchangePostsInfinite(),
@@ -53,25 +57,22 @@ export default function ExchangePage() {
     queryClient.invalidateQueries({
       queryKey: queryKeys.myInfo(),
     });
-  }, [refetchList, queryClient]);
+  };
 
   // 수정 핸들러
-  const handleEdit = useCallback(
-    (id: number) => {
-      router.push(`/sell/edit/${id}`);
-    },
-    [router],
-  );
+  const handleEdit = (id: number) => {
+    router.push(`/sell/edit/${id}`);
+  };
 
   // 삭제 핸들러
-  const handleDelete = useCallback((id: number) => {
+  const handleDelete = (id: number) => {
     setDeleteModal({ isOpen: true, postId: id });
-  }, []);
+  };
 
   // 신고 핸들러
-  const handleReport = useCallback((postId: number, sellerId: number) => {
+  const handleReport = (postId: number, sellerId: number) => {
     setReportModal({ isOpen: true, postId, sellerId });
-  }, []);
+  };
 
   // 상품 검증 함수
   const validateProduct = (
@@ -95,44 +96,41 @@ export default function ExchangePage() {
   };
 
   // 데이터 미리 로드
-  const handlePurchase = useCallback(
-    async (id: number, productFromList?: ExchangePost) => {
-      if (isPurchaseLoading) return; // 중복 실행 방지
-      setIsPurchaseLoading(true);
+  const handlePurchase = async (id: number, productFromList?: ExchangePost) => {
+    if (isPurchaseLoading) return; // 중복 실행 방지
+    setIsPurchaseLoading(true);
 
-      try {
-        // 1. 상품 데이터 준비
-        let productData = productFromList;
-        if (!productData) {
-          const response = await sellAPI.getPostDetail(id);
-          productData = response.content;
-        }
-
-        // 2. 상품 검증
-        if (!validateProduct(productData)) return;
-
-        // 3. 병렬로 사용자 정보와 구매 내역 조회
-        const { userInfo, history } = await loadPurchaseData();
-
-        // 4. Zustand Store에 데이터 저장
-        setProductData(productData);
-        setUserZetBalance(userInfo?.zetAsset || 0);
-        setIsFirstPurchase(!history || history.length === 0);
-
-        // 5. 구매 페이지로 이동
-        router.push(`/exchange/purchase/${id}`);
-      } catch (error) {
-        console.error('구매 준비 중 오류:', error);
-        toast.error('구매 준비 중 오류가 발생했습니다.');
-      } finally {
-        setIsPurchaseLoading(false);
+    try {
+      // 1. 상품 데이터 준비
+      let productData = productFromList;
+      if (!productData) {
+        const response = await sellAPI.getPostDetail(id);
+        productData = response.content;
       }
-    },
-    [isPurchaseLoading, router, setProductData, setUserZetBalance, setIsFirstPurchase],
-  );
+
+      // 2. 상품 검증
+      if (!validateProduct(productData)) return;
+
+      // 3. 병렬로 사용자 정보와 구매 내역 조회
+      const { userInfo, history } = await loadPurchaseData();
+
+      // 4. Zustand Store에 데이터 저장
+      setProductData(productData);
+      setUserZetBalance(userInfo?.zetAsset || 0);
+      setIsFirstPurchase(!history || history.length === 0);
+
+      // 5. 구매 페이지로 이동
+      router.push(`/exchange/purchase/${id}`);
+    } catch (error) {
+      console.error('구매 준비 중 오류:', error);
+      toast.error('구매 준비 중 오류가 발생했습니다.');
+    } finally {
+      setIsPurchaseLoading(false);
+    }
+  };
 
   // 삭제 확인
-  const handleConfirmDelete = useCallback(async () => {
+  const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
       await sellAPI.deletePost(deleteModal.postId);
@@ -147,15 +145,15 @@ export default function ExchangePage() {
     } finally {
       setIsDeleting(false);
     }
-  }, [deleteModal.postId, refetchExchangeData]);
+  };
 
-  const handleCancelDelete = useCallback(() => {
+  const handleCancelDelete = () => {
     setDeleteModal({ isOpen: false, postId: 0 });
-  }, []);
+  };
 
-  const handleCancelReport = useCallback(() => {
+  const handleCancelReport = () => {
     setReportModal({ isOpen: false, postId: 0, sellerId: 0 });
-  }, []);
+  };
 
   return (
     <div className="pb-6">
@@ -164,22 +162,19 @@ export default function ExchangePage() {
           <Title title="전파 거래소" iconVariant="back" />
         </header>
 
-        <section className="mb-5" aria-label="거래소 정보 및 필터">
+        <section
+          className={`mb-5 ${showTutorial && step === 0 ? 'relative z-50' : ''}`}
+          aria-label="거래소 정보 및 필터"
+        >
           <ExchangeHeader />
         </section>
 
-        <section className="mb-4" aria-label="필터 및 정렬 옵션">
-          <ExchangeFilters
-            filters={filters}
-            onFiltersChange={handleFiltersChange}
-            onReset={handleResetFilters}
-          />
-        </section>
-
-        <section aria-label="데이터 거래 게시물 목록">
+        <section
+          aria-label="데이터 거래 게시물 목록"
+          className={showTutorial && step === 1 ? 'relative z-50' : ''}
+        >
           <h2 className="sr-only">거래 게시물</h2>
           <ExchangeList
-            filters={filters}
             onEdit={handleEdit}
             onDelete={handleDelete}
             onReport={handleReport}
@@ -211,6 +206,19 @@ export default function ExchangePage() {
         postOwnerUserId={reportModal.sellerId}
         onSuccess={refetchExchangeData}
       />
+
+      {showTutorial && (
+        <TutorialOverlay
+          step={step}
+          descriptions={[
+            '맞춤상품 알림 신청, 일괄 구매, 현재 판매 가능 용량 확인은 여기에서 해결하세요!',
+            '현재 판매중인 상품 리스트를 확인하세요! 즐거운 소비!',
+          ]}
+          onNext={handleNext}
+          onClose={handleClose}
+          tutorialKey="exchange"
+        />
+      )}
     </div>
   );
 }
