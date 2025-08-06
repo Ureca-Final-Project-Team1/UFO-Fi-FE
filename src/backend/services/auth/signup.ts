@@ -4,10 +4,7 @@ import { API_ENDPOINTS } from '@/constants';
 
 export const signupAPI = {
   async signup(data: SignupRequest): Promise<SignupResponse> {
-    const response = await apiRequest.patch<SignupResponse>(
-      API_ENDPOINTS.USER.SIGNUP_USER_INFO,
-      data,
-    );
+    const response = await apiRequest.post<SignupResponse>(API_ENDPOINTS.USER_PLAN.SIGNUP, data);
     return response.data;
   },
 };
