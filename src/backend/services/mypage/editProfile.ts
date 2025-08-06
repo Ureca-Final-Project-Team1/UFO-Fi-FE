@@ -15,7 +15,7 @@ function parseError(error: unknown, defaultMsg: string): string {
 
 export const editProfileAPI = {
   // 닉네임 변경 (PATCH)
-  async updateNickname(userId: number, nickname: string): Promise<ApiResponse> {
+  async updateNickname(nickname: string): Promise<ApiResponse> {
     try {
       await apiRequest.patch(API_ENDPOINTS.USER.PROFILE_UPDATE, { nickname });
       return { success: true };

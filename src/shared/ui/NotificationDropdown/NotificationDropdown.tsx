@@ -47,7 +47,7 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   // 모든 알림 읽음 처리
   const handleMarkAllRead = async () => {
     try {
-      await nextApiRequest.patch(API_ENDPOINTS.NEXT_NOTIFICATION.UPDATE_NOTIFICATION);
+      await nextApiRequest.patch(API_ENDPOINTS.NEXT_NOTIFICATION.READ_NOTIFICATION_ALL);
       onMarkAllRead?.();
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);

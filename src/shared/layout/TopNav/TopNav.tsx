@@ -63,7 +63,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
 
   const handleMarkAllRead = async () => {
     try {
-      await nextApiRequest.patch(API_ENDPOINTS.NEXT_NOTIFICATION.UPDATE_NOTIFICATION);
+      await nextApiRequest.patch(API_ENDPOINTS.NEXT_NOTIFICATION.READ_NOTIFICATION_ALL);
       // 모든 알림을 읽음 상태로 업데이트
       setNotifications((prev) =>
         prev.map((notification) => ({
