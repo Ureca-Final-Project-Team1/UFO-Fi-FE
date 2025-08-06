@@ -7,7 +7,9 @@ import { toast } from 'sonner';
 import { ConfirmModal, NicknameEditor } from '@/features/mypage/components';
 import { PlanEditor } from '@/features/mypage/components/PlanEditor';
 import { useEditProfile } from '@/features/mypage/hooks/useEditProfile';
+import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
 import { Title } from '@/shared';
+import { useUserPlan } from '@/shared/hooks/useUserPlan';
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -24,6 +26,9 @@ export default function EditProfilePage() {
     saveNickname,
     savePlan,
   } = useEditProfile();
+
+  const { data: myInfo } = useMyInfo();
+  const { data: userPlan } = useUserPlan();
 
   const [modalType, setModalType] = useState<'nickname' | 'plan' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,6 +64,16 @@ export default function EditProfilePage() {
   return (
     <div>
       <Title title="프로필 수정" iconVariant="back" />
+
+      <div className="mt-4 p-4 bg-gray-50 border rounded-lg text-sm text-gray-700 space-y-1">
+        <div>
+          <span className="font-semibold">현재 닉네임:</span> {myInfo?.nickname ?? '불러오는 중...'}
+        </div>
+        <div>
+          <span className="font-semibold">현재 요금제:</span>{' '}
+          {userPlan?.planName ?? '불러오는 중...'}
+        </div>
+      </div>
 
       <div className="mt-6 flex flex-col gap-8">
         <NicknameEditor
