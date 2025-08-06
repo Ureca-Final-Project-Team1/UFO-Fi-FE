@@ -99,12 +99,30 @@ export const notificationItemVariants = cva(
         badge: '',
         text: '',
       },
+      isUnread: {
+        true: '',
+        false: 'border-transparent hover:bg-gray-50',
+      },
     },
+    compoundVariants: [
+      // isUnread + unreadStyle 조합
+      {
+        isUnread: true,
+        unreadStyle: 'background',
+        class: 'bg-blue-50/50',
+      },
+      {
+        isUnread: true,
+        unreadStyle: 'border',
+        class: 'border-blue-200',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
       size: 'md',
       layout: 'horizontal',
       unreadStyle: 'border',
+      isUnread: false,
     },
   },
 );

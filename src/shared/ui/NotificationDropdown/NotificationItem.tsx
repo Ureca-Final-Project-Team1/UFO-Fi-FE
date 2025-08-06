@@ -80,10 +80,13 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   return (
     <div
       className={cn(
-        notificationItemVariants({ variant, size, layout, unreadStyle }),
-        isUnread && unreadStyle === 'background' && 'bg-blue-50/50',
-        isUnread && unreadStyle === 'border' && 'border-blue-200',
-        !isUnread && 'border-transparent hover:bg-gray-50',
+        notificationItemVariants({
+          variant,
+          size,
+          layout,
+          unreadStyle,
+          isUnread,
+        }),
         className,
       )}
       onClick={onClick}
