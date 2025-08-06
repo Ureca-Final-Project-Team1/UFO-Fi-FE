@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const chipVariants = cva(
-  'rounded-full font-medium border transition-colors flex items-center', // 기본 클래스
+  'rounded-full font-medium border transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2', // 기본 클래스
   {
     variants: {
       variant: {
@@ -41,10 +41,21 @@ export const chipVariants = cva(
         state: 'selected',
         class: 'bg-primary-50 text-primary-700 border-primary-500',
       },
+      {
+        variant: 'ghost',
+        state: 'selected',
+        class: 'bg-gray-100 text-gray-900 border-gray-300',
+      },
       // disabled + variant 조합
       {
         state: 'disabled',
-        class: 'opacity-50 cursor-not-allowed hover:border-current hover:text-current',
+        class:
+          'opacity-50 cursor-not-allowed hover:border-current hover:text-current hover:bg-current/0',
+      },
+      // loading + variant 조합
+      {
+        state: 'loading',
+        class: 'opacity-75 cursor-wait hover:border-current hover:text-current hover:bg-current/0',
       },
     ],
     defaultVariants: {
