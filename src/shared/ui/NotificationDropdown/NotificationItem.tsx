@@ -1,26 +1,30 @@
 import React from 'react';
 
+import { cn } from '@/lib/utils';
 import { DotBadge, Icon } from '@/shared';
+import type { IconType } from '@/shared';
 import { formatTimeAgo } from '@/shared/utils/formatTimeAgo';
 
 import { NotificationType } from './NotificationDropdown.types';
+import type { NotificationItemProps } from './NotificationDropdown.types';
+import {
+  notificationItemVariants,
+  notificationItemIconVariants,
+  notificationItemContentVariants,
+  notificationItemTitleVariants,
+  notificationItemDescriptionVariants,
+  notificationItemTimeVariants,
+  notificationItemUnreadBadgeVariants,
+} from './NotificationDropdownVariants';
 
-interface NotificationItem {
-  id?: string;
-  type: NotificationType;
-  title: string;
-  content: string;
-  url?: string;
-  notifiedAt: string;
-  isRead?: boolean;
-}
-
-interface NotificationItemProps {
-  notification: NotificationItem;
-  onClick: () => void;
-}
-
-const notificationConfig = {
+const notificationConfig: Record<
+  NotificationType,
+  {
+    icon: IconType;
+    bgColor: string;
+    iconColor: string;
+  }
+> = {
   BENEFIT: {
     icon: 'Gift',
     bgColor: 'var(--color-primary-100)',
@@ -53,25 +57,43 @@ const notificationConfig = {
   },
 } as const;
 
-export const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onClick }) => {
+export const NotificationItem: React.FC<NotificationItemProps> = ({
+  notification,
+  onClick,
+  className,
+  variant = 'default',
+  size = 'md',
+  layout = 'horizontal',
+  unreadStyle = 'border',
+  iconSize = 'md',
+  iconVariant = 'default',
+  contentLayout = 'horizontal',
+  titleSize = 'md',
+  descriptionSize = 'md',
+  timeSize = 'md',
+  timeVariant = 'default',
+  unreadBadgeVariant = 'default',
+}) => {
   const config = notificationConfig[notification.type];
   const isUnread = !notification.isRead;
 
   return (
     <div
-      className={`flex items-start gap-3 p-4 w-full cursor-pointer transition-colors border-l-4 ${
-        isUnread
-          ? 'bg-blue-50/50 border-blue-200 hover:bg-blue-50'
-          : 'border-transparent hover:bg-gray-50'
-      }`}
+      className={cn(
+        notificationItemVariants({ variant, size, layout, unreadStyle }),
+        isUnread && unreadStyle === 'background' && 'bg-blue-50/50',
+        isUnread && unreadStyle === 'border' && 'border-blue-200',
+        !isUnread && 'border-transparent hover:bg-gray-50',
+        className,
+      )}
       onClick={onClick}
     >
       {/* 아이콘 */}
-      <div className="flex-shrink-0 size-10 rounded-full bg-blue-50 flex items-center justify-center relative">
+      <div className={cn(notificationItemIconVariants({ size: iconSize, variant: iconVariant }))}>
         <Icon name={config.icon} className="size-5" color="blue-400" />
 
         {/* 읽지 않은 알림 표시 닷배지 */}
-        {isUnread && (
+        {isUnread && unreadStyle === 'badge' && (
           <div className="absolute -top-1 -right-1">
             <DotBadge color="red" size="sm" />
           </div>
@@ -79,27 +101,25 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
       </div>
 
       {/* 콘텐츠 */}
-      <div className="flex-1 min-w-0">
+      <div className={cn(notificationItemContentVariants({ layout: contentLayout }))}>
         <div className="flex items-start justify-between mb-1">
-          <h4
-            className={`text-sm leading-5 ${
-              isUnread ? 'font-bold text-gray-900' : 'font-semibold text-gray-700'
-            }`}
-          >
+          <h4 className={cn(notificationItemTitleVariants({ size: titleSize, unread: isUnread }))}>
             {notification.title}
-            {isUnread && (
+            {isUnread && unreadStyle === 'text' && (
               <span className="inline-block ml-1 size-2 bg-blue-500 rounded-full"></span>
             )}
           </h4>
-          <span className="text-xs text-gray-500 ml-3 flex-shrink-0 mt-0.5">
+          <span
+            className={cn(notificationItemTimeVariants({ size: timeSize, variant: timeVariant }))}
+          >
             {formatTimeAgo(notification.notifiedAt)}
           </span>
         </div>
 
         <p
-          className={`text-sm leading-5 line-clamp-2 ${
-            isUnread ? 'text-gray-800' : 'text-gray-600'
-          }`}
+          className={cn(
+            notificationItemDescriptionVariants({ size: descriptionSize, unread: isUnread }),
+          )}
         >
           {notification.content}
         </p>
@@ -107,7 +127,9 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
         {/* 읽지 않은 상태 텍스트 표시 */}
         {isUnread && (
           <div className="mt-2">
-            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            <span
+              className={cn(notificationItemUnreadBadgeVariants({ variant: unreadBadgeVariant }))}
+            >
               새 알림
             </span>
           </div>

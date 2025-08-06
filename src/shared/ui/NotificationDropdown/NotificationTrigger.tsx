@@ -1,24 +1,41 @@
 import React from 'react';
 
+import { cn } from '@/lib/utils';
 import { DotBadge, Icon } from '@/shared';
-import { NotificationTriggerProps } from '@/shared';
+
+import { NotificationTriggerProps } from './NotificationDropdown.types';
+import {
+  notificationTriggerVariants,
+  notificationBadgeVariants,
+} from './NotificationDropdownVariants';
 
 export const NotificationTrigger: React.FC<NotificationTriggerProps> = ({
   unreadCount,
   onClick,
   className = '',
+  variant = 'default',
+  size = 'md',
+  badgePosition = 'top-right',
+  badgeVariant = 'dot',
+  badgePositionVariant = 'top-right',
+  showBadge = true,
+  customIcon,
 }) => {
   return (
     <button
-      className={`relative size-10 rounded-full transition-all duration-200 hover:bg-white/10 active:scale-95 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/30 ${className}`}
+      className={cn(notificationTriggerVariants({ variant, size, badgePosition }), className)}
       onClick={onClick}
       aria-label={`알림 ${unreadCount > 0 ? `(${unreadCount}개의 새 알림)` : ''}`}
     >
-      <Icon name="Bell" className="size-5" color="white" />
+      {customIcon || <Icon name="Bell" className="size-5" color="white" />}
 
       {/* 읽지 않은 알림이 있을 때만 표시 */}
-      {unreadCount > 0 && (
-        <div className="absolute -top-0.5 -right-0.5">
+      {showBadge && unreadCount > 0 && (
+        <div
+          className={cn(
+            notificationBadgeVariants({ variant: badgeVariant, position: badgePositionVariant }),
+          )}
+        >
           <DotBadge color="red" size="default" className="animate-pulse" />
         </div>
       )}
