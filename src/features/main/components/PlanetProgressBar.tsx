@@ -93,7 +93,16 @@ function Planet({ src, active, color, index = 0 }: Planet) {
         }}
       />
       <span className="relative z-10">
-        <Image src={src} alt="planet" width={42} height={42} />
+        <Image
+          src={src}
+          alt="planet"
+          width={42}
+          height={42}
+          style={{
+            filter: active ? 'none' : 'grayscale(1)',
+            transition: 'filter 0.3s, opacity 0.3s',
+          }}
+        />
       </span>
       <style jsx>{`
         @keyframes ${animationName} {
