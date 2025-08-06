@@ -1,5 +1,7 @@
 import { VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
+import { Chip } from './Chip';
 import { chipVariants } from './chipVariants';
 
 export interface ChipProps
@@ -12,3 +14,5 @@ export interface ChipProps
   children: React.ReactNode;
   dropdown?: React.ReactNode | ((props: { closeDropdown: () => void }) => React.ReactNode);
 }
+
+export { Chip, chipVariants };
