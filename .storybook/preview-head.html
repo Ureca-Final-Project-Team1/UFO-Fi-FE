@@ -7,4 +7,160 @@
   .docs-story > div {
     min-height: 250px !important;
   }
+
+  /* Storybook에서 스크롤 허용 */
+  .sb-show-main {
+    overflow: auto !important;
+  }
+
+  .sb-show-main html,
+  .sb-show-main body {
+    overflow: auto !important;
+    position: static !important;
+    height: auto !important;
+    width: auto !important;
+    top: auto !important;
+    left: auto !important;
+    margin: auto !important;
+    padding: auto !important;
+    max-height: none !important;
+    min-height: auto !important;
+    touch-action: auto !important;
+  }
+
+  /* Storybook iframe 내부 스크롤 허용 */
+  .sb-iframe {
+    overflow: auto !important;
+  }
+
+  /* Docs 페이지 스크롤 허용 */
+  .docs-story,
+  .sbdocs,
+  .sbdocs-wrapper {
+    overflow: auto !important;
+    height: auto !important;
+    position: static !important;
+  }
+
+  /* Controls 패널 스크롤 허용 */
+  .sb-controls-panel {
+    overflow: auto !important;
+  }
+
+  /* Sidebar 스크롤 허용 */
+  .sb-sidebar {
+    overflow: auto !important;
+  }
+
+  /* 전역 스크롤 방지 CSS 완전 오버라이드 */
+  #storybook-root,
+  #storybook-root html,
+  #storybook-root body,
+  .sb-show-main,
+  .sb-show-main html,
+  .sb-show-main body,
+  .sb-iframe,
+  .sb-iframe html,
+  .sb-iframe body {
+    overflow: auto !important;
+    position: static !important;
+    height: auto !important;
+    width: auto !important;
+    top: auto !important;
+    left: auto !important;
+    margin: auto !important;
+    padding: auto !important;
+    max-height: none !important;
+    min-height: auto !important;
+    touch-action: auto !important;
+    overscroll-behavior: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* 모든 Storybook 관련 요소에 스크롤 허용 */
+  [data-is-storybook='true'],
+  [data-is-storybook='true'] html,
+  [data-is-storybook='true'] body,
+  .sb-show-main *,
+  .sb-iframe *,
+  .docs-story *,
+  .sbdocs *,
+  .sb-controls-panel *,
+  .sb-sidebar * {
+    overflow: visible !important;
+  }
+
+  /* 특정 컨테이너만 스크롤 허용 */
+  .sb-show-main,
+  .sb-iframe,
+  .docs-story,
+  .sbdocs,
+  .sb-controls-panel,
+  .sb-sidebar {
+    overflow: auto !important;
+  }
+
+  /* 스크롤바 표시 */
+  .sb-show-main::-webkit-scrollbar,
+  .sb-iframe::-webkit-scrollbar,
+  .docs-story::-webkit-scrollbar,
+  .sbdocs::-webkit-scrollbar,
+  .sb-controls-panel::-webkit-scrollbar,
+  .sb-sidebar::-webkit-scrollbar {
+    display: block !important;
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  /* 스크롤바 스타일 */
+  .sb-show-main::-webkit-scrollbar-track,
+  .sb-iframe::-webkit-scrollbar-track,
+  .docs-story::-webkit-scrollbar-track,
+  .sbdocs::-webkit-scrollbar-track,
+  .sb-controls-panel::-webkit-scrollbar-track,
+  .sb-sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+    border-radius: 4px !important;
+  }
+
+  .sb-show-main::-webkit-scrollbar-thumb,
+  .sb-iframe::-webkit-scrollbar-thumb,
+  .docs-story::-webkit-scrollbar-thumb,
+  .sbdocs::-webkit-scrollbar-thumb,
+  .sb-controls-panel::-webkit-scrollbar-thumb,
+  .sb-sidebar::-webkit-scrollbar-thumb {
+    background: #c1c1c1 !important;
+    border-radius: 4px !important;
+  }
+
+  /* 스크롤바 호버 효과 */
+  .sb-show-main::-webkit-scrollbar-thumb:hover,
+  .sb-iframe::-webkit-scrollbar-thumb:hover,
+  .docs-story::-webkit-scrollbar-thumb:hover,
+  .sbdocs::-webkit-scrollbar-thumb:hover,
+  .sb-controls-panel::-webkit-scrollbar-thumb:hover,
+  .sb-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8 !important;
+  }
+
+  /* 추가 스크롤 허용 */
+  .os-viewport,
+  .os-content,
+  .os-padding {
+    overflow: auto !important;
+  }
+
+  /* Storybook 특정 클래스들 */
+  .sb-main-padded,
+  .sb-main-fullscreen,
+  .sb-main-centered {
+    overflow: auto !important;
+  }
+
+  /* Docs 특정 클래스들 */
+  .sbdocs.sbdocs-content,
+  .sbdocs.sbdocs-main,
+  .sbdocs.sbdocs-preview {
+    overflow: auto !important;
+  }
 </style>
