@@ -68,7 +68,7 @@ export default function Header({
   return (
     <>
       <header className={cn(headerVariants({ variant, size }), className)}>
-        <div className={cn(headerVariants({ variant, size }))}>
+        <div className="w-full">
           <div className="flex items-center justify-between">
             {/* 왼쪽: 로고 및 타이틀 */}
             <div className={cn(logoVariants({ size: logoSize, variant: logoVariant }))}>
