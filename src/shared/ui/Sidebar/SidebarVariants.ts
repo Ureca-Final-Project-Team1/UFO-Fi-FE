@@ -80,22 +80,24 @@ export const sidebarMenuItemVariants = cva(
 );
 
 // 활성화된 메뉴 아이템 variants
-export const sidebarMenuItemActiveVariants = cva(
-  'bg-blue-50 text-blue-700 border-l-4 border-blue-700',
-  {
-    variants: {
-      activeVariant: {
-        primary: 'bg-blue-50 text-blue-700 border-l-4 border-blue-700',
-        secondary: 'bg-gray-50 text-gray-700 border-l-4 border-gray-700',
-        accent: 'bg-purple-50 text-purple-700 border-l-4 border-purple-700',
-        custom: 'bg-green-50 text-green-700 border-l-4 border-green-700',
-      },
+export const sidebarMenuItemActiveVariants = cva('bg-blue-50 text-blue-700 border-blue-700', {
+  variants: {
+    activeVariant: {
+      primary: 'bg-blue-50 text-blue-700 border-blue-700',
+      secondary: 'bg-gray-50 text-gray-700 border-gray-700',
+      accent: 'bg-purple-50 text-purple-700 border-purple-700',
+      custom: 'bg-green-50 text-green-700 border-green-700',
     },
-    defaultVariants: {
-      activeVariant: 'primary',
+    position: {
+      left: 'border-l-4',
+      right: 'border-r-4',
     },
   },
-);
+  defaultVariants: {
+    activeVariant: 'primary',
+    position: 'left',
+  },
+});
 
 // 비활성화된 메뉴 아이템 variants
 export const sidebarMenuItemInactiveVariants = cva(
