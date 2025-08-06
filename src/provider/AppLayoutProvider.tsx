@@ -5,6 +5,7 @@ import React, { createContext, useContext, useMemo, useEffect, useState } from '
 
 import { IMAGE_PATHS } from '@/constants/images';
 import { ScrollToTopButton } from '@/features/common/components/ScrollToTopButton';
+import { useUserRole } from '@/features/signup/hooks/useUserRole';
 import BottomNav from '@/shared/layout/BottomNav';
 import TopNav from '@/shared/layout/TopNav';
 
@@ -12,6 +13,7 @@ interface AppLayoutContextValue {
   isAdminPage: boolean;
   hideNavigation: boolean;
   isPasswordPage: boolean;
+  isNavigationDisabled: boolean;
 }
 
 const AppLayoutContext = createContext<AppLayoutContextValue | undefined>(undefined);
@@ -35,6 +37,10 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
 
+  // 사용자 역할 확인
+  const shouldFetchUser = !pathname.startsWith('/login') && !pathname.startsWith('/signup');
+  const { userRole } = useUserRole(shouldFetchUser);
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -42,19 +48,24 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
   const isAdminRoute = pathname.startsWith('/admin');
   const isPasswordPage = pathname.includes('password');
   const isOnboardingPage = pathname.startsWith('/onboarding');
+
   const isNavigationHidden =
     pathname.startsWith('/login') ||
     isOnboardingPage ||
     pathname.startsWith('/blackhole') ||
     pathname.startsWith('/signup/privacy');
 
+  // ROLE_NO_INFO 유저는 네비게이션 비활성화
+  const isNavigationDisabled = userRole === 'ROLE_NO_INFO';
+
   const contextValue: AppLayoutContextValue = useMemo(
     () => ({
       isAdminPage: isAdminRoute,
       hideNavigation: isNavigationHidden,
       isPasswordPage,
+      isNavigationDisabled,
     }),
-    [isAdminRoute, isNavigationHidden, isPasswordPage],
+    [isAdminRoute, isNavigationHidden, isPasswordPage, isNavigationDisabled],
   );
 
   const backgroundImageUrl = useMemo(() => {
@@ -109,7 +120,11 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
           className="relative w-full h-full min-w-[375px] max-w-[620px] flex flex-col"
           style={containerStyle}
         >
-          {!isNavigationHidden && <TopNav />}
+          {!isNavigationHidden && (
+            <div className={isNavigationDisabled ? 'opacity-50 pointer-events-none' : ''}>
+              <TopNav />
+            </div>
+          )}
 
           <main
             className="flex-1 overflow-y-auto overflow-x-hidden hide-scrollbar sm:px-10.5 px-6 text-white relative z-10"
@@ -129,7 +144,9 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
 
           {!isNavigationHidden && (
             <div
-              className="fixed bottom-0 left-0 w-full z-40"
+              className={`fixed bottom-0 left-0 w-full z-40 ${
+                isNavigationDisabled ? 'opacity-50 pointer-events-none' : ''
+              }`}
               style={{
                 height: `${BOTTOM_NAV_HEIGHT}px`,
                 overscrollBehavior: 'contain',
