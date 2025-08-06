@@ -47,7 +47,7 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
           type="button"
           disabled={disabled}
           className={`
-            rounded-full font-medium
+            rounded-full font-medium cursor-pointer
             border transition-colors flex items-center 
             ${selected ? 'bg-primary-600 text-white border-primary-600' : 'bg-gray-800 text-gray-200 border-gray-700'}
             ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary-400 hover:text-primary-400'}

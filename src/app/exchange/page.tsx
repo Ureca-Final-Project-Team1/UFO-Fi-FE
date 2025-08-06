@@ -11,6 +11,7 @@ import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
 import { TutorialOverlay } from '@/shared/components/TutorialOverlay';
 import { useUserPlan } from '@/shared/hooks/useUserPlan';
+import type { TutorialStep } from '@/shared/types/tutorial';
 import { queryKeys } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 
@@ -25,7 +26,7 @@ export default function ExchangePage() {
   const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
   const [refetchList, setRefetchList] = useState<() => void>(() => () => {});
   const { data: userPlan } = useUserPlan();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState<TutorialStep>(0);
   const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function ExchangePage() {
   };
 
   const handleClose = () => {
-    localStorage.setItem('tutorial_sell', 'true');
+    localStorage.setItem('tutorial_exchange', 'true');
     setShowTutorial(false);
   };
 

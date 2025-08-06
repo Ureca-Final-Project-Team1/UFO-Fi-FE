@@ -12,6 +12,7 @@ import { formatTimeAgo } from '@/shared/utils';
 import { getMobileDataTypeDisplay } from '@/shared/utils/mobileData';
 
 import { ExchangeEmpty } from './ExchangeEmpty';
+import { FilterState } from './ExchangeFilters';
 import { ExchangeListSkeleton } from './ExchangeListSkeleton';
 import { useOptimizedInfiniteScroll } from '../hooks/useOptimizedInfiniteScroll';
 
@@ -23,6 +24,7 @@ interface ExchangeListProps {
   purchaseLoading?: boolean;
   onRefetch?: (refetchFunction: () => void) => void;
   myCarrier?: Carrier;
+  filters?: FilterState;
 }
 
 // 게시물 변환 함수
@@ -48,18 +50,19 @@ export const ExchangeList = ({
   onPurchase,
   onRefetch,
   myCarrier,
+  filters,
 }: ExchangeListProps) => {
   // 사용자 정보 조회
   const { data: userInfo } = useMyInfo();
 
   const { data, isLoading, error, isFetchingNextPage, hasNextPage, loadMoreRef, refetch } =
-    useOptimizedInfiniteScroll();
+    useOptimizedInfiniteScroll(filters);
 
   useEffect(() => {
     if (onRefetch) {
       onRefetch(refetch);
     }
-  }, [refetch, onRefetch]);
+  }, [filters, refetch, onRefetch]);
 
   const sellingItems = useMemo(() => {
     if (!data?.pages) return [];
