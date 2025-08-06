@@ -4,9 +4,11 @@ import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useAppLayout } from '@/provider/AppLayoutProvider';
 import type { IconType } from '@/shared';
 import { Icon } from '@/shared';
 import { useNavigation } from '@/shared/hooks/useNavigation';
+
 interface NavItem {
   id: string;
   label: string;
@@ -28,8 +30,14 @@ const navItems: NavItem[] = [
 
 const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
   const { activeTab } = useNavigation();
+  const { isNavigationDisabled } = useAppLayout();
 
-  const handleTabClick = (tab: string) => {
+  const handleTabClick = (tab: string, event: React.MouseEvent) => {
+    if (isNavigationDisabled) {
+      event.preventDefault();
+      return;
+    }
+
     // 외부에서 전달된 onTabChange 콜백이 있으면 먼저 실행
     if (onTabChange && typeof onTabChange === 'function') {
       onTabChange(tab);
@@ -54,15 +62,23 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
               >
                 <Link
                   href={item.href}
-                  onClick={() => handleTabClick(item.id)}
+                  onClick={(event) => handleTabClick(item.id, event)}
                   className={cn(
-                    'flex flex-col items-center justify-center gap-1 transition-all duration-200 cursor-pointer no-underline',
+                    'flex flex-col items-center justify-center gap-1 transition-all duration-200 no-underline',
+                    isNavigationDisabled
+                      ? 'pointer-events-none opacity-50 cursor-default'
+                      : 'cursor-pointer',
                     isHome
                       ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
                       : 'w-full h-16 hover:bg-white/5 active:scale-95',
                   )}
                   aria-label={item.label}
                   aria-current={isActive ? 'page' : undefined}
+                  // 비활성화된 상태에서는 링크 자체를 비활성화
+                  {...(isNavigationDisabled && {
+                    tabIndex: -1,
+                    'aria-disabled': true,
+                  })}
                 >
                   <Icon
                     name={item.icon}
