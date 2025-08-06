@@ -32,8 +32,12 @@ export function DataListView({ userId, onRefetch }: DataListViewProps) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    refetch();
-    queryClient.invalidateQueries({ queryKey: queryKeys.profile(userId) });
+    if (onRefetch) {
+      onRefetch(() => {
+        refetch();
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile(userId) });
+      });
+    }
   }, [onRefetch, refetch, userId, queryClient]);
 
   const handleRefetch = () => {
@@ -44,7 +48,6 @@ export function DataListView({ userId, onRefetch }: DataListViewProps) {
 
   const handleReport = (postId: number, sellerId: number) => {
     setReportModal({ isOpen: true, postId, sellerId });
-    handleRefetch();
   };
 
   const handleCancelReport = () => {
@@ -77,7 +80,6 @@ export function DataListView({ userId, onRefetch }: DataListViewProps) {
 
   const handleEdit = (postId: number) => {
     router.push(`/sell/edit/${postId}`);
-    handleRefetch();
   };
 
   if (isLoading) {
