@@ -13,6 +13,8 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
     {
       selected = false,
       disabled = false,
+      variant = 'default',
+      size = 'md',
       leftIcon,
       rightIcon,
       children,
@@ -53,10 +55,7 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
           ref={ref}
           type="button"
           disabled={disabled}
-          className={cn(
-            chipVariants({ variant: 'default', size: 'md', state: chipState }),
-            className,
-          )}
+          className={cn(chipVariants({ variant, size, state: chipState }), className)}
           style={{
             fontSize: 'clamp(10px, 1.4vw, 14px)',
             ...rest.style,
