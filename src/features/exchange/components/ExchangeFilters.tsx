@@ -324,9 +324,9 @@ export const ExchangeFilters = ({ filters, onFiltersChange, onReset }: ExchangeF
         {hasFilters && (
           <Button
             size="sm"
-            variant="ghost"
+            variant="secondary"
             onClick={onReset}
-            className="text-xs px-2 py-1 h-auto"
+            className="text-xs py-1 h-auto"
             aria-label="필터 초기화"
           >
             <Icon name="RotateCw" className="size-3 mr-1" />

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost, Carrier } from '@/backend';
+import type { FilterState } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
@@ -28,6 +29,7 @@ export default function ExchangePage() {
   const { data: userPlan } = useUserPlan();
   const [step, setStep] = useState<TutorialStep>(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({});
 
   useEffect(() => {
     const seen = localStorage.getItem('tutorial_exchange');
@@ -36,7 +38,7 @@ export default function ExchangePage() {
 
   const handleNext = () => {
     if (step < 1) {
-      setStep((prev) => prev + 1);
+      setStep((prev: TutorialStep) => prev + 1);
     } else {
       handleClose();
     }
@@ -45,6 +47,15 @@ export default function ExchangePage() {
   const handleClose = () => {
     localStorage.setItem('tutorial_exchange', 'true');
     setShowTutorial(false);
+  };
+
+  // Filter handlers
+  const handleFiltersChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+  };
+
+  const handleFiltersReset = () => {
+    setFilters({});
   };
 
   // 캐시 무효화
@@ -165,7 +176,11 @@ export default function ExchangePage() {
           className={`mb-5 ${showTutorial && step === 0 ? 'relative z-50' : ''}`}
           aria-label="거래소 정보 및 필터"
         >
-          <ExchangeHeader />
+          <ExchangeHeader
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            onFiltersReset={handleFiltersReset}
+          />
         </section>
 
         <section
@@ -181,6 +196,7 @@ export default function ExchangePage() {
             purchaseLoading={isPurchaseLoading}
             onRefetch={(refetchFunction) => setRefetchList(() => refetchFunction)}
             myCarrier={userPlan?.carrier as Carrier}
+            filters={filters}
           />
         </section>
       </main>
