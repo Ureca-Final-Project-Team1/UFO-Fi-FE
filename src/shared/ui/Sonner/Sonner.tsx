@@ -2,6 +2,7 @@
 
 import { Toaster as Sonner, ToasterProps } from 'sonner';
 
+import { TOAST_CONFIG } from '@/constants/toast';
 import { cn } from '@/lib/utils';
 
 import { toasterVariants } from './SonnerVariants';
@@ -22,10 +23,10 @@ const Toaster = ({ className, theme = 'default', ...props }: CustomToasterProps)
           '--normal-border': 'var(--border)',
         } as React.CSSProperties
       }
-      position="bottom-center"
-      expand={true}
-      richColors={true}
-      closeButton={true}
+      position={TOAST_CONFIG.POSITION}
+      expand={TOAST_CONFIG.EXPAND}
+      richColors={TOAST_CONFIG.RICH_COLORS}
+      closeButton={TOAST_CONFIG.CLOSE_BUTTON}
       {...props}
     />
   );
