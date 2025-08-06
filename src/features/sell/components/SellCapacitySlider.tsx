@@ -17,6 +17,8 @@ export function SellCapacitySlider({
   showTicks = true,
   showLabels = true,
 }: Props) {
+  // value가 [0]이 아니고, value가 0이 들어오면 [0]으로 강제
+  const displayValue = value && value.length === 1 && value[0] === 0 ? [0] : value;
   return (
     <div className="space-y-1 items-center">
       <div className="flex flex-col items-start justify-between">
@@ -37,7 +39,7 @@ export function SellCapacitySlider({
         </div>
       </div>
       <DataSlider
-        value={value}
+        value={displayValue}
         onValueChange={setValue}
         showTicks={showTicks}
         showLabels={showLabels}

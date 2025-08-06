@@ -18,9 +18,10 @@ export const SellFormContent = () => {
 
   // value 초기값을 maxCapacity에 따라 자동 세팅
   React.useEffect(() => {
-    if (!maxCapacity) return;
     let initial = 1;
-    if (maxCapacity >= 3) {
+    if (maxCapacity === 0) {
+      initial = 0;
+    } else if (maxCapacity >= 3) {
       initial = Math.min(5, Math.floor(maxCapacity / 2));
     }
     if (Array.isArray(value)) {
@@ -126,7 +127,7 @@ export const SellFormContent = () => {
             isValidPrice={isValidPrice}
           />
         </div>
-        <div className="flex justify-center w-full z-50">
+        <div className="flex justify-center w-full z-50 relative">
           <Button
             size={'sm'}
             onClick={handleSubmit}
