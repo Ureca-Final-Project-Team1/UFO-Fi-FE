@@ -5,14 +5,45 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { logoutAPI } from '@/backend';
+import { cn } from '@/lib/utils';
 import { Button, Modal } from '@/shared';
 
-interface HeaderProps {
-  userName?: string;
-  onLogout?: () => void;
-}
+import { HeaderProps } from './Header.types';
+import {
+  headerVariants,
+  logoVariants,
+  logoIconVariants,
+  logoTextVariants,
+  userInfoVariants,
+  userAvatarVariants,
+  userNameVariants,
+  actionAreaVariants,
+} from './HeaderVariants';
 
-export default function Header({ userName = 'Admin' }: HeaderProps) {
+export default function Header({
+  userName = 'Admin',
+  className,
+  variant = 'default',
+  size = 'md',
+  logoSize = 'md',
+  logoVariant = 'default',
+  logoIconSize = 'md',
+  logoIconVariant = 'default',
+  logoTextSize = 'md',
+  logoTextVariant = 'default',
+  userInfoDisplay = 'full',
+  userInfoPosition = 'right',
+  userAvatarSize = 'md',
+  userAvatarVariant = 'default',
+  userNameSize = 'md',
+  userNameVariant = 'default',
+  actionPosition = 'right',
+  showUserInfo = true,
+  showLogoutButton = true,
+  logoText = 'UFO-Fi Admin',
+  logoIcon,
+  customActions,
+}: HeaderProps) {
   const router = useRouter();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -34,36 +65,66 @@ export default function Header({ userName = 'Admin' }: HeaderProps) {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="px-4 py-3 lg:px-8">
+      <header className={cn(headerVariants({ variant, size }), className)}>
+        <div className={cn(headerVariants({ variant, size }))}>
           <div className="flex items-center justify-between">
             {/* 왼쪽: 로고 및 타이틀 */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">U</span>
+            <div className={cn(logoVariants({ size: logoSize, variant: logoVariant }))}>
+              <div
+                className={cn(logoIconVariants({ size: logoIconSize, variant: logoIconVariant }))}
+              >
+                {logoIcon || <span>U</span>}
               </div>
-              <h1 className="text-xl font-bold text-gray-900">UFO-Fi Admin</h1>
+              <h1
+                className={cn(logoTextVariants({ size: logoTextSize, variant: logoTextVariant }))}
+              >
+                {logoText}
+              </h1>
             </div>
 
             {/* 오른쪽: 사용자 정보 및 로그아웃 */}
-            <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-2 text-sm text-gray-600">
-                <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                  <span className="text-gray-600 font-medium text-xs">
-                    {userName.charAt(0).toUpperCase()}
+            <div className={cn(actionAreaVariants({ position: actionPosition }))}>
+              {showUserInfo && (
+                <div
+                  className={cn(
+                    userInfoVariants({ display: userInfoDisplay, position: userInfoPosition }),
+                  )}
+                >
+                  <div
+                    className={cn(
+                      userAvatarVariants({ size: userAvatarSize, variant: userAvatarVariant }),
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        userNameVariants({ size: userNameSize, variant: userNameVariant }),
+                      )}
+                    >
+                      {userName.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <span
+                    className={cn(
+                      userNameVariants({ size: userNameSize, variant: userNameVariant }),
+                    )}
+                  >
+                    {userName}
                   </span>
                 </div>
-                <span className="font-medium">{userName}</span>
-              </div>
+              )}
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsLogoutModalOpen(true)}
-                className="text-gray-700 hover:text-gray-900"
-              >
-                로그아웃
-              </Button>
+              {showLogoutButton && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsLogoutModalOpen(true)}
+                  className="text-gray-700 hover:text-gray-900"
+                >
+                  로그아웃
+                </Button>
+              )}
+
+              {customActions}
             </div>
           </div>
         </div>
