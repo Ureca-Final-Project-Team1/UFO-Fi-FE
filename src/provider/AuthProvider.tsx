@@ -35,6 +35,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       return;
     }
 
+    // 루트 경로에서 미인증 사용자라면 무조건 로그인으로 이동
+    if (pathname === '/' && error) {
+      setHasRedirected(true);
+      router.replace('/login');
+      return;
+    }
+
     // 사용자 정보 조회 중 에러 → 로그인 페이지로 이동
     if (error) {
       // eslint-disable-next-line no-console
