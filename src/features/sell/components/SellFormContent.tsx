@@ -14,6 +14,23 @@ import { Icon, Input, Button, PriceInput } from '@/shared';
 
 export const SellFormContent = () => {
   const { data: myInfo } = useMyInfo();
+  const maxCapacity = myInfo?.sellableDataAmount || 0;
+
+  // value 초기값을 maxCapacity에 따라 자동 세팅
+  React.useEffect(() => {
+    let initial = 1;
+    if (maxCapacity === 0) {
+      initial = 0;
+    } else if (maxCapacity >= 3) {
+      initial = Math.min(5, Math.floor(maxCapacity / 2));
+    }
+    if (Array.isArray(value)) {
+      if (value[0] !== initial) setValue([initial]);
+    } else {
+      if (value !== initial) setValue([initial]);
+    }
+  }, [maxCapacity]);
+
   const {
     value,
     setValue,
@@ -35,8 +52,19 @@ export const SellFormContent = () => {
     queryFn: () => userPlanAPI.get(),
   });
 
-  const maxCapacity = myInfo?.sellableDataAmount || 0;
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
+
+  // value 초기값을 maxCapacity에 따라 자동 세팅
+  React.useEffect(() => {
+    if (!maxCapacity) return;
+    let initial = 1;
+    if (maxCapacity >= 3) {
+      initial = Math.min(5, Math.floor(maxCapacity / 2));
+    }
+    if (Array.isArray(value)) {
+      if (value[0] !== initial) setValue([initial]);
+    }
+  }, [maxCapacity]);
 
   return (
     <div className="flex flex-col w-full h-full justify-between">
@@ -99,13 +127,13 @@ export const SellFormContent = () => {
             isValidPrice={isValidPrice}
           />
         </div>
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center w-full z-50 relative">
           <Button
             size={'sm'}
             onClick={handleSubmit}
             variant="exploration-button"
             disabled={!isFormValid || isSubmitting}
-            className="h-15 ml-auto px-6 py-3"
+            className="h-15 ml-auto px-6 py-3 z-50"
           >
             {isSubmitting ? '등록 중...' : '등록하기'}
           </Button>

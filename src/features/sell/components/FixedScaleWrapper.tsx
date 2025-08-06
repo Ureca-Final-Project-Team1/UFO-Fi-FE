@@ -38,7 +38,7 @@ export const FixedScaleWrapper = ({ children, heightPercent = 1 }: FixedScaleWra
   return (
     <div className="w-full h-full flex justify-center items-center" style={{ overflow: 'hidden' }}>
       {/* 외계인 - 스케일된 영역의 바닥에만 붙음 */}
-      <div className="absolute bottom-0 left-0 z-20">
+      <div className="absolute bottom-0 left-0 z-20 pointer-events-none">
         <Image
           src={IMAGE_PATHS.AL_SELL}
           alt="판매 우주인"
