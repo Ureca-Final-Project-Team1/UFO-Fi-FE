@@ -73,7 +73,7 @@ export const API_ENDPOINTS = {
 
   // InterestedPost(1)
   INTERESTED_POST: {
-    NOTIFICATION_FILTER: '/notification-filters/interested-post', // 관심 상품 등록 조건 설정
+    NOTIFICATION_FILTER: '/v1/notification-filters/interested-post', // 관심 상품 등록 조건 설정
   },
 
   // Notification(1)
@@ -139,8 +139,8 @@ export const API_ENDPOINTS = {
 
   // NotificationSetting(2)
   NOTIFICATION_SETTING: {
-    SETTINGS_GET: '/notification-settings', // 알림 목록 조회
-    SETTINGS_UPDATE: '/notification-settings', // Notification ON/OFF
+    SETTINGS_GET: '/v1/mypage/notification-settings', // 알림 목록 조회
+    SETTINGS_UPDATE: '/v1/mypage/notification-settings', // Notification ON/OFF
   },
 
   // bannedword(4)
@@ -176,8 +176,10 @@ export const API_ENDPOINTS = {
   // NextNotification
   NEXT_NOTIFICATION: {
     GET_NOTIFICATION: '/api/notifications',
-    UPDATE_NOTIFICATION: '/api/notifications',
+    UPDATE_NOTIFICATION: (notificationId: string) => `/api/notifications/${notificationId}/read`,
     READ_NOTIFICATION: (notificationId: string) => `/api/notifications/${notificationId}/read`,
+    READ_NOTIFICATION_ALL: '/api/notifications',
+    COUNT_UNNOTIFICATION: (notificationId: string) => `/api/notifications/${notificationId}/read`,
   },
 
   REFRESH: '/refresh',

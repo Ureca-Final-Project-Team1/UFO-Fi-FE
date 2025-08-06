@@ -1,5 +1,6 @@
 import { apiRequest, nextApiRequest } from '@/backend/client/axios';
 import type { GetProfileResponse, ProfileUser, UserStats } from '@/backend/types/profile';
+import { API_ENDPOINTS } from '@/constants';
 
 export const profileAPI = {
   async getProfile(anotherUserId: number): Promise<GetProfileResponse> {
