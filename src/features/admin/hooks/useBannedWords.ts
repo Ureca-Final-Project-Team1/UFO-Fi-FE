@@ -30,7 +30,7 @@ export function useBannedWords(): UseBannedWordsReturn {
   const [bannedWords, setBannedWords] = useState<BannedWord[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,18 +38,21 @@ export function useBannedWords(): UseBannedWordsReturn {
 
   // 금칙어 목록 조회
   const fetchBannedWords = useCallback(
-    async (page: number = currentPage, size: number = pageSize) => {
+    async (page?: number, size?: number) => {
+      const effectivePage = page ?? currentPage;
+      const effectiveSize = size ?? pageSize;
+
       try {
         setIsLoading(true);
         setError(null);
 
-        const response = await bannedWordsAPI.getAll({ page, size });
+        const response = await bannedWordsAPI.getAll({ page: effectivePage, size: effectiveSize });
 
         if (response.statusCode === 200) {
           setBannedWords(response.content.content);
           setTotalPages(response.content.totalPages);
           setTotalElements(response.content.totalElements);
-          setCurrentPage(page);
+          setCurrentPage(effectivePage);
         } else {
           throw new Error(response.message || '금칙어 목록을 불러오는데 실패했습니다.');
         }
@@ -73,9 +76,9 @@ export function useBannedWords(): UseBannedWordsReturn {
         additionalActions();
       }
       // 현재 페이지 새로고침
-      await fetchBannedWords(currentPage, pageSize);
+      await fetchBannedWords();
     },
-    [currentPage, pageSize, fetchBannedWords],
+    [fetchBannedWords],
   );
 
   // 금칙어 등록
@@ -190,14 +193,14 @@ export function useBannedWords(): UseBannedWordsReturn {
   const handleSetPageSize = useCallback(
     (size: number) => {
       setPageSize(size);
-      setCurrentPage(1);
-      fetchBannedWords(1, size);
+      setCurrentPage(0);
+      fetchBannedWords(0, size);
     },
     [fetchBannedWords],
   );
 
   useEffect(() => {
-    fetchBannedWords(1, pageSize);
+    fetchBannedWords(0, pageSize);
   }, []); // 의존성 배열을 비워두어 초기 로드만 실행
 
   return {

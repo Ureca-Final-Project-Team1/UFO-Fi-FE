@@ -73,7 +73,7 @@ export const API_ENDPOINTS = {
 
   // InterestedPost(1)
   INTERESTED_POST: {
-    NOTIFICATION_FILTER: '/v1/notification-filters/interested-post', // 관심 상품 등록 조건 설정
+    NOTIFICATION_FILTER: '/notification-filters/interested-post', // 관심 상품 등록 조건 설정
   },
 
   // Notification(1)

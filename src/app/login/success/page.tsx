@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 import { getUserInfoAPI } from '@/backend/services/auth/userInfo';
-import { registerFCMToken } from '@/lib/fcm';
 import { Loading } from '@/shared';
 import { useToastStore } from '@/stores/useToastStore';
 import { useUserInfoStore } from '@/stores/useUserInfoStore';
@@ -16,6 +15,7 @@ async function checkAuthCookies(): Promise<{
   isAuthenticated: boolean;
 }> {
   try {
+    // TODO: End Point Constant화
     const response = await fetch('/api/auth/check', {
       method: 'GET',
       credentials: 'include',
@@ -54,11 +54,6 @@ const SuccessPage = () => {
           }, 500);
           return;
         }
-
-        // FCM 토큰 등록 (백그라운드)
-        registerFCMToken().catch((error) => {
-          console.warn('FCM registration failed, but continuing:', error);
-        });
 
         const response = await getUserInfoAPI.getInfo();
 
