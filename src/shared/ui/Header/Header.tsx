@@ -1,10 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { logoutAPI } from '@/backend';
 import { cn } from '@/lib/utils';
 import { Button, Modal } from '@/shared';
 
@@ -22,6 +20,7 @@ import {
 
 export default function Header({
   userName = 'Admin',
+  onLogout,
   className,
   variant = 'default',
   size = 'md',
@@ -44,16 +43,19 @@ export default function Header({
   logoIcon,
   customActions,
 }: HeaderProps) {
-  const router = useRouter();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      await logoutAPI.setLogout();
-      toast.success('로그아웃되었습니다.');
-      router.push('/login');
+
+      if (onLogout) {
+        onLogout();
+      } else {
+        // Storybook 환경에서는 기본 동작만 수행
+        toast.success('로그아웃되었습니다.');
+      }
     } catch (error) {
       console.error('로그아웃 실패:', error);
       toast.error('로그아웃에 실패했습니다.');
