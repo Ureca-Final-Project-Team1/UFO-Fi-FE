@@ -77,7 +77,7 @@ export function DataListView({ userId, onRefetch }: DataListViewProps) {
 
   const handleEdit = (postId: number) => {
     router.push(`/sell/edit/${postId}`);
-    handleRefetch(); // ✅ 수정 후 refetch
+    handleRefetch();
   };
 
   if (isLoading) {
