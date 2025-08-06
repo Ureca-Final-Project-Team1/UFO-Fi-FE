@@ -5,10 +5,21 @@ import { useRouter } from 'next/navigation';
 
 import { IMAGE_PATHS } from '@/constants';
 import { useMyInfo } from '@/features/mypage/hooks/useMyInfo';
-import { Button, Icon } from '@/shared';
-import { SpeechBubble, Progress } from '@/shared';
+import { SpeechBubble, Progress, Button, Icon } from '@/shared';
 
-export const ExchangeHeader = () => {
+import { ExchangeFilters, FilterState } from './ExchangeFilters';
+
+interface ExchangeHeaderProps {
+  filters?: FilterState;
+  onFiltersChange?: (filters: FilterState) => void;
+  onFiltersReset?: () => void;
+}
+
+export const ExchangeHeader = ({
+  filters,
+  onFiltersChange,
+  onFiltersReset,
+}: ExchangeHeaderProps) => {
   const router = useRouter();
   const { data: userInfo, isLoading, isError } = useMyInfo();
 
@@ -104,12 +115,14 @@ export const ExchangeHeader = () => {
             className="mb-4"
           />
 
-          {/* TODO: 필터 버튼들 */}
-          {/* <div className="flex flex-wrap gap-2">
-            <Chip>통신사</Chip>
-            <Chip>용량</Chip>
-            <Chip>가격</Chip>
-          </div> */}
+          {/* 필터 컴포넌트 */}
+          {filters && onFiltersChange && onFiltersReset && (
+            <ExchangeFilters
+              filters={filters}
+              onFiltersChange={onFiltersChange}
+              onReset={onFiltersReset}
+            />
+          )}
         </div>
       </div>
 
@@ -176,12 +189,14 @@ export const ExchangeHeader = () => {
           />
         </div>
 
-        {/* TODO: 필터 버튼들 API 다 안되면 지워야됨 */}
-        {/* <div className="flex flex-wrap gap-2">
-          <Chip>통신사</Chip>
-          <Chip>용량</Chip>
-          <Chip>가격</Chip>
-        </div> */}
+        {/* 모바일용 필터 컴포넌트 */}
+        {filters && onFiltersChange && onFiltersReset && (
+          <ExchangeFilters
+            filters={filters}
+            onFiltersChange={onFiltersChange}
+            onReset={onFiltersReset}
+          />
+        )}
       </div>
     </div>
   );
