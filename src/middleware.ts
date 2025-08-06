@@ -32,6 +32,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  // 미인증 시 로그인으로 리다이렉트
+  if (pathname === '/' && !isAuthenticated) {
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
   // 인증된 사용자가 블랙홀 라우트 접근 시
   if (routeUtils.isBlackholeRoute(pathname)) {
     return NextResponse.next();
