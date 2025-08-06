@@ -31,8 +31,8 @@ export const sliderVariants = cva(
 export const sliderTrackVariants = cva('relative grow overflow-hidden rounded-full', {
   variants: {
     orientation: {
-      horizontal: 'h-1.5 w-full',
-      vertical: 'h-full w-1.5',
+      horizontal: 'w-full',
+      vertical: 'h-full',
     },
     variant: {
       default: 'bg-muted',
@@ -42,9 +42,9 @@ export const sliderTrackVariants = cva('relative grow overflow-hidden rounded-fu
       custom: 'bg-gray-300',
     },
     size: {
-      sm: 'h-1',
-      md: 'h-1.5',
-      lg: 'h-2',
+      sm: 'data-[orientation=horizontal]:h-1 data-[orientation=vertical]:w-1',
+      md: 'data-[orientation=horizontal]:h-1.5 data-[orientation=vertical]:w-1.5',
+      lg: 'data-[orientation=horizontal]:h-2 data-[orientation=vertical]:w-2',
     },
   },
   defaultVariants: {
