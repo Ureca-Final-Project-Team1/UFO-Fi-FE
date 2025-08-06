@@ -1,15 +1,18 @@
 import { cva } from 'class-variance-authority';
 
 // Toaster 컨테이너 variants
+// Sonner 라이브러리에서 직접 처리하는 props들 - className 생성용이 아닌 설정값으로 사용
 export const toasterVariants = cva('toaster group', {
   variants: {
     theme: {
+      // Sonner에서 직접 처리하는 테마 설정
       default: '',
       light: 'light',
       dark: 'dark',
       auto: 'auto',
     },
     position: {
+      // Sonner에서 직접 처리하는 위치 설정 - 실제 스타일링은 라이브러리 내부에서 처리
       'top-left': '',
       'top-center': '',
       'top-right': '',
@@ -18,14 +21,17 @@ export const toasterVariants = cva('toaster group', {
       'bottom-right': '',
     },
     expand: {
+      // Sonner에서 직접 처리하는 확장 설정
       true: '',
       false: '',
     },
     richColors: {
+      // Sonner에서 직접 처리하는 리치 컬러 설정
       true: '',
       false: '',
     },
     closeButton: {
+      // Sonner에서 직접 처리하는 닫기 버튼 설정
       true: '',
       false: '',
     },
