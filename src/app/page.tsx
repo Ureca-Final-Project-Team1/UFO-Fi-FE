@@ -30,9 +30,6 @@ export default function HomePage() {
 
   return (
     <div className="w-full h-full flex flex-col relative">
-      {/* 오버레이 배경 */}
-      {showTutorial && <div className="fixed inset-0 bg-black/60 z-40 pointer-events-auto" />}
-
       {/* 중앙 외계인 궤도 */}
       <div
         className={`flex-1 flex items-center justify-center ${
