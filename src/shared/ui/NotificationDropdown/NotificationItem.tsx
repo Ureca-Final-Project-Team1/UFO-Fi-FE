@@ -15,6 +15,7 @@ import {
   notificationItemDescriptionVariants,
   notificationItemTimeVariants,
   notificationItemUnreadBadgeVariants,
+  notificationItemTextIndicatorVariants,
 } from './NotificationDropdownVariants';
 
 const notificationConfig: Record<
@@ -109,7 +110,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
           <h4 className={cn(notificationItemTitleVariants({ size: titleSize, unread: isUnread }))}>
             {notification.title}
             {isUnread && unreadStyle === 'text' && (
-              <span className="inline-block ml-1 size-2 bg-blue-500 rounded-full"></span>
+              <span className={cn(notificationItemTextIndicatorVariants())}></span>
             )}
           </h4>
           <span

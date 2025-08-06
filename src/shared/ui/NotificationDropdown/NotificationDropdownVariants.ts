@@ -240,6 +240,27 @@ export const notificationItemUnreadBadgeVariants = cva(
   },
 );
 
+// NotificationItem Text Indicator variants
+export const notificationItemTextIndicatorVariants = cva('inline-block ml-1 rounded-full', {
+  variants: {
+    size: {
+      sm: 'size-1.5',
+      md: 'size-2',
+      lg: 'size-2.5',
+    },
+    variant: {
+      default: 'bg-blue-500',
+      primary: 'bg-blue-600',
+      secondary: 'bg-gray-500',
+      custom: 'bg-current',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    variant: 'default',
+  },
+});
+
 // NotificationHeader variants
 export const notificationHeaderVariants = cva('px-4 py-3 border-b', {
   variants: {
