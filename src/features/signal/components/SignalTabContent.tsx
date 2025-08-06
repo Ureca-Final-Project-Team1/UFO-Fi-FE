@@ -16,9 +16,15 @@ import {
 
 interface SignalTabContentProps {
   maxHeight?: number;
+  tutorialStep?: number;
+  onLoaded?: () => void;
 }
 
-export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
+export default function SignalTabContent({
+  maxHeight,
+  tutorialStep,
+  onLoaded,
+}: SignalTabContentProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState<number>(1);
@@ -38,6 +44,12 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
     };
     loadData();
   }, [initializeLetters]);
+
+  useEffect(() => {
+    if (!isLoading && onLoaded) {
+      onLoaded();
+    }
+  }, [isLoading, onLoaded]);
 
   const PLANETS = [
     IMAGE_PATHS.PLANET_1,
@@ -133,7 +145,6 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
 
   return (
     <section aria-label="탐사 경로 시각화" className="relative w-full overflow-hidden">
-      {/* 로딩 오버레이로 변경 */}
       {isLoading && (
         <div className="absolute inset-0 z-50 flex items-center justify-center">
           <Loading variant="signal" message="탐사 기록을 불러오는 중..." className="p-8" />
@@ -141,88 +152,90 @@ export default function SignalTabContent({ maxHeight }: SignalTabContentProps) {
       )}
 
       <div className={isLoading ? 'opacity-0' : 'opacity-100'}>
-        <p className="text-white text-md pyeongchangpeace-title-2 mb-5" aria-live="polite">
-          {completedPlanets}번째 은하까지 탐사 완료...
-        </p>
+        <div className={tutorialStep === 0 ? 'relative z-50 ring-4 ring-yellow-300' : ''}>
+          <p className="text-white text-md pyeongchangpeace-title-2 mb-5" aria-live="polite">
+            {completedPlanets}번째 은하까지 탐사 완료...
+          </p>
 
-        {canScrollLeft && (
-          <aside className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
-            <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
-              ◀
-            </button>
-          </aside>
-        )}
+          {canScrollLeft && (
+            <aside className="absolute z-10 top-1/2 -translate-y-1/2 left-0">
+              <button onClick={scrollLeft} className="bg-black/50 text-white px-3 py-2 rounded-r">
+                ◀
+              </button>
+            </aside>
+          )}
 
-        {canScrollRight && (
-          <aside className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
-            <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
-              ▶
-            </button>
-          </aside>
-        )}
+          {canScrollRight && (
+            <aside className="absolute z-10 top-1/2 -translate-y-1/2 right-0">
+              <button onClick={scrollRight} className="bg-black/50 text-white px-3 py-2 rounded-l">
+                ▶
+              </button>
+            </aside>
+          )}
 
-        <div
-          ref={scrollContainerRef}
-          className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
-          style={{ height: `${CONTAINER_HEIGHT * scale}px` }}
-        >
           <div
-            ref={contentRef}
-            className="relative origin-top-left"
-            style={{
-              transform: `scale(${scale})`,
-              width: `${CONTAINER_WIDTH}px`,
-              height: `${CONTAINER_HEIGHT}px`,
-            }}
+            ref={scrollContainerRef}
+            className="w-full overflow-x-auto scroll-smooth hide-scrollbar"
+            style={{ height: `${CONTAINER_HEIGHT * scale}px` }}
           >
-            <svg
-              className="absolute top-0 left-0 pointer-events-none"
-              width={CONTAINER_WIDTH}
-              height={CONTAINER_HEIGHT}
+            <div
+              ref={contentRef}
+              className="relative origin-top-left"
+              style={{
+                transform: `scale(${scale})`,
+                width: `${CONTAINER_WIDTH}px`,
+                height: `${CONTAINER_HEIGHT}px`,
+              }}
             >
-              {PLANET_POSITIONS.map((from, i) => {
-                const to = PLANET_POSITIONS[i + 1];
-                if (!to) return null;
-
-                const fromPoint = {
-                  x: from.left + PLANET_SIZES[i] / 2,
-                  y: from.top + PLANET_SIZES[i] / 2,
-                };
-                const toPoint = {
-                  x: to.left + PLANET_SIZES[i + 1] / 2,
-                  y: to.top + PLANET_SIZES[i + 1] / 2,
-                };
-
-                return (
-                  <path
-                    key={i}
-                    d={getCurvePath(fromPoint, toPoint, i)}
-                    fill="none"
-                    stroke={getConnectionColor(i, i + 1)}
-                    strokeWidth="2"
-                    strokeDasharray="8 6"
-                  />
-                );
-              })}
-            </svg>
-
-            {PLANET_POSITIONS.map((planet, index) => (
-              <div
-                key={index}
-                className="absolute"
-                style={{
-                  top: `${planet.top}px`,
-                  left: `${planet.left}px`,
-                }}
+              <svg
+                className="absolute top-0 left-0 pointer-events-none"
+                width={CONTAINER_WIDTH}
+                height={CONTAINER_HEIGHT}
               >
-                <PlanetComponent
-                  planetSrc={PLANETS[index]}
-                  satelliteSrc={SATELLITES[index]}
-                  planetSize={PLANET_SIZES[index]}
-                  isArrived={planetStatus[index]}
-                />
-              </div>
-            ))}
+                {PLANET_POSITIONS.map((from, i) => {
+                  const to = PLANET_POSITIONS[i + 1];
+                  if (!to) return null;
+
+                  const fromPoint = {
+                    x: from.left + PLANET_SIZES[i] / 2,
+                    y: from.top + PLANET_SIZES[i] / 2,
+                  };
+                  const toPoint = {
+                    x: to.left + PLANET_SIZES[i + 1] / 2,
+                    y: to.top + PLANET_SIZES[i + 1] / 2,
+                  };
+
+                  return (
+                    <path
+                      key={i}
+                      d={getCurvePath(fromPoint, toPoint, i)}
+                      fill="none"
+                      stroke={getConnectionColor(i, i + 1)}
+                      strokeWidth="2"
+                      strokeDasharray="8 6"
+                    />
+                  );
+                })}
+              </svg>
+
+              {PLANET_POSITIONS.map((planet, index) => (
+                <div
+                  key={index}
+                  className="absolute"
+                  style={{
+                    top: `${planet.top}px`,
+                    left: `${planet.left}px`,
+                  }}
+                >
+                  <PlanetComponent
+                    planetSrc={PLANETS[index]}
+                    satelliteSrc={SATELLITES[index]}
+                    planetSize={PLANET_SIZES[index]}
+                    isArrived={planetStatus[index]}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

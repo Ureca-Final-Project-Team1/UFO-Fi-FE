@@ -56,6 +56,7 @@ export default function HomePage() {
           ]}
           onNext={handleNext}
           onClose={handleClose}
+          tutorialKey="main"
         />
       )}
     </div>

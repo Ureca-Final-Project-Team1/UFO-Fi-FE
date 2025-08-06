@@ -62,6 +62,7 @@ export default function SellPage() {
           ]}
           onNext={handleNext}
           onClose={handleClose}
+          tutorialKey="sell"
         />
       )}
     </>
