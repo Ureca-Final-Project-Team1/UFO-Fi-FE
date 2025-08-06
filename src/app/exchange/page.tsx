@@ -2,10 +2,11 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost, Carrier } from '@/backend';
+import { ExchangeFilters } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
@@ -13,20 +14,38 @@ import { useUserPlan } from '@/shared/hooks/useUserPlan';
 import { queryKeys } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 
+interface FilterState {
+  carrier?: Carrier;
+  minTotalZet?: number;
+  maxTotalZet?: number;
+  minCapacity?: number;
+  maxCapacity?: number;
+}
+
 export default function ExchangePage() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { setProductData, setUserZetBalance, setIsFirstPurchase } = usePurchaseFlowStore();
 
+  // 기존 상태들
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, postId: 0 });
   const [reportModal, setReportModal] = useState({ isOpen: false, postId: 0, sellerId: 0 });
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
   const [refetchList, setRefetchList] = useState<() => void>(() => () => {});
   const { data: userPlan } = useUserPlan();
+  const [filters, setFilters] = useState<FilterState>({});
+
+  const handleFiltersChange = useCallback((newFilters: FilterState) => {
+    setFilters(newFilters);
+  }, []);
+
+  const handleResetFilters = useCallback(() => {
+    setFilters({});
+  }, []);
 
   // 캐시 무효화
-  const refetchExchangeData = () => {
+  const refetchExchangeData = useCallback(() => {
     refetchList();
     queryClient.invalidateQueries({
       queryKey: queryKeys.exchangePostsInfinite(),
@@ -34,22 +53,25 @@ export default function ExchangePage() {
     queryClient.invalidateQueries({
       queryKey: queryKeys.myInfo(),
     });
-  };
+  }, [refetchList, queryClient]);
 
   // 수정 핸들러
-  const handleEdit = (id: number) => {
-    router.push(`/sell/edit/${id}`);
-  };
+  const handleEdit = useCallback(
+    (id: number) => {
+      router.push(`/sell/edit/${id}`);
+    },
+    [router],
+  );
 
   // 삭제 핸들러
-  const handleDelete = (id: number) => {
+  const handleDelete = useCallback((id: number) => {
     setDeleteModal({ isOpen: true, postId: id });
-  };
+  }, []);
 
   // 신고 핸들러
-  const handleReport = (postId: number, sellerId: number) => {
+  const handleReport = useCallback((postId: number, sellerId: number) => {
     setReportModal({ isOpen: true, postId, sellerId });
-  };
+  }, []);
 
   // 상품 검증 함수
   const validateProduct = (
@@ -73,41 +95,44 @@ export default function ExchangePage() {
   };
 
   // 데이터 미리 로드
-  const handlePurchase = async (id: number, productFromList?: ExchangePost) => {
-    if (isPurchaseLoading) return; // 중복 실행 방지
-    setIsPurchaseLoading(true);
+  const handlePurchase = useCallback(
+    async (id: number, productFromList?: ExchangePost) => {
+      if (isPurchaseLoading) return; // 중복 실행 방지
+      setIsPurchaseLoading(true);
 
-    try {
-      // 1. 상품 데이터 준비
-      let productData = productFromList;
-      if (!productData) {
-        const response = await sellAPI.getPostDetail(id);
-        productData = response.content;
+      try {
+        // 1. 상품 데이터 준비
+        let productData = productFromList;
+        if (!productData) {
+          const response = await sellAPI.getPostDetail(id);
+          productData = response.content;
+        }
+
+        // 2. 상품 검증
+        if (!validateProduct(productData)) return;
+
+        // 3. 병렬로 사용자 정보와 구매 내역 조회
+        const { userInfo, history } = await loadPurchaseData();
+
+        // 4. Zustand Store에 데이터 저장
+        setProductData(productData);
+        setUserZetBalance(userInfo?.zetAsset || 0);
+        setIsFirstPurchase(!history || history.length === 0);
+
+        // 5. 구매 페이지로 이동
+        router.push(`/exchange/purchase/${id}`);
+      } catch (error) {
+        console.error('구매 준비 중 오류:', error);
+        toast.error('구매 준비 중 오류가 발생했습니다.');
+      } finally {
+        setIsPurchaseLoading(false);
       }
-
-      // 2. 상품 검증
-      if (!validateProduct(productData)) return;
-
-      // 3. 병렬로 사용자 정보와 구매 내역 조회
-      const { userInfo, history } = await loadPurchaseData();
-
-      // 4. Zustand Store에 데이터 저장
-      setProductData(productData);
-      setUserZetBalance(userInfo?.zetAsset || 0);
-      setIsFirstPurchase(!history || history.length === 0);
-
-      // 5. 구매 페이지로 이동
-      router.push(`/exchange/purchase/${id}`);
-    } catch (error) {
-      console.error('구매 준비 중 오류:', error);
-      toast.error('구매 준비 중 오류가 발생했습니다.');
-    } finally {
-      setIsPurchaseLoading(false);
-    }
-  };
+    },
+    [isPurchaseLoading, router, setProductData, setUserZetBalance, setIsFirstPurchase],
+  );
 
   // 삭제 확인
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = useCallback(async () => {
     setIsDeleting(true);
     try {
       await sellAPI.deletePost(deleteModal.postId);
@@ -122,15 +147,15 @@ export default function ExchangePage() {
     } finally {
       setIsDeleting(false);
     }
-  };
+  }, [deleteModal.postId, refetchExchangeData]);
 
-  const handleCancelDelete = () => {
+  const handleCancelDelete = useCallback(() => {
     setDeleteModal({ isOpen: false, postId: 0 });
-  };
+  }, []);
 
-  const handleCancelReport = () => {
+  const handleCancelReport = useCallback(() => {
     setReportModal({ isOpen: false, postId: 0, sellerId: 0 });
-  };
+  }, []);
 
   return (
     <div className="pb-6">
@@ -143,9 +168,18 @@ export default function ExchangePage() {
           <ExchangeHeader />
         </section>
 
+        <section className="mb-4" aria-label="필터 및 정렬 옵션">
+          <ExchangeFilters
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            onReset={handleResetFilters}
+          />
+        </section>
+
         <section aria-label="데이터 거래 게시물 목록">
           <h2 className="sr-only">거래 게시물</h2>
           <ExchangeList
+            filters={filters}
             onEdit={handleEdit}
             onDelete={handleDelete}
             onReport={handleReport}

@@ -105,7 +105,7 @@ export default function MyPage() {
     }
 
     return (
-      <>
+      <div className="flex flex-col w-full h-full justify-center items-center">
         <div className="text-center">
           <div className="text-red-400 mb-4">
             <Icon name="AlertCircle" size={48} className="mx-auto mb-2" />
@@ -121,25 +121,21 @@ export default function MyPage() {
             다시 시도
           </Button>
         </div>
-      </>
+      </div>
     );
   }
 
   // 데이터가 없는 경우
   if (!mypageInfo) {
     return (
-      <>
+      <div className="flex flex-col w-full h-full justify-center items-center">
         <div className="text-center text-white">
-          <p>프로필 정보가 없습니다</p>
-          <button
-            onClick={handleRetry}
-            className="mt-4 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-            type="button"
-          >
+          <p className="pb-2 body-16-regular">프로필 정보가 없습니다</p>
+          <Button onClick={handleRetry} type="button">
             새로고침
-          </button>
+          </Button>
         </div>
-      </>
+      </div>
     );
   }
 
