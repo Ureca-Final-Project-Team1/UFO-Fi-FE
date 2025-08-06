@@ -26,7 +26,7 @@ export const ExchangeHeader = () => {
 
   const renderZetBalance = () => {
     if (isLoading) return '로딩 중...';
-    if (isError || !userInfo) return '잔액 정보를 불러오지 못했어요.';
+    if (isError || !userInfo) return '0 ZET';
     const zet = userInfo.zetAsset || 0;
     return `${zet.toLocaleString()} ZET`;
   };
