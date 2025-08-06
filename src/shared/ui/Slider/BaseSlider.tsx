@@ -19,12 +19,12 @@ interface BaseSliderProps extends React.ComponentProps<typeof SliderPrimitive.Ro
 const BaseSlider = ({
   thumbs,
   getThumbValueText,
-  trackVariant = 'custom',
+  trackVariant = 'default',
   trackSize = 'md',
-  rangeVariant = 'gradient',
-  thumbSize = 'lg',
-  thumbVariant = 'custom',
-  thumbRingColor = 'custom',
+  rangeVariant = 'default',
+  thumbSize = 'md',
+  thumbVariant = 'default',
+  thumbRingColor = 'default',
   ...props
 }: BaseSliderProps) => (
   <SliderPrimitive.Root {...props}>
