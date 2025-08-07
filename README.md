@@ -78,12 +78,11 @@
 
 | 항목 | 사진 | 내용 |
 |--------|------------|--------|
-| **회원 인증 및 사용자 시스템** | <div align="center"><img src="GIF_OR_IMAGE_URL_1" alt="소셜 로그인 및 마이페이지 UI" width="75%" /></div> | **Kakao OAuth2 소셜 로그인**<br>OAuth2 인증 후 자체 JWT + Refresh Token 발급<br>**요금제 자동 등록**: 명세서 OCR 분석<br>**마이페이지**: 요금제·계좌 관리, 거래 내역, 업적 시스템 제공 |
-| **ZET 충전 및 PG 결제 시스템** | <div align="center"><img src="GIF_OR_IMAGE_URL_2" alt="ZET 충전 및 결제 흐름" width="75%" /></div> | **ZET(Zero Expired Traffic)**: 내부 재화 (1ZET = 10원)<br>**Toss Payments** 연동 → 실시간 카드 결제 및 ZET 충전<br>충전 상태 FSM 관리 (요청 → 대기 → 성공/실패)<br>보안 강화 + 예외 처리 UX 반영 |
-| **데이터 거래 시스템 (수탁형 구조)** | <div align="center"><img src="GIF_OR_IMAGE_URL_3" alt="데이터 등록 및 구매 흐름 UI" width="75%" /></div> | 판매자: 통신사·용량·가격 입력 후 데이터 등록<br>구매자: 전화번호 입력 → 플랫폼이 대신 전송 _(통신사 선물 기능 활용)_<br>판매 시점 잔여량 자동 차감 + ZET 자동 정산<br>**3단계 UI**: 데이터 등록 → 구매 요청 → 수령 확인<br>**일괄구매 기능**: 예산/용량 기반 최적 조합 탐색 + 일부 구매 가능 |
-| **운영 모니터링 및 관리자 백오피스** | <div align="center"><img src="GIF_OR_IMAGE_URL_4" alt="백오피스 기능 및 운영 모니터링 UI" width="75%" /></div> | **Slack Webhook 연동**: 결제 실패, 트래픽 급증 자동 알림<br>**신고/제재 시스템**: 자동 누적 차단 + 관리자 수동 처리<br>**금칙어 관리**: 아호코라식 필터링, 사용자 정지/해제, ZET 복구 기능 포함<br>**운영 대시보드**: 사용자/게시글/거래/신고 통계 실시간 시각화 |
-| **신뢰 기반 사용자 참여 시스템** | <div align="center"><img src="GIF_OR_IMAGE_URL_5" alt="탐험 뱃지, 전파 거리, 편지 UI" width="75%" /></div> | **팔로우 추천 시스템**: Qdrant 기반 유사·보완 사용자 자동 매칭<br>**FCM 푸시 알림**: 거래 성사, 신고 결과 등 실시간 알림 제공<br>**전파 거리 시각화**: BFS 기반으로 판매자 ↔ 구매자 연결 깊이 최대 5단계 추적<br>**우주 편지 생성**: 전파 단계마다 AI 편지 생성 및 업적 달성 보상 |
-
+| **회원 인증 및 사용자 시스템** | <div align="center">![2025-08-07191140-ezgif com-resize](https://github.com/user-attachments/assets/e039d208-172a-4ee0-9f89-b76f4287e219)</div> | **Kakao OAuth2 소셜 로그인**<br>OAuth2 인증 후 자체 JWT + Refresh Token 발급<br><br>**요금제 자동 등록**<br>명세서 OCR 분석<br><br>**마이페이지**<br>요금제·계좌 관리, 거래 내역, 업적 시스템 제공 |
+| **ZET 충전 및 PG 결제 시스템** | <div align="center">![2025-08-07191337-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/1e887c3d-8a81-4f1b-8cb3-d2150231391a)</div> | **ZET(Zero Expired Traffic)**<br>내부 재화 (1ZET = 10원)<br><br>**Toss Payments** 연동 → 실시간 카드 결제 및 ZET 충전<br><br>**충전 상태 FSM 관리**<br>(요청 → 대기 → 성공/실패)<br><br>**보안 강화 + 예외 처리 UX 반영** |
+| **데이터 거래 시스템 (수탁형 구조)** | <div align="center">![2025-08-07191424-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/f0afc64a-c2fc-4d7b-8eee-1dd2cedc4fb0)</div> | **판매자**<br>통신사·용량·가격 입력 후 데이터 등록<br><br>**구매자**<br>전화번호 입력 → 플랫폼이 대신 전송 _(통신사 선물 기능 활용)_<br>판매 시점 잔여량 자동 차감 + ZET 자동 정산<br><br>**3단계 UI**<br>데이터 등록 → 구매 요청 → 수령 확인<br><br>**일괄구매 기능**<br>예산/용량 기반 최적 조합 탐색 + 일부 구매 가능 |
+| **운영 모니터링 및 관리자 백오피스** | <div align="center">![2025-08-07193627-ezgif com-resize](https://github.com/user-attachments/assets/dac96387-3689-4240-b80a-2d4e534dc7e0)</div> | **Slack Webhook 연동**<br>결제 실패, 트래픽 급증 자동 알림<br><br>**신고/제재 시스템**<br>자동 누적 차단 + 관리자 수동 처리<br><br>**금칙어 관리**<br>아호코라식 필터링, 사용자 정지/해제, ZET 복구 기능 포함<br><br>**운영 대시보드**<br>사용자/게시글/거래/신고 통계 실시간 시각화 |
+| **신뢰 기반 사용자 참여 시스템** | <div align="center">![2025-08-07205930-ezgif com-resize](https://github.com/user-attachments/assets/18a5ab81-9bb1-460a-b232-c28dcd3c9ffb)</div> | **팔로우 추천 시스템**<br>Qdrant 기반 유사·보완 사용자 자동 매칭<br><br>**FCM 푸시 알림**<br>거래 성사, 신고 결과 등 실시간 알림 제공<br><br>**전파 거리 시각화**<br>BFS 기반으로 판매자 ↔ 구매자 연결 깊이 최대 5단계 추적<br><br>**우주 편지 생성**<br>전파 단계마다 AI 편지 생성 및 업적 달성 보상 |
 
 ## 프로젝트 실행 방법
 
