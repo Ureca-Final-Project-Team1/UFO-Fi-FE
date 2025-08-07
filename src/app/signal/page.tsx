@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 import { LetterTabContent } from '@/features/signal/components/LetterTabContent';
 import SignalTabContent from '@/features/signal/components/SignalTabContent';
@@ -10,7 +11,12 @@ import { TutorialOverlay } from '@/shared/components/TutorialOverlay';
 type TabType = 'orbit' | 'letters';
 
 export default function SignalPage() {
-  const [activeTab, setActiveTab] = useState<TabType>('orbit');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const initialTab = (searchParams.get('tab') as TabType) || 'orbit';
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab);
   const [showTutorial, setShowTutorial] = useState(false);
   const [step, setStep] = useState(0);
   const [isOrbitLoaded, setIsOrbitLoaded] = useState(false);
@@ -21,6 +27,12 @@ export default function SignalPage() {
       setShowTutorial(true);
     }
   }, [isOrbitLoaded]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set('tab', activeTab);
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [activeTab, pathname, router, searchParams]);
 
   const handleNext = () => {
     if (step === 0) {

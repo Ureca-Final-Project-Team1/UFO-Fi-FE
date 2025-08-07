@@ -14,7 +14,7 @@ export const bannedWordsAPI = {
   async getAll(params?: { page?: number; size?: number }): Promise<BannedWordsResponse> {
     const response = await apiRequest.get<BannedWordsResponse>(API_ENDPOINTS.BANNED_WORDS.LIST, {
       params: {
-        page: params?.page || 1,
+        page: params?.page || 0,
         size: params?.size || 10,
       },
     });

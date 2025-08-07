@@ -29,6 +29,31 @@ const config: StorybookConfig = {
       };
     }
 
+    // "use client" 지시어 처리
+    if (config.esbuild) {
+      config.esbuild = {
+        ...config.esbuild,
+        supported: {
+          ...config.esbuild?.supported,
+          'top-level-await': true,
+        },
+      };
+    }
+
+    // Vite 플러그인 추가
+    if (config.plugins) {
+      config.plugins.push({
+        name: 'remove-use-client',
+        transform(code, id) {
+          if (id.endsWith('.tsx') || id.endsWith('.ts')) {
+            // "use client" 지시어 제거
+            return code.replace(/"use client";?\n?/g, '');
+          }
+          return code;
+        },
+      });
+    }
+
     return config;
   },
 };

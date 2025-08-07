@@ -15,7 +15,13 @@ import {
 import type { PlanComboProps } from './PlanCombo.types';
 import { planComboItemClass } from './planComboVariants';
 
-export function PlanCombo({ planNames = [], onSelect, value, disabled = false }: PlanComboProps) {
+export function PlanCombo({
+  planNames = [],
+  onSelect,
+  value,
+  disabled = false,
+  placeholder,
+}: PlanComboProps) {
   const [input, setInput] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,7 +39,7 @@ export function PlanCombo({ planNames = [], onSelect, value, disabled = false }:
     <div className="relative w-full">
       <Command className="w-full">
         <CommandInput
-          placeholder="요금제를 선택해 주세요."
+          placeholder={placeholder || '요금제를 선택해 주세요.'}
           value={input}
           onFocus={() => !disabled && setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}

@@ -1,20 +1,59 @@
 import * as SliderPrimitive from '@radix-ui/react-slider';
 import React from 'react';
 
+import { cn } from '@/lib/utils';
+
+import { sliderTrackVariants, sliderRangeVariants, sliderThumbVariants } from './SliderVariants';
+
 interface BaseSliderProps extends React.ComponentProps<typeof SliderPrimitive.Root> {
   thumbs: number[];
   getThumbValueText?: (value: number, index: number) => string;
+  trackVariant?: 'default' | 'primary' | 'secondary' | 'accent' | 'custom';
+  trackSize?: 'sm' | 'md' | 'lg';
+  rangeVariant?: 'default' | 'primary' | 'secondary' | 'accent' | 'gradient' | 'custom';
+  thumbSize?: 'sm' | 'md' | 'lg';
+  thumbVariant?: 'default' | 'primary' | 'secondary' | 'accent' | 'custom';
+  thumbRingColor?: 'default' | 'primary' | 'secondary' | 'accent' | 'custom';
 }
 
-const BaseSlider = ({ thumbs, getThumbValueText, ...props }: BaseSliderProps) => (
+const BaseSlider = ({
+  thumbs,
+  getThumbValueText,
+  trackVariant = 'default',
+  trackSize = 'md',
+  rangeVariant = 'default',
+  thumbSize = 'md',
+  thumbVariant = 'default',
+  thumbRingColor = 'default',
+  ...props
+}: BaseSliderProps) => (
   <SliderPrimitive.Root {...props}>
-    <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-gray-300">
-      <SliderPrimitive.Range className="absolute h-full bg-gradient-to-r from-[var(--color-badge-text-cyan)] to-[var(--color-exploration-gradient-to)]" />
+    <SliderPrimitive.Track
+      className={cn(
+        sliderTrackVariants({
+          variant: trackVariant,
+          size: trackSize,
+        }),
+      )}
+    >
+      <SliderPrimitive.Range
+        className={cn(
+          sliderRangeVariants({
+            variant: rangeVariant,
+          }),
+        )}
+      />
     </SliderPrimitive.Track>
     {thumbs.map((value, i) => (
       <SliderPrimitive.Thumb
         key={i}
-        className="block h-5 w-5 rounded-full border-2 border-white bg-pink-500 shadow"
+        className={cn(
+          sliderThumbVariants({
+            size: thumbSize,
+            variant: thumbVariant,
+            ringColor: thumbRingColor,
+          }),
+        )}
         aria-label={`슬라이더 썸 ${i + 1}`}
         aria-valuetext={getThumbValueText ? getThumbValueText(value, i) : `${value}`}
       />

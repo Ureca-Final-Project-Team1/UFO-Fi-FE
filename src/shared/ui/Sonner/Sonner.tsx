@@ -2,12 +2,20 @@
 
 import { Toaster as Sonner, ToasterProps } from 'sonner';
 
-import { TOAST_CONFIG } from '@/constants';
+import { TOAST_CONFIG } from '@/constants/toast';
+import { cn } from '@/lib/utils';
 
-const Toaster = ({ ...props }: ToasterProps) => {
+import { toasterVariants } from './SonnerVariants';
+
+interface CustomToasterProps extends Omit<ToasterProps, 'theme'> {
+  theme?: 'default' | 'light' | 'dark' | 'auto';
+  className?: string;
+}
+
+const Toaster = ({ className, theme = 'default', ...props }: CustomToasterProps) => {
   return (
     <Sonner
-      className="toaster group"
+      className={cn(toasterVariants({ theme }), className)}
       style={
         {
           '--normal-bg': 'var(--popover)',

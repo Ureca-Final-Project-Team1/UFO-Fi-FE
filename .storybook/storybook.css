@@ -1,0 +1,516 @@
+/* Storybook 전용 CSS - 스크롤 허용 */
+
+/* 기본 스타일 */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: system-ui, sans-serif;
+  background: #fff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* 공통 스크롤 허용 스타일 */
+.sb-scrollable {
+  overflow: auto !important;
+  position: static !important;
+  height: auto !important;
+  width: auto !important;
+  top: auto !important;
+  left: auto !important;
+  margin: auto !important;
+  padding: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  touch-action: auto !important;
+  overscroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* 공통 스크롤바 스타일 */
+.sb-scrollbar::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-scrollbar::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* 전역 스크롤 방지 CSS 완전 무효화 */
+html,
+body,
+#__next,
+[data-nextjs-scroll-focus-boundary],
+#storybook-root,
+.sb-show-main,
+.sb-iframe {
+  overflow: auto !important;
+  position: static !important;
+  height: auto !important;
+  width: auto !important;
+  top: auto !important;
+  left: auto !important;
+  margin: auto !important;
+  padding: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  touch-action: auto !important;
+  overscroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#storybook-root::-webkit-scrollbar,
+.sb-show-main::-webkit-scrollbar,
+.sb-iframe::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+#storybook-root::-webkit-scrollbar-track,
+.sb-show-main::-webkit-scrollbar-track,
+.sb-iframe::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+#storybook-root::-webkit-scrollbar-thumb,
+.sb-show-main::-webkit-scrollbar-thumb,
+.sb-iframe::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+#storybook-root::-webkit-scrollbar-thumb:hover,
+.sb-show-main::-webkit-scrollbar-thumb:hover,
+.sb-iframe::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Storybook 메인 컨테이너 */
+.sb-show-main {
+  overflow: auto !important;
+  position: static !important;
+  height: auto !important;
+  width: auto !important;
+  top: auto !important;
+  left: auto !important;
+  margin: auto !important;
+  padding: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  touch-action: auto !important;
+  overscroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.sb-show-main::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-show-main::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-show-main::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-show-main::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Storybook 내부 html, body 요소 */
+.sb-show-main html,
+.sb-show-main body {
+  overflow: auto !important;
+  position: static !important;
+  height: auto !important;
+  width: auto !important;
+  top: auto !important;
+  left: auto !important;
+  margin: auto !important;
+  padding: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  touch-action: auto !important;
+  overscroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.sb-show-main html::-webkit-scrollbar,
+.sb-show-main body::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-show-main html::-webkit-scrollbar-track,
+.sb-show-main body::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-show-main html::-webkit-scrollbar-thumb,
+.sb-show-main body::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-show-main html::-webkit-scrollbar-thumb:hover,
+.sb-show-main body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Storybook iframe */
+.sb-iframe {
+  overflow: auto !important;
+  position: static !important;
+  height: auto !important;
+  width: auto !important;
+  top: auto !important;
+  left: auto !important;
+  margin: auto !important;
+  padding: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  touch-action: auto !important;
+  overscroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.sb-iframe::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-iframe::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-iframe::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-iframe::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Docs 페이지 */
+.docs-story,
+.sbdocs,
+.sbdocs-wrapper,
+.sbdocs-content {
+  overflow: auto !important;
+  height: auto !important;
+  position: static !important;
+}
+
+.docs-story::-webkit-scrollbar,
+.sbdocs::-webkit-scrollbar,
+.sbdocs-wrapper::-webkit-scrollbar,
+.sbdocs-content::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.docs-story::-webkit-scrollbar-track,
+.sbdocs::-webkit-scrollbar-track,
+.sbdocs-wrapper::-webkit-scrollbar-track,
+.sbdocs-content::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.docs-story::-webkit-scrollbar-thumb,
+.sbdocs::-webkit-scrollbar-thumb,
+.sbdocs-wrapper::-webkit-scrollbar-thumb,
+.sbdocs-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.docs-story::-webkit-scrollbar-thumb:hover,
+.sbdocs::-webkit-scrollbar-thumb:hover,
+.sbdocs-wrapper::-webkit-scrollbar-thumb:hover,
+.sbdocs-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Controls 패널 */
+.sb-controls-panel {
+  overflow: auto !important;
+}
+
+.sb-controls-panel::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-controls-panel::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-controls-panel::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-controls-panel::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Sidebar */
+.sb-sidebar {
+  overflow: auto !important;
+}
+
+.sb-sidebar::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-sidebar::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Canvas 영역 */
+.sb-canvas {
+  overflow: auto !important;
+}
+
+.sb-canvas::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-canvas::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-canvas::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-canvas::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Preview 영역 */
+.sb-previewBlock {
+  overflow: auto !important;
+}
+
+.sb-previewBlock::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-previewBlock::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-previewBlock::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-previewBlock::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* 모든 Storybook 관련 요소 */
+.sb-show-main *,
+.sb-iframe *,
+.docs-story *,
+.sbdocs *,
+.sb-controls-panel *,
+.sb-sidebar * {
+  overflow: visible !important;
+}
+
+/* 추가 스크롤 허용 */
+.os-viewport,
+.os-content,
+.os-padding {
+  overflow: auto !important;
+}
+
+.os-viewport::-webkit-scrollbar,
+.os-content::-webkit-scrollbar,
+.os-padding::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.os-viewport::-webkit-scrollbar-track,
+.os-content::-webkit-scrollbar-track,
+.os-padding::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.os-viewport::-webkit-scrollbar-thumb,
+.os-content::-webkit-scrollbar-thumb,
+.os-padding::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.os-viewport::-webkit-scrollbar-thumb:hover,
+.os-content::-webkit-scrollbar-thumb:hover,
+.os-padding::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Storybook 특정 클래스들 */
+.sb-main-padded,
+.sb-main-fullscreen,
+.sb-main-centered {
+  overflow: auto !important;
+}
+
+.sb-main-padded::-webkit-scrollbar,
+.sb-main-fullscreen::-webkit-scrollbar,
+.sb-main-centered::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sb-main-padded::-webkit-scrollbar-track,
+.sb-main-fullscreen::-webkit-scrollbar-track,
+.sb-main-centered::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-main-padded::-webkit-scrollbar-thumb,
+.sb-main-fullscreen::-webkit-scrollbar-thumb,
+.sb-main-centered::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sb-main-padded::-webkit-scrollbar-thumb:hover,
+.sb-main-fullscreen::-webkit-scrollbar-thumb:hover,
+.sb-main-centered::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* Docs 특정 클래스들 */
+.sbdocs.sbdocs-content,
+.sbdocs.sbdocs-main,
+.sbdocs.sbdocs-preview {
+  overflow: auto !important;
+}
+
+.sbdocs.sbdocs-content::-webkit-scrollbar,
+.sbdocs.sbdocs-main::-webkit-scrollbar,
+.sbdocs.sbdocs-preview::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.sbdocs.sbdocs-content::-webkit-scrollbar-track,
+.sbdocs.sbdocs-main::-webkit-scrollbar-track,
+.sbdocs.sbdocs-preview::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+.sbdocs.sbdocs-content::-webkit-scrollbar-thumb,
+.sbdocs.sbdocs-main::-webkit-scrollbar-thumb,
+.sbdocs.sbdocs-preview::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+.sbdocs.sbdocs-content::-webkit-scrollbar-thumb:hover,
+.sbdocs.sbdocs-main::-webkit-scrollbar-thumb:hover,
+.sbdocs.sbdocs-preview::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* 전역 스크롤 방지 CSS 재정의 */
+@layer base {
+  html,
+  body,
+  #__next,
+  [data-nextjs-scroll-focus-boundary] {
+    overflow: auto !important;
+    position: static !important;
+    height: auto !important;
+    width: auto !important;
+    top: auto !important;
+    left: auto !important;
+    margin: auto !important;
+    padding: auto !important;
+    max-height: none !important;
+    min-height: auto !important;
+    touch-action: auto !important;
+    overscroll-behavior: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body {
+    overflow: auto !important;
+    touch-action: auto !important;
+    overscroll-behavior: auto !important;
+  }
+}

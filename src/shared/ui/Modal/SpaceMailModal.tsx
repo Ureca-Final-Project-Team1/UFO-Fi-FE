@@ -18,7 +18,7 @@ export function SpaceMailModal({ isOpen, onOpenChange, name }: SpaceMailModalPro
 
   const handleConfirm = () => {
     onOpenChange(false);
-    router.push('/signal');
+    router.push('/signal?tab=letters');
   };
 
   return (

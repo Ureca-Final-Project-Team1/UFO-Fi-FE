@@ -73,7 +73,7 @@ export const API_ENDPOINTS = {
 
   // InterestedPost(1)
   INTERESTED_POST: {
-    NOTIFICATION_FILTER: '/v1/notification-filters/interested-post', // 관심 상품 등록 조건 설정
+    NOTIFICATION_FILTER: '/notification-filters/interested-post', // 관심 상품 등록 조건 설정
   },
 
   // Notification(1)
@@ -106,6 +106,8 @@ export const API_ENDPOINTS = {
     STATUS: '/payment/status', // 결제 정보 검증 및 승인
     CHARGE: '/payment', // 충전
     RECOVERY: '/admin/zet-recovery', // 관리자 zet 복구
+    PAYMENT: '/admin/payments', // 관리자 payment 리스트 조회
+    PAYMENT_DETAIL: (paymentId: number) => `/admin/payments/${paymentId}`, // 관리자 payment 상세 조회
   },
 
   // FCM Token(1)

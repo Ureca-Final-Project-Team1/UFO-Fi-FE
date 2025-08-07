@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { Plan, signupAPI } from '@/backend';
 import { Carrier } from '@/backend/types/carrier';
 import { OCRInputSection, Stepper } from '@/features/signup/components';
+import { registerFCMToken } from '@/lib/fcm';
 import { signupPlanSchema, SignupPlanSchema } from '@/schemas/signupSchema';
 import { Button, Title } from '@/shared';
 import { useSignupStore } from '@/stores/useSignupStore';
@@ -67,6 +68,11 @@ const PlanPage = () => {
           planName: selectedPlan.planName,
         },
       });
+
+      const response = await registerFCMToken();
+
+      if (!response) return;
+
       toast.success('회원가입이 완료되었습니다!');
       useSignupStore.getState().reset();
       router.push('/onboarding');

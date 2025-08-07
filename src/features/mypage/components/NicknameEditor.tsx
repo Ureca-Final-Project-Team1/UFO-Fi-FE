@@ -5,9 +5,16 @@ interface NicknameEditorProps {
   setNickname: (nickname: string) => void;
   onSave: () => void;
   isLoading: boolean;
+  placeholder?: string;
 }
 
-export function NicknameEditor({ nickname, setNickname, onSave, isLoading }: NicknameEditorProps) {
+export function NicknameEditor({
+  nickname,
+  setNickname,
+  onSave,
+  isLoading,
+  placeholder,
+}: NicknameEditorProps) {
   const isValid = nickname.length > 0 && nickname.length <= 15;
 
   return (
@@ -16,7 +23,7 @@ export function NicknameEditor({ nickname, setNickname, onSave, isLoading }: Nic
       <Input
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
-        placeholder="변경할 닉네임을 입력해주세요."
+        placeholder={placeholder || '변경할 닉네임을 입력해주세요.'}
         variant="whiteBorder"
         maxLength={15}
         error={!isValid && nickname ? '닉네임은 1~15자 이내여야 합니다.' : undefined}

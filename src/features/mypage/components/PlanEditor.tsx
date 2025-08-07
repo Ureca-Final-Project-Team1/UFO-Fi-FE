@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Plan } from '@/backend';
@@ -20,6 +20,10 @@ interface PlanEditorProps {
   isLoading: boolean;
   setIsLoading: (value: boolean) => void;
   onSave: () => void;
+  placeholder?: {
+    carrier?: string;
+    plan?: string;
+  };
 }
 
 export function PlanEditor({
@@ -32,6 +36,7 @@ export function PlanEditor({
   isLoading,
   setIsLoading,
   onSave,
+  placeholder,
 }: PlanEditorProps) {
   const [maxData, setMaxData] = useState<number | null>(null);
   const [networkType, setNetworkType] = useState('');
@@ -43,14 +48,20 @@ export function PlanEditor({
   } = useForm<SignupPlanSchema>({
     resolver: zodResolver(signupPlanSchema),
     defaultValues: {
-      carrier: carrier || '',
-      planName: plan || '',
+      carrier: carrier || placeholder?.carrier || '',
+      planName: plan || placeholder?.plan || '',
     },
   });
+
+  // placeholder를 폼 필드에 반영 (초기 렌더 이후)
+  useEffect(() => {
+    if (placeholder?.carrier) setValue('carrier', placeholder.carrier);
+  }, [placeholder, setValue]);
 
   return (
     <div>
       <h2 className="mb-4 font-semibold text-lg">요금제 변경</h2>
+
       <OCRInputSection
         control={control}
         errors={errors}
@@ -65,7 +76,12 @@ export function PlanEditor({
           if (carrier) setCarrier(carrier);
           if (planName) setPlan(planName);
         }}
+        placeholder={{
+          carrier: placeholder?.carrier ?? '',
+          planName: placeholder?.plan ?? '',
+        }}
       />
+
       {carrier && plan && maxData !== null && networkType && (
         <div className="w-full flex flex-col gap-5 mt-8">
           <hr className="border-t border-[var(--color-hr-border)] w-full" />
@@ -86,6 +102,7 @@ export function PlanEditor({
           </div>
         </div>
       )}
+
       <Button
         className="w-full h-12 mt-4"
         disabled={!carrier || !plan || isLoading}

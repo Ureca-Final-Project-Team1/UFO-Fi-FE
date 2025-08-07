@@ -31,7 +31,7 @@ export const reportAPI = {
 
   // 신고된 게시물 목록 조회
   getReportedPosts: async (): Promise<GetReportedPostsResponse> => {
-    const res = await apiRequest.get<GetReportedPostsResponse>(API_ENDPOINTS.REPORT.REPORT_POST(0));
+    const res = await apiRequest.get<GetReportedPostsResponse>(API_ENDPOINTS.REPORT.REPORT_CHECK);
     return res.data;
   },
 
