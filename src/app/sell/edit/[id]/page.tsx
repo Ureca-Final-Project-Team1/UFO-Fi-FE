@@ -128,6 +128,8 @@ export default function SellEditPage() {
           setValue={setValue}
           maxCapacity={maxCapacity}
           errorMessage={getSellErrorMessages.price(isValidPrice, pricePerGB)}
+          showTicks={false}
+          showLabels={false}
         />
 
         {/* 1GB당 가격 입력 */}

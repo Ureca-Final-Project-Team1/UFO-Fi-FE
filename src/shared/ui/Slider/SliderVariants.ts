@@ -49,7 +49,7 @@ export const sliderTrackVariants = cva('relative grow overflow-hidden rounded-fu
   },
   defaultVariants: {
     orientation: 'horizontal',
-    variant: 'default',
+    variant: 'secondary',
     size: 'md',
   },
 });
@@ -62,7 +62,8 @@ export const sliderRangeVariants = cva('absolute', {
       vertical: 'w-full',
     },
     variant: {
-      default: 'bg-primary',
+      default:
+        'bg-gradient-to-r from-[var(--color-badge-text-cyan)] to-[var(--color-exploration-gradient-to)]',
       primary: 'bg-primary',
       secondary: 'bg-secondary',
       accent: 'bg-accent',
