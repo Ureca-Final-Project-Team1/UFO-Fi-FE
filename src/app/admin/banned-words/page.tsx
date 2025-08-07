@@ -93,11 +93,11 @@ export default function AdminBannedWordsPage() {
   // 페이지네이션 설정
   const pagination: TablePagination = {
     enabled: true,
-    currentPage,
+    currentPage: currentPage + 1,
     totalPages,
     pageSize,
     totalElements,
-    onPageChange: setCurrentPage,
+    onPageChange: (page) => setCurrentPage(page - 1),
     onPageSizeChange: setPageSize,
     pageSizeOptions: [10, 20, 50],
   };

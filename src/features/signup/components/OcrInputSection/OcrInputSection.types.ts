@@ -16,4 +16,8 @@ export interface OCRInputSectionProps {
   isLoading: boolean;
   setIsLoading: (b: boolean) => void;
   setForm: (form: { carrier?: Carrier; planName?: string }) => void;
+  placeholder?: {
+    carrier?: string;
+    planName?: string;
+  };
 }

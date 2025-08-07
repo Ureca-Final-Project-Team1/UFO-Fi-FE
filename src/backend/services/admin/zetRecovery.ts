@@ -6,11 +6,15 @@ import type {
   ZetChargeLogResponse,
   ZetChargeLogDetailResponse,
 } from '@/backend/types/zetRecovery';
+import { API_ENDPOINTS } from '@/constants';
 
 export const zetRecoveryAPI = {
   // ZET 복구 처리
   async recoverZet(data: ZetRecoveryRequest): Promise<ZetRecoveryResponse> {
-    const response = await apiRequest.post<ZetRecoveryResponse>('/v1/admin/zet-recovery', data);
+    const response = await apiRequest.post<ZetRecoveryResponse>(
+      API_ENDPOINTS.PAYMENT.RECOVERY,
+      data,
+    );
     return response.data;
   },
 

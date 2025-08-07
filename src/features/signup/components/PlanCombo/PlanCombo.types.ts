@@ -3,4 +3,5 @@ export interface PlanComboProps {
   onSelect?: (value: string) => void;
   value: string;
   disabled: boolean;
+  placeholder?: string;
 }
