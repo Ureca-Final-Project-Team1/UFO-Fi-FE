@@ -7,20 +7,24 @@
 <div align="center">
 
 <p>
-서비스명 <strong>유포파이(UFO-Fi)</strong>는 <em>UFO</em>와 <em>Wi-Fi</em>의 합성어로,<br>
-남는 데이터를 가치 있는 연결로 전환하는 <strong>새로운 데이터 순환 허브</strong>를 지향합니다.
+<strong>데이터는 부족해도, 은하는 연결되어 있다 🌌</strong>
 </p>
 
 <p>
-유포파이는 유휴 데이터를 대신 보관하고 거래를 중개하는<br>
-<strong>수탁형 C2C 데이터 거래 구조</strong>를 바탕으로,<br>
-매달 소멸되는 데이터를 <strong>ZET(Zero Expired Traffic)</strong>라는 자체 재화로 전환해<br>
-가치를 부여하고 <strong>재사용 가능한 자산</strong>으로 만듭니다.
+지금 지구는요…<br>
+남는 데이터는 매달 <strong>소멸</strong>되고,<br>
+부족할 땐 <strong>비싼 요금</strong>으로 충전하며,<br>
+비공식 거래는 <strong>불안과 위험</strong>을 안고 있습니다.
 </p>
 
 <p>
-마치 외계 네트워크가 데이터를 대신 관리하고 중개하는 듯한 <strong>신뢰 구조</strong>를 통해,<br>
-사용자는 단순한 이용자가 아닌 <strong>데이터 생태계의 참여자</strong>가 됩니다.
+그래서 등장했습니다 – <strong>UFO-Fi 🛸</strong>
+</p>
+
+<p>
+👽 <strong>외계에서 온 신뢰의 데이터 중개사, 유포파이</strong>는<br>
+여러분의 데이터를 <strong>안전하게 보관</strong>하고,<br>
+필요한 사람에게 <strong>간편하고 신뢰 있게 연결</strong>해줍니다.
 </p>
 
 </div>
@@ -33,47 +37,57 @@
 | **팀명**       | AL1EN                            |
 | **주제**       | 무선 데이터 공유 플랫폼          |
 | **타겟층**     | 데이터 구매 수요 및 공급층       |
-| **개발 기간**  | 2025.06.30 ~ 2025.08.08 (약 5주) |
+| **개발 기간**  | 2025.06.30 ~ 2025.08.07 (약 5주) |
 
 ## 프로젝트 배경
 
-- **시장 분석**
-  - 무제한 요금제 확산에 따른 유휴 데이터 증가와 소멸 문제 심화
-  - 비공식 거래의 신뢰 부재와 통신사 선물 기능의 실효성 한계
-- **개발 동기**
-  - 데이터 자산을 유의미하게 재분배할 수 있는 거래 구조의 필요성 제기
-  - 디지털 소비에 익숙한 MZ세대를 위한 실용적이고 안전한 거래 환경 제공
+### 시장 분석
 
-## 기술 스택
+- **유휴 데이터의 구조적 소멸**
+  - 무제한 요금제 확산으로 과잉 제공된 데이터의 자동 소멸 현상
 
-| 분야                               | 기술 스택                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Frontend**                       | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-FF6B35?style=flat&logo=zustand&logoColor=white) ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat&logo=reactquery&logoColor=white) ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=flat&logo=axios&logoColor=white)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| **Frontend UI/UX & Testing**       | ![Shadcn/ui](https://img.shields.io/badge/Shadcn%2Fui-000000?style=flat&logo=shadcnui&logoColor=white) ![Storybook](https://img.shields.io/badge/Storybook-FF4785?style=flat&logo=storybook&logoColor=white) ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white) ![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat&logo=prettier&logoColor=black) ![Husky](https://img.shields.io/badge/Husky-42B883?style=flat&logo=husky&logoColor=white)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| **Backend**                        | ![Java](https://img.shields.io/badge/Java_17-ED8B00?style=flat&logo=openjdk&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white) ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat&logo=springsecurity&logoColor=white) ![OAuth2](https://img.shields.io/badge/OAuth2-4285F4?style=flat&logo=oauth&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=JSON%20web%20tokens&logoColor=white) ![JPA](https://img.shields.io/badge/JPA-59666C?style=flat&logo=hibernate&logoColor=white) ![QueryDSL](https://img.shields.io/badge/QueryDSL-0078D4?style=flat&logo=java&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white) ![FCM](https://img.shields.io/badge/FCM-FFCA28?style=flat&logo=firebase&logoColor=black)                                                                                                                                              |
-| **Backend Testing & Code Quality** | ![JUnit5](https://img.shields.io/badge/JUnit5-25A162?style=flat&logo=junit5&logoColor=white) ![Mockito](https://img.shields.io/badge/Mockito-25A162?style=flat&logo=mockito&logoColor=white) ![H2](https://img.shields.io/badge/H2-0078D4?style=flat&logo=h2&logoColor=white) ![Jacoco](https://img.shields.io/badge/Jacoco-DC382D?style=flat&logo=jacoco&logoColor=white)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| **Infrastructure**                 | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=github-actions&logoColor=white) ![AWS EC2](https://img.shields.io/badge/AWS_EC2-FF9900?style=flat&logo=amazon-ec2&logoColor=white) ![AWS RDS](https://img.shields.io/badge/AWS_RDS-527FFF?style=flat&logo=amazon-rds&logoColor=white) ![AWS S3](https://img.shields.io/badge/AWS_S3-569A31?style=flat&logo=amazon-s3&logoColor=white) ![AWS VPC](https://img.shields.io/badge/AWS_VPC-FF4F00?style=flat&logo=amazon-aws&logoColor=white) ![Route 53](https://img.shields.io/badge/Route_53-DA7B00?style=flat&logo=amazon-route-53&logoColor=white) ![AWS ACM](https://img.shields.io/badge/AWS_ACM-FF9900?style=flat&logo=amazon-aws&logoColor=white) ![AWS IAM](https://img.shields.io/badge/AWS_IAM-DD344C?style=flat&logo=amazon-aws&logoColor=white) ![ElastiCache](https://img.shields.io/badge/ElastiCache-C925D1?style=flat&logo=amazon-aws&logoColor=white) |
-| **Development Tools**              | ![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white) ![Jira](https://img.shields.io/badge/Jira-0052CC?style=flat&logo=jira&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-000000?style=flat&logo=notion&logoColor=white) ![Google Drive](https://img.shields.io/badge/Google_Drive-4285F4?style=flat&logo=googledrive&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white) ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat&logo=swagger&logoColor=black) ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white)                                                                                                                                                                                                                                                                                                                                                                       |
+- **비공식 거래의 신뢰성 문제**
+  - 중고 커뮤니티 기반 거래의 사기 위험성과 법적 보호의 부재
+
+- **공식 유통 채널의 부재**
+  - 통신사 데이터 선물 기능의 낮은 사용성과 거래 수단으로서의 한계
+
+### 개발 동기
+
+- **데이터 유통 구조 설계의 필요성**
+  - 소멸되는 데이터를 유통 가능한 자산으로 전환하기 위한 구조적 해결책의 필요
+
+- **신뢰 기반 개인 간 거래 환경 조성**
+  - 안전하고 공식적인 거래 구조를 통한 사용자 참여 유도
+
+## 프론트엔드 기술 스택
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-FF6B35?style=flat&logo=zustand&logoColor=white)
+![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat&logo=reactquery&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=flat&logo=axios&logoColor=white)
+![Shadcn/ui](https://img.shields.io/badge/Shadcn%2Fui-000000?style=flat&logo=shadcnui&logoColor=white)
+![Storybook](https://img.shields.io/badge/Storybook-FF4785?style=flat&logo=storybook&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white)
+![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat&logo=prettier&logoColor=black)
+![Husky](https://img.shields.io/badge/Husky-42B883?style=flat&logo=husky&logoColor=white)
 
 ## **주요 기능**
 
-| 번호   | 기능명                       | 설명                                                                                                                                                                                                                                                               |
-| ------ | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **1**  | 회원 인증 및 등급 시스템     | - Kakao OAuth2 소셜 로그인<br>- OAuth2 인증 후 JWT 자체 발급 방식 채택<br>- Refresh Token을 통한 장기 세션 유지 및 탈취 방지<br>- 명세서 OCR로 통신사 · 요금제 자동 추출 및 등록<br>- 로그아웃 시 Refresh Token 안전 폐기                                          |
-| **2**  | 무선 데이터 상품 게시글 등록 | - 판매 제목·용량·가격·통신사 입력으로 판매글 등록<br>- 계좌 등록된 사용자만 가능<br>- 판매 시점에 등록 용량이 차감되며<br>“잔여 = 전체 보유 - 판매 중 총량”으로 계산<br>- 금칙어 필터링 및 입력 제약 적용<br> - MySQL MVCC 기반 동시성 제어 설계(Lost Update 방지) |
-| **3**  | 일괄 구매 및 사용자 추천     | - 소비자는 예산/용량 기준으로 최적 매물 자동 추천<br>- 판매자 추천은 Qdrant 벡터화를 통한 신뢰도 기반<br> - 비관락 처리와 Slack 연동을 통한 예외 대응 설계                                                                                                         |
-| **4**  | ZET 재화 시스템              | - 1 ZET = 10원의 환전 시세 기준<br>- 단가 정책, 패키지 유도, 수수료 모델 설계                                                                                                                                                                                      |
-| **5**  | PG 결제 시스템 (Toss 연동)   | - Toss Payments 연동 실시간 카드 결제 도입<br>- 즉시 ZET 충전 및 안전한 키 기반 보안 처리                                                                                                                                                                          |
-| **6**  | 푸시 알림 시스템 (FCM)       | - 거래, 신고, 제재 등 실시간 알림 전송<br>- 브라우저 권한 UI 연동 및 백그라운드 수신 지원                                                                                                                                                                          |
-| **7**  | 백오피스 기능                | - 관리자 전용 판매글 신고/제재 관리<br>- 금칙어 등록·삭제·조회 기능<br>- 사용자/게시글/신고 수 실시간 통계 대시보드 제공                                                                                                                                           |
-| **8**  | 마이페이지 기능              | - 요금제, 계좌, 알림 설정 등 프로필 수정 가능<br>- 팔로우 사용자 목록 및 업적 뱃지, 거래 내역 조회                                                                                                                                                                 |
-| **9**  | 거래 평판 업적 기능          | - 거래 이력 기반 종족/등급/업적 뱃지 자동 부여<br>- 메인에서 평판 따라 행성 시각화                                                                                                                                                                                 |
-| **10** | 전파 스토리텔링 시스템       | - 거래 흐름 추적(최대 5단계) 및 거리 계산<br>- 각 단계마다 GPT 감성 편지 자동 생성<br>- 편지와 함께 뱃지·스탬프 보상 부여                                                                                                                                          |
+| 항목 | 사진 | 내용 |
+|--------|------------|--------|
+| **회원 인증 및 사용자 시스템** | <div align="center">![2025-08-07191140-ezgif com-resize](https://github.com/user-attachments/assets/e039d208-172a-4ee0-9f89-b76f4287e219)</div> | **Kakao OAuth2 소셜 로그인**<br>OAuth2 인증 후 자체 JWT + Refresh Token 발급<br><br>**요금제 자동 등록**<br>명세서 OCR 분석<br><br>**마이페이지**<br>요금제·계좌 관리, 거래 내역, 업적 시스템 제공 |
+| **ZET 충전 및 PG 결제 시스템** | <div align="center">![2025-08-07191337-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/1e887c3d-8a81-4f1b-8cb3-d2150231391a)</div> | **ZET(Zero Expired Traffic)**<br>내부 재화 (1ZET = 10원)<br><br>**Toss Payments** 연동 → 실시간 카드 결제 및 ZET 충전<br><br>**충전 상태 FSM 관리**<br>(요청 → 대기 → 성공/실패)<br><br>**보안 강화 + 예외 처리 UX 반영** |
+| **데이터 거래 시스템 (수탁형 구조)** | <div align="center">![2025-08-07191424-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/f0afc64a-c2fc-4d7b-8eee-1dd2cedc4fb0)</div> | **판매자**<br>통신사·용량·가격 입력 후 데이터 등록<br><br>**구매자**<br>전화번호 입력 → 플랫폼이 대신 전송 _(통신사 선물 기능 활용)_<br>판매 시점 잔여량 자동 차감 + ZET 자동 정산<br><br>**3단계 UI**<br>데이터 등록 → 구매 요청 → 수령 확인<br><br>**일괄구매 기능**<br>예산/용량 기반 최적 조합 탐색 + 일부 구매 가능 |
+| **운영 모니터링 및 관리자 백오피스** | <div align="center">![2025-08-07193627-ezgif com-resize](https://github.com/user-attachments/assets/dac96387-3689-4240-b80a-2d4e534dc7e0)</div> | **Slack Webhook 연동**<br>결제 실패, 트래픽 급증 자동 알림<br><br>**신고/제재 시스템**<br>자동 누적 차단 + 관리자 수동 처리<br><br>**금칙어 관리**<br>아호코라식 필터링, 사용자 정지/해제, ZET 복구 기능 포함<br><br>**운영 대시보드**<br>사용자/게시글/거래/신고 통계 실시간 시각화 |
+| **신뢰 기반 사용자 참여 시스템** | <div align="center">![2025-08-07205930-ezgif com-resize](https://github.com/user-attachments/assets/18a5ab81-9bb1-460a-b232-c28dcd3c9ffb)</div> | **팔로우 추천 시스템**<br>Qdrant 기반 유사·보완 사용자 자동 매칭<br><br>**FCM 푸시 알림**<br>거래 성사, 신고 결과 등 실시간 알림 제공<br><br>**전파 거리 시각화**<br>BFS 기반으로 판매자 ↔ 구매자 연결 깊이 최대 5단계 추적<br><br>**우주 편지 생성**<br>전파 단계마다 AI 편지 생성 및 업적 달성 보상 |
 
 ## 프로젝트 실행 방법
 
 ```bash
-npm ci
+npm i
 npm run build
 npm run dev
 ```
@@ -82,20 +96,130 @@ npm run dev
 
 - [Git Convention](https://github.com/Ureca-Final-Project-Team1/UFO-Fi-FE/wiki/Git-Convention)
 - [FE Code Convention](https://github.com/Ureca-Final-Project-Team1/UFO-Fi-FE/wiki/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-Code-Convention)
-- [BE Code Convention](https://github.com/Ureca-Final-Project-Team1/UFO-Fi-BE/blob/develop/CODE-STYLE.md)
 
-## IA
+## 우리가 한 것
 
-![IA](/docs/readme/IA.svg)
+## FSM 기반 결제 재시도 시스템 모델링
 
-## FE 팀원 소개
+> 다양한 실패 원인을 상태 흐름으로 제어하고, 사용자에게 정확한 안내 제공
 
-| 프로필                                                                | 이름                                                       | 주요 역할                                                                                                                                                            |
-| --------------------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/abyss-s.png" width="80" height="80"/>    | **이영주**<br>[@abyss-s](https://github.com/abyss-s)       | `팀 프로젝트 리드`, `프론트엔드 리드`, `FE`<br>프로젝트 전반 총괄 및 구조 설계<br>판매글 등록 · 일괄구매 · 필터링 기능 구현<br>FCM 기반 실시간 알림 시스템 구축      |
-| <img src="https://github.com/dogeonkim1.png" width="80" height="80"/> | **김도건**<br>[@dogeonkim1](https://github.com/dogeonkim1) | `스크럼 리드`, `QA`, `FE`<br>데이터 구매 페이지 및 조건 분기 처리<br>ZET 결제·충전 플로우 및 약관/정지 처리<br>관리자 백오피스: 신고 해제, 금칙어·공지 관리          |
-| <img src="https://github.com/minji-38.png" width="80" height="80"/>   | **안민지**<br>[@minji-38](https://github.com/minji-38)     | `기획·디자인 리드`, `FE`<br>ZET 충전/환불 로직 구현<br>신고 기능 · 간편비밀번호 입력 UI 전역 관리<br>마이페이지: 거래 평판 · 업적 · 팔로우 기능 개발                 |
-| <img src="https://github.com/kuru2141.png" width="80" height="80"/>   | **진영호**<br>[@kuru2141](https://github.com/kuru2141)     | `AI 리드`, `FE`<br>Kakao 소셜 로그인 + JWT 인증 흐름 구축<br>알림 설정/필터링 페이지 및 인증 미들웨어 개발<br>AI 기반 거래 사용자 추천 + 전파 스토리텔링 시스템 구현 |
+### 핵심 설계
+
+- **에러 분류**: `classifyError()`로 재시도 가능 여부 자동 판단
+- **상태 전이**: `RetryState` 기반 유한 상태머신 모델링
+- **로직 분리**: `usePurchaseRetry()` 훅으로 결제 흐름 추상화
+- **UI 대응**: 실패 유형별 맞춤 메시지 + 복구 버튼 제공
+
+### RetryState 상태 전이 다이어그램
+
+```mermaid
+stateDiagram-v2
+  [*] --> idle
+  idle --> processing
+  processing --> success
+  processing --> retrying: 재시도 가능 에러
+  retrying --> processing: 카운트다운 후 재시도
+  retrying --> error_recovery: 재시도 최대 도달
+  processing --> error_recovery: 재시도 불가 에러
+```
+
+### 에러 분류 기준
+
+| 구분   | 에러 예시                      | 처리 방식            |
+| ------ | ------------------------------ | -------------------- |
+| 재시도 | `timeout`, `500`, `503` 등     | 최대 3회 자동 재시도 |
+| 중단   | `410 Gone`, `잔액 부족`, `404` | 복구 전용 UI 전환    |
+
+### 성과 요약 (도입 전후 비교)
+
+| 지표           | 도입 전 | 도입 후 | 변화        |
+| -------------- | ------- | ------- | ----------- |
+| 세션 수        | 219     | 379     | +73% 증가   |
+| 평균 체류 시간 | 2.3분   | 2.9분   | +26% 증가   |
+| 고유 사용자 수 | 64      | 131     | 약 2배 증가 |
+
+### Qdrant 기반 팔로워 추천 시스템
+
+Qdrant + Prisma 기반 벡터 검색으로, 조건 필터링 후 유사 사용자 Top-N 추천
+
+```mermaid
+sequenceDiagram
+    participant User as 사용자
+    participant Service as 추천 서비스
+    participant Qdrant as Qdrant
+
+    User->>Service: 추천 요청
+    Service->>Service: 최근 거래 기반 사용자 벡터 생성
+    Service->>Service: Qdrant 필터 구성
+    Note right of Service: must: role = ROLE_USER<br>must_not: 본인, 이미 팔로우<br>should: 반대 유형, 유사 통신사/데이터
+    Service->>Qdrant: 유사도 기반 벡터 검색 실행
+    Qdrant-->>Service: 유사 사용자 Top 20 반환
+    Service->>Service: score 기준 정렬 및 정보 가공
+    Service-->>User: 추천 사용자 리스트 전달
+```
+
+### 전파거리 시각화 및 항해 편지 생성
+
+> 데이터 거래 기록을 BFS 탐색으로 추적하여
+> 최대 5단계까지 연결된 유저 간의 여정을 감성적으로 시각화
+
+- BFS 탐색: 구매자 → 판매자 방향의 거래 흐름을 유향 그래프로 구성해 너비 우선 탐색
+
+- 최장 경로 저장: 기존보다 더 긴 전파 경로 발견 시에만 기록하여 중복 및 불필요한 연산 최소화
+
+- GPT 편지 생성: 각 연결 구간마다 AI가 감성 메시지를 생성해 전파 여정을 서사화
+
+```mermaid
+flowchart TD
+  A[POST /api/story/letters 호출] --> B[기존 편지 조회]
+
+  B --> C{기존 최대 step ≥ 5인가?}
+  C -->|예| D[편지 생성 생략 후 응답]
+  C -->|아니오| E[BFS 탐색 수행]
+
+  E --> F{BFS 경로 길이 ≤ 기존 step인가?}
+  F -->|예| G[편지 생성 생략 후 응답]
+  F -->|아니오| H[사용자 닉네임 조회]
+
+  H --> I[전파 경로 루프 시작]
+  I --> J{해당 단계의 편지가 이미 존재하는가?}
+
+  J -->|예| K[기존 편지 재사용]
+  J -->|아니오| L[GPT에 편지 생성 요청]
+
+  L -->|성공| M[새 편지 DB 저장]
+  L -->|실패| N[기본 문구로 저장]
+
+  K & M & N --> O{다음 단계가 존재하는가?}
+  O -->|예| I
+  O -->|아니오| P[기존 편지들의 isLongestPath=false 처리]
+
+  P --> Q[201 Created 응답 반환]
+
+```
+
+### 프로필 공유
+
+> **React-qr-code** + **Web Share API**를 통해
+> 사용자의 프로필을 QR 코드 및 소셜 공유로 확산 가능
+
+- **QR 코드 생성**
+  - `react-qr-code`를 이용해 현재 프로필 URL을 실시간으로 QR 코드로 변환
+
+- **Web Share API 연동**
+  - 모바일 환경에서 카카오톡, 메시지 등으로 URL 공유 지원 (`navigator.share`)
+
+- **Next.js `generateMetadata()`**
+  - 각 사용자별로 **동적 메타데이터** 생성 → SNS 미리보기 (OG image, title 등) 최적화
+
+## FE 팀 소개
+
+| 프로필                                                                | 이름                                                       | 주요 역할 및 기여                                                                                                                                               |
+| --------------------------------------------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://github.com/abyss-s.png" width="80" height="80"/>    | **이영주**<br>[@abyss-s](https://github.com/abyss-s)       | `팀 리드`, `프론트엔드 리드`<br>- 프로젝트 구조 설계 및 전반 총괄<br>- 판매글 등록, 일괄구매, 필터링 기능 구현<br>- FSM 기반 상태관리 도입                      |
+| <img src="https://github.com/dogeonkim1.png" width="80" height="80"/> | **김도건**<br>[@dogeonkim1](https://github.com/dogeonkim1) | `스크럼 리드`, `QA`, `FE`<br>- ZET 충전 및 결제 약관 처리 구현<br>- 관리자 백오피스(신고 해제, 금칙어/사용자 관리)<br>- Storybook 문서 관리                     |
+| <img src="https://github.com/minji-38.png" width="80" height="80"/>   | **안민지**<br>[@minji-38](https://github.com/minji-38)     | `기획·디자인 리드`, `FE`<br>- 데이터 구매 프로세스 구현<br>- 전파거리 시각화 및 행성 디자인<br>- 마이페이지(평판, 업적, 팔로우) 개발                            |
+| <img src="https://github.com/kuru2141.png" width="80" height="80"/>   | **진영호**<br>[@kuru2141](https://github.com/kuru2141)     | `AI 리드`, `FE`<br>- Kakao 소셜 로그인 + JWT 인증 구현<br>- 알림 설정/필터링 페이지, 인증 미들웨어 개발<br>- GPT 기반 사용자 추천 + 전파 스토리텔링 시스템 구현 |
 
 ## 프로젝트 산출물
 
