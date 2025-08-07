@@ -121,7 +121,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
           style={containerStyle}
         >
           {!isNavigationHidden && (
-            <div className={isNavigationDisabled ? 'opacity-50 pointer-events-none' : ''}>
+            <div className={isNavigationDisabled ? 'pointer-events-none' : ''}>
               <TopNav />
             </div>
           )}
@@ -145,7 +145,7 @@ export function AppLayoutProvider({ children }: AppLayoutProviderProps) {
           {!isNavigationHidden && (
             <div
               className={`fixed bottom-0 left-0 w-full z-40 ${
-                isNavigationDisabled ? 'opacity-50 pointer-events-none' : ''
+                isNavigationDisabled ? 'pointer-events-none' : ''
               }`}
               style={{
                 height: `${BOTTOM_NAV_HEIGHT}px`,

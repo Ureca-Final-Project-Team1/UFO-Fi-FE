@@ -141,7 +141,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
               type="button"
               className={`min-w-[124px] max-w-[160px] h-[36px] bg-primary-700 border-2 border-blue-500 rounded-xl flex items-center justify-between transition-all px-3 overflow-hidden ${
                 isNavigationDisabled
-                  ? 'opacity-50 cursor-default pointer-events-none'
+                  ? 'cursor-default pointer-events-none'
                   : 'cursor-pointer hover:bg-primary-600 transition-colors'
               }`}
               onClick={handleZetClick}
@@ -166,7 +166,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
           )}
 
           {/* 알림 드롭다운 */}
-          <div className={isNavigationDisabled ? 'opacity-50 pointer-events-none' : ''}>
+          <div className={isNavigationDisabled ? 'pointer-events-none' : ''}>
             <NotificationDropdown
               isOpen={isNotificationOpen && !isNavigationDisabled}
               onToggle={handleNotificationToggle}
