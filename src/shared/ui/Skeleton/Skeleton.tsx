@@ -2,40 +2,20 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-type SkeletonElement = 'div' | 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-
-type AnimationVariant = 'pulse' | 'shimmer' | 'none';
-
-interface SkeletonProps extends React.HTMLAttributes<HTMLElement> {
-  as?: SkeletonElement;
-  variant?: AnimationVariant;
-}
-
-const getAnimationClass = (variant: AnimationVariant): string => {
-  switch (variant) {
-    case 'pulse':
-      return 'animate-pulse';
-    case 'shimmer':
-      return 'animate-shimmer bg-gradient-to-r from-muted via-muted/50 to-muted bg-[length:200%_100%]';
-    case 'none':
-      return '';
-    default:
-      return 'animate-pulse';
-  }
-};
-
-const getBackgroundClass = (variant: AnimationVariant): string => {
-  return variant === 'shimmer' ? '' : 'bg-muted';
-};
+import type { SkeletonProps, SkeletonElement, AnimationVariant } from './Skeleton.types';
+import { skeletonVariants } from './SkeletonVariants';
 
 const SkeletonComponent = React.forwardRef<HTMLElement, SkeletonProps>(
-  ({ className, as: Component = 'div', variant = 'pulse', ...props }, ref) => {
+  ({ className, as: Component = 'div', variant = 'pulse', size, shape, color, ...props }, ref) => {
     const elementProps = {
       ref,
       className: cn(
-        'rounded-md',
-        getAnimationClass(variant),
-        getBackgroundClass(variant),
+        skeletonVariants({
+          variant,
+          size,
+          shape,
+          color,
+        }),
         className,
       ),
       ...props,

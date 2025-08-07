@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Clean /tmp/chromatic-* build cache
+        run: rm -rf /tmp/chromatic-*
+
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:

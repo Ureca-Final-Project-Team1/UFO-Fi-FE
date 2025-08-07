@@ -2,14 +2,19 @@
 
 import React, { useState } from 'react';
 
+import { cn } from '@/lib/utils';
+
 import { Icon } from '../Icons';
 import type { ChipProps } from './Chip.types';
+import { chipVariants } from './chipVariants';
 
 export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
   (
     {
       selected = false,
       disabled = false,
+      variant = 'default',
+      size = 'md',
       leftIcon,
       rightIcon,
       children,
@@ -21,6 +26,17 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
   ) => {
     const { onClick, ...rest } = props;
     const [open, setOpen] = useState(false);
+
+    // 상태에 따른 state prop 결정
+    let chipState: 'disabled' | 'selected' | 'default';
+    if (disabled) {
+      chipState = 'disabled';
+    } else if (selected) {
+      chipState = 'selected';
+    } else {
+      chipState = 'default';
+    }
+
     const handleDropdownOpenClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (dropdown) {
         setOpen((prev) => !prev);
@@ -32,13 +48,10 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
       setOpen(false);
     };
 
-    const autoRightIcon = dropdown ? (
-      open ? (
-        <Icon name="ChevronUp" />
-      ) : (
-        <Icon name="ChevronDown" />
-      )
-    ) : undefined;
+    let autoRightIcon: React.ReactNode = undefined;
+    if (dropdown) {
+      autoRightIcon = open ? <Icon name="ChevronUp" /> : <Icon name="ChevronDown" />;
+    }
 
     return (
       <div>
@@ -46,13 +59,7 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
           ref={ref}
           type="button"
           disabled={disabled}
-          className={`
-            rounded-full font-medium cursor-pointer
-            border transition-colors flex items-center 
-            ${selected ? 'bg-primary-600 text-white border-primary-600' : 'bg-gray-800 text-gray-200 border-gray-700'}
-            ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary-400 hover:text-primary-400'}
-            ${className}
-          `}
+          className={cn(chipVariants({ variant, size, state: chipState }), className)}
           style={{
             fontSize: 'clamp(10px, 1.4vw, 14px)',
             ...rest.style,
@@ -87,4 +94,5 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
     );
   },
 );
+
 Chip.displayName = 'Chip';

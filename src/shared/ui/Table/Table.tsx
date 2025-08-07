@@ -9,6 +9,22 @@ import { BaseTableProps, BaseTableRow } from './Table.types';
 import { TableActions } from './TableActions/TableActions';
 import { TableCheckbox } from './TableCheckbox/TableCheckbox';
 import { TableSkeleton } from './TableSkeleton';
+import {
+  tableVariants,
+  tableContainerVariants,
+  tableHeaderVariants,
+  tableMobileHeaderVariants,
+  tableHeaderCellVariants,
+  tableRowVariants,
+  tableMobileRowVariants,
+  tableCellVariants,
+  tableEmptyVariants,
+  tableDividerVariants,
+  tablePaginationContainerVariants,
+  tablePageSizeVariants,
+  tablePageSizeSelectVariants,
+  tableDataInfoVariants,
+} from './TableVariants';
 import Pagination from '../Pagination/Pagination';
 
 export function Table<T extends BaseTableRow>({
@@ -20,6 +36,33 @@ export function Table<T extends BaseTableRow>({
   isLoading = false,
   emptyMessage = '데이터가 없습니다.',
   className,
+  // Main variants
+  variant = 'default',
+  size = 'md',
+  theme = 'light',
+  // Container variants
+  containerVariant = 'default',
+  containerTheme = 'light',
+  containerElevation = 'md',
+  // Header variants
+  headerVariant = 'default',
+  headerSize = 'md',
+  headerTheme = 'light',
+  // Row variants
+  rowVariant = 'default',
+  rowSize = 'md',
+  rowTheme = 'light',
+  // Cell variants
+  cellAlignment = 'left',
+  cellSize = 'md',
+  cellTheme = 'light',
+  cellTruncate = false,
+  // Empty state variants
+  emptySize = 'md',
+  emptyTheme = 'light',
+  // Divider variants
+  dividerVariant = 'default',
+  dividerTheme = 'light',
 }: BaseTableProps<T>) {
   const selectionHooks = useTableSelection({
     data,
@@ -34,14 +77,37 @@ export function Table<T extends BaseTableRow>({
   });
 
   return (
-    <div className={cn('space-y-4', className)}>
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+    <div
+      className={cn(
+        tableVariants({
+          variant,
+          size,
+          theme,
+        }),
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          tableContainerVariants({
+            variant: containerVariant,
+            theme: containerTheme,
+            elevation: containerElevation,
+          }),
+        )}
+      >
         <div
-          className="hidden md:grid gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700"
+          className={cn(
+            tableHeaderVariants({
+              variant: headerVariant,
+              size: headerSize,
+              theme: headerTheme,
+            }),
+          )}
           style={{ gridTemplateColumns: gridTemplate }}
         >
           {selection?.enabled && (
-            <div className="flex items-center justify-center">
+            <div className={cn(tableHeaderCellVariants({ alignment: 'center' }))}>
               <TableCheckbox
                 checked={selectionHooks.isAllSelected || false}
                 indeterminate={selectionHooks.isPartiallySelected}
@@ -53,21 +119,32 @@ export function Table<T extends BaseTableRow>({
           )}
 
           {columns.map((col) => (
-            <div key={String(col.accessor)} className="flex items-center">
+            <div
+              key={String(col.accessor)}
+              className={cn(tableHeaderCellVariants({ alignment: 'left' }))}
+            >
               {col.Header}
             </div>
           ))}
 
-          {actions && <div className="flex items-center justify-center">관리</div>}
+          {actions && (
+            <div className={cn(tableHeaderCellVariants({ alignment: 'center' }))}>관리</div>
+          )}
         </div>
 
         {/* 모바일 헤더 */}
         <div
-          className="md:hidden grid gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200 text-sm font-semibold text-gray-700"
+          className={cn(
+            tableMobileHeaderVariants({
+              variant: headerVariant,
+              size: headerSize,
+              theme: headerTheme,
+            }),
+          )}
           style={{ gridTemplateColumns: mobileGridTemplate }}
         >
           {selection?.enabled && (
-            <div className="flex items-center justify-center">
+            <div className={cn(tableHeaderCellVariants({ alignment: 'center' }))}>
               <TableCheckbox
                 checked={selectionHooks.isAllSelected}
                 indeterminate={selectionHooks.isPartiallySelected}
@@ -80,16 +157,28 @@ export function Table<T extends BaseTableRow>({
           {columns
             .filter((col) => !col.mobileHidden)
             .map((col) => (
-              <div key={String(col.accessor)} className="flex items-center">
+              <div
+                key={String(col.accessor)}
+                className={cn(tableHeaderCellVariants({ alignment: 'left' }))}
+              >
                 {col.Header}
               </div>
             ))}
 
-          {actions && <div className="flex items-center justify-center">관리</div>}
+          {actions && (
+            <div className={cn(tableHeaderCellVariants({ alignment: 'center' }))}>관리</div>
+          )}
         </div>
 
         {/* 데이터 행들 */}
-        <div className="divide-y divide-gray-100">
+        <div
+          className={cn(
+            tableDividerVariants({
+              variant: dividerVariant,
+              theme: dividerTheme,
+            }),
+          )}
+        >
           {isLoading ? (
             <TableSkeleton
               columns={columns}
@@ -98,7 +187,16 @@ export function Table<T extends BaseTableRow>({
               gridTemplate={gridTemplate}
             />
           ) : data.length === 0 ? (
-            <div className="px-4 py-8 text-center text-gray-500">{emptyMessage}</div>
+            <div
+              className={cn(
+                tableEmptyVariants({
+                  size: emptySize,
+                  theme: emptyTheme,
+                }),
+              )}
+            >
+              {emptyMessage}
+            </div>
           ) : (
             data
               .filter((row) => row.id != null)
@@ -107,13 +205,17 @@ export function Table<T extends BaseTableRow>({
                   {/* 데스크톱 행 */}
                   <div
                     className={cn(
-                      'hidden md:grid gap-4 px-4 py-3 hover:bg-gray-50 transition-colors text-sm',
-                      selection?.selectedIds.includes(row.id) && 'bg-blue-50',
+                      tableRowVariants({
+                        variant: rowVariant,
+                        size: rowSize,
+                        theme: rowTheme,
+                        selected: selection?.selectedIds.includes(row.id) || false,
+                      }),
                     )}
                     style={{ gridTemplateColumns: gridTemplate }}
                   >
                     {selection?.enabled && (
-                      <div className="flex items-center justify-center">
+                      <div className={cn(tableCellVariants({ alignment: 'center' }))}>
                         <TableCheckbox
                           checked={selection.selectedIds.includes(row.id)}
                           onChange={() => selectionHooks.handleSelectRow(row.id)}
@@ -123,7 +225,17 @@ export function Table<T extends BaseTableRow>({
                     )}
 
                     {columns.map((col) => (
-                      <div key={String(col.accessor)} className="flex items-center text-gray-900">
+                      <div
+                        key={String(col.accessor)}
+                        className={cn(
+                          tableCellVariants({
+                            alignment: cellAlignment,
+                            size: cellSize,
+                            theme: cellTheme,
+                            truncate: cellTruncate,
+                          }),
+                        )}
+                      >
                         {col.render
                           ? col.render(row[col.accessor as keyof T], row)
                           : String(row[col.accessor as keyof T] ?? '')}
@@ -136,13 +248,17 @@ export function Table<T extends BaseTableRow>({
                   {/* 모바일 행 */}
                   <div
                     className={cn(
-                      'md:hidden grid gap-4 px-4 py-3 hover:bg-gray-50 transition-colors text-sm',
-                      selection?.selectedIds.includes(row.id) && 'bg-blue-50',
+                      tableMobileRowVariants({
+                        variant: rowVariant,
+                        size: rowSize,
+                        theme: rowTheme,
+                        selected: selection?.selectedIds.includes(row.id) || false,
+                      }),
                     )}
                     style={{ gridTemplateColumns: mobileGridTemplate }}
                   >
                     {selection?.enabled && (
-                      <div className="flex items-center justify-center">
+                      <div className={cn(tableCellVariants({ alignment: 'center' }))}>
                         <TableCheckbox
                           checked={selection.selectedIds.includes(row.id)}
                           onChange={() => selectionHooks.handleSelectRow(row.id)}
@@ -154,7 +270,17 @@ export function Table<T extends BaseTableRow>({
                     {columns
                       .filter((col) => !col.mobileHidden)
                       .map((col) => (
-                        <div key={String(col.accessor)} className="flex items-center text-gray-900">
+                        <div
+                          key={String(col.accessor)}
+                          className={cn(
+                            tableCellVariants({
+                              alignment: cellAlignment,
+                              size: cellSize,
+                              theme: cellTheme,
+                              truncate: cellTruncate,
+                            }),
+                          )}
+                        >
                           {col.render
                             ? col.render(row[col.accessor as keyof T], row)
                             : String(row[col.accessor as keyof T] ?? '')}
@@ -172,14 +298,33 @@ export function Table<T extends BaseTableRow>({
 
         {/* 페이지네이션 */}
         {pagination?.enabled && pagination.totalPages > 1 && (
-          <div className="px-4 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div
+            className={cn(
+              tablePaginationContainerVariants({
+                size: rowSize,
+                theme: rowTheme,
+              }),
+            )}
+          >
             {/* 페이지 크기 선택 */}
-            <div className="flex items-center gap-2">
+            <div
+              className={cn(
+                tablePageSizeVariants({
+                  size: cellSize,
+                  theme: cellTheme,
+                }),
+              )}
+            >
               <span className="text-sm text-gray-600">페이지당:</span>
               <select
                 value={pagination.pageSize}
                 onChange={(e) => pagination.onPageSizeChange(Number(e.target.value))}
-                className="px-2 py-1 border border-gray-300 rounded text-sm"
+                className={cn(
+                  tablePageSizeSelectVariants({
+                    size: cellSize,
+                    theme: cellTheme,
+                  }),
+                )}
                 disabled={isLoading}
               >
                 {(pagination.pageSizeOptions || [10, 20, 50]).map((size) => (
@@ -198,7 +343,14 @@ export function Table<T extends BaseTableRow>({
             />
 
             {/* 데이터 정보 */}
-            <div className="text-sm text-gray-600">
+            <div
+              className={cn(
+                tableDataInfoVariants({
+                  size: cellSize,
+                  theme: cellTheme,
+                }),
+              )}
+            >
               {(pagination.currentPage - 1) * pagination.pageSize + 1}-
               {Math.min(pagination.currentPage * pagination.pageSize, pagination.totalElements)} /
               {pagination.totalElements}개

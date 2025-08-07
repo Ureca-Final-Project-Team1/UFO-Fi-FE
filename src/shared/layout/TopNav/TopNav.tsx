@@ -32,7 +32,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
   const [isLoading, setIsLoading] = useState(false);
 
   // 알림 데이터 로드 함수
-  const loadNotifications = async () => {
+  const loadNotifications = React.useCallback(async () => {
     // 비활성화 상태에서는 알림 로드 안 함
     if (isNavigationDisabled) return;
 
@@ -58,14 +58,14 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [isNavigationDisabled]);
 
   // 드롭다운 열릴 때 알림 로드
   useEffect(() => {
     if (isNotificationOpen && !isNavigationDisabled) {
       loadNotifications();
     }
-  }, [isNotificationOpen, isNavigationDisabled]);
+  }, [isNotificationOpen, isNavigationDisabled, loadNotifications]);
 
   const handleMarkAllRead = async () => {
     if (isNavigationDisabled) return;
@@ -137,23 +137,22 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
           {isMyInfoLoading ? (
             <div className="min-w-[124px] max-w-[160px] h-[36px] rounded-xl px-3" />
           ) : (
-            <div
+            <button
+              type="button"
               className={`min-w-[124px] max-w-[160px] h-[36px] bg-primary-700 border-2 border-blue-500 rounded-xl flex items-center justify-between transition-all px-3 overflow-hidden ${
                 isNavigationDisabled
                   ? 'opacity-50 cursor-default pointer-events-none'
                   : 'cursor-pointer hover:bg-primary-600 transition-colors'
               }`}
               onClick={handleZetClick}
-              {...(isNavigationDisabled && {
-                tabIndex: -1,
-                'aria-disabled': true,
-              })}
+              disabled={isNavigationDisabled}
+              aria-label="충전하기"
             >
               <div className="flex items-center overflow-hidden">
                 <span className="body-16-bold text-cyan-400 truncate max-w-[84px]">
                   {formattedZet}
                 </span>
-                <span className="body-16-bold text-cyan-400 ml-1">ZET</span>
+                <span className="body-16-bold text-cyan-400 px-1">ZET</span>
               </div>
               <div className="size-5 bg-cyan-400 rounded-full flex items-center justify-center">
                 <Icon
@@ -163,7 +162,7 @@ const TopNav: React.FC<TopNavProps> = ({ title = 'UFO-Fi', onNotificationClick }
                   className="font-black"
                 />
               </div>
-            </div>
+            </button>
           )}
 
           {/* 알림 드롭다운 */}

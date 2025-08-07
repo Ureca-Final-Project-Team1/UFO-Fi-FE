@@ -17,6 +17,38 @@ const meta: Meta<typeof Tooltip> = {
       },
     },
   },
+  argTypes: {
+    contentVariant: {
+      control: { type: 'select' },
+      options: ['default', 'primary', 'secondary', 'success', 'warning', 'error', 'custom'],
+      description: '툴팁 콘텐츠 스타일 변형',
+    },
+    contentSize: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg', 'xl'],
+      description: '툴팁 콘텐츠 크기',
+    },
+    contentTheme: {
+      control: { type: 'select' },
+      options: ['light', 'dark', 'custom'],
+      description: '툴팁 콘텐츠 테마',
+    },
+    contentRounded: {
+      control: { type: 'select' },
+      options: ['none', 'sm', 'md', 'lg', 'full'],
+      description: '툴팁 콘텐츠 둥근 모서리',
+    },
+    arrowVariant: {
+      control: { type: 'select' },
+      options: ['default', 'primary', 'secondary', 'success', 'warning', 'error', 'custom'],
+      description: '툴팁 화살표 스타일 변형',
+    },
+    arrowSize: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+      description: '툴팁 화살표 크기',
+    },
+  },
 };
 
 export default meta;
@@ -150,6 +182,141 @@ export const DisabledButton: Story = {
     docs: {
       description: {
         story: '비활성화된 버튼에 대한 설명을 제공하는 Tooltip 예시입니다.',
+      },
+    },
+  },
+};
+
+// 다양한 크기
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Tooltip content="Small size" contentSize="sm">
+        <Button>Small</Button>
+      </Tooltip>
+      <Tooltip content="Medium size (default)" contentSize="md">
+        <Button>Medium</Button>
+      </Tooltip>
+      <Tooltip content="Large size" contentSize="lg">
+        <Button>Large</Button>
+      </Tooltip>
+      <Tooltip content="Extra large size" contentSize="xl">
+        <Button>XL</Button>
+      </Tooltip>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '다양한 크기의 Tooltip을 보여줍니다.',
+      },
+    },
+  },
+};
+
+// 다양한 변형
+export const Variants: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Tooltip content="Default variant" contentVariant="default">
+        <Button>Default</Button>
+      </Tooltip>
+      <Tooltip content="Primary variant" contentVariant="primary">
+        <Button>Primary</Button>
+      </Tooltip>
+      <Tooltip content="Secondary variant" contentVariant="secondary">
+        <Button>Secondary</Button>
+      </Tooltip>
+      <Tooltip content="Success variant" contentVariant="success">
+        <Button>Success</Button>
+      </Tooltip>
+      <Tooltip content="Warning variant" contentVariant="warning">
+        <Button>Warning</Button>
+      </Tooltip>
+      <Tooltip content="Error variant" contentVariant="error">
+        <Button>Error</Button>
+      </Tooltip>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '다양한 스타일 변형의 Tooltip을 보여줍니다.',
+      },
+    },
+  },
+};
+
+// 다양한 테마
+export const Themes: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Tooltip content="Light theme" contentTheme="light">
+        <Button>Light</Button>
+      </Tooltip>
+      <Tooltip content="Dark theme" contentTheme="dark">
+        <Button>Dark</Button>
+      </Tooltip>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '다양한 테마의 Tooltip을 보여줍니다.',
+      },
+    },
+  },
+};
+
+// 다양한 둥근 모서리
+export const Rounded: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Tooltip content="No rounded" contentRounded="none">
+        <Button>None</Button>
+      </Tooltip>
+      <Tooltip content="Small rounded" contentRounded="sm">
+        <Button>Small</Button>
+      </Tooltip>
+      <Tooltip content="Medium rounded (default)" contentRounded="md">
+        <Button>Medium</Button>
+      </Tooltip>
+      <Tooltip content="Large rounded" contentRounded="lg">
+        <Button>Large</Button>
+      </Tooltip>
+      <Tooltip content="Full rounded" contentRounded="full">
+        <Button>Full</Button>
+      </Tooltip>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '다양한 둥근 모서리의 Tooltip을 보여줍니다.',
+      },
+    },
+  },
+};
+
+// 다양한 화살표 크기
+export const ArrowSizes: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Tooltip content="Small arrow" arrowSize="sm">
+        <Button>Small</Button>
+      </Tooltip>
+      <Tooltip content="Medium arrow (default)" arrowSize="md">
+        <Button>Medium</Button>
+      </Tooltip>
+      <Tooltip content="Large arrow" arrowSize="lg">
+        <Button>Large</Button>
+      </Tooltip>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: '다양한 화살표 크기의 Tooltip을 보여줍니다.',
       },
     },
   },
