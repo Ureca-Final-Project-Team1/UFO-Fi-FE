@@ -28,7 +28,14 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
     const [open, setOpen] = useState(false);
 
     // 상태에 따른 state prop 결정
-    const chipState = disabled ? 'disabled' : selected ? 'selected' : 'default';
+    let chipState: 'disabled' | 'selected' | 'default';
+    if (disabled) {
+      chipState = 'disabled';
+    } else if (selected) {
+      chipState = 'selected';
+    } else {
+      chipState = 'default';
+    }
 
     const handleDropdownOpenClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (dropdown) {
@@ -41,13 +48,10 @@ export const Chip = React.forwardRef<HTMLButtonElement, ChipProps>(
       setOpen(false);
     };
 
-    const autoRightIcon = dropdown ? (
-      open ? (
-        <Icon name="ChevronUp" />
-      ) : (
-        <Icon name="ChevronDown" />
-      )
-    ) : undefined;
+    let autoRightIcon: React.ReactNode = undefined;
+    if (dropdown) {
+      autoRightIcon = open ? <Icon name="ChevronUp" /> : <Icon name="ChevronDown" />;
+    }
 
     return (
       <div>
