@@ -2,7 +2,6 @@ import { apiRequest } from '@/backend/client/axios';
 import type {
   ZetRecoveryRequest,
   ZetRecoveryResponse,
-  ZetChargeLogRequest,
   ZetChargeLogResponse,
   ZetChargeLogDetailResponse,
 } from '@/backend/types/zetRecovery';
@@ -19,24 +18,15 @@ export const zetRecoveryAPI = {
   },
 
   // ZET 충전 내역 로그 조회 (페이지네이션)
-  async getChargeLogs(params?: ZetChargeLogRequest): Promise<ZetChargeLogResponse> {
-    const response = await apiRequest.get<ZetChargeLogResponse>('/v1/admin/zet-charge-logs', {
-      params: {
-        page: params?.page || 0,
-        size: params?.size || 10,
-        startDate: params?.startDate,
-        endDate: params?.endDate,
-        status: params?.status,
-        userId: params?.userId,
-      },
-    });
+  async getChargeLogs(): Promise<ZetChargeLogResponse> {
+    const response = await apiRequest.get<ZetChargeLogResponse>(API_ENDPOINTS.PAYMENT.PAYMENT);
     return response.data;
   },
 
   // ZET 충전 로그 상세 조회
-  async getChargeLogDetail(logId: number): Promise<ZetChargeLogDetailResponse> {
+  async getChargeLogDetail(paymentId: number): Promise<ZetChargeLogDetailResponse> {
     const response = await apiRequest.get<ZetChargeLogDetailResponse>(
-      `/v1/admin/zet-charge-logs/${logId}`,
+      API_ENDPOINTS.PAYMENT.PAYMENT_DETAIL(paymentId),
     );
     return response.data;
   },
