@@ -186,7 +186,7 @@ export function useBannedWords(): UseBannedWordsReturn {
     (page: number) => {
       const adjustedPage = page - 1;
       setCurrentPage(adjustedPage);
-      fetchBannedWords(adjustedPage, pageSize);
+      fetchBannedWords(page, pageSize);
     },
     [pageSize, fetchBannedWords],
   );
