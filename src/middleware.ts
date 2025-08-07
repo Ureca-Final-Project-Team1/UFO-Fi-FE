@@ -16,11 +16,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 루트 경로는 허용
-  if (pathname === '/') {
-    return NextResponse.next();
-  }
-
   // 공개 라우트 확인
   if (routeUtils.isPublicRoute(pathname) || routeUtils.isSignupRoute(pathname)) {
     return NextResponse.next();
@@ -34,6 +29,12 @@ export function middleware(request: NextRequest) {
     const loginUrl = new URL('/login', request.url);
     // 원래 접근하려던 URL을 리다이렉트 파라미터로 저장
     loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // 미인증 시 로그인으로 리다이렉트
+  if (pathname === '/' && !isAuthenticated) {
+    const loginUrl = new URL('/login', request.url);
     return NextResponse.redirect(loginUrl);
   }
 

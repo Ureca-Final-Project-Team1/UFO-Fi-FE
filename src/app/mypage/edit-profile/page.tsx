@@ -6,8 +6,10 @@ import { toast } from 'sonner';
 
 import { ConfirmModal, NicknameEditor } from '@/features/mypage/components';
 import { PlanEditor } from '@/features/mypage/components/PlanEditor';
+import { useMyInfo } from '@/features/mypage/hooks';
 import { useEditProfile } from '@/features/mypage/hooks/useEditProfile';
 import { Title } from '@/shared';
+import { useUserPlan } from '@/shared/hooks/useUserPlan';
 
 export default function EditProfilePage() {
   const router = useRouter();
@@ -24,6 +26,9 @@ export default function EditProfilePage() {
     saveNickname,
     savePlan,
   } = useEditProfile();
+
+  const { data: myInfo } = useMyInfo();
+  const { data: userPlan } = useUserPlan();
 
   const [modalType, setModalType] = useState<'nickname' | 'plan' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,6 +71,7 @@ export default function EditProfilePage() {
           setNickname={setNickname}
           onSave={handleSaveNickname}
           isLoading={status === 'loading'}
+          placeholder={myInfo?.nickname}
         />
 
         <PlanEditor
@@ -78,6 +84,10 @@ export default function EditProfilePage() {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           onSave={handleSavePlan}
+          placeholder={{
+            carrier: userPlan?.carrier ?? '',
+            plan: userPlan?.planName ?? '',
+          }}
         />
       </div>
 

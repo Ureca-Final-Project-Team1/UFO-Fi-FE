@@ -21,39 +21,23 @@ export interface ZetRecoveryContent {
 export type ZetRecoveryResponse = SuccessApiResponse<ZetRecoveryContent>;
 
 // ZET 충전 로그 관련 타입들
-export interface ZetChargeLogRequest {
-  page?: number;
-  size?: number;
-  startDate?: string;
-  endDate?: string;
-  status?: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
-  userId?: number;
-}
-
 export interface ZetChargeLogItem {
   id: number;
   orderId: string;
   userId: number;
-  userName: string;
-  amount: number;
-  zetAmount: number;
-  status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
-  paymentMethod: string;
-  createdAt: string;
-  completedAt?: string;
-  failReason?: string;
-  tossPaymentKey?: string;
+  username: string;
+  price: number;
+  paymentStatus: 'DONE' | 'FAIL' | 'IN_PROGRESS' | 'READY' | 'TIMEOUT';
+  requestedAt: string;
 }
 
 // 로그 상세 조회용 타입
 export interface ZetPaymentRequestLog {
   orderId: string;
   userId: number;
-  amount: number;
-  paymentMethod: string;
-  timestamp: string;
-  // customerName?: string;
-  // customerEmail?: string;
+  confirmReq: string;
+  confirmResult: string;
+  methodTrace: string;
 }
 
 export interface ZetTossPaymentResponseLog {
@@ -76,23 +60,18 @@ export interface ZetStatusTransition {
 }
 
 export interface ZetChargeLogDetail {
-  id: number;
-  title: string;
-  request: ZetPaymentRequestLog;
-  tossResponse: ZetTossPaymentResponseLog;
-  statusTransition: ZetStatusTransition[];
+  orderId: string;
+  confirmReq: string;
+  confirmResult: string;
+  methodTrace: string;
 }
 
 export interface ZetChargeLogContent {
-  content: ZetChargeLogItem[];
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  number: number;
-  numberOfElements: number;
-  first: boolean;
-  last: boolean;
-  empty: boolean;
+  paymentBackOfficesRes: ZetChargeLogItem[];
+}
+
+export interface ZetChargeLogResponseContent {
+  paymentBackOfficesRes: ZetChargeLogItem[];
 }
 
 export type ZetChargeLogResponse = SuccessApiResponse<ZetChargeLogContent>;

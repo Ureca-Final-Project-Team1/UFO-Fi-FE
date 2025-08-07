@@ -2,14 +2,17 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { sellAPI, myInfoAPI, purchaseHistory, ExchangePost, Carrier } from '@/backend';
+import type { FilterState } from '@/features/exchange/components/ExchangeFilters';
 import { ExchangeHeader } from '@/features/exchange/components/ExchangeHeader';
 import { ExchangeList } from '@/features/exchange/components/ExchangeList';
 import { Modal, ReportedModal, Title } from '@/shared';
+import { TutorialOverlay } from '@/shared/components/TutorialOverlay';
 import { useUserPlan } from '@/shared/hooks/useUserPlan';
+import type { TutorialStep } from '@/shared/types/tutorial';
 import { queryKeys } from '@/shared/utils';
 import { usePurchaseFlowStore } from '@/stores/usePurchaseFlowStore';
 
@@ -24,6 +27,36 @@ export default function ExchangePage() {
   const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
   const [refetchList, setRefetchList] = useState<() => void>(() => () => {});
   const { data: userPlan } = useUserPlan();
+  const [step, setStep] = useState<TutorialStep>(0);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({});
+
+  useEffect(() => {
+    const seen = localStorage.getItem('tutorial_exchange');
+    if (!seen) setShowTutorial(true);
+  }, []);
+
+  const handleNext = () => {
+    if (step < 1) {
+      setStep((prev: TutorialStep) => prev + 1);
+    } else {
+      handleClose();
+    }
+  };
+
+  const handleClose = () => {
+    localStorage.setItem('tutorial_exchange', 'true');
+    setShowTutorial(false);
+  };
+
+  // Filter handlers
+  const handleFiltersChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+  };
+
+  const handleFiltersReset = () => {
+    setFilters({});
+  };
 
   // 캐시 무효화
   const refetchExchangeData = () => {
@@ -139,11 +172,21 @@ export default function ExchangePage() {
           <Title title="전파 거래소" iconVariant="back" />
         </header>
 
-        <section className="mb-5" aria-label="거래소 정보 및 필터">
-          <ExchangeHeader />
+        <section
+          className={`mb-5 ${showTutorial && step === 0 ? 'relative z-50' : ''}`}
+          aria-label="거래소 정보 및 필터"
+        >
+          <ExchangeHeader
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            onFiltersReset={handleFiltersReset}
+          />
         </section>
 
-        <section aria-label="데이터 거래 게시물 목록">
+        <section
+          aria-label="데이터 거래 게시물 목록"
+          className={showTutorial && step === 1 ? 'relative z-50' : ''}
+        >
           <h2 className="sr-only">거래 게시물</h2>
           <ExchangeList
             onEdit={handleEdit}
@@ -153,6 +196,7 @@ export default function ExchangePage() {
             purchaseLoading={isPurchaseLoading}
             onRefetch={(refetchFunction) => setRefetchList(() => refetchFunction)}
             myCarrier={userPlan?.carrier as Carrier}
+            filters={filters}
           />
         </section>
       </main>
@@ -177,6 +221,19 @@ export default function ExchangePage() {
         postOwnerUserId={reportModal.sellerId}
         onSuccess={refetchExchangeData}
       />
+
+      {showTutorial && (
+        <TutorialOverlay
+          step={step}
+          descriptions={[
+            '맞춤상품 알림 신청, 일괄 구매, 현재 판매 가능 용량 확인은 여기에서 해결하세요!',
+            '현재 판매중인 상품 리스트를 확인하세요! 즐거운 소비!',
+          ]}
+          onNext={handleNext}
+          onClose={handleClose}
+          tutorialKey="exchange"
+        />
+      )}
     </div>
   );
 }

@@ -94,7 +94,7 @@ export default function OnboardingPage() {
       <div
         className={`absolute left-0 right-0 ${STYLE.BOTTOM_SPACING} flex flex-col items-center space-y-6 ${STYLE.Z_INDEX.ALIEN_AND_BUTTON} ${STYLE.BOTTOM_CONTAINER_HEIGHT}`}
       >
-        <AlienWithSpeech message={step.alienMessage} />
+        <AlienWithSpeech title={step.alienTitle} message={step.alienMessage} />
 
         <div className="flex flex-col items-center space-y-4 mb-5">
           <StepIndicator

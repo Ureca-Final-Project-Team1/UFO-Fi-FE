@@ -33,6 +33,7 @@ export const OCRInputSection = ({
   isLoading,
   setIsLoading,
   setForm,
+  placeholder,
 }: OCRInputSectionProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const prevCarrier = useRef('');
@@ -209,6 +210,7 @@ export const OCRInputSection = ({
                 }
               }}
               disabled={isLoading}
+              placeholder={placeholder?.planName}
             />
           )}
         />

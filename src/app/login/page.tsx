@@ -43,7 +43,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="h-screen w-full flex flex-col overflow-hidden" aria-labelledby="login-title">
+    <div className="h-full w-full flex flex-col overflow-hidden" aria-labelledby="login-title">
       <div className="flex-1 flex items-center justify-center px-6">
         <div className="text-center max-w-md w-full">
           {/* 로고 및 타이틀 */}
