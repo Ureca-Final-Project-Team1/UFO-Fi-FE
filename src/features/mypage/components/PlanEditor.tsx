@@ -56,7 +56,6 @@ export function PlanEditor({
   // placeholder를 폼 필드에 반영 (초기 렌더 이후)
   useEffect(() => {
     if (placeholder?.carrier) setValue('carrier', placeholder.carrier);
-    if (placeholder?.plan) setValue('planName', placeholder.plan);
   }, [placeholder, setValue]);
 
   return (
