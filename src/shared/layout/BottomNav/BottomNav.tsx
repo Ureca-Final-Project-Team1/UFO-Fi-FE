@@ -65,9 +65,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ onTabChange }) => {
                   onClick={(event) => handleTabClick(item.id, event)}
                   className={cn(
                     'flex flex-col items-center justify-center gap-1 transition-all duration-200 no-underline',
-                    isNavigationDisabled
-                      ? 'pointer-events-none opacity-50 cursor-default'
-                      : 'cursor-pointer',
+                    isNavigationDisabled ? 'pointer-events-none cursor-default' : 'cursor-pointer',
                     isHome
                       ? 'w-full h-[72px] bg-primary-400 rounded-t-3xl'
                       : 'w-full h-16 hover:bg-white/5 active:scale-95',
