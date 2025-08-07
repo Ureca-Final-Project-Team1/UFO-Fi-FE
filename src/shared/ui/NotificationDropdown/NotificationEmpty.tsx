@@ -28,7 +28,7 @@ export const NotificationEmpty: React.FC<NotificationEmptyProps> = ({
   return (
     <div className={cn(notificationEmptyVariants({ variant, size }), className)}>
       <div className={cn(notificationEmptyIconVariants({ size: iconSize, variant: iconVariant }))}>
-        {customIcon || <Icon name="Bell" className="w-8 h-8 text-gray-400" color="white" />}
+        {customIcon || <Icon name="Bell" className="w-8 h-8 text-gray-400" />}
       </div>
       <h4
         className={cn(notificationEmptyTitleVariants({ size: titleSize, variant: titleVariant }))}

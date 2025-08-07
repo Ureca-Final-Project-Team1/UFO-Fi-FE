@@ -34,7 +34,7 @@ export const NotificationHeader: React.FC<NotificationHeaderProps> = ({
             notificationHeaderTitleVariants({ size: titleSize, variant: titleVariant }),
           )}
         >
-          {customIcon || <Icon name="Bell" className="size-4" color="white" />}
+          {customIcon || <Icon name="Bell" className="size-4" />}
           {customTitle}
           {showBadge && unreadCount > 0 && (
             <span className={cn(notificationHeaderBadgeVariants({ variant: badgeVariant }))}>
