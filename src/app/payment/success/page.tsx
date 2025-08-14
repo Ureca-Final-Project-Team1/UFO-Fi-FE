@@ -80,6 +80,7 @@ function PaymentSuccessContent() {
     };
 
     confirmPayment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 의존성 배열을 비워서 마운트 시에만 실행
 
   if (isConfirming) {

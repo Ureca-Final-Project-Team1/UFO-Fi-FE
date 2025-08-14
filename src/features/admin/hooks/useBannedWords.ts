@@ -202,6 +202,7 @@ export function useBannedWords(): UseBannedWordsReturn {
 
   useEffect(() => {
     fetchBannedWords(0, pageSize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 의존성 배열을 비워두어 초기 로드만 실행
 
   return {

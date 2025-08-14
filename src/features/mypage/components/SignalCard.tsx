@@ -229,10 +229,13 @@ export default function SignalCard({
               {isQRLoading ? (
                 <div className="animate-spin w-7 h-7 border border-gray-300 border-t-gray-600 rounded-full" />
               ) : qrCodeDataURL ? (
-                <img
+                <Image
                   src={qrCodeDataURL}
                   alt={`${userId}의 프로필 QR 코드`}
+                  width={80}
+                  height={80}
                   className="w-full h-full object-contain rounded-lg p-1"
+                  unoptimized
                 />
               ) : (
                 <Image

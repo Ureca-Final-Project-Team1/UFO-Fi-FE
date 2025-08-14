@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { userPlanAPI } from '@/backend';
 import { ICON_PATHS } from '@/constants/icons';
@@ -15,21 +15,6 @@ import { Icon, Input, Button, PriceInput } from '@/shared';
 export const SellFormContent = () => {
   const { data: myInfo } = useMyInfo();
   const maxCapacity = myInfo?.sellableDataAmount || 0;
-
-  // value 초기값을 maxCapacity에 따라 자동 세팅
-  React.useEffect(() => {
-    let initial = 1;
-    if (maxCapacity === 0) {
-      initial = 0;
-    } else if (maxCapacity >= 3) {
-      initial = Math.min(5, Math.floor(maxCapacity / 2));
-    }
-    if (Array.isArray(value)) {
-      if (value[0] !== initial) setValue([initial]);
-    } else {
-      if (value !== initial) setValue([initial]);
-    }
-  }, [maxCapacity]);
 
   const {
     value,
@@ -47,24 +32,27 @@ export const SellFormContent = () => {
     isSubmitting,
   } = useSellData();
 
+  // value 초기값을 maxCapacity에 따라 자동 세팅
+  useEffect(() => {
+    let initial = 1;
+    if (maxCapacity === 0) {
+      initial = 0;
+    } else if (maxCapacity >= 3) {
+      initial = Math.min(5, Math.floor(maxCapacity / 2));
+    }
+    if (Array.isArray(value)) {
+      if (value[0] !== initial) setValue([initial]);
+    } else {
+      if (value !== initial) setValue([initial]);
+    }
+  }, [maxCapacity, setValue, value]);
+
   const { data: userPlan } = useQuery({
     queryKey: ['userPlan'],
     queryFn: () => userPlanAPI.get(),
   });
 
   const isFormValid = isValidTitle && isValidPrice && isValidCapacity;
-
-  // value 초기값을 maxCapacity에 따라 자동 세팅
-  React.useEffect(() => {
-    if (!maxCapacity) return;
-    let initial = 1;
-    if (maxCapacity >= 3) {
-      initial = Math.min(5, Math.floor(maxCapacity / 2));
-    }
-    if (Array.isArray(value)) {
-      if (value[0] !== initial) setValue([initial]);
-    }
-  }, [maxCapacity]);
 
   return (
     <div className="flex flex-col w-full h-full justify-between">

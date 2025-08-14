@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { generateQRCodeDataURL } from '@/features/profile/utils/qrCodeUtils';
@@ -57,9 +58,14 @@ export function QRCodeGenerator({ url, size = 200 }: QRCodeGeneratorProps) {
     );
   }
 
-  return (
-    <div className="bg-white p-4 rounded-lg">
-      <img src={qrCodeDataURL} alt="프로필 QR 코드" className="w-[200px] h-[200px]" />
-    </div>
-  );
+  <div className="bg-white p-4 rounded-lg">
+    <Image
+      src={qrCodeDataURL}
+      alt="프로필 QR 코드"
+      width={size}
+      height={size}
+      className="w-[200px] h-[200px]"
+      unoptimized
+    />
+  </div>;
 }

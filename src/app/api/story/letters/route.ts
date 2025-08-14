@@ -108,7 +108,6 @@ export async function POST() {
     const maxExistingStep = existingLetters.at(-1)?.step ?? 0;
 
     if (maxExistingStep >= 5) {
-      console.log('편지 최대 5단계 도달 → 생성 생략');
       const res = NextResponse.json({ isAdded: false }, { status: 200 });
       res.headers.set('Access-Control-Allow-Origin', ORIGIN);
       res.headers.set('Access-Control-Allow-Credentials', 'true');
@@ -141,7 +140,6 @@ export async function POST() {
 
     const bfsStep = path.length - 1;
     if (bfsStep <= maxExistingStep) {
-      console.log(`BFS 경로(${bfsStep}) <= 기존 편지 최대 단계(${maxExistingStep}) → 생성 생략`);
       const res = NextResponse.json({ isAdded: false }, { status: 200 });
       res.headers.set('Access-Control-Allow-Origin', ORIGIN);
       res.headers.set('Access-Control-Allow-Credentials', 'true');

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Image from 'next/image';
 
 import { Carrier } from '@/backend/types/carrier';
 import { MobileDataType } from '@/backend/types/mobileData';
@@ -110,15 +111,14 @@ const MockProfileView = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
-              {profile.profileImageUrl ? (
-                <img
-                  src={profile.profileImageUrl}
-                  alt={profile.nickname}
-                  className="w-full h-full object-cover rounded-full"
-                />
-              ) : (
-                <span>👽</span>
-              )}
+              <Image
+                src={profile.profileImageUrl ?? IMAGE_PATHS.AVATAR}
+                alt={profile.nickname}
+                width={64}
+                height={64}
+                className="w-full h-full object-cover rounded-full"
+              />
+              : (<span>👽</span>)
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-xl font-bold">{profile.nickname}</h1>

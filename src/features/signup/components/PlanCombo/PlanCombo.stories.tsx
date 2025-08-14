@@ -13,6 +13,5 @@ type Story = StoryObj<typeof PlanCombo>;
 export const Default: Story = {
   args: {
     planNames: ['5G 시그니처', '5G 라이트+', 'LTE 스페셜'],
-    onSelect: (value) => console.log('선택한 요금제:', value),
   },
 };
