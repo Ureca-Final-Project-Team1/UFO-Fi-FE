@@ -1,7 +1,7 @@
 # <div align="center">UFO-Fi</div>
 
 <div align="center">
-<img src='docs/readme/thumbnail.svg' width='120' />
+<img src='https://github.com/Ureca-Final-Project-Team1/UFO-Fi-FE/raw/develop/docs/readme/thumnail.svg' />
 </div>
 
 ## <div align="center">🛸 데이터는 부족해도, 은하는 연결되어 있다</div>
