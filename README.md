@@ -1,4 +1,4 @@
-# <div align="center">UFO-Fi</div>
+# <div align="center">수탁형 C2C 데이터 거래 플랫폼, UFO-Fi🛸</div>
 
 <div align="center">
 <img src='https://github.com/Ureca-Final-Project-Team1/UFO-Fi-FE/raw/develop/docs/readme/thumnail.svg' />
@@ -14,15 +14,17 @@
 ![Zustand](https://img.shields.io/badge/Zustand-FF6B35?style=flat&logo=zustand&logoColor=white)
 ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat&logo=reactquery&logoColor=white)
 
-**수탁 구조 기반 유휴 모바일 데이터 C2C 거래 플랫폼**
-
 [서비스 바로가기](https://www.ufo-fi.store) | [Storybook](https://686aad151c7964b9495b4f40-mjroypvwoa.chromatic.com/?path=/docs/ui-chip--docs) | [기획안](https://docs.google.com/document/d/18lT4sulS8pPTNh95n2JUIQZff5S-SvHB/edit?usp=sharing&ouid=101077923369398316818&rtpof=true&sd=true)
+
+**시연 영상**
+
+[![시연 영상](https://img.youtube.com/vi/tK7f2OSCOx0/0.jpg)](https://www.youtube.com/watch?v=tK7f2OSCOx0)
 
 </div>
 
 ## 서비스 소개
 
-> **UFO-Fi**는 데이터를 안전하게 보관하고 필요한 사람에게 간편하고 신뢰 있게 연결해주는 거래 플랫폼입니다.
+> **UFO-Fi**는 수탁형 구조를 기반으로 한 유휴 모바일 데이터 C2C 거래 플랫폼입니다.
 
 - **문제 인식**
   - **유휴 데이터의 구조적 소멸**: 무제한 요금제 확산으로 과잉 제공된 데이터의 자동 소멸 현상
